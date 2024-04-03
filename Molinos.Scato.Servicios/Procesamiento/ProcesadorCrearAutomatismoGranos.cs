@@ -4,7 +4,6 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
-using NPOI.HSSF.Record.Chart;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -53,7 +52,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
             }
 
-            if(comando.Dto.AplicaFiltroCalidad && !comando.Dto.CalidadId.HasValue)
+            if (comando.Dto.AplicaFiltroCalidad && !comando.Dto.CalidadId.HasValue)
             {
                 resultado.Error("AutomatismoGrano.CalidadId", "El campo 'Calidad' es requerido");
             }

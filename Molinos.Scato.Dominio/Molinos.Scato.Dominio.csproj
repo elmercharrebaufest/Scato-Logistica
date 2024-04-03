@@ -104,7 +104,6 @@
     <Compile Include="Comandos\LimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\ModificarAutomatismoGranos.cs" />
     <Compile Include="Comandos\EliminarAutomatismoGranos.cs" />
-    <Compile Include="Comandos\EliminarAutomatismoHidraulicas.cs" />
     <Compile Include="Comandos\CrearAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\CrearEstablecimientoProveedor.cs" />
     <Compile Include="Comandos\CrearComercial.cs" />

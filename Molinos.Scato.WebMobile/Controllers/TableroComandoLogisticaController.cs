@@ -497,7 +497,6 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private int ObtenerIdCentro()
         {
-            //var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId").ToString();
             return int.Parse(centro.Split(':').Last());
         }
