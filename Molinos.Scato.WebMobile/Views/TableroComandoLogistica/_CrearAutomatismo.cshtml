@@ -25,9 +25,9 @@
                             @Html.ValidationMessageFor(m => m.AutomatismoGrano.MaterialId)
                         </div>
                         <div class="col-md-6">
-                            @Html.LabelFor(m => m.AutomatismoGrano.TipoVariedadId)
-                            @Html.DropDownListFor(m => m.AutomatismoGrano.TipoVariedadId, Model.Variedades, new { @class = "form-control", id = "cboxVariedades" })
-                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.TipoVariedadId)
+                            @Html.LabelFor(m => m.AutomatismoGrano.TipoVariedades)
+                            @Html.DropDownListFor(m => m.AutomatismoGrano.TipoVariedades, Model.Variedades, new { @class = "form-control multiselect", id = "cboxVariedades", multiple = "multiple" })
+                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.TipoVariedades)
                         </div>
                     </div>
 

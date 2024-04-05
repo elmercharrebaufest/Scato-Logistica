@@ -22,12 +22,13 @@
                         <div class="col-md-6">
                             @Html.LabelFor(m => m.AutomatismoGrano.MaterialId)
                             @Html.DropDownListFor(m => m.AutomatismoGrano.MaterialId, Model.Materiales, new { @class = "form-control", disabled = true, id = "cboxMateriales", data_url = @Url.Action("ListarVariedades", "TableroComandoLogistica") })
-                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.MaterialId)
+                              @Html.ValidationMessageFor(m => m.AutomatismoGrano.MaterialId)
                         </div>
                         <div class="col-md-6">
-                            @Html.LabelFor(m => m.AutomatismoGrano.TipoVariedadId)
-                            @Html.DropDownListFor(m => m.AutomatismoGrano.TipoVariedadId, Model.Variedades, new { @class = "form-control", disabled = true, id = "cboxVariedades" })
-                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.TipoVariedadId)
+                            @Html.LabelFor(m => m.AutomatismoGrano.TipoVariedades)
+                            @Html.DropDownListFor(m => m.AutomatismoGrano.TipoVariedades, Model.Variedades, new { @class = "form-control multiselect", disabled = true, multiple = "multiple" })
+                            
+                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.TipoVariedades)
                         </div>
                     </div>
 

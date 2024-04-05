@@ -4,8 +4,6 @@
 
   [Material_Id] INT NOT NULL,
 
-  [TipoVariedad_Id] INT NULL,
-
   [CamionEscalable] BIT NOT NULL DEFAULT 0,
 
   [CallePreBalanza_Id] INT NOT NULL,
@@ -26,9 +24,6 @@
 
   CONSTRAINT [PK_AutomatismoGrano] PRIMARY KEY ([Id] ASC),
 
-  CONSTRAINT [FK_dbo.AutomatismoGrano_VariedadPorMaterial] 
-    FOREIGN KEY ([TipoVariedad_Id], Material_Id) REFERENCES [dbo].[TipoVariedadPorMaterial](TipoVariedad_Id, Material_Id),
-
   CONSTRAINT [FK_dbo.AutomatismoGrano_CallePreBalanza_Id]
     FOREIGN KEY ([CallePreBalanza_Id]) REFERENCES [dbo].[Calle](Id),
 
@@ -39,5 +34,8 @@
     FOREIGN KEY (CallePreHidraulica_Id) REFERENCES [dbo].[Calle](Id),
 
   CONSTRAINT [FK_dbo.AutomatismoGrano_Almacen_Id]
-    FOREIGN KEY (Almacen_Id) REFERENCES [dbo].[Almacen](Id)
+    FOREIGN KEY (Almacen_Id) REFERENCES [dbo].[Almacen](Id),
+
+  CONSTRAINT [FK_dbo.AutomatismoGrano_Material_Id]
+    FOREIGN KEY (Material_Id) REFERENCES [dbo].[Material](Id)
 );
