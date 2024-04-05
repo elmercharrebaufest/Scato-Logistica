@@ -20,7 +20,7 @@
                 grilla.Columna("Activo", "Llamado a Volcable", c => FormattingHtmlHelper.Formatted(c.Activo)) :
                 grilla.Column("", "", c => @Html.Raw("")),
         grilla.Column("MaterialDescripcion", "Material"),
-        grilla.Column("VariedadDescripcion", "Variedad"),
+        grilla.Column("TipoVariedadDescripcion", "Variedad"),
         (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
             grilla.Column("HidraulicaDescripcion", "Hidraulica") :
             grilla.Column("", "", c => @Html.Raw("")),

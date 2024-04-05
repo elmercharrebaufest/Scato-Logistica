@@ -44,7 +44,7 @@ namespace Molinos.Scato.WebMobile.ViewModel
             var hidraulicasConfiguracion = MapearHidraulicaConfiguracion(hidraulicas);
 
             Materiales = MapearMateriales(servicio.ListarMaterialGranoPorCentro(idCentro, true).Where(m => m.MostrarEnWebMobile).ToList(), dto.MaterialId);
-            Variedades = MapearVariedades(servicio.ListarTipoVariedadPorMaterial(dto.MaterialId).Where(c => !c.Borrado).ToList(), dto.TipoVariedadId ?? 0);
+            Variedades = MapearVariedades(servicio.ListarTipoVariedadPorMaterial(dto.MaterialId).Where(c => !c.Borrado).ToList(), AutomatismoGrano.TipoVariedades);
             CallesPreBalanza = MapearCallesPreBalanzas(callesPrebalanza.Where(c => c.ActivoAutomatico == true).ToList(), dto.CallePreBalanzaId);
             Almacenes = dto.MaterialId > 0 ? MapearAlmacenes(servicio.ListarAlmacenesPorMaterial(idCentro, dto.MaterialId), dto.AlmacenId) : MapearAlmacenes(servicio.ListarAlmacenesPorCentro(idCentro), dto.AlmacenId);
             Hidraulicas = MapearHidraulicas(hidraulicas.Where(c => c.ActivoAutomatico == true).ToList(), AutomatismoGrano.Hidraulicas);
@@ -60,7 +60,8 @@ namespace Molinos.Scato.WebMobile.ViewModel
         private List<LlamadoAutomaticoHidraulicaDto> MapearHidraulicaConfiguracion(List<LlamadoAutomaticoHidraulicaDto> hidraulicas)
         {
             var hidraulicasconfiguracion = new List<LlamadoAutomaticoHidraulicaDto>();
-            foreach (var h in hidraulicas) {
+            foreach (var h in hidraulicas)
+            {
                 h.Id = h.HidraulicaId;
                 hidraulicasconfiguracion.Add(h);
             }
@@ -80,15 +81,14 @@ namespace Molinos.Scato.WebMobile.ViewModel
             return listaMateriales;
         }
 
-        private List<SelectListItem> MapearVariedades(IList<TipoVariedadPorMaterialDto> variedadPorMaterial, int idSeleccionado = 0)
+        private List<SelectListItem> MapearVariedades(IList<TipoVariedadPorMaterialDto> variedadPorMaterial, List<int> idSeleccionados)
         {
             var listaVariedad = variedadPorMaterial.Select(m => new SelectListItem
             {
                 Value = m.TipoVariedadId.ToString(),
                 Text = m.TipoVariedadDescripcion,
-                Selected = (m.TipoVariedadId == idSeleccionado)
+                Selected = idSeleccionados.Contains(m.TipoVariedadId)
             }).ToList();
-            listaVariedad.Insert(0, new SelectListItem { Value = "", Text = Textos.Variedad_Estandar });
 
             return listaVariedad;
         }
