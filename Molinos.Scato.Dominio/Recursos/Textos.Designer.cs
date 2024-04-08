@@ -23963,6 +23963,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Se encontró más de una orden de carga asociada a la patente, por favor seleccione una en Nº de Orden de Carga..
+        /// </summary>
+        public static string OrdenesFasonOperApiVarias {
+            get {
+                return ResourceManager.GetString("OrdenesFasonOperApiVarias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El almacen es requerido cuando se ingresan &quot;Residuos Organicos&quot;.
         /// </summary>
         public static string OrdenInterna_AlmacenRequerido {
@@ -24247,6 +24256,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PatenteEnOtroWorkflow {
             get {
                 return ResourceManager.GetString("PatenteEnOtroWorkflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se encontró ninguna Orden asociada a esta patente.
+        /// </summary>
+        public static string PatenteNoEncontradaApiOpera {
+            get {
+                return ResourceManager.GetString("PatenteNoEncontradaApiOpera", resourceCulture);
             }
         }
         

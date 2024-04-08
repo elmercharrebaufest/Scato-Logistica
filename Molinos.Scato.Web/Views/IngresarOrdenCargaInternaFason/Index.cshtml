@@ -21,7 +21,13 @@
     <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
     <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
     <script src="@Url.Script("~/Scripts/ordencargainterna.index.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/ordenCargaInternaFason.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
+
+    <script>
+    const textoVariasOrdenes = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Textos.OrdenesFasonOperApiVarias))';
+    const patenteNoEncontrada = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Textos.PatenteNoEncontradaApiOpera))';
+    </script>
 }
 <link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
 <div class="container-fluid">

@@ -132,6 +132,7 @@
             public const string ConfirmacionCargaDescarga = "ConfirmacionCargaDescarga";
             public const string PesadaBruto = "PesadaBruto";
             public const string PesadaTara = "PesadaTara";
+            public const string OrdenCargaInterna = "IngresarOrdenCargaInternaFason";
         }
 
         public struct CartelTramaPare
@@ -231,6 +232,12 @@
             public const string PorFila = "PFL";
             public const string UnoAUno = "1A1";
             public const string PaseDirecto = "PDR";
+        }
+
+        public struct WorkFlow
+        {
+            public const string workflowFason = "SLO.EgresoClienteFason";
+            public const string workflowFasonSinFlete = "SLO.EgresoClienteFasonSinFlete";
         }
     }
 }

@@ -9,7 +9,10 @@ using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Impl;
+using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Test.Mock;
 using Molinos.Scato.Web.Controllers;
 using Molinos.Scato.Web.Models;
@@ -24,9 +27,12 @@ namespace Molinos.Scato.Test.Controllers
     {
         private IngresarOrdenCargaInternaFasonController target;
         private Mock<IServicioRepositorio> servRepositorioMock;
+        private Mock<IServicioOperaciones> servOperacionesMock;
         private Mock<IServicioComandos> servComandosMock;
         private Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService>> actFactoryMock;
         private Mock<IIngresarOrdenCargaInternaFasonService> contractMock;
+        private Mock<ICache> cacheMock;
+        private Mock<ZSDWS_SCATO> servicioSap;
 
         private Mock<IListaDeWorkflows> listaMock;
 
@@ -47,12 +53,15 @@ namespace Molinos.Scato.Test.Controllers
         public void SetUp()
         {
             servRepositorioMock = new Mock<IServicioRepositorio>();
+            servOperacionesMock = new Mock<IServicioOperaciones>();
             servComandosMock = new Mock<IServicioComandos>();
             actFactoryMock = new Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService>>();
             contractMock = new Mock<IIngresarOrdenCargaInternaFasonService>();
             listaMock = new Mock<IListaDeWorkflows>();
+            cacheMock = new Mock<ICache>();
+
             logger = new NullLogger();
-            target = new IngresarOrdenCargaInternaFasonController(logger, servRepositorioMock.Object, actFactoryMock.Object, servComandosMock.Object, listaMock.Object);
+            target = new IngresarOrdenCargaInternaFasonController(logger, servRepositorioMock.Object, servOperacionesMock.Object, actFactoryMock.Object, servComandosMock.Object, listaMock.Object, cacheMock.Object, servicioSap.Object);
 
             dto = new OrdenCargaInternaFasonDto
             {

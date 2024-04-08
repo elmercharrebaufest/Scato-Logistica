@@ -92,6 +92,7 @@
     <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Internas\ActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Internas\VerificarAutomatismoGranos.cs" />
+    <Compile Include="InformarOrdenFasonOperaciones.cs" />
     <Compile Include="LimpiarCartelLlamadoNoGranos.cs" />
     <Compile Include="EliminarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="EliminarAsignacionAutomatismoGranoEnRecorrido.cs" />
