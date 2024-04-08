@@ -61,7 +61,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaFasDto orden, DatosUsuario datosUsuario, string MotivoDemora, int? Material)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
-            Validar(orden);
+            Validar(orden, workflow);
 
             if (!ModelState.IsValid)
             {
@@ -138,7 +138,7 @@ namespace Molinos.Scato.Web.Controllers
                 return View(orden);
             }
 
-            if (orden.DerivadoGranarioHabilitado && !(orden.VehiculoDemorado || orden.Rechazado))
+            if (orden.DerivadoGranarioHabilitado && workflow != "1029-EgresoPorExportacionFCA" && !(orden.VehiculoDemorado || orden.Rechazado))
             {
                 var domicilio = orden.TipoYOrdenDestino.Split('-');
                 orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
@@ -592,26 +592,26 @@ namespace Molinos.Scato.Web.Controllers
         //    return orden;
         //}
 
-        private void Validar(OrdenCargaFasDto orden)
+        private void Validar(OrdenCargaFasDto orden, string workflowId)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
-            orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
+            orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA";
             if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)
             {
                 ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && !orden.PlantaDGDestino.HasValue)
             {
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
                 ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
@@ -631,12 +631,12 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && orden.LocalidadDestinoId <= 0)
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && orden.LocalidadDestinoId <= 0)
             {
                 ModelState.AddModelError("LocalidadDestinoId", string.Format(Textos.Error_Requerido, Textos.Error_Ctg_Localidad));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
             {
                 ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
             }
