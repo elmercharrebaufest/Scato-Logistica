@@ -341,6 +341,38 @@ namespace Molinos.Scato.Web.Controllers
             var orden = resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId));
             var choferCuil = ConvertirCuil(orden.CUILChofer);
             var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
+
+            if (chofer == null)
+            {
+
+                string nombreCompleto = orden.NombreChofer;
+                string[] palabras = nombreCompleto.Split(' ');
+                string apellido = palabras[0];
+                string nombre = palabras[palabras.Length - 1];
+
+
+                var choferDto = new ChoferDto
+                {
+                    Cuil = choferCuil,
+                    Nombre = nombre,
+                    Apellido = apellido,
+                    TipoDocumentoIdentidadId = 1,
+                    NumeroDeDocumento = choferCuil.Split('-')[1],
+                };
+
+                var choferValido = SetearChofer(choferDto);
+
+                if (!choferValido)
+                {
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El chofer con cuil {choferCuil} no se pudo crear.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+
+                }
+
+
+                chofer = servicio.ObtenerChoferPorCuit(choferCuil);
+
+            }
+
             var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
             var destinatarioDescrip = servicio.ObtenerClientePorCuit(destinatarioCuit);
 
