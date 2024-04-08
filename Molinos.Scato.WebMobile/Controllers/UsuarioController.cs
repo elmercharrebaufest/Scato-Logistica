@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Web.Mvc;
-using System.Web.Security;
+﻿using System.Web.Mvc;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
