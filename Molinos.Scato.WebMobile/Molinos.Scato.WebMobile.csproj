@@ -220,6 +220,7 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
     <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VisteoMobileController.cs" />
     <Compile Include="Controllers\EstadoVolcadorasController.cs" />
     <Compile Include="Filtros\DateTimeModelBinder.cs" />
@@ -469,7 +470,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-      <Content Include="ASVWUSCATO00.DeployParameters.xml">
+    <Content Include="ASVWUSCATO00.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -613,6 +614,7 @@
     <Content Include="Views\GraficoDePlanta\_ToneladasPorDia.cshtml" />
     <Content Include="Views\GraficoDePlanta\_ToneladasPorRangoDeDia.cshtml" />
     <Content Include="Views\GraficoDePlanta\_GraficoDePlantaHead.cshtml" />
+    <Content Include="Views\Usuario\SignOut.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
