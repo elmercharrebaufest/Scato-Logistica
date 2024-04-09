@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Configuration;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
@@ -7,7 +8,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         [AllowAnonymous]
         public ActionResult SignOut()
         {
-            var adfsLogoutUrl = "https://bfdev271.baunet.local/adfs/ls/?wa=wsignout1.0";
+            var adfsLogoutUrl = ConfigurationManager.AppSettings["UrlAdfsLogoff"];
             return Redirect(adfsLogoutUrl);
         }
     }
