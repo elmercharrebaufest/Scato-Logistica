@@ -614,7 +614,6 @@
     <Content Include="Views\GraficoDePlanta\_ToneladasPorDia.cshtml" />
     <Content Include="Views\GraficoDePlanta\_ToneladasPorRangoDeDia.cshtml" />
     <Content Include="Views\GraficoDePlanta\_GraficoDePlantaHead.cshtml" />
-    <Content Include="Views\Usuario\SignOut.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
