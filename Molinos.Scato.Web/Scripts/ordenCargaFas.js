@@ -486,7 +486,7 @@ function CargarDomicilios() {
 function ValidarDerivadoGranario() {
     let url = window.location.search;
     let urlParams = new URLSearchParams(url);
-    let workflowId = urlParams.get("workflow")
+    let workflowId = urlParams.get("workflow") || "@workflowCodigo";
     let materialId = $("#MaterialId").val();
     let materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
     if (materialesDerivadoGranario.includes(parseInt(materialId)) && workflowId != "1029-EgresoPorExportacionFCA" ) {
