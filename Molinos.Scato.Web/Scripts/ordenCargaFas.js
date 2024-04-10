@@ -486,7 +486,8 @@ function CargarDomicilios() {
 function ValidarDerivadoGranario() {
     let materialId = $("#MaterialId").val();
     let materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
-    if (materialesDerivadoGranario.includes(parseInt(materialId))) {
+    var workflowCodigo = "@workflowCodigo";
+    if (materialesDerivadoGranario.includes(parseInt(materialId)) && workflowCodigo != "1029-EgresoPorExportacionFCA") {
         $('#DerivadoGranarioHabilitado').val('true')
         $('.derivadoGranario').removeClass('hidden');
     } else {

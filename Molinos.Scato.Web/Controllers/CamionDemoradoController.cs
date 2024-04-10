@@ -66,6 +66,7 @@ namespace Molinos.Scato.Web.Controllers
                     TempData["TipoAlerta"] = TipoAlerta.Error;
                     return View("OrdenCargaFas", orden);
                 }
+                ViewBag.workflowCodigo = recorrido.Workflow?.Codigo ?? string.Empty;
                 ViewBag.OrdenFas = resultado.OrdenFas.ToSelectList(f => f.NumeroOrden.ToString(), f => f.NumeroOrden);
                 return View("OrdenCargaFas", resultado.OrdenFas.FirstOrDefault());
             }
