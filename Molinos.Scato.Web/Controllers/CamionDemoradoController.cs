@@ -58,6 +58,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var orden = servicio.ObtenerOrdenCargaFasPorInstanceId(recorrido.InstanciaWorkflow);
                 IngresarOrdenCargaFasController.SetearVista(recorrido.Workflow, servicio, this);
+                ViewBag.workflowCodigo = recorrido.Workflow?.Codigo ?? string.Empty;
 
                 var resultado = ObtenerDatos(orden.PatenteCamion, datosUsuario, orden);
                 if (resultado.HayErrores)
@@ -66,7 +67,6 @@ namespace Molinos.Scato.Web.Controllers
                     TempData["TipoAlerta"] = TipoAlerta.Error;
                     return View("OrdenCargaFas", orden);
                 }
-                ViewBag.workflowCodigo = recorrido.Workflow?.Codigo ?? string.Empty;
                 ViewBag.OrdenFas = resultado.OrdenFas.ToSelectList(f => f.NumeroOrden.ToString(), f => f.NumeroOrden);
                 return View("OrdenCargaFas", resultado.OrdenFas.FirstOrDefault());
             }
