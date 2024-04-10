@@ -680,24 +680,24 @@ namespace Molinos.Scato.Web.Controllers
         private void Validar(OrdenCargaFasDto orden)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
-            var workflowCodigo = servicio.ObtenerRecorrido(orden.RecorridoId).Workflow.Codigo;
+            var workflowCodigo = servicio.ObtenerRecorrido(orden.RecorridoId)?.Workflow?.Codigo;
             orden.DerivadoGranarioHabilitado = workflowCodigo == "1029-EgresoPorExportacionFCA" ? false : material.EsDerivadoGranario;
             if (!orden.Rechazado && orden.Inhabilitado)
             {
                 ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && !orden.PlantaDGDestino.HasValue)
+            if (!orden.Rechazado && orden.DerivadoGranarioHabilitado && !orden.PlantaDGDestino.HasValue)
             {
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
+            if (!orden.Rechazado && orden.DerivadoGranarioHabilitado && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
                 ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
+            if (!orden.Rechazado && orden.DerivadoGranarioHabilitado && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
@@ -717,7 +717,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
+            if (!orden.Rechazado && orden.DerivadoGranarioHabilitado && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
             {
                 ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
             }
