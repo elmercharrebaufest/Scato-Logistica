@@ -484,10 +484,10 @@ function CargarDomicilios() {
 }
 
 function ValidarDerivadoGranario() {
+    let workflowId = urlParams.get("workflow") || "@workflowCodigo";
     let materialId = $("#MaterialId").val();
     let materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
-    var workflowCodigo = "@workflowCodigo";
-    if (materialesDerivadoGranario.includes(parseInt(materialId)) && workflowCodigo != "1029-EgresoPorExportacionFCA") {
+    if (materialesDerivadoGranario.includes(parseInt(materialId))) {
         $('#DerivadoGranarioHabilitado').val('true')
         $('.derivadoGranario').removeClass('hidden');
     } else {
