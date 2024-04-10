@@ -485,6 +485,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             log.Info("Empieza el método FAS");
             var resultado = new ResultadoFas();
+            var workflowCodigo = servicio.ObtenerRecorrido(orden.RecorridoId).Workflow.Codigo;
             try
             {
                 var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
@@ -553,16 +554,17 @@ namespace Molinos.Scato.Web.Controllers
                             TipoComercialId = tipoComercial != null ? (int)(tipoComercial.Id != null ? tipoComercial.Id : 0) : 0,
                             Id = orden.Id,
                             RecorridoId = orden.RecorridoId,
-                            DerivadoGranarioHabilitado = material.EsDerivadoGranario,
-                            PlantaDGDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].CODPLANTA) ? int.Parse(ordenCargaFas[i].CODPLANTA) : (int?)null,
-                            OrdenDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : (int?)null,
-                            PagadorFleteId = material.EsDerivadoGranario ? pagadorFlete?.Id : (int?)null,
-                            PagadorFlete = material.EsDerivadoGranario ? pagadorFlete?.Descripcion : null,
+                            DerivadoGranarioHabilitado = workflowCodigo == "1029-EgresoPorExportacionFCA" ? false : material.EsDerivadoGranario,
+                            PlantaDGDestino = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && !string.IsNullOrEmpty(ordenCargaFas[i].CODPLANTA) ? int.Parse(ordenCargaFas[i].CODPLANTA) : (int?)null,
+                            OrdenDomicilioDestino = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : (int?)null,
+                            PagadorFleteId = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" ? pagadorFlete?.Id : (int?)null,
+                            PagadorFlete = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" ? pagadorFlete?.Descripcion : null,
                             Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
-                            TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
+                            TipoDomicilioDestino = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
                         if (material.EsDerivadoGranario
+                           && workflowCodigo != "1029-EgresoPorExportacionFCA"
                            && (!string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)
                            || (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA) && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))))
                         {
@@ -587,20 +589,20 @@ namespace Molinos.Scato.Web.Controllers
                             itemSap.ClienteDesc = cliente.Descripcion;
                         }
 
-                        if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                        if (material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                         {
                             var comisionista = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
                             itemSap.Comisionista = comisionista?.Descripcion;
                             itemSap.ComisionistaId = comisionista?.Id;
                         }
-                        else if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaRemitente && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                        else if (material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaRemitente && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                         {
                             var remitente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
                             itemSap.Remitente = remitente?.Descripcion;
                             itemSap.RemitenteId = remitente?.Id;
                         }
 
-                        if (material.EsDerivadoGranario && !string.IsNullOrWhiteSpace(ordenCargaFas[i].CUIT_DESTINATARIO))
+                        if (material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && !string.IsNullOrWhiteSpace(ordenCargaFas[i].CUIT_DESTINATARIO))
                         {
                             var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO)).FirstOrDefault();
 
@@ -614,13 +616,13 @@ namespace Molinos.Scato.Web.Controllers
                             itemSap.DestinatarioDesc = destinatario.Descripcion;
                         }
 
-                        if (material.EsDerivadoGranario && string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
+                        if (material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
                         {
                             itemSap.DestinatarioId = itemSap.ClienteId;
                             itemSap.DestinatarioDesc = itemSap.ClienteDesc;
                         }
 
-                        if (material.EsDerivadoGranario
+                        if (material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA"
                             && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
                             && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
@@ -634,7 +636,7 @@ namespace Molinos.Scato.Web.Controllers
                             itemSap.CorredorId = corredor?.Id;
                         }
 
-                        if (material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].PROV_INT_FLETE))
+                        if (material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && !string.IsNullOrEmpty(ordenCargaFas[i].PROV_INT_FLETE))
                         {
                             var intermediarioFlete = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].PROV_INT_FLETE.TrimStart(new[] { '0' }));
                             if (intermediarioFlete == null)
@@ -678,23 +680,24 @@ namespace Molinos.Scato.Web.Controllers
         private void Validar(OrdenCargaFasDto orden)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
-            orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
+            var workflowCodigo = servicio.ObtenerRecorrido(orden.RecorridoId)?.Workflow?.Codigo;
+            orden.DerivadoGranarioHabilitado = workflowCodigo == "1029-EgresoPorExportacionFCA" ? false : material.EsDerivadoGranario;
             if (!orden.Rechazado && orden.Inhabilitado)
             {
                 ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
+            if (!orden.Rechazado && orden.DerivadoGranarioHabilitado && !orden.PlantaDGDestino.HasValue)
             {
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
+            if (!orden.Rechazado && orden.DerivadoGranarioHabilitado && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
                 ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
+            if (!orden.Rechazado && orden.DerivadoGranarioHabilitado && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
@@ -714,7 +717,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
+            if (!orden.Rechazado && orden.DerivadoGranarioHabilitado && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
             {
                 ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
             }
