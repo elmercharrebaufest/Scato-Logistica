@@ -341,6 +341,7 @@ namespace Molinos.Scato.Web.Controllers
             var orden = resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId));
             var choferCuil = ConvertirCuil(orden.CUILChofer);
             var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
+
             var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
             var destinatarioDescrip = servicio.ObtenerClientePorCuit(destinatarioCuit);
 
@@ -353,9 +354,6 @@ namespace Molinos.Scato.Web.Controllers
 
             if (transportista == null)
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Transportista para el cuit {transportistaCUIT}, Debe generarse en >Administración/Datos Generales/Transportistas", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-
-            if (chofer == null)
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El chofer con cuil {choferCuil} no existe. Debe generarse en >Administración/Datos Generales/Choferes", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
             if (material == null)
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No existe material con el codigo de SAP {materialSAP}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
