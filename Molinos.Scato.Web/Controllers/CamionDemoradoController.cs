@@ -560,7 +560,7 @@ namespace Molinos.Scato.Web.Controllers
                             OrdenDomicilioDestino = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : (int?)null,
                             PagadorFleteId = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" ? pagadorFlete?.Id : (int?)null,
                             PagadorFlete = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" ? pagadorFlete?.Descripcion : null,
-                            Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
+                            Inhabilitado = workflowCodigo == "1029-EgresoPorExportacionFCA" ? false : !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
                             TipoDomicilioDestino = material.EsDerivadoGranario && workflowCodigo != "1029-EgresoPorExportacionFCA" && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 

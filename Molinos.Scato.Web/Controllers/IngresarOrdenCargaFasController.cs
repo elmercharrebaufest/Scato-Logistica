@@ -241,6 +241,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public JsonResult ObtenerDatos(string numero, string workflow, DatosUsuario datosUsuario)
         {
+           
             log.Info("Empieza el método FAS");
             var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
             {
@@ -335,7 +336,7 @@ namespace Molinos.Scato.Web.Controllers
                             OrdenDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : (int?)null,
                             PagadorFleteId = material.EsDerivadoGranario ? pagadorFlete?.Id : (int?)null,
                             PagadorFlete = material.EsDerivadoGranario ? pagadorFlete?.Descripcion : null,
-                            Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
+                            Inhabilitado = workflow.Contains("FCA") ? false : !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
