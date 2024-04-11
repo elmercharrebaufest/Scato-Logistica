@@ -486,7 +486,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             log.Info("Empieza el método FAS");
             var resultado = new ResultadoFas();
-            var workflowCodigo = servicio.ObtenerRecorrido(orden.RecorridoId).Workflow.Codigo;
+            var workflowCodigo = servicio.ObtenerRecorrido(orden.RecorridoId)?.Workflow?.Codigo;
             try
             {
                 var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
