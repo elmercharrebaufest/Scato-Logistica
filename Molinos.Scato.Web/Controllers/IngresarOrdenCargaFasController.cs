@@ -241,6 +241,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public JsonResult ObtenerDatos(string numero, string workflow, DatosUsuario datosUsuario)
         {
+           
             log.Info("Empieza el método FAS");
             var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
             {
@@ -258,7 +259,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 log.Info("Empieza la llamada a SAP: Consultar Orden de Carga");
                 var respuestaConsultaOrdenCarga = servicioSap.ConsultaOrdenDeCarga(datosRequest);
-                //var respuestaConsultaOrdenCarga = ObtenerDatosDePruebaDeSAP();
+                // var respuestaConsultaOrdenCarga = ObtenerDatosDePruebaDeSAP();
 
                 log.Info("Respuesta: " + respuestaConsultaOrdenCarga.ConsultaOrdenDeCargaResponse.Salida.ToXml());
                 var datosSap = new List<OrdenCargaFasDto>();
@@ -335,7 +336,7 @@ namespace Molinos.Scato.Web.Controllers
                             OrdenDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : (int?)null,
                             PagadorFleteId = material.EsDerivadoGranario ? pagadorFlete?.Id : (int?)null,
                             PagadorFlete = material.EsDerivadoGranario ? pagadorFlete?.Descripcion : null,
-                            Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
+                            Inhabilitado = workflow.Contains("Expo") ? false : !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
@@ -553,44 +554,44 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         // Utilizar método sólo para pruebas locales
-        //private ConsultaOrdenDeCargaResponse1 ObtenerDatosDePruebaDeSAP()
-        //{
-        //    var salida = new ZSDES0300
-        //    {
-        //        NRO_DOC_CHOFER = "20-14692893-6",
-        //        TIPO_DOC_CHOFER = TipoDocumentoChofer.Cuit,
-        //        CUIT_TR = "20-20686662-5",
-        //        KUNDE = "9950085862",
-        //        MATNR = "99704",
-        //        KUNNR = "7151840000",
-        //        TIPO_COMERCIAL = "CYO",
-        //        PATEN = "AAL001",
-        //        ACOPL = "AAL101",
-        //        CUIT = "27000000014",
-        //        SOLIC = "MUNICIPALIDAD DE AVELLANEDA",
-        //        VBELN = "0099814054",
-        //        FLETEPROPIO = string.Empty,
-        //        CODPLANTA = "1809",
-        //        TIPODOM = "1",
-        //        ORDENDOM = "1",
-        //        PAGADOR_FLETE = "7153750000",
-        //        INHABILITADO = "",
-        //        CORRE = "20007126671",
-        //        CUIT_CTA_ORDEN = "27000000014",
-        //        CUIT_DESTINATARIO = "30500858628",
-        //        PROV_INT_FLETE = "20686662"
-        //        //TIPO_REVENTA = "C",
-        //    };
-        //    var consultaOrden = new ConsultaOrdenDeCargaResponse
-        //    {
-        //        Salida = new ZSDES0300[] { salida }
-        //    };
-        //    var orden = new ConsultaOrdenDeCargaResponse1
-        //    {
-        //        ConsultaOrdenDeCargaResponse = consultaOrden
-        //    };
-        //    return orden;
-        //}
+        private ConsultaOrdenDeCargaResponse1 ObtenerDatosDePruebaDeSAP()
+        {
+            var salida = new ZSDES0300
+            {
+                NRO_DOC_CHOFER = "20-14692893-6",
+                TIPO_DOC_CHOFER = TipoDocumentoChofer.Cuit,
+                CUIT_TR = "20-20686662-5",
+                KUNDE = "9950085862",
+                MATNR = "99704",
+                KUNNR = "7151840000",
+                TIPO_COMERCIAL = "CYO",
+                PATEN = "AAL001",
+                ACOPL = "AAL101",
+                CUIT = "27000000014",
+                SOLIC = "MUNICIPALIDAD DE AVELLANEDA",
+                VBELN = "0066814054", //"0099814054"
+                FLETEPROPIO = string.Empty,
+                CODPLANTA = "1809",
+                TIPODOM = "1",
+                ORDENDOM = "1",
+                PAGADOR_FLETE = "7153750000",
+                INHABILITADO = "X",
+                CORRE = "20007126671",
+                CUIT_CTA_ORDEN = "27000000014",
+                CUIT_DESTINATARIO = "30500858628",
+                PROV_INT_FLETE = "20686662"
+                //TIPO_REVENTA = "C",
+            };
+            var consultaOrden = new ConsultaOrdenDeCargaResponse
+            {
+                Salida = new ZSDES0300[] { salida }
+            };
+            var orden = new ConsultaOrdenDeCargaResponse1
+            {
+                ConsultaOrdenDeCargaResponse = consultaOrden
+            };
+            return orden;
+        }
 
         private void Validar(OrdenCargaFasDto orden, string workflowId)
         {
