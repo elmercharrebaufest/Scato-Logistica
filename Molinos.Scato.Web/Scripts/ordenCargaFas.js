@@ -489,7 +489,7 @@ function ValidarDerivadoGranario() {
     let workflowId = urlParams.get("workflow") || workflowCodigo;
     let materialId = $("#MaterialId").val();
     let materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
-    if (materialesDerivadoGranario.includes(parseInt(materialId)) && workflowId != "1029-EgresoPorExportacionFCA" )) {
+    if (materialesDerivadoGranario.includes(parseInt(materialId)) && workflowId != "1029-EgresoPorExportacionFCA" ) {
         $('#DerivadoGranarioHabilitado').val('true')
         $('.derivadoGranario').removeClass('hidden');
     } else {
