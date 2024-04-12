@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.IdentityModel.Services;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.WebMobile.Controllers
@@ -6,10 +8,12 @@ namespace Molinos.Scato.WebMobile.Controllers
     public class UsuarioController : Controller
     {
         [AllowAnonymous]
-        public ActionResult SignOut()
+        public void SignOut()
         {
-            var adfsLogoutUrl = ConfigurationManager.AppSettings["UrlAdfsLogoff"];
-            return Redirect(adfsLogoutUrl);
+            var adfsLogoffUrl = ConfigurationManager.AppSettings["UrlAdfsLogoff"];
+            var authModule = FederatedAuthentication.WSFederationAuthenticationModule;
+            var signoutURL = WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl(authModule.Issuer, adfsLogoffUrl, null);
+            WSFederationAuthenticationModule.FederatedSignOut(new Uri(signoutURL), new Uri(authModule.Realm));
         }
     }
 }
