@@ -12,7 +12,7 @@
     var domiciliosDG = new List<SelectListItem>();
     var listaMaterialesDerivadoGranario = (List<int>)ViewBag.MaterialesDerivadoGranario;
 }
-
+<script> var workflowCodigo = @Html.Raw(Json.Encode(ViewBag.workflowCodigo)); </script>
 <div id="links"
      data-url-buscar-choferes="@Url.Action("BuscarChoferes", "Consultas")"
      data-url-buscar-chofer-unico="@Url.Action("BuscarChoferUnico", "Consultas")"
