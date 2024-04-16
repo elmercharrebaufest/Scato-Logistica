@@ -123,5 +123,6 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_Destinatario")]
         public string Destinatario { get; set; }
         public int? DestinatarioId { get; set; }
+        public string NumeroOrdenExterno { get; set; }
     }
 }
