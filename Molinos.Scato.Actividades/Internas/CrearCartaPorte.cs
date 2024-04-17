@@ -56,7 +56,7 @@ namespace Molinos.Scato.Actividades.Internas
                 var srvRepositorio = context.GetExtension<IServicioRepositorio>();
 
                 var cupo = srvRepositorio.ObtenerCargaDeCupoPorCTG(orden.NroCartaPorte);
-                var tipoMaterialPorVariedad = cupo != null ? srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, esSustentable: cupo.Especial) : null;
+                var tipoMaterialPorVariedad = srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, esSustentable: cupo != null && cupo.Especial);
                 var resultadoCartaPorte = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte
                 {
                     Orden = orden,
