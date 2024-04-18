@@ -343,7 +343,7 @@ namespace Molinos.Scato.Web.Controllers
             var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
 
             var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
-            var destinatarioDescrip = servicio.ObtenerClientePorCuit(destinatarioCuit);
+            var destinatarioDescrip = servicio.ObtenerClientePorCuit(string.IsNullOrEmpty(destinatarioCuit) ? "" : destinatarioCuit);
 
             var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
             var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);

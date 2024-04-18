@@ -67,16 +67,21 @@
             <div class="control">
                 @Html.LabelFor(model => model.NumeroOrden, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.NumeroOrden, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()" })
+                    @Html.TextBoxFor(model => model.NumeroOrden, new { @class = "control ", autocomplete = "off", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.NumeroOrden)
-                    @Html.HiddenFor(model => model.NumeroOrden)
+                </div>
+            </div>
+            <div class="control">
+                @Html.LabelFor(model => model.NumeroOrdenExterno, new { @class = "control-label small margin10" })
+                <div class="">
+                    @Html.DropDownListFor(model => model.NumeroOrdenExterno, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()" })
+                    @Html.ValidationMessageFor(model => model.NumeroOrdenExterno)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.NumeroCTG, new { @class = "control-label small margin10" })
                 <div class="">
                     @Html.TextBoxFor(model => model.NumeroCTG, new { @class = "control", autocomplete = "off", @readonly = "readonly" })
-                    @Html.HiddenFor(model => model.NumeroCTG)
                 </div>
             </div>
         </div>
@@ -92,7 +97,6 @@
                 @Html.LabelFor(model => model.NumeroCPE, new { @class = "control-label small", style = "margin-left:15%" })
                 <div class="">
                     @Html.TextBoxFor(model => model.NumeroCPE, new { @class = "control", autocomplete = "off", @readonly = "readonly" })
-                    @Html.HiddenFor(model => model.NumeroCPE)
                 </div>
             </div>
         </div>
@@ -104,7 +108,7 @@
             <div class="control">
                 <label class="control-label small margin10" for="Cliente">@(Model.DerivadoGranarioHabilitado ? "Destino" : "Cliente")</label>
                 <div class="">
-                    @Html.TextBoxFor(model => model.Cliente, new { @class = "control  autocompletado-obligatorio clienteRequerido", @disabled = "true" })
+                    @Html.TextBoxFor(model => model.Cliente, new { @class = "control  autocompletado-obligatorio clienteRequerido" })
                     @Html.ValidationMessageFor(model => model.Cliente)
                     @Html.HiddenFor(model => model.ClienteId)
                 </div>
@@ -150,9 +154,8 @@
             <div class="control">
                 @Html.LabelFor(model => model.PatenteAcoplado, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right", @disabled = "true" })
+                    @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
                     @Html.ValidationMessageFor(model => model.PatenteAcoplado)
-                    @Html.HiddenFor(model => model.PatenteAcoplado)
                 </div>
             </div>
             <div class="control">
@@ -165,7 +168,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.Transportista, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.Transportista, new { @class = "control  autocompletado-obligatorio", data_error_requerido = Textos.TransportistaIngresarExistente, @disabled = "true" })
+                    @Html.TextBoxFor(model => model.Transportista, new { @class = "control  autocompletado-obligatorio", data_error_requerido = Textos.TransportistaIngresarExistente })
                     @Html.ValidationMessageFor(model => model.Transportista)
                     @Html.HiddenFor(model => model.TransportistaId)
                     @Html.HiddenFor(model => model.EsTransportista)
@@ -182,9 +185,8 @@
             <div class="control">
                 @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control ", @disabled = "true" })
+                    @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control " })
                     @Html.ValidationMessageFor(model => model.MaterialId)
-                    @Html.HiddenFor(model => model.MaterialId)
                 </div>
             </div>
             <div class="control">
