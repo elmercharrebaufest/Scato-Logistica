@@ -370,7 +370,6 @@
     <Compile Include="Internas\IngresarObservaciones.cs" />
     <Compile Include="Internas\IngresarPeso.cs" />
     <Compile Include="Internas\IngresarTransportista.cs" />
-    <Compile Include="Internas\IngresoDeCartaPorteRedespacho.cs" />
     <Compile Include="Internas\IngresosPorCompraDeGranosGenerarRequest.cs" />
     <Compile Include="Internas\IngresosPorCompraDeGranosTransmisionASap.cs" />
     <Compile Include="Internas\IngresosPorCompraDeGranosTransmisionASapAsincronico.cs" />
