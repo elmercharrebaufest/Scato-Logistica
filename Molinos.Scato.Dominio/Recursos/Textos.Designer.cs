@@ -23621,7 +23621,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nº Orden Operaciones.
+        ///   Looks up a localized string similar to Id Operaciones.
         /// </summary>
         public static string OrdenCargaInterna_NumeroOperaciones {
             get {
@@ -23972,7 +23972,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Se encontró más de una orden de carga asociada a la patente, por favor seleccione una en Nº  Orden Operaciones..
+        ///   Looks up a localized string similar to Se encontró más de una orden de carga asociada a la patente, por favor seleccione una en Id Operaciones..
         /// </summary>
         public static string OrdenesFasonOperApiVarias {
             get {

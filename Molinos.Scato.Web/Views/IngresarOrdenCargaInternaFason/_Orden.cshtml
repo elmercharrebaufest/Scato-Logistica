@@ -71,13 +71,6 @@
                     @Html.ValidationMessageFor(model => model.NumeroOrden)
                 </div>
             </div>
-            <div class="control">
-                @Html.LabelFor(model => model.NumeroOrdenExterno, new { @class = "control-label small margin10" })
-                <div class="">
-                    @Html.DropDownListFor(model => model.NumeroOrdenExterno, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()" })
-                    @Html.ValidationMessageFor(model => model.NumeroOrdenExterno)
-                </div>
-            </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.NumeroCTG, new { @class = "control-label small margin10" })
                 <div class="">
@@ -105,6 +98,27 @@
 <div class="row-fluid row-fluid-ie7">
     <div class="span6">
         <fieldset class="grupo-carta-porte">
+            <div class="control">
+                @Html.LabelFor(model => model.PatenteCamion, new { @class = "control-label small margin10" })
+                <div class="">
+                    @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right", @onfocusout = "obtenerOrdenDeCargaOperacionesPorPatente()" })
+                    @Html.ValidationMessageFor(model => model.PatenteCamion)
+                </div>
+            </div>
+            <div class="control">
+                @Html.LabelFor(model => model.NumeroOrdenExterno, new { @class = "control-label small margin10" })
+                <div class="">
+                    @Html.DropDownListFor(model => model.NumeroOrdenExterno, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()" })
+                    @Html.ValidationMessageFor(model => model.NumeroOrdenExterno)
+                </div>
+            </div>
+            <div class="control">
+                @Html.LabelFor(model => model.PatenteAcoplado, new { @class = "control-label small margin10" })
+                <div class="">
+                    @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
+                    @Html.ValidationMessageFor(model => model.PatenteAcoplado)
+                </div>
+            </div>
             <div class="control">
                 <label class="control-label small margin10" for="Cliente">@(Model.DerivadoGranarioHabilitado ? "Destino" : "Cliente")</label>
                 <div class="">
@@ -142,20 +156,6 @@
                 <div class="">
                     @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new { @class = "control ", autocomplete = "off" })
                     @Html.ValidationMessageFor(model => model.TipoVehiculo)
-                </div>
-            </div>
-            <div class="control">
-                @Html.LabelFor(model => model.PatenteCamion, new { @class = "control-label small margin10" })
-                <div class="">
-                    @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right", @onfocusout = "obtenerOrdenDeCargaOperacionesPorPatente()" })
-                    @Html.ValidationMessageFor(model => model.PatenteCamion)
-                </div>
-            </div>
-            <div class="control">
-                @Html.LabelFor(model => model.PatenteAcoplado, new { @class = "control-label small margin10" })
-                <div class="">
-                    @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
-                    @Html.ValidationMessageFor(model => model.PatenteAcoplado)
                 </div>
             </div>
             <div class="control">
@@ -242,9 +242,8 @@
                     <div class="control paddingRight">
                         @Html.LabelFor(model => model.Chofer.Cuil, new { @class = "control-label small margin10" })
                         <div class="">
-                            @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control  cuilValido", @disabled = "true", data_error_cuil_invalido = string.Format(Textos.CuitInvalido), data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Cuil" }) })
+                            @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control  cuilValido", data_error_cuil_invalido = string.Format(Textos.CuitInvalido), data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Cuil" }) })
                             @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control " })
-                            @Html.HiddenFor(model => model.Chofer.Cuil)
                             @Html.ValidationMessageFor(model => model.Chofer.Cuil)
                         </div>
                     </div>
@@ -280,13 +279,12 @@
                         <div class="">
                             @Html.TextBoxFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control  autocompletado-obligatorio", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Documento" }) })
                             @Html.ValidationMessageFor(model => model.Chofer.NumeroDeDocumento)
-                            @Html.HiddenFor(model => model.Chofer.NumeroDeDocumento)
                         </div>
                     </div>
                     <div class="control">
                         @Html.LabelFor(model => model.KmARecorrer, new { @class = "control-label small", style = "margin-left:9%" })
                         <div class="">
-                            @Html.TextBoxFor(model => model.KmARecorrer, new { @class = "control ", style = "margin-left:-0.5%", @disabled = "true" })
+                            @Html.TextBoxFor(model => model.KmARecorrer, new { @class = "control ", style = "margin-left:-0.5%" })
                             @Html.HiddenFor(model => model.KmARecorrer)
                             @Html.ValidationMessageFor(model => model.KmARecorrer)
                         </div>

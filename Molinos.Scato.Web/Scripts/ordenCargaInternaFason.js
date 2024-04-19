@@ -52,7 +52,7 @@ function manejarRespuestaExitosa(data) {
     }
 
     cachedOrdenDeCargaOperaciones = data.Data;
-    $("#NumeroOrdenExterno").append($("<option></option>").attr("value", "0").text("(Seleccionar)"));
+    $("#NumeroOrdenExterno").append($("<option></option>").attr("value", "0").text("(Ninguno)"));
 
     if (Array.isArray(data.Data)) {
         data.Data.forEach(function (value) {
@@ -213,6 +213,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#TipoYOrdenDestino").val(null);
     $("#PagadorFlete").val(null);
     $("#Corredor").val(null);
+    $("#localidadDestinoDropdown").empty();
 }
 
 function convertirCuil(cuil) {

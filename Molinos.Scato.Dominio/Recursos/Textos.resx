@@ -10496,7 +10496,7 @@
     <value>Volcadoras</value>
   </data>
   <data name="OrdenesFasonOperApiVarias" xml:space="preserve">
-    <value>Se encontró más de una orden de carga asociada a la patente, por favor seleccione una en Nº  Orden Operaciones.</value>
+    <value>Se encontró más de una orden de carga asociada a la patente, por favor seleccione una en Id Operaciones.</value>
   </data>
   <data name="PatenteNoEncontradaApiOpera" xml:space="preserve">
     <value>No se encontró ninguna Orden asociada a esta patente</value>
@@ -10544,6 +10544,6 @@
     <value>El automatismo tiene asociada un punto de carga desactivado</value>
   </data>
   <data name="OrdenCargaInterna_NumeroOperaciones" xml:space="preserve">
-    <value>Nº Orden Operaciones</value>
+    <value>Id Operaciones</value>
   </data>
 </root>
