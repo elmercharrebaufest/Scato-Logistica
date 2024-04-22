@@ -27,6 +27,7 @@
     <script>
     const textoVariasOrdenes = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Textos.OrdenesFasonOperApiVarias))';
     const patenteNoEncontrada = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Textos.PatenteNoEncontradaApiOpera))';
+    let hayError = '@Html.Raw(ViewBag.HasErrors)';
     </script>
 }
 <link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />

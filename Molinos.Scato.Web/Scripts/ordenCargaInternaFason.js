@@ -6,6 +6,8 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
 
+    if (hayError === "True") return;
+
     var patente = $("#PatenteCamion").val().toUpperCase();
     $("#NumeroOrdenExterno").empty();
     limpiarCamposOrdenDeCargaOperaciones();
