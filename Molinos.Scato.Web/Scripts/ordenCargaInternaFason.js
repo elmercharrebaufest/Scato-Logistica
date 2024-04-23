@@ -6,11 +6,9 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
 
-    if (hayError === "True") return;
-
     var patente = $("#PatenteCamion").val().toUpperCase();
     $("#NumeroOrdenExterno").empty();
-    limpiarCamposOrdenDeCargaOperaciones();
+    if (hayError !== "True") limpiarCamposOrdenDeCargaOperaciones();
 
     if (!regex1.test(patente) && !regex2.test(patente)) {
         ValidarDerivadoGranario()
@@ -61,9 +59,12 @@ function manejarRespuestaExitosa(data) {
             $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).text(value.Id.toString().padStart(8, '0')));
         });
 
-        if (data.Data.length === 1) {
+        var selectedValue = $("#NumeroOrdenExterno").data('selected-value');
+        if (data.Data.length === 1 && selectedValue !== undefined && selectedValue !== null) {
             $("#NumeroOrdenExterno").val(data.Data[0].Id);
             seleccionarOrdenDeCargaOperaciones();
+        } else if (selectedValue) {
+            $("#NumeroOrdenExterno").val(selectedValue);
         } else if (data.Data.length > 1) {
             MostrarAlertaAdvertencia(textoVariasOrdenes);
         }

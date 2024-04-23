@@ -390,7 +390,7 @@ namespace Molinos.Scato.Web.Controllers
             var destinatario = servicio.ObtenerClientePorCuit(orden?.CUITDestinatario);
             var intermediario = servicio.ObtenerClientePorCuit(orden?.CUITIntermediarioFlete);
 
-            orden.RazonSocialIntermediarioFlete = $"{orden?.CUITIntermediarioFlete} - {intermediario?.Descripcion}";
+            orden.RazonSocialIntermediarioFlete = $"{ConvertirCuil(orden?.CUITIntermediarioFlete)} - {intermediario?.Descripcion}";
             orden.RazonSocialDestinatario = $"{destinatario?.CodigoSap} - {destinatario?.Descripcion}";
 
             return orden; 
