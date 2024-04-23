@@ -2,6 +2,7 @@
 <parameters>
 	<setParameter name="IIS Web Application Name" value="Scato/Scato.web" />
 	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSQA.molinosagro.ad,1450;Initial Catalog=MOAScatoUAT;Integrated Security=True" />
+	<setParameter name="ScatoHangfireDb-Web.config Connection String" value="Data Source=SCATOHFAGLSUAT.molinosagro.ad;Initial Catalog=ScatoHanfireUAT;Integrated Security=True" />
 	<setParameter name="ServicioRepositorio Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioRepositorio.svc?wsdl" />
 	<setParameter name="ServicioComandos Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
 	<setParameter name="ListaDeWorkflows Service Endpoint Address" value="http://localhost/Scato.workflow/ListaDeWorkflows.svc?wsdl" />
