@@ -6,8 +6,10 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
 
+    if (hayError === "True") return;
+
     var patente = $("#PatenteCamion").val().toUpperCase();
-    $("#NumeroOrden").empty();
+    $("#NumeroOrdenExterno").empty();
     limpiarCamposOrdenDeCargaOperaciones();
 
     if (!regex1.test(patente) && !regex2.test(patente)) {
@@ -52,15 +54,15 @@ function manejarRespuestaExitosa(data) {
     }
 
     cachedOrdenDeCargaOperaciones = data.Data;
-    $("#NumeroOrden").append($("<option></option>").attr("value", "0").text("(Seleccionar)"));
+    $("#NumeroOrdenExterno").append($("<option></option>").attr("value", "0").text("(Ninguno)"));
 
     if (Array.isArray(data.Data)) {
         data.Data.forEach(function (value) {
-            $("#NumeroOrden").append($("<option></option>").attr("value", value.Id).text(value.Id.toString().padStart(8, '0')));
+            $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).text(value.Id.toString().padStart(8, '0')));
         });
 
         if (data.Data.length === 1) {
-            $("#NumeroOrden").val(data.Data[0].Id);
+            $("#NumeroOrdenExterno").val(data.Data[0].Id);
             seleccionarOrdenDeCargaOperaciones();
         } else if (data.Data.length > 1) {
             MostrarAlertaAdvertencia(textoVariasOrdenes);
@@ -78,7 +80,7 @@ function mostrarInfoAlerta() {
 
 
 function seleccionarOrdenDeCargaOperaciones() {
-    var ddlNumeroOrden = $("#NumeroOrden");
+    var ddlNumeroOrden = $("#NumeroOrdenExterno");
     var selectedElement = obtenerElementoSeleccionado(ddlNumeroOrden.val());
 
     if (!selectedElement) {
@@ -190,7 +192,7 @@ function rellenarCampos(data, selectedElement) {
 
 function limpiarCamposOrdenDeCargaOperaciones() {
     $("#PatenteAcoplado").val(null);
-    $("#NumeroOrden").val(null);
+    $("#NumeroOrdenExterno").val(null);
     $("#ClienteId").val(null);
     $("#Cliente").val(null);
     $("#TransportistaId").val(null);
@@ -213,6 +215,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#TipoYOrdenDestino").val(null);
     $("#PagadorFlete").val(null);
     $("#Corredor").val(null);
+    $("#localidadDestinoDropdown").empty();
 }
 
 function convertirCuil(cuil) {

@@ -3,21 +3,17 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
 using System;
-using System.Activities.Debugger;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -86,6 +82,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 SetearVista(workflowObje, datosUsuario.CentroId);
                 ViewBag.ErrorAfip = Textos.OrdenCarga_ErrorValidacion;
+                ViewBag.HasErrors = true;
                 return View(orden);
             }
 
@@ -110,6 +107,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
                 SetearVista(workflowObj, datosUsuario.CentroId);
+                ViewBag.HasErrors = true;
                 return View(orden);
             }
 
@@ -120,6 +118,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
                 SetearVista(workflowObj, datosUsuario.CentroId);
+                ViewBag.HasErrors = true;
                 return View(orden);
             }
 
@@ -160,6 +159,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     SetearVista(workflowObje, datosUsuario.CentroId);
                     ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
+                    ViewBag.HasErrors = true;
                     return View(orden);
                 }
 
@@ -174,6 +174,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     SetearVista(workflowObje, datosUsuario.CentroId);
                     ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
+                    ViewBag.HasErrors = true;
                     return View(orden);
                 }
             }
@@ -198,6 +199,7 @@ namespace Molinos.Scato.Web.Controllers
 
             ModelState.AgregarErrores(resultadoActividad);
             SetearVista(workflowObje, datosUsuario.CentroId);
+            ViewBag.HasErrors = true;
             return View(orden);
         }
 
@@ -222,6 +224,7 @@ namespace Molinos.Scato.Web.Controllers
             controller.ViewBag.TiposVehiculo = pesoMaximoPorTipoVehiculo.Where(x => x.TipoVehiculo != TipoVehiculo.Tren).ToSelectList(f => ((int)f.TipoVehiculo).ToString(), f => f.TipoVehiculo.DisplayText());
             controller.ViewBag.WorkflowId = workflow.Id;
             controller.ViewBag.MaterialesDerivadoGranario = materiales.Where(x => x.EsDerivadoGranario).Select(x => x.MaterialId).ToList();
+
         }
 
         protected static string MascaraCuit(string entrada)
@@ -337,14 +340,17 @@ namespace Molinos.Scato.Web.Controllers
 
             var response = new RespuestaEstandarDto<OrdenDeCargaComplementariaDto>();
             var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
+            var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
             var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
-            var orden = resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId));
+            var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
+           
+
             var choferCuil = ConvertirCuil(orden.CUILChofer);
             var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
-            var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
-            var destinatarioDescrip = servicio.ObtenerClientePorCuit(destinatarioCuit);
 
-            var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
+            var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
+            var destinatarioDescrip = servicio.ObtenerClientePorCuit(string.IsNullOrEmpty(destinatarioCuit) ? "" : destinatarioCuit);
+
             var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
 
             var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
@@ -353,9 +359,6 @@ namespace Molinos.Scato.Web.Controllers
 
             if (transportista == null)
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Transportista para el cuit {transportistaCUIT}, Debe generarse en >Administración/Datos Generales/Transportistas", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-
-            if (chofer == null)
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El chofer con cuil {choferCuil} no existe. Debe generarse en >Administración/Datos Generales/Choferes", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
             if (material == null)
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No existe material con el codigo de SAP {materialSAP}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
@@ -368,9 +371,9 @@ namespace Molinos.Scato.Web.Controllers
                 var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
                 {
                     ClienteId = cliente?.Id,
-                    ClienteDescripcion = cliente?.Descripcion,
+                    ClienteDescripcion = $"{cliente?.CodigoSap} - {cliente?.Descripcion}",
                     TransportistaId = transportista?.Id,
-                    TransportistaDescripcion = transportista?.Descripcion,
+                    TransportistaDescripcion = $"{transportistaCUIT} - {transportista?.Descripcion}",
                     TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
                     MaterialId = material.Id,
                     EsDerivadoGranario = material.EsDerivadoGranario,
@@ -380,6 +383,17 @@ namespace Molinos.Scato.Web.Controllers
                 response.Data = ordenDeCargaComplementario;
             }
             return Json(response, JsonRequestBehavior.AllowGet);
+        }
+
+        private OrdenDeCargaDto ajustarOrdenFormatoRequerido(OrdenDeCargaDto orden)
+        {
+            var destinatario = servicio.ObtenerClientePorCuit(orden?.CUITDestinatario);
+            var intermediario = servicio.ObtenerClientePorCuit(orden?.CUITIntermediarioFlete);
+
+            orden.RazonSocialIntermediarioFlete = $"{orden?.CUITIntermediarioFlete} - {intermediario?.Descripcion}";
+            orden.RazonSocialDestinatario = $"{destinatario?.CodigoSap} - {destinatario?.Descripcion}";
+
+            return orden; 
         }
 
         public JsonResult CachearOrdenesDeCargaOperaciones()

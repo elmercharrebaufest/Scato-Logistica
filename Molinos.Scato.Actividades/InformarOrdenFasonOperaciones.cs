@@ -1,8 +1,11 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Procesamiento;
 using System;
 using System.Activities;
+using System.Linq;
 
 namespace Molinos.Scato.Actividades
 {
@@ -34,35 +37,97 @@ namespace Molinos.Scato.Actividades
                     }
                 });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                servicio.Ejecutar(new CrearControlRecorrido
+                {
+                    Dto = new ControlRecorridoDto
+                    {
+                        Actividad = "InformarOrdenFasonOperaciones",
+                        Fecha = DateTime.Now,
+                        Comentario = ex.Message,
+                        NombreUsuario = "",
+                        WorkflowInstanceId = context.WorkflowInstanceId,
+                    }
+                });
             }
 
-            if (!string.IsNullOrEmpty(ordenFasonId)) {
-                try
+            if (string.IsNullOrEmpty(ordenFasonId))
+            {
+                servicio.Ejecutar(new CrearControlRecorrido
                 {
-                    var respuesta = servicio.Ejecutar(new InformarViajeOrdenFason
+                    Dto = new ControlRecorridoDto
                     {
-                        Dto = new IngresosEgresosFasonesDto
+                        Actividad = "InformarOrdenFasonOperaciones",
+                        Fecha = DateTime.Now,
+                        Comentario = "No se encontró orden de operaciones",
+                        NombreUsuario = "",
+                        WorkflowInstanceId = context.WorkflowInstanceId,
+                    }
+                });
+                return;
+            }     
+            
+            try
+            {
+                var respuesta = servicio.Ejecutar(new InformarViajeOrdenFason
+                {
+                    Dto = new IngresosEgresosFasonesDto
+                    {
+                        FasonId = Convert.ToInt32(ordenFasonId),
+                        PesadaNeto = recorrido.PesoNeto ?? 0,
+                        PesadaTara = recorrido.PesoTara ?? 0,
+                        FechaIngreso = Convert.ToString(recorrido.FechaInicio),
+                        FechaEgreso = Convert.ToString(recorrido.FechaEgreso),
+                        UniMedCant = "Kilogramos",
+                        NroRemito = cartaDePorte.NroCTG
+                    }
+                });
+
+                if (respuesta.HayErrores)
+                {
+                    servicio.Ejecutar(new CrearControlRecorrido
+                    {
+                        Dto = new ControlRecorridoDto
                         {
-                            FasonId = Convert.ToInt32(ordenFasonId),
-                            PesadaNeto = recorrido.PesoNeto ?? 0,
-                            PesadaTara = recorrido.PesoTara ?? 0,
-                            FechaIngreso = Convert.ToString(recorrido.FechaInicio),
-                            FechaEgreso = Convert.ToString(recorrido.FechaEgreso),
-                            UniMedCant = "Kilogramos",
-                            NroRemito = cartaDePorte.NroCTG
+                            Actividad = "InformarOrdenFasonOperaciones",
+                            Fecha = DateTime.Now,
+                            Comentario = respuesta.Errores.Values.First(),
+                            NombreUsuario = "",
+                            WorkflowInstanceId = context.WorkflowInstanceId,
                         }
                     });
+                    return;
                 }
-                catch (Exception)
+
+                servicio.Ejecutar(new CrearControlRecorrido
                 {
-                    throw;
-                }
+                    Dto = new ControlRecorridoDto
+                    {
+                        Actividad = "InformarOrdenFasonOperaciones",
+                        Fecha = DateTime.Now,
+                        Comentario = "Llamada exitosa",
+                        NombreUsuario = "",
+                        WorkflowInstanceId = context.WorkflowInstanceId,
+
+                    }
+                });
+
             }
-
-           
-
+            catch (Exception ex)
+            {
+                servicio.Ejecutar(new CrearControlRecorrido
+                {
+                    Dto = new ControlRecorridoDto
+                    {
+                        Actividad = "InformarOrdenFasonOperaciones",
+                        Fecha = DateTime.Now,
+                        Comentario = ex.Message,
+                        NombreUsuario = "",
+                        WorkflowInstanceId = context.WorkflowInstanceId,
+                    }
+                });
+            }
 
         }
     }
