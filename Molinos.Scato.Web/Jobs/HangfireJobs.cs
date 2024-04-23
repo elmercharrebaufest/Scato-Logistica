@@ -6,6 +6,7 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Filtros;
 using Owin;
 using System;
+using System.Configuration;
 
 namespace Molinos.Scato.Web.Jobs
 {
@@ -31,8 +32,8 @@ namespace Molinos.Scato.Web.Jobs
             {
                 Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
             };
-            // Agregar configuracion por web config y sus transformaciones por ambiente
-            GlobalConfiguration.Configuration.UseSqlServerStorage(@"Server=.\sqlexpress; Database=ScatoHangfire; Integrated Security=SSPI;", options);
+
+            GlobalConfiguration.Configuration.UseSqlServerStorage(ConfigurationManager.ConnectionStrings["ScatoHangfireDb"].ConnectionString, options);
             GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
             
             app.UseHangfireDashboard("/hangfire", dashboarOptions);
