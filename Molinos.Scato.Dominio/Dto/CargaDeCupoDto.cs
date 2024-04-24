@@ -76,6 +76,5 @@ namespace Molinos.Scato.Dominio.Dto
         public string PatenteAcoplado { get; set; }
         public string FotoRutaSustentable { get; set; }
         public bool IngresoAvanceCPEAutomatico { get; set; }
-        public string FleteMOA { get; set; }
     }
 }

@@ -3,7 +3,6 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
@@ -15,9 +14,7 @@ using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
-using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -25,7 +22,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -229,13 +225,10 @@ namespace Molinos.Scato.Web.Controllers
                         return View("Form", model);
                     }
                 }
-
-                var FleteMOA = nombreDeWorkflowDesdeOperaciones(string.IsNullOrEmpty(model.Patente) ? "123456" : model.Patente);
            
                 model.Fecha = DateTime.Now;
                 model.CentroId = datosUsuario.CentroId;
                 model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
-                model.FleteMOA = FleteMOA?.ToString() ?? "";
                 var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupoNoGrano { Dto = model }) as ResultadoCrear;
 
                 if (resultado.HayErrores)
@@ -257,7 +250,7 @@ namespace Molinos.Scato.Web.Controllers
                     }
                     if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
                     {
-                        //MostrarPorCartel(datosUsuario.NombrePc, "Mesa FAS", datosUsuario.CentroId, model.Patente);
+                        MostrarPorCartel(datosUsuario.NombrePc, "Mesa FAS", datosUsuario.CentroId, model.Patente);
                         ViewBag.EsCircuitoNoGranosSinMaterial = true;
                     }
                     if (model.ImprimeTarjetaDeAcceso)
@@ -282,27 +275,6 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
             return View("Form", model);
-        }
-
-        private bool? nombreDeWorkflowDesdeOperaciones(string patente)
-        {
-            try
-            {
-                var ordenesDeCarga = servicioOperaciones.ObtenerOrdenesDeCarga(patente).ToList();
-
-                if (ordenesDeCarga.Any())
-                {
-                    return ordenesDeCarga[0].FleteMOA;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
         }
 
         private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false)
@@ -1515,17 +1487,5 @@ namespace Molinos.Scato.Web.Controllers
             return tipoComercialId;
         }
 
-        private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente = null)
-        {
-            try
-            {
-                IEnumerable<OrdenDeCargaDto> data = servicioOperaciones.ObtenerOrdenesDeCarga(patente);
-                return data.ToList();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
     }
 }
