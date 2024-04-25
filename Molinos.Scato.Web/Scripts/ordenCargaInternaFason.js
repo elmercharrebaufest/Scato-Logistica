@@ -113,13 +113,17 @@ function obtenerElementoSeleccionado(id) {
 }
 
 function obtenerDatosAjax(selectedElement) {
+    let url = window.location.search;
+    let urlParams = new URLSearchParams(url);
+    let workflowId = urlParams.get("workflow");
     return {
         clienteCUIT: selectedElement.CUITCliente,
         transportistaCUIT: selectedElement.CUITTransporte,
         patente: selectedElement.PatenteChasis,
         acoplado: selectedElement.PatenteAcoplado,
         materialSAP: selectedElement.CodigoProducto,
-        ordenId: selectedElement.Id
+        ordenId: selectedElement.Id,
+        workflow: workflowId
     };
 }
 
