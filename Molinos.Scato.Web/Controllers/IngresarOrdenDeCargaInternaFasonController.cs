@@ -284,13 +284,14 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerOrdenDeCargaOperacionesPorPatente(string patente, DatosUsuario datosUsuario)
+        public JsonResult ObtenerOrdenDeCargaOperacionesPorPatente(string patente, string workflow, DatosUsuario datosUsuario)
         {
             var response = new RespuestaEstandarDto<List<OrdenDeCargaDto>>();
+            bool fleteMoa = workflow == "SLO.EgresoClienteFason";
 
             try
             {
-                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
+                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente).Where(x => x.FleteMOA == fleteMoa).ToList();
 
                 if (restResponse != null)
                 {
@@ -321,11 +322,10 @@ namespace Molinos.Scato.Web.Controllers
         }
         
         [DatosUsuario]
-        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId, string workflow, DatosUsuario datosUsuario)
+        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId, DatosUsuario datosUsuario)
         {
             clienteCUIT = ConvertirCuil(clienteCUIT);
             transportistaCUIT = ConvertirCuil(transportistaCUIT);
-            bool fleteMoa = workflow == "SLO.EgresoClienteFason"; 
             var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
             {
                 Centro = servicio.ObtenerCentro(datosUsuario.CentroId).CodigoSAP,
@@ -342,7 +342,7 @@ namespace Molinos.Scato.Web.Controllers
             var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
             var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
             var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
-            var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId) && x.FleteMOA == fleteMoa));
+            var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
            
 
             var choferCuil = ConvertirCuil(orden.CUILChofer);
@@ -388,9 +388,9 @@ namespace Molinos.Scato.Web.Controllers
         private OrdenDeCargaDto ajustarOrdenFormatoRequerido(OrdenDeCargaDto orden)
         {
             var destinatario = servicio.ObtenerClientePorCuit(orden?.CUITDestinatario);
-            var intermediario = servicio.ObtenerClientePorCuit(orden?.CUITIntermediarioFlete);
+            var intermediario = servicio.ObtenerTransportistaPorCuit(orden?.CUITIntermediarioFlete);
 
-            orden.RazonSocialIntermediarioFlete = $"{ConvertirCuil(orden?.CUITIntermediarioFlete)} - {intermediario?.Descripcion}";
+            orden.RazonSocialIntermediarioFlete = $"{ConvertirCuil(orden?.CUITIntermediarioFlete)} - {intermediario?.RazonSocial}";
             orden.RazonSocialDestinatario = $"{destinatario?.CodigoSap} - {destinatario?.Descripcion}";
 
             return orden; 

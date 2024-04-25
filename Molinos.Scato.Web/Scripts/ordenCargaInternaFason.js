@@ -5,6 +5,9 @@ var $selectOption ;
 function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
+    let url = window.location.search;
+    let urlParams = new URLSearchParams(url);
+    let workflowId = urlParams.get("workflow");
 
     var patente = $("#PatenteCamion").val().toUpperCase();
     $("#NumeroOrdenExterno").empty();
@@ -19,7 +22,7 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     $.ajax({
         url: $('#links').data().urlObtenerOrdenDeCargaOperacionesPorPatente,
         dataType: 'json',
-        data: { patente: patente },
+        data: { patente: patente, workflow: workflowId },
         type: "GET",
         success: function (data) {
             manejarRespuestaExitosa(data);
@@ -113,17 +116,13 @@ function obtenerElementoSeleccionado(id) {
 }
 
 function obtenerDatosAjax(selectedElement) {
-    let url = window.location.search;
-    let urlParams = new URLSearchParams(url);
-    let workflowId = urlParams.get("workflow");
     return {
         clienteCUIT: selectedElement.CUITCliente,
         transportistaCUIT: selectedElement.CUITTransporte,
         patente: selectedElement.PatenteChasis,
         acoplado: selectedElement.PatenteAcoplado,
         materialSAP: selectedElement.CodigoProducto,
-        ordenId: selectedElement.Id,
-        workflow: workflowId
+        ordenId: selectedElement.Id
     };
 }
 
