@@ -387,12 +387,13 @@ namespace Molinos.Scato.Web.Controllers
 
         private OrdenDeCargaDto ajustarOrdenFormatoRequerido(OrdenDeCargaDto orden)
         {
-            var destinatario = servicio.ObtenerClientePorCuit(orden?.CUITDestinatario);
-            var intermediario = servicio.ObtenerTransportistaPorCuit(orden?.CUITIntermediarioFlete);
+            var destinatario = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestinatario));
+            var intermediario = servicio.ObtenerTransportistaPorCuit(ConvertirCuil(orden?.CUITIntermediarioFlete));
+            var destino = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestino));
 
             orden.RazonSocialIntermediarioFlete = $"{ConvertirCuil(orden?.CUITIntermediarioFlete)} - {intermediario?.RazonSocial}";
             orden.RazonSocialDestinatario = $"{destinatario?.CodigoSap} - {destinatario?.Descripcion}";
-
+            orden.RazonSocialDestino = $"{destino?.CodigoSap} - {destino?.Descripcion}";
             return orden; 
         }
 

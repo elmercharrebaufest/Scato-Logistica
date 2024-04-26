@@ -139,6 +139,7 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
     rellenarCampos(data, selectedElement);
 }
 
+
 function rellenarCampos(data, selectedElement) {
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`;
 
@@ -157,6 +158,8 @@ function rellenarCampos(data, selectedElement) {
     $("#IntermediarioFleteId").val(data.Data.Orden.CUITIntermediarioFlete);
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
+    $("#DestinoGranario").val(data.Data.Orden.RazonSocialDestino);
+
 
     //$("#PlantaDGDestino").val(data.Data.Orden.PlantaDGDestino);
     //$("#PlantaSeleccionada").val(data.Data.Orden.PlantaDGDestino);
@@ -181,7 +184,16 @@ function rellenarCampos(data, selectedElement) {
     select.appendChild(option);
        
     let $element = $("#Chofer_Cuil");
+    let $element1 = $("#Cliente");
+    let $element2 = $("#Destinatario");
+    let $element3 = $("#Transportista");
+    let $element4 = $("#IntermediarioFlete");
+
     $element.trigger('focusout');
+    $element1.trigger('focusout');
+    $element2.trigger('focusout');
+    $element3.trigger('focusout');
+    $element4.trigger('focusout');
     ValidarDerivadoGranario();
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
