@@ -8,7 +8,6 @@ using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Models;
-using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -16,13 +15,11 @@ namespace Molinos.Scato.Web.Controllers
     public class PasoPorBalanzaController : BaseController
     {
         private readonly IServicioActividadFactory<IEjecutarService> factory;
-        private readonly ILogger log;
 
-        public PasoPorBalanzaController(ILogger log, IServicioActividadFactory<IEjecutarService> factory, IServicioRepositorio servicio)
+        public PasoPorBalanzaController(IServicioActividadFactory<IEjecutarService> factory, IServicioRepositorio servicio)
             : base(servicio)
         {
             this.factory = factory;
-            this.log = log;
         }
 
         [DatosUsuario]
@@ -32,7 +29,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 WorkflowInstanceId = id,
                 NombreUsuario = datosUsuario.NombreUsuario,
-                Actividad = Textos.ActSalidaDeCentro,
+                Actividad = Textos.ActPasoPorBalanza,
                 ActividadXaml = "PasoPorBalanza",
                 Decision = true,
                 PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId
