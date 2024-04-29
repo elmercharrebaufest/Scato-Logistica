@@ -535,6 +535,7 @@ function ValidarDerivadoGranario() {
         $('#DerivadoGranarioHabilitado').val('true')
         $('.derivadoGranario').removeClass('hidden');
         $("label[for='Cliente']").text('Destino');
+        $("#Cliente").val($("#DestinoGranario").val());
         CargarPlantas();
         CargarDomicilios();
     } else {

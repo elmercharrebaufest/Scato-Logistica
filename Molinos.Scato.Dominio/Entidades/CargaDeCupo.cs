@@ -50,6 +50,5 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string FotoRutaSustentable { get; set; }
         public bool EnProgresoAutomatico { get; set; }
         public bool IngresoAvanceCPEAutomatico { get; set; }
-        public string FleteMOA { get; set; }
     }
 }

@@ -284,13 +284,14 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerOrdenDeCargaOperacionesPorPatente(string patente, DatosUsuario datosUsuario)
+        public JsonResult ObtenerOrdenDeCargaOperacionesPorPatente(string patente, string workflow, DatosUsuario datosUsuario)
         {
             var response = new RespuestaEstandarDto<List<OrdenDeCargaDto>>();
+            bool fleteMoa = workflow == "SLO.EgresoClienteFason";
 
             try
             {
-                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
+                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente).Where(x => x.FleteMOA == fleteMoa).ToList();
 
                 if (restResponse != null)
                 {
@@ -325,7 +326,6 @@ namespace Molinos.Scato.Web.Controllers
         {
             clienteCUIT = ConvertirCuil(clienteCUIT);
             transportistaCUIT = ConvertirCuil(transportistaCUIT);
-
             var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
             {
                 Centro = servicio.ObtenerCentro(datosUsuario.CentroId).CodigoSAP,
@@ -387,12 +387,13 @@ namespace Molinos.Scato.Web.Controllers
 
         private OrdenDeCargaDto ajustarOrdenFormatoRequerido(OrdenDeCargaDto orden)
         {
-            var destinatario = servicio.ObtenerClientePorCuit(orden?.CUITDestinatario);
-            var intermediario = servicio.ObtenerClientePorCuit(orden?.CUITIntermediarioFlete);
+            var destinatario = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestinatario));
+            var intermediario = servicio.ObtenerTransportistaPorCuit(ConvertirCuil(orden?.CUITIntermediarioFlete));
+            var destino = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestino));
 
-            orden.RazonSocialIntermediarioFlete = $"{ConvertirCuil(orden?.CUITIntermediarioFlete)} - {intermediario?.Descripcion}";
+            orden.RazonSocialIntermediarioFlete = $"{ConvertirCuil(orden?.CUITIntermediarioFlete)} - {intermediario?.RazonSocial}";
             orden.RazonSocialDestinatario = $"{destinatario?.CodigoSap} - {destinatario?.Descripcion}";
-
+            orden.RazonSocialDestino = $"{destino?.CodigoSap} - {destino?.Descripcion}";
             return orden; 
         }
 

@@ -5,6 +5,9 @@ var $selectOption ;
 function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
+    let url = window.location.search;
+    let urlParams = new URLSearchParams(url);
+    let workflowId = urlParams.get("workflow");
 
     var patente = $("#PatenteCamion").val().toUpperCase();
     $("#NumeroOrdenExterno").empty();
@@ -19,7 +22,7 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     $.ajax({
         url: $('#links').data().urlObtenerOrdenDeCargaOperacionesPorPatente,
         dataType: 'json',
-        data: { patente: patente },
+        data: { patente: patente, workflow: workflowId },
         type: "GET",
         success: function (data) {
             manejarRespuestaExitosa(data);
@@ -136,6 +139,7 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
     rellenarCampos(data, selectedElement);
 }
 
+
 function rellenarCampos(data, selectedElement) {
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`;
 
@@ -154,6 +158,8 @@ function rellenarCampos(data, selectedElement) {
     $("#IntermediarioFleteId").val(data.Data.Orden.CUITIntermediarioFlete);
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
+    $("#DestinoGranario").val(data.Data.Orden.RazonSocialDestino);
+
 
     //$("#PlantaDGDestino").val(data.Data.Orden.PlantaDGDestino);
     //$("#PlantaSeleccionada").val(data.Data.Orden.PlantaDGDestino);
@@ -178,7 +184,16 @@ function rellenarCampos(data, selectedElement) {
     select.appendChild(option);
        
     let $element = $("#Chofer_Cuil");
+    let $element1 = $("#Cliente");
+    let $element2 = $("#Destinatario");
+    let $element3 = $("#Transportista");
+    let $element4 = $("#IntermediarioFlete");
+
     $element.trigger('focusout');
+    $element1.trigger('focusout');
+    $element2.trigger('focusout');
+    $element3.trigger('focusout');
+    $element4.trigger('focusout');
     ValidarDerivadoGranario();
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
