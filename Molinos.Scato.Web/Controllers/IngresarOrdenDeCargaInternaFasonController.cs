@@ -340,7 +340,7 @@ namespace Molinos.Scato.Web.Controllers
 
             var response = new RespuestaEstandarDto<OrdenDeCargaComplementariaDto>();
             var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
-            var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
+            var transportista = servicio.ObtenerTransportistaPorCuit(transportistaCUIT);
             var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
             var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
            
