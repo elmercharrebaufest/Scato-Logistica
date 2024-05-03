@@ -373,7 +373,7 @@ namespace Molinos.Scato.Web.Controllers
                     ClienteId = cliente?.Id,
                     ClienteDescripcion = $"{cliente?.CodigoSap} - {cliente?.Descripcion}",
                     TransportistaId = transportista?.Id,
-                    TransportistaDescripcion = $"{transportistaCUIT} - {transportista?.Descripcion}",
+                    TransportistaDescripcion = $"{transportistaCUIT} - {transportista?.RazonSocial}",
                     TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
                     MaterialId = material.Id,
                     EsDerivadoGranario = material.EsDerivadoGranario,
