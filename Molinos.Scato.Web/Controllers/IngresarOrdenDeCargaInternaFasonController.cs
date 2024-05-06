@@ -291,7 +291,7 @@ namespace Molinos.Scato.Web.Controllers
 
             try
             {
-                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente).Where(x => x.FleteMOA == fleteMoa).ToList();
+                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
 
                 if (restResponse != null)
                 {
