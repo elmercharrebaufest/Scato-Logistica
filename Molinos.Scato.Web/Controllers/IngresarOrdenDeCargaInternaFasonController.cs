@@ -340,7 +340,7 @@ namespace Molinos.Scato.Web.Controllers
 
             var response = new RespuestaEstandarDto<OrdenDeCargaComplementariaDto>();
             var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
-            var transportista = servicio.ObtenerTransportistaPorCuit(transportistaCUIT);
+            var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
             var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
             var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
            
@@ -358,7 +358,7 @@ namespace Molinos.Scato.Web.Controllers
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Cliente para el cuit {clienteCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
             if (transportista == null)
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Transportista para el cuit {transportistaCUIT}, Debe generarse en >Administración/Datos Generales/Transportistas", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Transportista para el cuit {transportistaCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
             if (material == null)
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No existe material con el codigo de SAP {materialSAP}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
@@ -388,12 +388,12 @@ namespace Molinos.Scato.Web.Controllers
         private OrdenDeCargaDto ajustarOrdenFormatoRequerido(OrdenDeCargaDto orden)
         {
             var destinatario = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestinatario));
-            var intermediario = servicio.ObtenerTransportistaPorCuit(ConvertirCuil(orden?.CUITIntermediarioFlete));
+            var intermediario = servicio.ObtenerProveedorPorCuit(ConvertirCuil(orden?.CUITIntermediarioFlete), new TiposProveedor { PR = true });
             var destino = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestino));
 
-            orden.RazonSocialIntermediarioFlete = $"{ConvertirCuil(orden?.CUITIntermediarioFlete)} - {intermediario?.RazonSocial}";
-            orden.RazonSocialDestinatario = $"{destinatario?.CodigoSap} - {destinatario?.Descripcion}";
-            orden.RazonSocialDestino = $"{destino?.CodigoSap} - {destino?.Descripcion}";
+            orden.RazonSocialIntermediarioFlete = $"{(ConvertirCuil(orden?.CUITIntermediarioFlete) != null ? ConvertirCuil(orden?.CUITIntermediarioFlete) : "")}{(ConvertirCuil(orden?.CUITIntermediarioFlete) != null && intermediario?.RazonSocial != null ? $" - {intermediario?.RazonSocial}" : "")}";
+            orden.RazonSocialDestinatario = $"{(destinatario?.CodigoSap != null ? destinatario?.CodigoSap : "")}{(destinatario?.CodigoSap != null && destinatario?.Descripcion != null ? $" - {destinatario?.Descripcion}" : "")}";
+            orden.RazonSocialDestino = $"{(destino?.CodigoSap != null ? destino?.CodigoSap : "")}{(destino?.CodigoSap != null &&  destino?.Descripcion != null ? $" - {destino?.Descripcion}" : "")}";
             return orden; 
         }
 
