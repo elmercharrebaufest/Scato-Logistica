@@ -48,15 +48,16 @@ namespace Molinos.Scato.Actividades.Internas
             var usuario = Usuario.Get<string>(context);
             var workflowDefinicionId = WorkflowDefinicionId.Get<int>(context);
             var resultado = new ResultadoCrearWorkflow();
-            resultado.InstanciaWorkflowId = InstanciaWorkflowId.Get(context);
+            resultado.InstanciaWorkflowId = instanciaWorkflow;
 
             try
             {
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var srvRepositorio = context.GetExtension<IServicioRepositorio>();
 
-                var cupo = srvRepositorio.ObtenerCargaDeCupoPorCTG(orden.NroCartaPorte);
-                var tipoMaterialPorVariedad = cupo != null ? srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, esSustentable: cupo.Especial) : null;
+                var esCupoEspecial = srvRepositorio.ObtenerCargaDeCupoPorCTG(orden.NroCartaPorte)?.Especial;
+                var titularCartaPorteCodigoSap = srvRepositorio.ObtenerProveedor(orden.TitularCartaPorteId)?.CodigoSap;
+                var tipoMaterialPorVariedad = srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, titularCartaPorteCodigoSap, esSustentable: esCupoEspecial.GetValueOrDefault());
                 var resultadoCartaPorte = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte
                 {
                     Orden = orden,

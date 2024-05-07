@@ -1,9 +1,12 @@
 ﻿using Hangfire;
+using Hangfire.SqlServer;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Filtros;
 using Owin;
+using System;
+using System.Configuration;
 
 namespace Molinos.Scato.Web.Jobs
 {
@@ -19,10 +22,20 @@ namespace Molinos.Scato.Web.Jobs
 
         private void Configurar(IAppBuilder app)
         {
+            var options = new SqlServerStorageOptions
+            {
+                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                QueuePollInterval = TimeSpan.Zero
+            };
+
             var dashboarOptions = new DashboardOptions
             {
                 Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
             };
+
+            GlobalConfiguration.Configuration.UseSqlServerStorage(ConfigurationManager.ConnectionStrings["ScatoHangfireDb"].ConnectionString, options);
+            GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
+            
             app.UseHangfireDashboard("/hangfire", dashboarOptions);
             app.UseHangfireServer();
         }

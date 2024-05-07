@@ -1,7 +1,6 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Orquestador;
@@ -153,7 +152,6 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarLlamadoPor1A1(CalleDto callePH)
         {
-
             if (!repositorio.ValidarEspacioDisponibleEnCallePreHidraulica(callePH.Id))
                 return;
 
@@ -162,7 +160,6 @@ namespace Molinos.Scato.Servicios.Impl
                 .Where(x => x.Activo && x.CallePreHidraulicaId == callePH.Id)
                 .Select(c => c.CallePreBalanzaId)
                 .ToList();
-            
 
             var recorridoALlamar = repositorio.ObtenerPrimerRecorridosDisponibleParaLlamadoAutomaticoGranos(callesPBConAutomatismo);
 
@@ -172,14 +169,11 @@ namespace Molinos.Scato.Servicios.Impl
 
                 var camionEnEspera = repositorio.ObtenerCamionEnEsperaLlamadoGranos(recorridoALlamar.CalleId);
 
-                
-
                 if (camionEnEspera != null)
                 {
                     LlamarCamionPreBalanza(callePH.Id, camionEnEspera, esCamionEnEspera: true);
                 }
             }
-                
         }
 
         private void LlamarCamionPreBalanza(int callePHId, CallePorRecorridoDto camion, bool esCamionEnEspera)
@@ -323,7 +317,6 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void LlamarAutomaticoNoGranos()
         {
-
             //validar activo general de automatismo
             var configuracionGeneral = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto, Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
             if (configuracionGeneral == null
@@ -332,7 +325,6 @@ namespace Molinos.Scato.Servicios.Impl
                 || !automatismoGranoGeneral)
             {
                 this.log.Info(string.Format("El automatismo está desactivado"));
-
                 return;
             }
 
@@ -340,21 +332,16 @@ namespace Molinos.Scato.Servicios.Impl
 
             var automatismosNoGranos = repositorio.ListarAutomatismoNoGrano();
 
-            
-
             foreach (var recorrido in recorridos)
             {
-                
                 var cartelLed = repositorio.ObtenerCartelDisponible(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
 
                 if (cartelLed == null)
-                {
-                    break;                    
-                }
+                    break;
 
-                var asignacionNoGranoEnRecorrido = repositorio.ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(recorrido.Id); 
+                var asignacionNoGranoEnRecorrido = repositorio.ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(recorrido.Id);
 
-                if(asignacionNoGranoEnRecorrido == null)
+                if (asignacionNoGranoEnRecorrido == null)
                 {
                     this.log.Info(string.Format("no se encontro el recorrido {0} en la tabla asignacionNoGranoEnRecorrido, por lo que no se pudo obtener su calle planta", recorrido.Id));
                     continue;
@@ -362,7 +349,7 @@ namespace Molinos.Scato.Servicios.Impl
 
                 var hayAutomatismoParaLlamado = automatismosNoGranos.Exists(x => x.ActivoLlamado && x.CallePlantaId == asignacionNoGranoEnRecorrido.CallePlantaId);
 
-                if(!hayAutomatismoParaLlamado )
+                if (!hayAutomatismoParaLlamado)
                 {
                     this.log.Info(string.Format("no hay un automatismo con llamado activo para el recorrido {0} que tiene callePlantaId {1}", recorrido.Id, asignacionNoGranoEnRecorrido.CallePlantaId));
                     continue;

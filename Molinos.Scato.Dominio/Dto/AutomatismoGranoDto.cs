@@ -10,6 +10,7 @@ namespace Molinos.Scato.Dominio.Dto
         public AutomatismoGranoDto()
         {
             Hidraulicas = new List<int>();
+            TipoVariedades = new List<int>();
         }
 
         public int Id { get; set; }
@@ -17,9 +18,6 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Material")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int MaterialId { get; set; }
-
-        [Display(ResourceType = typeof(Textos), Name = "Variedad")]
-        public int? TipoVariedadId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CallePreBalanza")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
@@ -57,8 +55,12 @@ namespace Molinos.Scato.Dominio.Dto
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public List<int> Hidraulicas { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "Variedad")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
+        public List<int> TipoVariedades { get; set; }
+
         public string MaterialDescripcion { get; set; }
-        public string VariedadDescripcion { get; set; }
+        public string TipoVariedadDescripcion { get; set; }
         public string CallePBDescripcion { get; set; }
         public string CallePHDescripcion { get; set; }
         public string CallePHTipoLlamadoDescripcion { get; set; }

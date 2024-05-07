@@ -267,7 +267,6 @@
     <Compile Include="Actividades\LeerToleranciaRechazoTest.cs" />
     <Compile Include="Actividades\LeerPesoMaximoTest.cs" />
     <Compile Include="Actividades\InicializarCaladoTest.cs" />
-    <Compile Include="Actividades\IngresoDeCartaPorteRedespachoTest.cs" />
     <Compile Include="Actividades\IngresarTransportistaOrdenCargaFasTest.cs" />
     <Compile Include="Actividades\IngresarTransportistaOrdenDeDescargaFasonTest.cs" />
     <Compile Include="Actividades\IngresarTransportistaOrdenDeDescargaTest.cs" />

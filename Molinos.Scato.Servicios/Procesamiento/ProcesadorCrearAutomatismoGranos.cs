@@ -34,12 +34,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 MaterialId = comando.Dto.MaterialId,
                 Maximo = comando.Dto.Maximo,
                 Minimo = comando.Dto.Minimo,
-                TipoVariedadId = comando.Dto.TipoVariedadId,
                 Almacen = Repositorio.Obtener<Almacen>(c => c.Id == comando.Dto.AlmacenId),
                 Calidad = Repositorio.Obtener<CaracteristicaDeCalidad>(c => c.Id == 1),
                 CallePreBalanza = callePrebalanza,
                 CallePreHidraulica = Repositorio.Obtener<Calle>(c => c.Id == comando.Dto.CallePreHidraulicaId),
-                TipoVariedad = Repositorio.Obtener<TipoVariedad>(c => c.Id == comando.Dto.TipoVariedadId)
+                TipoVariedades = Repositorio.Listar<TipoVariedad>(c => comando.Dto.TipoVariedades.Contains(c.Id)),
+                Hidraulicas = Repositorio.Listar<PuestosDeCargaDescarga>(c => comando.Dto.Hidraulicas.Contains(c.Id)),
             };
 
             return automatismo;
@@ -52,9 +52,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
             }
 
-            if (comando.Dto.TipoVariedadId != null && !Repositorio.Existe<TipoVariedadPorMaterial>(a => a.MaterialId == comando.Dto.MaterialId && a.TipoVariedadId == comando.Dto.TipoVariedadId))
+            if (comando.Dto.AplicaFiltroCalidad && !comando.Dto.CalidadId.HasValue)
             {
-                resultado.Error("Material Variedad No Existe", Textos.Automatismo_MaterialVariedad_NoExiste);
+                resultado.Error("AutomatismoGrano.CalidadId", "El campo 'Calidad' es requerido");
             }
         }
     }

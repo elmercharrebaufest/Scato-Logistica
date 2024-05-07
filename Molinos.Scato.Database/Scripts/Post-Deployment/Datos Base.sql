@@ -227,12 +227,12 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 179) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 180) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Ingresos Bodega',1,180,'ServicioSapIngresosBodega'); END 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 181) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Forzar Cero',1,181,null); END 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 182) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Generar Archivo de Movimientos',1,182,null); END 
-IF NOT EXISTS (select 1 from Permiso where Codigo = 183) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Ingreso de Datos de Exportación',1,183,'IngresoDeDatosDeExportacion'); END 
+IF NOT EXISTS (select 1 from Permiso where Codigo = 183) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow],[NombreActividad]) VALUES ('Ingreso de Datos de Exportación',1,183,'IngresoDeDatosDeExportacion','Ingreso De Datos De Exportación'); END 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 184) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Carga de Cupo',1,184,'CargaDeCupo'); END 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 185) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Ingresar Carta Porte Redespacho Importaciones',1,185,'IngresarCartaPorteRedespachoImportaciones'); END 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 186) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Servicio Sap ZE7550',1,186,'ServicioSapZE7550'); END 
-IF NOT EXISTS (select 1 from Permiso where Codigo = 187) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Paso Por Balanza', 1, 187, 'PasoPorBalanza'); END
-IF NOT EXISTS (select 1 from Permiso where Codigo = 188) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Pesada Carga Exportacion', 1, 188, 'PesadaCargaExportacion'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 187) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow],[NombreActividad]) VALUES ('Paso Por Balanza', 1, 187, 'PasoPorBalanza', 'Paso Por Balanza'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 188) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow],[NombreActividad]) VALUES ('Pesada Carga Exportacion', 1, 188, 'PesadaCargaExportacion','Pesada Carga Exportacion'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 189) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Ingresar Carta Porte Redespacho Mercaderia',1,189,'IngresarCartaPorteRedespachoMercaderia'); END 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 190) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Verificar Limite De Credito Venta En SAP',1,190,'VerificarLimiteDeCreditoVentaEnSAP'); END 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 191) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Calado en planta',1,191,'CaladoEnPlanta'); END
@@ -426,6 +426,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 621) BEGIN INSERT INTO [Perm
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 705) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('ABM Comercial', 0, 705, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 706) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Estado de Volcables', 1, 706, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 707) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow],[NombreActividad]) VALUES ('Pesada Bruto Exportacion', 1, 707, 'PesadaBrutoExportacion','Pesada Bruto Exportacion'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 708) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow],[NombreActividad]) VALUES ('Pesada Tara Exportacion', 1, 708, 'PesadaTaraExportacion','Pesada Tara Exportacion'); END
 
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Extraviada') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Extraviada', 'Extrav.'); END
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Rota') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Rota', 'Rota'); END
@@ -1608,6 +1610,11 @@ BEGIN
   values ('Impo', 'IMP', 0, GETDATE(), 'SCATO');
 END
 
+IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'EST') 
+BEGIN
+  insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
+  values ('Estandar', 'EST', 0, GETDATE(), 'SCATO');
+END
 
 --Precarga de Comerciales Moa
 IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap = '3')

@@ -19,16 +19,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void ModificarEntidad(ModificarAutomatismoGranos comando)
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.Almacen, x => x.Hidraulicas };
             var automatismoEditado = Repositorio.Obtener<AutomatismoGrano>(includes, c => c.Id == comando.Dto.Id);
 
             var hidraulicas = Repositorio.Listar<PuestosDeCargaDescarga>(p => comando.Dto.Hidraulicas.Contains(p.Id));
 
             var automatismo = Conversor.Convertir(comando.Dto, automatismoEditado);
-            if (comando.Dto.MaterialId == 0 && comando.Dto.TipoVariedadId == null)
+            if (comando.Dto.MaterialId == 0)
             {
                 automatismo.MaterialId = automatismoEditado.Material.Id;
-                automatismo.TipoVariedadId = comando.Dto.TipoVariedadId;
             }
 
             automatismo.Hidraulicas = hidraulicas;
@@ -54,6 +53,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (Repositorio.Existe<AutomatismoGrano>(a => a.Id != comando.Dto.Id && a.CallePreBalanzaId == comando.Dto.CallePreBalanzaId))
             {
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
+            }
+
+            if (comando.Dto.AplicaFiltroCalidad && !comando.Dto.CalidadId.HasValue)
+            {
+                resultado.Error("AutomatismoGrano.CalidadId", "El campo 'Calidad' es requerido");
             }
         }
     }
