@@ -371,9 +371,9 @@ namespace Molinos.Scato.Web.Controllers
                 var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
                 {
                     ClienteId = cliente?.Id,
-                    ClienteDescripcion = $"{cliente?.CodigoSap} - {cliente?.Descripcion}",
+                    ClienteDescripcion = cliente?.Descripcion != null ? cliente.Descripcion : "" ,
                     TransportistaId = transportista?.Id,
-                    TransportistaDescripcion = $"{transportistaCUIT} - {transportista?.RazonSocial}",
+                    TransportistaDescripcion = transportista?.RazonSocial != null ? transportista.RazonSocial : "" ,
                     TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
                     MaterialId = material.Id,
                     EsDerivadoGranario = material.EsDerivadoGranario,
@@ -391,9 +391,9 @@ namespace Molinos.Scato.Web.Controllers
             var intermediario = servicio.ObtenerProveedorPorCuit(ConvertirCuil(orden?.CUITIntermediarioFlete), new TiposProveedor { PR = true });
             var destino = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestino));
 
-            orden.RazonSocialIntermediarioFlete = $"{(ConvertirCuil(orden?.CUITIntermediarioFlete) != null ? ConvertirCuil(orden?.CUITIntermediarioFlete) : "")}{(ConvertirCuil(orden?.CUITIntermediarioFlete) != null && intermediario?.RazonSocial != null ? $" - {intermediario?.RazonSocial}" : "")}";
-            orden.RazonSocialDestinatario = $"{(destinatario?.CodigoSap != null ? destinatario?.CodigoSap : "")}{(destinatario?.CodigoSap != null && destinatario?.Descripcion != null ? $" - {destinatario?.Descripcion}" : "")}";
-            orden.RazonSocialDestino = $"{(destino?.CodigoSap != null ? destino?.CodigoSap : "")}{(destino?.CodigoSap != null &&  destino?.Descripcion != null ? $" - {destino?.Descripcion}" : "")}";
+            orden.RazonSocialIntermediarioFlete = intermediario?.RazonSocial != null ? intermediario.RazonSocial : "";
+            orden.RazonSocialDestinatario = destinatario?.Descripcion != null ? destinatario.Descripcion : "";
+            orden.RazonSocialDestino = destino?.Descripcion != null ? destino.Descripcion : "";
             return orden; 
         }
 
