@@ -495,6 +495,38 @@ namespace Molinos.Scato.WebMobile.Controllers
             return PartialView("_ListarPanel", model);
         }
 
+        [HttpGet]
+        [AjaxOnly]
+        public JsonResult ListarAlmacenesPorMaterialVariedad(string variedadIds, int materialId)
+        {
+            var jsonResult = new JsonResult { Data = new MensajeEstandarDto(), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var respuesta = new RespuestaEstandarDto();
+
+            if (string.IsNullOrEmpty(variedadIds))
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se recibieron variedades de la pagina", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                jsonResult.Data = respuesta;
+
+                return jsonResult;
+            }
+
+            var idsArrayTemp = variedadIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var variedadesIds = Array.ConvertAll(idsArrayTemp, int.Parse).ToList();
+
+            var almacenes = this.servicio.ListarAlmacenesPorMateriaVariedadIds(variedadesIds, materialId).OrderBy(c => c.Descripcion).Select(x => new AlmacenDto { Id = x.Id, Descripcion = x.Descripcion });
+
+            var resultado = almacenes.Select(m => new SelectListItem
+            {
+                Value = m.Id.ToString(),
+                Text = m.Descripcion
+            }).ToList();
+
+            resultado.Insert(0, new SelectListItem { Value = "", Text = Textos.Default_Almacen });
+
+            return Json(resultado, JsonRequestBehavior.AllowGet);
+        }
+
         private int ObtenerIdCentro()
         {
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId").ToString();

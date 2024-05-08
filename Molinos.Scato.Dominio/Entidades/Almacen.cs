@@ -22,5 +22,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual ICollection<Material> Materiales { get; set; }
         public virtual bool EPA { get; set; }
         public virtual bool? EstadoAutomatismo { get; set; }
+        [InverseProperty("Almacenes")]
+        public virtual ICollection<TipoVariedadPorMaterial> TipoVariedadPorMateriales { get; set; }
     }
 }
