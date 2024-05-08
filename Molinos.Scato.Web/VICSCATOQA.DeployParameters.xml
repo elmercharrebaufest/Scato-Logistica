@@ -21,7 +21,7 @@
 	<setParameter name="ReportingServices Url" value="http://asvwqrptsv00.molinosagro.ad/Reportserver" />
 	<setParameter name="ReportingServices Viewer" value="https://scatoqa.molinosagro.com.ar/Scato.Web/MvcReportViewer.aspx" />
 	<setParameter name="ReportingServices Username" value="GScatoSRV_qa" />
-	<setParameter name="ReportingServices Password" value="tLdswBzCfYsSgD5rCIMVVg==" />
+	<setParameter name="ReportingServices Password" value="iXJySJ0uWlj+U/7MqDH+dQ==" />
 	<setParameter name="ReportingServices Domain" value="molinosagro" />
 	<setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
 	<setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
