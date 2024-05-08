@@ -133,7 +133,6 @@
                 <div>
                     @Html.TextBoxFor(model => model.Destinatario, new { @class = "control" })
                     @Html.ValidationMessageFor(model => model.Destinatario)
-                    @Html.HiddenFor(model => model.DestinatarioId)
                 </div>
             </div>
             <div id="controlComisionista" class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
@@ -180,7 +179,6 @@
                 <div class="controls-small">
                     @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control" })
                     @Html.ValidationMessageFor(model => model.IntermediarioFlete)
-                    @Html.HiddenFor(model => model.IntermediarioFleteId)
                 </div>
             </div>
             <div class="control">

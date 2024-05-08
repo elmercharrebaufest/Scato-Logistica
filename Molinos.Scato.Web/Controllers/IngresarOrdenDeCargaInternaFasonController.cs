@@ -81,7 +81,7 @@ namespace Molinos.Scato.Web.Controllers
             if (!ModelState.IsValid)
             {
                 SetearVista(workflowObje, datosUsuario.CentroId);
-                ViewBag.ErrorAfip = Textos.OrdenCarga_ErrorValidacion;
+                ViewBag.ErrorAfip = ModelState.Values.SelectMany(v => v.Errors).FirstOrDefault()?.ErrorMessage;
                 ViewBag.HasErrors = true;
                 return View(orden);
             }
@@ -269,7 +269,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Comisionista));
             }
 
-            if (material.EsDerivadoGranario && !orden.DestinatarioId.HasValue)
+            if (material.EsDerivadoGranario && string.IsNullOrEmpty(orden.Destinatario))
             {
                 ModelState.AddModelError("Destinatario", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_Destinatario));
             }
