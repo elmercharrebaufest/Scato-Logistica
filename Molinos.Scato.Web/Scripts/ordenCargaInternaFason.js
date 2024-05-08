@@ -151,17 +151,12 @@ function rellenarCampos(data, selectedElement) {
     $("#Chofer_Cuil").val(convertirCuil(selectedElement.CUILChofer));
     $("#MaterialId").val(data.Data.MaterialId);
     $("#TipoVehiculo").val(data.Data.TipoDeVehiculo);
-    $("#KmARecorrer").val(selectedElement.KmARecorrer);
-    $("#Destinatario").val(data.Data.Orden.RazonSocialDestinatario); /*DA*/
+    $("#Destinatario").val(data.Data.Orden.RazonSocialDestinatario); 
     $("#IntermediarioFlete").val(data.Data.Orden.RazonSocialIntermediarioFlete);
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
     $("#DestinoGranario").val(data.Data.Orden.RazonSocialDestino);
 
-
-    //$("#PlantaDGDestino").val(data.Data.Orden.PlantaDGDestino);
-    //$("#PlantaSeleccionada").val(data.Data.Orden.PlantaDGDestino);
-    //$("#TipoYOrdenDestino").val(data.Data.Orden.TipoYOrdenDestino);
     $("#Corredor").val(data.Data.Orden.Corredor);
 
     //rellenar campos ocultos
@@ -170,6 +165,7 @@ function rellenarCampos(data, selectedElement) {
     $("#MaterialId[type='hidden']").val(data.Data.MaterialId);
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
     $("#KmARecorrer[type='hidden']").val(selectedElement.KmARecorrer);
+
    
 
     const select = document.getElementById('localidadDestinoDropdown');
@@ -180,22 +176,21 @@ function rellenarCampos(data, selectedElement) {
     option.text = data.Data.Orden.LocalidadDescripcion;
     option.selected = true;
     select.appendChild(option);
-       
-    let $element = $("#Chofer_Cuil");
-    let $element1 = $("#Cliente");
-    let $element2 = $("#Destinatario");
-    let $element3 = $("#Transportista");
-    let $element4 = $("#IntermediarioFlete");
 
-    $element.trigger('focusout');
-    $element1.trigger('keydown');
-    $element1.trigger('focusout');
-    $element2.trigger('keydown');
-    $element2.trigger('focusout');
-    $element3.trigger('keydown');
-    $element3.trigger('focusout');
-    $element4.trigger('keydown');
-    $element4.trigger('focusout');
+    $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
+
+    let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Transportista", "#IntermediarioFlete"];
+
+    elementos.forEach(function (selector) {
+        let $element = $(selector);
+
+        // Solo disparar eventos si el campo no está vacío
+        if ($element.val().trim() !== "") {
+            $element.trigger('keydown').trigger('focusout');
+            setTimeout(() => $element.blur(), 100);
+        }
+    });
+
     ValidarDerivadoGranario();
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
@@ -247,48 +242,6 @@ function convertirCuil(cuil) {
 
     return validador1 + "-" + documento + "-" + validador2;
 }
-
-
-//$(document).ready(function () {
-//    $("#PatenteCamion").autocomplete({
-//        source: function (request, response) {
-
-//            response([])
-
-//            const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
-//            const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
-
-//            var patente = request.term;// $("#PatenteCamion").val();
-//            if (regex1.test(patente) || regex2.test(patente)) {
-//                $.ajax({
-//                    url: $('#links').data().urlObtenerOrdenDeCargaOperacionesPorPatente,
-//                    dataType: 'json',
-//                    data: {
-//                        patente: patente,
-//                    },
-//                    type: "GET",
-//                    success: function (data) {
-
-//                        if (data.TieneAdvertencias) {
-//                            MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
-//                        }
-
-//                        if (!data.EsValido) {
-//                            MostrarAlertaError(data.Mensajes[0].Mensaje);
-//                        } else {
-//                            //response($.map(data.Data, function (item) {
-//                            //    return {
-//                            //        label: item.PatenteChasis + " " + item.Id,
-//                            //        value: item.PatenteChasis
-//                            //    }
-//                            //}))
-//                        }
-//                    }
-//                });
-//            }
-//        }
-//    });
-//});
 
 function establecerDestinatario(data) {
     $('#DestinatarioId').val(data.DestinatarioId); // Establecer ID del destinatario
