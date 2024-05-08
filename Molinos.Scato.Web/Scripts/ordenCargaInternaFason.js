@@ -153,9 +153,7 @@ function rellenarCampos(data, selectedElement) {
     $("#TipoVehiculo").val(data.Data.TipoDeVehiculo);
     $("#KmARecorrer").val(selectedElement.KmARecorrer);
     $("#Destinatario").val(data.Data.Orden.RazonSocialDestinatario); /*DA*/
-    $("#DestinatarioId").val(data.Data.Orden.CUITDestinatario);
     $("#IntermediarioFlete").val(data.Data.Orden.RazonSocialIntermediarioFlete);
-    $("#IntermediarioFleteId").val(data.Data.Orden.CUITIntermediarioFlete);
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
     $("#DestinoGranario").val(data.Data.Orden.RazonSocialDestino);
@@ -190,9 +188,13 @@ function rellenarCampos(data, selectedElement) {
     let $element4 = $("#IntermediarioFlete");
 
     $element.trigger('focusout');
+    $element1.trigger('keydown');
     $element1.trigger('focusout');
+    $element2.trigger('keydown');
     $element2.trigger('focusout');
+    $element3.trigger('keydown');
     $element3.trigger('focusout');
+    $element4.trigger('keydown');
     $element4.trigger('focusout');
     ValidarDerivadoGranario();
     setTimeout(function () {
