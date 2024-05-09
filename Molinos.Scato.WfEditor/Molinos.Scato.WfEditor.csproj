@@ -76,10 +76,10 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>4DB924AF1C0C676B21D063BE0BE430C589327999</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>188B173C66A9C226F62E3CCDEB9876093A05391F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>mycert3.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Molinos.Scato.WfEditor_7_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -278,6 +278,7 @@
     <None Include="Molinos.Scato.WfEditor_3_TemporaryKey.pfx" />
     <None Include="Molinos.Scato.WfEditor_4_TemporaryKey.pfx" />
     <None Include="Molinos.Scato.WfEditor_5_TemporaryKey.pfx" />
+    <None Include="Molinos.Scato.WfEditor_7_TemporaryKey.pfx" />
     <None Include="Molinos.Scato.WfEditor_TemporaryKey.pfx" />
     <None Include="mycert.pfx" />
     <None Include="mycert3.pfx" />
