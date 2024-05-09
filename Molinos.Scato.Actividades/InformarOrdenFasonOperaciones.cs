@@ -80,7 +80,7 @@ namespace Molinos.Scato.Actividades
                         FechaIngreso = Convert.ToString(recorrido.FechaInicio),
                         FechaEgreso = Convert.ToString(recorrido.FechaEgreso),
                         UniMedCant = "Kilogramos",
-                        NroRemito = cartaDePorte != null ? cartaDePorte.NroCTG : string.Empty,
+                        NroRemito =  cartaDePorte?.NroCTG,
                     }
                 });
 
