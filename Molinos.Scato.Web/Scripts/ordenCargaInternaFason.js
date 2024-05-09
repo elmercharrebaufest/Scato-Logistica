@@ -177,6 +177,8 @@ function rellenarCampos(data, selectedElement) {
     option.selected = true;
     select.appendChild(option);
 
+    $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
+
     let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Transportista", "#IntermediarioFlete"];
 
     elementos.forEach(function (selector) {
@@ -192,14 +194,12 @@ function rellenarCampos(data, selectedElement) {
     ValidarDerivadoGranario();
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
-        $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
-        $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
         if (existeDomicilio.length > 0) {
             $("#TipoYOrdenDestino").val(domicilioConcat);
         } else {
             MostrarAlertaAdvertencia('El domicilio recibido no coincide con los datos de Scato, verifique ó elija uno correcto.');
         }
-    }, 2000);
+    }, 1000);
 }
 
 
