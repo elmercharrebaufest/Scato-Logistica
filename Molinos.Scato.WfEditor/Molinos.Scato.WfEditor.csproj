@@ -79,7 +79,7 @@
     <ManifestCertificateThumbprint>188B173C66A9C226F62E3CCDEB9876093A05391F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Molinos.Scato.WfEditor_7_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Molinos.Scato.WfEditor_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
