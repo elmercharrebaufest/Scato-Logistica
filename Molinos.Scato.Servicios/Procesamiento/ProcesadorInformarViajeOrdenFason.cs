@@ -23,6 +23,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(InformarViajeOrdenFason comando)
         {
             log.Debug("Iniciando Informe de Finalizacion al servicio de Operaciones para la orden No: {0}", comando.Dto.FasonId);
+
+            if(comando.Dto.FasonId <= 0)
+            {
+                throw new ArgumentException("No se encontró orden de operaciones ");
+            }
+
             int maxIntentos = 2; 
             int intentoActual = 0; 
             TimeSpan retraso = TimeSpan.FromSeconds(5);

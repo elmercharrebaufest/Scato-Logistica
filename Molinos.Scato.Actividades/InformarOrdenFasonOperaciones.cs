@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Servicios;
 using System;
 using System.Activities;
@@ -50,53 +51,41 @@ namespace Molinos.Scato.Actividades
                 });
             }
 
-            if (string.IsNullOrEmpty(ordenFasonId))
+            
+            
+            try
             {
+
+                
+                var req = new IngresosEgresosFasonesDto
+                {
+                    FasonId = Convert.ToInt32(ordenFasonId),
+                    PesadaNeto = recorrido.PesoNeto ?? 0,
+                    PesadaTara = recorrido.PesoTara ?? 0,
+                    FechaIngreso = Convert.ToString(recorrido.FechaInicio),
+                    FechaEgreso = Convert.ToString(recorrido.FechaEgreso),
+                    UniMedCant = "Kilogramos",
+                    NroRemito = cartaDePorte?.NroCTG,
+                };
+
                 servicio.Ejecutar(new CrearControlRecorrido
                 {
                     Dto = new ControlRecorridoDto
                     {
                         Actividad = "InformarOrdenFasonOperaciones",
                         Fecha = DateTime.Now,
-                        Comentario = "No se encontró orden de operaciones",
+                        Comentario = req.ToJson(),
                         NombreUsuario = "",
                         WorkflowInstanceId = context.WorkflowInstanceId,
                     }
                 });
-                return;
-            }     
-            
-            try
-            {
-                var respuesta = servicio.Ejecutar(new InformarViajeOrdenFason
+
+
+                servicio.Ejecutar(new InformarViajeOrdenFason
                 {
-                    Dto = new IngresosEgresosFasonesDto
-                    {
-                        FasonId = Convert.ToInt32(ordenFasonId),
-                        PesadaNeto = recorrido.PesoNeto ?? 0,
-                        PesadaTara = recorrido.PesoTara ?? 0,
-                        FechaIngreso = Convert.ToString(recorrido.FechaInicio),
-                        FechaEgreso = Convert.ToString(recorrido.FechaEgreso),
-                        UniMedCant = "Kilogramos",
-                        NroRemito =  cartaDePorte?.NroCTG,
-                    }
+                    Dto = req
                 });
 
-                if (respuesta.HayErrores)
-                {
-                    servicio.Ejecutar(new CrearControlRecorrido
-                    {
-                        Dto = new ControlRecorridoDto
-                        {
-                            Actividad = "InformarOrdenFasonOperaciones",
-                            Fecha = DateTime.Now,
-                            Comentario = respuesta.Errores.Values.First(),
-                            NombreUsuario = "",
-                            WorkflowInstanceId = context.WorkflowInstanceId,
-                        }
-                    });
-                    return;
-                }
 
                 servicio.Ejecutar(new CrearControlRecorrido
                 {
@@ -104,7 +93,7 @@ namespace Molinos.Scato.Actividades
                     {
                         Actividad = "InformarOrdenFasonOperaciones",
                         Fecha = DateTime.Now,
-                        Comentario = "Llamada exitosa",
+                        Comentario = "Se realizó el envio a operaciones de forma exitosa",
                         NombreUsuario = "",
                         WorkflowInstanceId = context.WorkflowInstanceId,
 
