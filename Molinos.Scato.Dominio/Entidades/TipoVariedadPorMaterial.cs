@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Molinos.Scato.Dominio.Entidades
@@ -15,5 +16,7 @@ namespace Molinos.Scato.Dominio.Entidades
         //public virtual Material Material { get; set; }
         public virtual string ColorFondo { get; set; }
         public virtual string ColorTexto { get; set; }
+        [InverseProperty("TipoVariedadPorMateriales")]
+        public virtual ICollection<Almacen> Almacenes { get; set; }
     }
 }

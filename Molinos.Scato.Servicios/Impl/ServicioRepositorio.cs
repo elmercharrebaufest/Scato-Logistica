@@ -11059,6 +11059,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<AsignacionNoGranoEnRecorrido, AsignacionNoGranoEnRecorridoDto>(x => x.RecorridoId == recorridoId);
         }
+        public IList<AlmacenDto> ListarAlmacenesPorMateriaVariedadIds(List<int> tipoVariedadesIds, int materialId)
+        {
+            return Listar<Almacen, AlmacenDto>(x => x.TipoVariedadPorMateriales.Any(y => tipoVariedadesIds.Contains(y.TipoVariedadId) && y.MaterialId == materialId));
+        }
     }
 
 

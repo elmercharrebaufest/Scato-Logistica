@@ -42,7 +42,6 @@
             obtenerCalidadPorMaterial(materialId)
         }
 
-        obtenerAlmacenesPorMaterial(materialId);
     });
 
     $('.esEscalableCheck').change(function () {
@@ -55,6 +54,46 @@
             },
             success: function (response) {
                 $("#AutomatismoGrano_Hidraulicas").multiselect('dataprovider', response);
+            },
+            error: function () {
+                MostrarAlertaError('Error al realizar la petición.');
+            }
+        });
+    });
+
+    $("#cboxVariedades").change(function () {
+
+        var url = urlObtenerAlmacenesPorTipoVariedad;
+
+        var variedadIds = $(this).val().join(',');
+
+        var materialId = $("#cboxMateriales").val();
+
+        if (variedadIds === null || variedadIds === undefined || variedadIds.length <= 0) {
+            $("#cboxAlmacenes").empty();
+            // Restablece la opción por defecto si es necesario
+            if ($("#cboxAlmacenes option").length === 0) {
+                $("#cboxAlmacenes").append($('<option>', {
+                    value: '',
+                    text: '(almacén)'
+                }));
+            }
+            return;
+        }
+
+        if (materialId === null || materialId === undefined || materialId.length <= 0) {
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            data: { variedadIds: variedadIds, materialId: materialId },
+            success: function (almacenes) {
+
+                $("#cboxAlmacenes").empty();
+                $.each(almacenes, function (indice, almacen) {
+                    $("#cboxAlmacenes").append("<option value='" + almacen.Value + "'>" + almacen.Text + "</option>");
+                });
             },
             error: function () {
                 MostrarAlertaError('Error al realizar la petición.');
