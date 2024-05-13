@@ -62,8 +62,8 @@ namespace Molinos.Scato.Actividades
                     FasonId = Convert.ToInt32(ordenFasonId),
                     PesadaNeto = recorrido.PesoNeto ?? 0,
                     PesadaTara = recorrido.PesoTara ?? 0,
-                    FechaIngreso = Convert.ToString(recorrido.FechaInicio),
-                    FechaEgreso = Convert.ToString(recorrido.FechaEgreso),
+                    FechaIngreso = recorrido.FechaInicio.ToString("yyyy/MM/dd HH:mm:ss"),                   
+                    FechaEgreso = recorrido.FechaEgreso?.ToString("yyyy/MM/dd HH:mm:ss"),
                     UniMedCant = "Kilogramos",
                     NroRemito = cartaDePorte?.NroCTG,
                 };
