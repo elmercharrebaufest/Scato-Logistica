@@ -10537,4 +10537,13 @@
   <data name="AutomatismoNoGrano_PuntoDeCargaDesactivado" xml:space="preserve">
     <value>El automatismo tiene asociada un punto de carga desactivado</value>
   </data>
+  <data name="OrdenCargaInterna_NumeroOperaciones" xml:space="preserve">
+    <value>Id Operaciones</value>
+  </data>
+  <data name="ActPesadaBrutoExportacion" xml:space="preserve">
+    <value>Pesada Bruto Exportación</value>
+  </data>
+  <data name="ActPesadaTaraExportacion" xml:space="preserve">
+    <value>Pesada Tara Exportación</value>
+  </data>
 </root>
