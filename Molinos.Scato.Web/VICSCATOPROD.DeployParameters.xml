@@ -35,4 +35,6 @@
 	<setParameter name="UrlExternaOperacionesPuerto Config" value="https://scatomobile.molinosagro.com.ar/PesadasHistorica" />
 	<setParameter name="WorkflowIngresoPorCompra Config" value="1029-IngresoPorCompraDeGranosCaladaExterna" />
 	<setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
+	<setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
+	<setParameter name="APITokenOperacionesAPI Config" value="prueba" />
 </parameters>
