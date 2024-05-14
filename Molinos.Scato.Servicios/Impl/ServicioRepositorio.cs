@@ -11063,6 +11063,20 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<Almacen, AlmacenDto>(x => x.TipoVariedadPorMateriales.Any(y => tipoVariedadesIds.Contains(y.TipoVariedadId) && y.MaterialId == materialId));
         }
+
+        public IList<RecorridoDto> ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero)
+        {
+            var dto = Obtener<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero);
+            var ordenId = dto?.NumeroOrden;
+
+            if (string.IsNullOrEmpty(ordenId))
+            {
+                return new List<RecorridoDto>();
+            }
+
+            return Listar<Recorrido, RecorridoDto>(x => x.NumeroDocumentoIngreso == ordenId && !x.Rechazado);
+        }
+
     }
 
 
