@@ -771,5 +771,11 @@ namespace Molinos.Scato.Dominio.Seguridad
         PuestoComandoLogistica = 620,
         [Display(ResourceType = typeof(Textos), Name = "TableroComandoPuerto")]
         TableroComandoPuerto = 621,
+
+        [Display(ResourceType = typeof(Textos), Name = "ActPesadaBrutoExportacion")]
+        PesadaBrutoExportacion = 707,
+
+        [Display(ResourceType = typeof(Textos), Name = "ActPesadaTaraExportacion")]
+        PesadaTaraExportacion = 708,
     }
 }

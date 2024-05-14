@@ -2275,6 +2275,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pesada Bruto Exportación.
+        /// </summary>
+        public static string ActPesadaBrutoExportacion {
+            get {
+                return ResourceManager.GetString("ActPesadaBrutoExportacion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pesada Bruto Vagón.
         /// </summary>
         public static string ActPesadaBrutoVagon {
@@ -2298,6 +2307,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ActPesadaTara {
             get {
                 return ResourceManager.GetString("ActPesadaTara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pesada Tara Exportación.
+        /// </summary>
+        public static string ActPesadaTaraExportacion {
+            get {
+                return ResourceManager.GetString("ActPesadaTaraExportacion", resourceCulture);
             }
         }
         
