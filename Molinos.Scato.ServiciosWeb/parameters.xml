@@ -149,4 +149,14 @@
 						match="/configuration/appSettings/add[@key='UrlBaseWebAPI']
                            /@value" />
 	</parameter>
+	<parameter name="URLOperacionesAPI Config">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+					    match="/configuration/appSettings/add[@key='URLOperacionesAPI']
+                            /@value" />
+	</parameter>
+	<parameter name="APITokenOperacionesAPI Config">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+					    match="/configuration/appSettings/add[@key='APITokenOperacionesAPI']
+                            /@value" />
+	</parameter>
 </parameters>
