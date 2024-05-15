@@ -42,5 +42,5 @@
 	<setParameter name="PdfCpeDpiY Config" value="300" />
 	<setParameter name="UrlBaseWebAPI Config" value="https://ASVWUSCATO00.molinosagro.com.ar/Scato.WebApiCore/" />
 	<setParameter name="URLOperacionesAPI Config" value="https://prenuevo.moaoperaciones.com.ar/externalApi/external/api/" />
-	<setParameter name="APITokenOperacionesAPI Config" value="prueba" />
+	<setParameter name="APITokenOperacionesAPI Config" value="RL9ArEV37xhTXZYJvlhAweUHZljMreDP7P1fE6mMzmn0ODBDvu" />
 </parameters>

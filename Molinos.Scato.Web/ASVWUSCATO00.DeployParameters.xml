@@ -43,5 +43,5 @@
 	<setParameter name="UrlBaseWebAPI Config" value="http://ASVWUSCATO00.molinosagro.ad/Scato.WebApiCore/" />
 	<setParameter name="ActivarHangFire Config" value="true" />
 	<setParameter name="URLOperacionesAPI Config" value="https://prenuevo.moaoperaciones.com.ar/externalApi/external/api/" />
-	<setParameter name="APITokenOperacionesAPI Config" value="prueba" />
+	<setParameter name="APITokenOperacionesAPI Config" value="RL9ArEV37xhTXZYJvlhAweUHZljMreDP7P1fE6mMzmn0ODBDvu" />
 </parameters>
