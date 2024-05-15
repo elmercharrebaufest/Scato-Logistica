@@ -4,10 +4,6 @@
     $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
-    var patenteCamion = $('#PatenteCamion').val();
-    if (patenteCamion) {
-        obtenerOrdenDeCargaOperacionesPorPatente();
-    }
     $('#PatenteCamion').on("focusout", function () {
         if($('#WorkflowDescripcion').val().search('Fasón') > 0){
             $.getJSON($('#links').data().urlObtenerMensaje, { patente: $('#PatenteCamion').val()})
@@ -188,6 +184,11 @@
         CargarDomicilios();
         cargarMaterial();
         CargarAlamacenesPorMaterial();
+    }
+
+    var patenteCamion = $('#PatenteCamion').val();
+    if (patenteCamion) {
+        obtenerOrdenDeCargaOperacionesPorPatente();
     }
 
     $("#btnRechazarOrdenCargaInterna").click(function () {
