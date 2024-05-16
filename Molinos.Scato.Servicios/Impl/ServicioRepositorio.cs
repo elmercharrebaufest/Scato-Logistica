@@ -11066,9 +11066,16 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<RecorridoDto> ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero)
         {
-            var dto = Obtener<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero);
-            var ordenId = dto?.NumeroOrden;
+            var ordenesInternas = Listar<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero);
 
+            var recorridosRechazados = Listar<Recorrido, RecorridoDto>(x => !x.Rechazado)
+                                        .Where(r => ordenesInternas.Any(o => o.NumeroOrden == r.NumeroDocumentoIngreso))
+                                        .Select(r => r.NumeroDocumentoIngreso);
+
+            var ordenId = ordenesInternas
+                        .Select(o => o.NumeroOrden)
+                        .FirstOrDefault(orden => !recorridosRechazados.Contains(orden));
+             
             if (string.IsNullOrEmpty(ordenId))
             {
                 return new List<RecorridoDto>();
