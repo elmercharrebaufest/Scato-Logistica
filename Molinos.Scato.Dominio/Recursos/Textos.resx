@@ -10552,4 +10552,7 @@
   <data name="ActPesadaTaraExportacion" xml:space="preserve">
     <value>Pesada Tara Exportación</value>
   </data>
+  <data name="Error_DocumentoDeImpresionPorCentro_ConfiguracionExistente" xml:space="preserve">
+    <value>La configuración con el tipo de impresión y puesto de trabajo ya existe</value>
+  </data>
 </root>
