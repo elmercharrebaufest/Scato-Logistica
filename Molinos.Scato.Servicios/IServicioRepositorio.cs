@@ -3027,7 +3027,7 @@ namespace Molinos.Scato.Servicios
         IList<AlmacenDto> ListarAlmacenesPorMateriaVariedadIds(List<int> tipoVariedadesIds, int materialId);
         
         [OperationContract]
-        IList<RecorridoDto> ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero);
+        RecorridoDto ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero);
 
     }
 

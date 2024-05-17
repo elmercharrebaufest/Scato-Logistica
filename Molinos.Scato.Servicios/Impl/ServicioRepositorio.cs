@@ -11064,24 +11064,12 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<Almacen, AlmacenDto>(x => x.TipoVariedadPorMateriales.Any(y => tipoVariedadesIds.Contains(y.TipoVariedadId) && y.MaterialId == materialId));
         }
 
-        public IList<RecorridoDto> ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero)
+        public RecorridoDto ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero)
         {
-            var ordenesInternas = Listar<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero);
+            var ordenesInternas = Listar<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero).Select(o => o.NumeroOrden);
 
-            var recorridosRechazados = Listar<Recorrido, RecorridoDto>(x => x.Rechazado)
-                                        .Where(r => ordenesInternas.Any(o => o.NumeroOrden == r.NumeroDocumentoIngreso))
-                                        .Select(r => r.NumeroDocumentoIngreso);
+            return Obtener<Recorrido, RecorridoDto>(r => ordenesInternas.Any(orden => r.NumeroDocumentoIngreso.Contains(orden)) && !r.Rechazado);
 
-            var ordenId = ordenesInternas
-                        .Select(o => o.NumeroOrden)
-                        .FirstOrDefault(orden => !recorridosRechazados.Contains(orden));
-             
-            if (string.IsNullOrEmpty(ordenId))
-            {
-                return new List<RecorridoDto>();
-            }
-
-            return Listar<Recorrido, RecorridoDto>(x => x.NumeroDocumentoIngreso == ordenId && !x.Rechazado);
         }
 
     }
