@@ -11068,7 +11068,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var ordenesInternas = Listar<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero);
 
-            var recorridosRechazados = Listar<Recorrido, RecorridoDto>(x => !x.Rechazado)
+            var recorridosRechazados = Listar<Recorrido, RecorridoDto>(x => x.Rechazado)
                                         .Where(r => ordenesInternas.Any(o => o.NumeroOrden == r.NumeroDocumentoIngreso))
                                         .Select(r => r.NumeroDocumentoIngreso);
 
