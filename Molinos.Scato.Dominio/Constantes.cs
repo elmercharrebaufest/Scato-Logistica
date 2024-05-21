@@ -124,6 +124,12 @@
                 public const string PreBalanza = "LlamadoAutomaticoPreBalanza";
                 public const string NoGranos = "LlamadoAutomaticoGeneralNoGranos";
             }
+
+            public struct ImpresionReciboMunicipal
+            {
+                public const string Actividad = "ImpresionReciboMunicipal";
+                public const string MaterialesPagoRealizado = "MaterialesPagoRealizado";
+            }
         }
 
         public struct EtapaWorkflow
