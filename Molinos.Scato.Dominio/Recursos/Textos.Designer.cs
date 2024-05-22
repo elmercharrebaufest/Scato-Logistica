@@ -17381,6 +17381,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No es posible deshabilitar la Hidráulica ya que se encuentra utilizada en los siguientes Automatismos con Id: ´{0}´ .
+        /// </summary>
+        public static string HidraulicaUtilizadaEnVariosAutomatismoActivo {
+            get {
+                return ResourceManager.GetString("HidraulicaUtilizadaEnVariosAutomatismoActivo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Histórico de Fotos por Camión.
         /// </summary>
         public static string HistoricoDeCamiones {

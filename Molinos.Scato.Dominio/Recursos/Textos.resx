@@ -10555,4 +10555,7 @@
   <data name="Error_DocumentoDeImpresionPorCentro_ConfiguracionExistente" xml:space="preserve">
     <value>La configuración con el tipo de impresión y puesto de trabajo ya existe</value>
   </data>
+  <data name="HidraulicaUtilizadaEnVariosAutomatismoActivo" xml:space="preserve">
+    <value>No es posible deshabilitar la Hidráulica ya que se encuentra utilizada en los siguientes Automatismos con Id: ´{0}´ </value>
+  </data>
 </root>
