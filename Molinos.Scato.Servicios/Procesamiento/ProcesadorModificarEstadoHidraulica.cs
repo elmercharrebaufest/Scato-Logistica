@@ -75,7 +75,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (hidraulicaUnicaEnAlgunAutomatismoActivo || hidraulicaUnicaEnVariosAutomatismosActivos)
                 {
                     resultado.Error("Hidraulica", string.Format(Textos.HidraulicaUtilizadaEnVariosAutomatismoActivo, idsAutomatismosConLaHidraulica));
-                    return;
                 }
 
             }
