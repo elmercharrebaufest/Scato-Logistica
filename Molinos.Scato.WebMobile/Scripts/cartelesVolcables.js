@@ -135,7 +135,11 @@ function CambiarEstado(id, nombre) {
         },
         async: true,
         success: function (data) {
-            MostrarAlertaExitosa();
+            if (data.HayErrores) {
+                MostrarAlertaError(data.Errores.MensajeError);
+            } else {
+                MostrarAlertaExitosa();
+            }
             ObtenerHidraulicas();
             $body.removeClass("loading");
         },
