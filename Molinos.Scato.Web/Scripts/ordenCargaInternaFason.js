@@ -143,6 +143,7 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
 function rellenarCampos(data, selectedElement) {
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`;
 
+    $('#tiposComerciales').find('select').val(10)
     $("#PatenteAcoplado").val(selectedElement.PatenteAcoplado);
     $("#ClienteId").val(data.Data.ClienteId);
     $("#Cliente").val(data.Data.ClienteDescripcion);
@@ -156,7 +157,6 @@ function rellenarCampos(data, selectedElement) {
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
     $("#DestinoGranario").val(data.Data.Orden.RazonSocialDestino);
-
     $("#Corredor").val(data.Data.Orden.Corredor);
 
     //rellenar campos ocultos
@@ -194,6 +194,7 @@ function rellenarCampos(data, selectedElement) {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
         $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
         $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
+       
         if (existeDomicilio.length > 0) {
             $("#TipoYOrdenDestino").val(domicilioConcat);
         } else {
