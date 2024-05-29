@@ -28,6 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Printing;
+using System.ServiceModel;
 using System.ServiceModel.Configuration;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
@@ -11068,7 +11069,14 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var ordenesInternas = Listar<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero).Select(o => o.NumeroOrden);
 
-            return Obtener<Recorrido, RecorridoDto>(r => ordenesInternas.Any(orden => r.NumeroDocumentoIngreso.Contains(orden)) && !r.Rechazado);
+            try
+            {
+                return Obtener<Recorrido, RecorridoDto>(r => ordenesInternas.Any(orden => r.NumeroDocumentoIngreso.Contains(orden)) && !r.Rechazado);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new FaultException(Textos.RespuestaOperacionesVariasOrdenes, new FaultCode("NotSingle"));
+            }
 
         }
 
