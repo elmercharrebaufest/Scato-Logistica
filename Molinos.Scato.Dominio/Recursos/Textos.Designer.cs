@@ -26998,6 +26998,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Se ha encontrado más de un Recorrido con la misma Orden de Operaciones.
+        /// </summary>
+        public static string RespuestaOperacionesVariasOrdenes {
+            get {
+                return ResourceManager.GetString("RespuestaOperacionesVariasOrdenes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cupo del día.
         /// </summary>
         public static string RespuestaSap_DelDia {
