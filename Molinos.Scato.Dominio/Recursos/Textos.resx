@@ -10561,4 +10561,7 @@
   <data name="RespuestaOperacionesVariasOrdenes" xml:space="preserve">
     <value>Se ha encontrado más de un Recorrido con la misma Orden de Operaciones</value>
   </data>
+  <data name="IdOperacionesYaUtilizado" xml:space="preserve">
+    <value>El id de operaciones ya fue utilizado</value>
+  </data>
 </root>
