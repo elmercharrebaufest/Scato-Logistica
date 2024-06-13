@@ -7,6 +7,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net;
 
 
@@ -73,11 +74,10 @@ namespace Molinos.Scato.Servicios.Impl
 
             var request = CrearRequest(RECURSO);
             IRestResponse restResponse;
-
             var json = JsonConvert.SerializeObject(ingresosEgresosFasonesDto);
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
 
             log.Trace("Se ejecuta la consulta a la Api");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
 
             try
             {
@@ -101,16 +101,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void RespuestaError(IRestResponse restResponse)
         {
-            string RestMessage = "";
+            ErrorResponse errorContent;
+
             try
             {
-                var errorContent = JsonConvert.DeserializeObject<ErrorResponse>(restResponse.Content);
+                 errorContent = JsonConvert.DeserializeObject<ErrorResponse>(restResponse.Content);
                // var errorContent = JsonConvert.DeserializeObject<Dictionary<string, string>>(restResponse.Content);
 
-                if (errorContent != null && errorContent.ExceptionMessage != null && errorContent.ExceptionMessage.Contains("Message"))
-                {
-                    RestMessage += errorContent.ExceptionMessage;
-                }
             }
             catch (JsonException jsonEx)
             {
@@ -123,7 +120,7 @@ namespace Molinos.Scato.Servicios.Impl
                 }
             }
 
-            log.Trace(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + RestMessage);
+            log.Trace(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + errorContent.ExceptionMessage);
 
             switch ((HttpStatusCode)restResponse.StatusCode)
             {
