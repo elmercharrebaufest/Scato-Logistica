@@ -20,6 +20,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private readonly IServicioComandos servicioComandos;
         private readonly IServicioOrquestador servicioOrquestador;
         private readonly IServicioRepositorio servicioRepositorio;
+        private int idHidraulica;
 
         public ProcesadorActualizarLlamadoAutomaticoHidraulica(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos, IServicioOrquestador servicioOrquestador, IServicioRepositorio servicioRepositorio)
             : base(repositorio, conversor, log)
@@ -27,6 +28,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             this.servicioComandos = servicioComandos;
             this.servicioOrquestador = servicioOrquestador;
             this.servicioRepositorio = servicioRepositorio;
+            this.idHidraulica = 0;
         }
 
         public override Resultado Ejecutar(ActualizarLlamadoAutomaticoHidraulica comando)
@@ -39,6 +41,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var hidraulica = Repositorio.Obtener<LlamadoAutomaticoHidraulica>(q => q.Hidraulica.Id == comando.Id && (q.Estado != EstadoHidraulica.Inhabilitado || comando.Estado == EstadoHidraulica.Disponible));
             if (hidraulica != null)
             {
+                if(comando.Estado == EstadoHidraulica.Inhabilitado)
+                {
+                    idHidraulica = hidraulica.Hidraulica.Id;
+                    DeshabilitarHidraulica();
+                }
                 hidraulica.Estado = comando.Estado;
                 hidraulica.UltimaPatenteLlamada = comando.Patente;
                 hidraulica.FechaUltimaModificacionEstado = DateTime.Now;
@@ -191,6 +198,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             return datosCamion;
         }
+
+        private void DeshabilitarHidraulica() 
+        {
+            var resultado = servicioComandos.Ejecutar(new ModificarEstadoHidraulica
+            {
+                Id = idHidraulica,
+                ActivoAutomatico = false
+            });
+        }
+
 
         private void Validar(ActualizarLlamadoAutomaticoHidraulica comando, Resultado resultado)
         {
