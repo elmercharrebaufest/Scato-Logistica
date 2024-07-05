@@ -4786,6 +4786,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debe existir una hidráulica habilitada.
+        /// </summary>
+        public static string Automatismo_HidarulicasDesactivadas {
+            get {
+                return ResourceManager.GetString("Automatismo_HidarulicasDesactivadas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La Hidráulica está siendo utilizada en un automatismo activo.
         /// </summary>
         public static string Automatismo_HidraulicaUtilizadaEnAutomatismoActivo {
@@ -17350,6 +17359,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string HidraulicasEspeciales {
             get {
                 return ResourceManager.GetString("HidraulicasEspeciales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No es posible deshabilitar la Hidráulica ya que se encuentra utilizada en los siguientes Automatismos con Id: ´{0}´ .
+        /// </summary>
+        public static string HidraulicaUtilizadaEnVariosAutomatismoActivo {
+            get {
+                return ResourceManager.GetString("HidraulicaUtilizadaEnVariosAutomatismoActivo", resourceCulture);
             }
         }
         

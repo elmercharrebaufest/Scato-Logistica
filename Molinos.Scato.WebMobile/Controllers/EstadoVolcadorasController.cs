@@ -41,6 +41,12 @@ namespace Molinos.Scato.WebMobile.Controllers
             try
             {
                 resultado = servicioComandos.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica { Id = id, Estado = (EstadoHidraulica)nuevoEstado, Patente = string.Empty });
+                if ((EstadoHidraulica)nuevoEstado == EstadoHidraulica.Inhabilitado)
+                    servicioComandos.Ejecutar(new ModificarEstadoHidraulica
+                    {
+                        Id = id,
+                        ActivoAutomatico = false
+                    });
             }
             catch (Exception e)
             {

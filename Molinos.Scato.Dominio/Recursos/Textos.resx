@@ -10537,4 +10537,10 @@
   <data name="AutomatismoNoGrano_PuntoDeCargaDesactivado" xml:space="preserve">
     <value>El automatismo tiene asociada un punto de carga desactivado</value>
   </data>
+  <data name="HidraulicaUtilizadaEnVariosAutomatismoActivo" xml:space="preserve">
+    <value>No es posible deshabilitar la Hidráulica ya que se encuentra utilizada en los siguientes Automatismos con Id: ´{0}´ </value>
+  </data>
+  <data name="Automatismo_HidarulicasDesactivadas" xml:space="preserve">
+    <value>Debe existir una hidráulica habilitada</value>
+  </data>
 </root>

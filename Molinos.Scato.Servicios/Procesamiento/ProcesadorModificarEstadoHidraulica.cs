@@ -22,8 +22,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void ModificarEntidad(ModificarEstadoHidraulica comando)
         {
-            var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
-            var automatismos = Repositorio.Listar<AutomatismoGrano>(includesGrano, c => c.Activo == true);
+            var automatismos = TodosLosAutomatismosActivos();
             var hidraulica = Repositorio.Obtener<PuestosDeCargaDescarga>(comando.Id);
 
             var hiautomatismoEditar = automatismos.Where(c => c.Hidraulicas.Count == 1 && c.Hidraulicas.Contains(hidraulica)).ToList();
@@ -36,13 +35,47 @@ namespace Molinos.Scato.Servicios.Procesamiento
             hidraulica.ActivoAutomatico = comando.ActivoAutomatico;
         }
 
+        private IList<AutomatismoGrano> TodosLosAutomatismosActivos()
+        {
+            var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> {
+                x => x.Material,
+                x => x.CallePreBalanza,
+                x => x.CallePreHidraulica,
+                x => x.TipoVariedades,
+                x => x.Almacen,
+                x => x.Hidraulicas };
+            return Repositorio.Listar<AutomatismoGrano>(includesGrano, c => c.Activo == true);
+        }
+
         protected override void Validar(ModificarEstadoHidraulica comando, Resultado resultado)
         {
             var configuracion = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica && x.Nombre == Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
 
-            if (!comando.ActivoAutomatico && configuracion.Valor.Equals("True") && Repositorio.Existe<AutomatismoGrano>(a => a.Hidraulicas.Any(aH => aH.Id == comando.Id) && a.Activo))
+            if (!comando.ActivoAutomatico && configuracion.Valor.Equals("True"))
             {
-                resultado.Error("Hidraulica", Textos.Automatismo_HidraulicaUtilizadaEnAutomatismoActivo);
+                var todosLosAutomatismosActivos = TodosLosAutomatismosActivos();
+
+                // Obtener los automatismos activos que contienen la hidráulica
+                var automatismosActivosConLaHidraulica = todosLosAutomatismosActivos
+                    .Where(a => a.Hidraulicas.Any(h => h.Id == comando.Id))
+                    .ToList();
+
+                // Verificar si la hidráulica es la única en algún automatismo activo
+                bool hidraulicaUnicaEnAlgunAutomatismoActivo = automatismosActivosConLaHidraulica
+                    .Any(a => a.Hidraulicas.Count(h => h.ActivoAutomatico) == 1);
+
+                // Verificar si la hidráulica está en varios automatismos activos y es la única en cada uno
+                bool hidraulicaUnicaEnVariosAutomatismosActivos = automatismosActivosConLaHidraulica.Count > 1 &&
+                    automatismosActivosConLaHidraulica.All(a => a.Hidraulicas.Count(h => h.ActivoAutomatico) == 1);
+
+                // Obtener una lista de IDs de los automatismos que contienen la hidráulica
+                var idsAutomatismosConLaHidraulica = string.Join(", ", automatismosActivosConLaHidraulica.Where(c => c.Hidraulicas.Count(h => h.ActivoAutomatico) == 1).Select(a => a.Id.ToString()));
+
+                // Generar error si se cumplen las condiciones para no permitir la deshabilitación
+                if (hidraulicaUnicaEnAlgunAutomatismoActivo || hidraulicaUnicaEnVariosAutomatismosActivos)
+                {
+                    resultado.Error("Hidraulica", string.Format(Textos.HidraulicaUtilizadaEnVariosAutomatismoActivo, idsAutomatismosConLaHidraulica));
+                }
             }
         }
     }
