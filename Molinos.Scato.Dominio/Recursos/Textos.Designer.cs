@@ -13907,6 +13907,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La configuración con el tipo de impresión y puesto de trabajo ya existe.
+        /// </summary>
+        public static string Error_DocumentoDeImpresionPorCentro_ConfiguracionExistente {
+            get {
+                return ResourceManager.GetString("Error_DocumentoDeImpresionPorCentro_ConfiguracionExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El Tipo de Documento seleccionado no puede ser modificado.
         /// </summary>
         public static string Error_DocumentoIngresadoNoModificable {
