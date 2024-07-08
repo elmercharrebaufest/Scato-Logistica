@@ -37,19 +37,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
                 var automatismo = Repositorio.Obtener<AutomatismoGrano>(includes, a => a.Id == comando.Id);
-                if (!automatismo.CallePreBalanza.ActivoAutomatico || !automatismo.CallePreHidraulica.ActivoAutomatico || automatismo.Hidraulicas.Any(x => !x.ActivoAutomatico))
+                if (!automatismo.Hidraulicas.Any(x => x.ActivoAutomatico))
                 {
-                    resultado.Error("Automatismo_CallesDesactivadas", Textos.Automatismo_CallesDesactivadas);
+                    resultado.Error("Automatismo_HidarulicasDesactivadas", Textos.Automatismo_HidarulicasDesactivadas);
                 }
-                if (automatismo.CamionEscalable && automatismo.Hidraulicas.Any(x => !x.EsEscalable))
+                if (!automatismo.CallePreBalanza.ActivoAutomatico || !automatismo.CallePreHidraulica.ActivoAutomatico)
                 {
                     resultado.Error("Automatismo_EsEscalableIncoincidente", Textos.Automatismo_EsEscalableIncoincidente);
                 }
 
-                var validarCallePHTipoLlamadoDirectoEnUso = Repositorio.Existe<AutomatismoGrano>(a => a.Id != automatismo.Id 
-                && a.CallePreHidraulicaId == automatismo.CallePreHidraulicaId 
-                && a.CallePreHidraulica.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PaseDirecto 
-                && a.Activo);
+                var validarCallePHTipoLlamadoDirectoEnUso = Repositorio.Existe<AutomatismoGrano>(a => a.Id != automatismo.Id
+                   && a.CallePreHidraulicaId == automatismo.CallePreHidraulicaId
+                   && a.CallePreHidraulica.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PaseDirecto
+                   && a.Activo);
 
                 if (validarCallePHTipoLlamadoDirectoEnUso)
                 {

@@ -11,6 +11,7 @@
             (PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
                 grilla.ColumnaModificarModalEntidad(Html, "TableroComandoLogistica"):
                 grilla.Column("", "", c => @Html.Raw("")),
+        grilla.Column("Id", "Id"),
         grilla.Column("CallePBDescripcion", "Calle PB"),
         grilla.Column("CallePHDescripcion", "Calle PH"),
         grilla.Column("CallePHTipoLlamadoDescripcion", "Tipo de Llamado"),
