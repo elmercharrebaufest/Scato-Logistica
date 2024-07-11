@@ -95,6 +95,15 @@ namespace Molinos.Scato.Web.Controllers
                 orden.PatenteAcoplado = orden.PatenteAcoplado.ToUpper();
             }
 
+            if (servicio.ExisteOrdenCargaFason(orden.NumeroOrdenExterno))
+            {
+                TempData["Alerta"] = string.Format(Textos.IdOperacionesYaUtilizado, orden.NumeroOrdenExterno);
+                TempData["TipoAlerta"] = TipoAlerta.Error;
+                SetearVista(workflowObje, datosUsuario.CentroId);
+                ViewBag.AceptaPendiente = true;
+                return View(orden);
+            }
+
             if (workflows.ObtenerWorkflowPorPatente(orden.PatenteCamion) != null)
             {
                 TempData["Alerta"] = Textos.PatenteEnOtroWorkflow;
