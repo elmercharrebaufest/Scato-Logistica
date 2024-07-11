@@ -3029,6 +3029,8 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         RecorridoDto ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero);
 
+        [OperationContract]
+        bool ExisteOrdenCargaFason(string ordenExterno);
     }
 
 }

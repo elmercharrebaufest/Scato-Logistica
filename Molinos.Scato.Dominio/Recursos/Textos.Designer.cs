@@ -17705,6 +17705,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El id de operaciones ya fue utilizado.
+        /// </summary>
+        public static string IdOperacionesYaUtilizado {
+            get {
+                return ResourceManager.GetString("IdOperacionesYaUtilizado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ignora Contingencia.
         /// </summary>
         public static string IgnoraContingencia {

@@ -11080,6 +11080,11 @@ namespace Molinos.Scato.Servicios.Impl
 
         }
 
+        public bool ExisteOrdenCargaFason(string ordenExterno)
+        {
+            return repositorio.Existe<OrdenCargaInternaFason>(x => x.NumeroOrdenExterno == ordenExterno);
+        }
+
     }
 
 
