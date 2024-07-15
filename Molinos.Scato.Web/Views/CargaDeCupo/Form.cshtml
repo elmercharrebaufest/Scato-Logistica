@@ -283,6 +283,15 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
         </div>
         <div class="row-fluid" style="margin-top:20px">
             <div class="row-fluid">
+                @*se muestran errores de fason*@
+                <div class="span12 alert alert-error hide" id="validation-fason-error">
+                    <button type="button" class="close" id="validation-fason-close">×</button>
+                    <div id="validation-fason">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
                 @*se muestran errores de patentes*@
                 <div class="span12 alert alert-info hide" id="validation-patente-danger">
                     <button type="button" class="close" id="validation-danger-close">×</button>
