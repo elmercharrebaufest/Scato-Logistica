@@ -2,6 +2,7 @@
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
@@ -133,8 +134,16 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo)
+        public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo, string fleteMoa = "")
         {
+            if (bool.TryParse(fleteMoa, out bool esFleteNoa))
+            {
+                var nameWorkflow = esFleteNoa
+                    ? Constantes.WorkFlow.workflowFason
+                    : Constantes.WorkFlow.workflowFasonSinFlete;
+
+                return RedirectToAction("Index", Constantes.EtapaWorkflow.OrdenCargaInterna, new { workflow = nameWorkflow, cargaDeCupoId = id});
+            }
             return RedirectToAction("Index", proximaAccion, new { id });
         }
 
