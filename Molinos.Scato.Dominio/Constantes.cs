@@ -245,5 +245,10 @@
             public const string workflowFason = "SLO.EgresoClienteFason";
             public const string workflowFasonSinFlete = "SLO.EgresoClienteFasonSinFlete";
         }
+
+        public struct Excepciones
+        {
+            public const string SecuenciaMultiplesElementos = "La secuencia contiene más de un elemento";
+        }
     }
 }

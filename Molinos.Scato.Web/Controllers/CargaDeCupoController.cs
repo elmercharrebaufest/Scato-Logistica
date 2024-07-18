@@ -3,6 +3,7 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
@@ -22,6 +23,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -774,6 +776,7 @@ namespace Molinos.Scato.Web.Controllers
             var materiales = servicio.ListarMaterialGranoPorCentro(datosUsuario.CentroId, esGrano).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
 
             return Json(materiales, JsonRequestBehavior.AllowGet);
+
         }
 
         [DatosUsuario]
@@ -920,6 +923,97 @@ namespace Molinos.Scato.Web.Controllers
                 log.Info(e, "No se pudo obtener la carta de porte CTG-CPE en carga de Cupo. {0}", numeroCtg);
                 throw;
             }
+        }
+
+        [AjaxOnly]
+        public JsonResult ObtenerOrdenesFason(string patente)
+        {
+            try
+            {
+                var ordenes = servicioOperaciones.ObtenerOrdenesDeCarga(patente)?.ToList() ?? new List<OrdenDeCargaDto>();
+
+                var ordenesFiltradas = FiltrarOrdenesExistentesOperaciones(ordenes);
+                var materiales = ObtenerMaterialesOperaciones(ordenesFiltradas);
+                var ordenAnterior = ObtenerOrdenAnteriorOperaciones(ordenesFiltradas, materiales.Count > 1);
+
+                var clienteRepetido = ordenAnterior?.FirstOrDefault()?.CUITCliente != null ? ComprobarClienteUnico(ordenAnterior.First().CUITCliente) : false;           
+
+                var response = CrearRespuestaOperaciones(ordenesFiltradas, materiales, ordenAnterior);
+
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                bool resp = ex.Message == Constantes.Excepciones.SecuenciaMultiplesElementos;
+
+                var errorResponse = new
+                {
+                    success = false,
+                    error = ex.Message,
+                    duplicado = resp
+                };
+
+                Response.StatusCode = (int)HttpStatusCode.BadGateway;
+
+                return Json(errorResponse, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        
+
+        private bool ComprobarClienteUnico(string cuitCliente)
+        {
+            try
+            {
+                if (servicio.ObtenerClientePorCuit(cuitCliente) != null) return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return false;
+        }
+
+        private object CrearRespuestaOperaciones(List<OrdenDeCargaDto> ordenes, List<object> materiales, List<OrdenDeCargaDto> ordenAnterior)
+        {
+            return new
+            {
+                success = true,
+                ordenes = ordenAnterior ?? ordenes,
+                sonVariasOrdenes = ordenes.Count > 1,
+                sonVariosMateriales = materiales.Count > 1,
+                materiales
+            };
+        }
+
+        private List<OrdenDeCargaDto> ObtenerOrdenAnteriorOperaciones(List<OrdenDeCargaDto> ordenes, bool sonVariosMateriales)
+        {
+            if (ordenes.Count > 1 && !sonVariosMateriales)
+            {
+                var ordenMasAntigua = ordenes.OrderBy(o => o.FechaCreacion).FirstOrDefault();
+                return ordenMasAntigua != null ? new List<OrdenDeCargaDto> { ordenMasAntigua } : new List<OrdenDeCargaDto>();
+            } 
+            else if (ordenes.Count >= 2 && sonVariosMateriales)
+            {
+                return ordenes.OrderBy(o => o.FechaCreacion).GroupBy(o => o.CodigoProducto).Select(g => g.First()).ToList();
+            }
+
+            return ordenes;
+        }
+
+        private List<object> ObtenerMaterialesOperaciones(List<OrdenDeCargaDto> ordenes) 
+        {
+            return ordenes
+                     .GroupBy(o => o.CodigoProducto)
+                     .Select(g => g.First())
+                     .Select(os => new { Value = os.CodigoProducto, Text = os.DescripcionProducto })
+                     .ToList<object>();
+        }
+
+        private List<OrdenDeCargaDto> FiltrarOrdenesExistentesOperaciones(List<OrdenDeCargaDto> ordenes)
+        {
+            return ordenes.Where(orden => !servicio.ExisteOrdenCargaFason(orden.Id.ToString())).ToList();
         }
 
         private void AperturaDeBarrera(string codigo)
