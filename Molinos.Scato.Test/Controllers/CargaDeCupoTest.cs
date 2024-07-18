@@ -15,6 +15,10 @@ using Molinos.Scato.Web.Models;
 using Moq;
 using NUnit.Framework;
 using Molinos.Scato.Servicios.Orquestador;
+using Molinos.Scato.Dominio.Dto.OperacionesAPI;
+using System.Net;
+using System.Web.Routing;
+using System.Web;
 
 namespace Molinos.Scato.Test.Controllers
 {
@@ -36,6 +40,8 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<IFirmaProvider> firma;
         private Mock<IServicioActividadFactory<ICargarCartaPorteService>> factory;
         private Mock<IServicioOperaciones> operacionesMock;
+        private Mock<HttpContextBase> httpContextMock;
+        private Mock<HttpResponseBase> httpResponseMock;
 
         [SetUp]
         public void SetUp()
@@ -46,8 +52,11 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock = new Mock<IServicioRepositorio>();
             servOrquestador = new Mock<IServicioOrquestador>();
             configuracion = new Mock<IConfiguracionProvider>();
+            operacionesMock = new Mock<IServicioOperaciones>();
             firma = new Mock<IFirmaProvider>();
             factory = new Mock<IServicioActividadFactory<ICargarCartaPorteService>>();
+            httpContextMock = new Mock<HttpContextBase>();
+            httpResponseMock = new Mock<HttpResponseBase>();
             datos = new DatosUsuario
             {
                 CentroDescripcion = "centro 1",
@@ -174,6 +183,171 @@ namespace Molinos.Scato.Test.Controllers
             Assert.AreEqual("Form", result.ViewName);
             Assert.That(target.ModelState.IsValid, Is.EqualTo(false));
             Assert.That(target.ModelState.First().Value.Errors.First().ErrorMessage, Is.EqualTo(Textos.AsignacionTarjetaDeAcceso_TarjetaSinRango));
+        }
+
+        [Test]
+        public void TestObtenerOrdenesFason_RetornaJsonResult_ConDatosValidos()  
+        {
+            string patente = "ABC123";
+            var ordenes = new List<OrdenDeCargaDto>
+            {
+                new OrdenDeCargaDto { Id = 1, CodigoProducto = "72850", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-1).ToString() },
+                new OrdenDeCargaDto { Id = 2, CodigoProducto = "72850", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() } 
+            };
+
+            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
+            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            Assert.IsNotNull(result);
+            dynamic data = result.Data;
+            Assert.IsTrue(data.success);
+            Assert.AreEqual(1, data.ordenes.Count);
+            Assert.AreEqual(1, data.ordenes[0].Id);
+            Assert.IsTrue(data.sonVariasOrdenes);
+            Assert.IsFalse(data.sonVariosMateriales);
+        }
+
+        [Test]
+        public void TestObtenerOrdenesFason_RetornaJsonResult_ConError()  
+        {
+            string patente = "ABC123";
+            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Throws(new Exception("Test Error Fason"));
+
+            httpResponseMock.SetupGet(r => r.StatusCode).Returns((int)HttpStatusCode.BadGateway);
+            httpContextMock.Setup(c => c.Response).Returns(httpResponseMock.Object);
+
+            target.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), target);
+
+            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            Assert.IsNotNull(result);
+            dynamic data = result.Data;
+            Assert.IsFalse(data.success);
+            Assert.AreEqual("Test Error Fason", data.error);
+            Assert.AreEqual((int)HttpStatusCode.BadGateway, target.Response.StatusCode);
+        }
+
+        [Test]
+        public void TestObtenerOrdenesFason_RetornaJsonResult_ConErrorClientesDuplicados() 
+        {
+            string patente = "ABC123";
+            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Throws(new Exception("La secuencia contiene más de un elemento"));
+
+            httpResponseMock.SetupGet(r => r.StatusCode).Returns((int)HttpStatusCode.BadGateway);
+            httpContextMock.Setup(c => c.Response).Returns(httpResponseMock.Object);
+
+            target.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), target);
+
+            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            Assert.IsNotNull(result);
+            dynamic data = result.Data;
+            Assert.IsFalse(data.success);
+            Assert.IsTrue(data.duplicado);
+            Assert.AreEqual((int)HttpStatusCode.BadGateway, target.Response.StatusCode);
+        }
+
+        [Test]
+        public void TestObtenerOrdenesFason_OrdenesVacias_NoSeRompeElFlujoYDevuelveLosValoresCorrectos()  
+        {
+            string patente = "ABC123";
+            var ordenes = new List<OrdenDeCargaDto>();
+            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
+
+            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            Assert.IsNotNull(result);
+            dynamic data = result.Data;
+            Assert.IsTrue(data.success);
+            Assert.IsTrue(data.ordenes == null || data.ordenes.Count == 0);
+            Assert.IsFalse(data.sonVariasOrdenes);
+            Assert.IsFalse(data.sonVariosMateriales);
+        }
+
+        [Test]
+        public void TestObtenerOrdenesFason_SoloUnaOrdenActiva_ReturnsPreSelectedAndDisabled()  
+        {
+            string patente = "ABC123";
+            var ordenes = new List<OrdenDeCargaDto>
+            {
+                new OrdenDeCargaDto { Id = 1, CodigoProducto = "75891", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
+            };
+            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
+
+            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            Assert.IsNotNull(result);
+            dynamic data = result.Data;
+            Assert.IsTrue(data.success);
+            Assert.AreEqual(1, data.ordenes.Count);
+            Assert.AreEqual(1, data.ordenes[0].Id);
+            Assert.AreEqual("75891", data.materiales[0].Value);
+        }
+
+        [Test]
+        public void TestObtenerOrdenesFason_MultipleOrdenesActivasMismoMaterial_DevuelveLaMasAntiguaOrdenadaPorFechaCreacion()
+        {
+            string patente = "ABC123";
+            var ordenes = new List<OrdenDeCargaDto>
+            {
+                new OrdenDeCargaDto { Id = 320, CodigoProducto = "75520", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-2).ToString() },
+                new OrdenDeCargaDto { Id = 321, CodigoProducto = "75520", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-3).ToString() },
+                new OrdenDeCargaDto { Id = 322, CodigoProducto = "75520", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
+            };
+            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
+
+            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            Assert.IsNotNull(result);
+            dynamic data = result.Data;
+            Assert.IsTrue(data.success);
+            Assert.AreEqual(1, data.ordenes.Count);
+            Assert.AreEqual(321, data.ordenes[0].Id);
+            Assert.AreEqual("75520", data.materiales[0].Value);
+        }
+
+        [Test]
+        public void TestObtenerOrdenesFason_MultipleOrdenesActivasDiferentesMaterial_DevuelveTodasLasQueTenganMaterialesDistintosOrdenadaPorFechaCreacion()
+        {
+            string patente = "ABC123";
+            var ordenes = new List<OrdenDeCargaDto>
+            {
+                new OrdenDeCargaDto { Id = 4878, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-3).ToString() },
+                new OrdenDeCargaDto { Id = 4879, CodigoProducto = "75420", DescripcionProducto = "Producto 2", FechaCreacion = DateTime.Now.AddDays(-1).ToString() },
+                new OrdenDeCargaDto { Id = 4880, CodigoProducto = "73250", DescripcionProducto = "Producto 3", FechaCreacion = DateTime.Now.ToString() },
+                new OrdenDeCargaDto { Id = 4881, CodigoProducto = "75420", DescripcionProducto = "Producto 2", FechaCreacion = DateTime.Now.AddDays(-4).ToString() },
+                new OrdenDeCargaDto { Id = 4882, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() },
+                new OrdenDeCargaDto { Id = 4883, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
+            };
+            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
+
+            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+
+            Assert.IsNotNull(result);
+            dynamic data = result.Data;
+            Assert.IsTrue(data.success);
+            Assert.AreEqual(3, data.ordenes.Count);
+            Assert.AreEqual(3, data.materiales.Count);
+            Assert.AreEqual(4881, data.ordenes[0].Id);
+        }
+
+        [Test]
+        public void TestObtenerOrdenesFason_OrdenActivaEnUnRecorrido_DevuelveSoloLasQueNoEstenActivasEnRecorridoOrdenadaPorFechaCreacion()
+        {
+            string patente = "ABC123";
+            var ordenes = new List<OrdenDeCargaDto>
+            {
+                new OrdenDeCargaDto { Id = 4878, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-1).ToString() },
+                new OrdenDeCargaDto { Id = 4879, CodigoProducto = "75420", DescripcionProducto = "Producto 2", FechaCreacion = DateTime.Now.ToString() },
+                new OrdenDeCargaDto { Id = 4880, CodigoProducto = "73250", DescripcionProducto = "Producto 3", FechaCreacion = DateTime.Now.ToString() },
+                new OrdenDeCargaDto { Id = 4882, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-3).ToString() },
+                new OrdenDeCargaDto { Id = 4883, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
+            };
+            servRepositorioMock.Setup(x => x.ExisteOrdenCargaFason("4879")).Returns(true);
+            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
+           
+            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+
+            Assert.IsNotNull(result);
+            dynamic data = result.Data;
+            Assert.IsTrue(data.success);
+            Assert.AreEqual(2, data.ordenes.Count);
+            Assert.AreEqual(2, data.materiales.Count);
+            Assert.AreEqual(4882, data.ordenes[0].Id);
         }
     }
 }
