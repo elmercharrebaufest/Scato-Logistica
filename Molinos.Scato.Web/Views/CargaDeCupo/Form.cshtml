@@ -247,6 +247,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                     <div class="controls menosAncho">
                         @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control input-medium" })
                         @Html.HiddenFor(model => model.MaterialId, new { @id = "matId" })
+                        @Html.HiddenFor(model => model.FleteMOA)
                         @Html.ValidationMessageFor(model => model.MaterialId)
                     </div>
                 </div>
@@ -373,5 +374,18 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
     <div class="modal-footer">
         <button id="dialogo-confirmar-confirmar" type="submit" class="btn ">@Textos.Aceptar</button>
         <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+    </div>
+</div>
+
+<div class="modal hide fade" id="dialogo-advertir">
+    <div class="modal-header alert-danger">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>@Textos.Advertencia</h4>
+    </div>
+    <div class="modal-body" id="dialogo-advertir-body">
+    </div>
+    <div class="modal-footer">
+        <button id="dialogo-advertir-cancelar" class="btn btn-warning" onclick="location.href='@Url.Action("Index", "CargaDeCupo")'">@Textos.Aceptar</button>
+
     </div>
 </div>

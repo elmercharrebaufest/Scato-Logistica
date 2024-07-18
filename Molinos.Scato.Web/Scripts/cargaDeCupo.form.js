@@ -27,6 +27,7 @@ $(document).ready(function () {
     $.unblockUI();
 
     $('#dialogo-confirmar').modal('hide');
+    $('#dialogo-advertir').modal('hide');
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
 
@@ -92,6 +93,10 @@ $(document).ready(function () {
 
     $("#Cupo").inputmask("MOL9999/99999999", { "placeholder": "MOL____/" + today });
 
+    $("#validation-fason-close").on("click", function () {
+        $("#validation-fason-error").addClass("hide");
+        return false;
+    });
     $("#validation-patente-close").on("click", function () {
         $("#validation-patente-alert").addClass("hide");
         return false;
@@ -231,6 +236,7 @@ $(document).ready(function () {
 
     $("#MaterialId").change(function () {
         $("#MaterialId").val($("#MaterialId").val());
+        ajustarFleteMoa($("#MaterialId").val())
     });
 
     $('#CTG').rules('remove', 'required');
@@ -248,6 +254,7 @@ $(document).ready(function () {
     if ($('#cpe').is(':checked')) {
         ConfiguracionCPEActiva(false);
     } else if ($('#circuitoNoGranos').is(':checked')) {
+        debugger
         ConfiguracionNoGranosActiva();
     } else {
         ConfiguracionNoGranosInactiva();
@@ -313,7 +320,23 @@ $(document).ready(function () {
 
 });
 
-var blockui = [];
+let blockui = [];
+let dataFleteMoa = new Map();
+
+function llenarFleteMoa(data) {
+    if (Object.keys(dataFleteMoa).length >= 0) {
+        dataFleteMoa.clear();
+    }
+
+    data.forEach(item => {
+        dataFleteMoa.set(item.CodigoProducto, item.FleteMOA);
+    });
+}
+
+function ajustarFleteMoa(materialId = "") {
+    let valor = dataFleteMoa.get(materialId);
+    $('#FleteMOA').val(valor);
+}
 
 function BlockCupos(msg) {
     if (blockui.length == 0) {
