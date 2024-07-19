@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
@@ -17,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -297,7 +299,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var response = new RespuestaEstandarDto<List<OrdenDeCargaDto>>();
             bool fleteMoa = workflow == "SLO.EgresoClienteFason";
-
+            
             try
             {
                 var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
@@ -335,63 +337,87 @@ namespace Molinos.Scato.Web.Controllers
         {
             clienteCUIT = ConvertirCuil(clienteCUIT);
             transportistaCUIT = ConvertirCuil(transportistaCUIT);
-            var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
-            {
-                Centro = servicio.ObtenerCentro(datosUsuario.CentroId).CodigoSAP,
-                Patente = patente.ToUpper()
-            };
-
-            var datosRequest = new ConsultaOrdenDeCargaRequest
-            {
-                ConsultaOrdenDeCarga = consultaOrdenDeCarga
-            };
-
-
             var response = new RespuestaEstandarDto<OrdenDeCargaComplementariaDto>();
-            var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
-            var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
-            var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
-            var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
-           
 
-            var choferCuil = ConvertirCuil(orden.CUILChofer);
-            var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
-
-            var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
-            var destinatarioDescrip = servicio.ObtenerClientePorCuit(string.IsNullOrEmpty(destinatarioCuit) ? "" : destinatarioCuit);
-
-            var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
-
-            var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
-            if (cliente == null)
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Cliente para el cuit {clienteCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-
-            if (transportista == null)
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Transportista para el cuit {transportistaCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-
-            if (material == null)
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No existe material con el codigo de SAP {materialSAP}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-
-            if (resultadoEscalables.HayErrores)
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Error al obtener el tipo de vehículo por patente: {resultadoEscalables.Errores.Values.First()}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-
-            if (response.EsValido)
+            try
             {
-                var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
+                var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
                 {
-                    ClienteId = cliente?.Id,
-                    ClienteDescripcion = cliente?.Descripcion != null ? cliente.Descripcion : "" ,
-                    TransportistaId = transportista?.Id,
-                    TransportistaDescripcion = transportista?.RazonSocial != null ? transportista.RazonSocial : "" ,
-                    TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
-                    MaterialId = material.Id,
-                    EsDerivadoGranario = material.EsDerivadoGranario,
-                    Orden = orden
+                    Centro = servicio.ObtenerCentro(datosUsuario.CentroId).CodigoSAP,
+                    Patente = patente.ToUpper()
                 };
 
-                response.Data = ordenDeCargaComplementario;
+                var datosRequest = new ConsultaOrdenDeCargaRequest
+                {
+                    ConsultaOrdenDeCarga = consultaOrdenDeCarga
+                };
+
+                var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
+                var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
+                var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
+                var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
+           
+
+                var choferCuil = ConvertirCuil(orden.CUILChofer);
+                var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
+
+                var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
+                var destinatarioDescrip = servicio.ObtenerClientePorCuit(string.IsNullOrEmpty(destinatarioCuit) ? "" : destinatarioCuit);
+
+                var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
+
+                var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
+                if (cliente == null)
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Cliente para el cuit {clienteCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+
+                if (transportista == null)
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Transportista para el cuit {transportistaCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+
+                if (material == null)
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No existe material con el codigo de SAP {materialSAP}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+
+                if (resultadoEscalables.HayErrores)
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Error al obtener el tipo de vehículo por patente: {resultadoEscalables.Errores.Values.First()}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+
+                if (response.EsValido)
+                {
+                    var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
+                    {
+                        ClienteId = cliente?.Id,
+                        ClienteDescripcion = cliente?.Descripcion != null ? cliente.Descripcion : "" ,
+                        TransportistaId = transportista?.Id,
+                        TransportistaDescripcion = transportista?.RazonSocial != null ? transportista.RazonSocial : "" ,
+                        TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
+                        MaterialId = material.Id,
+                        EsDerivadoGranario = material.EsDerivadoGranario,
+                        Orden = orden
+                    };
+
+                    response.Data = ordenDeCargaComplementario;
+                }
+
+                return Json(response, JsonRequestBehavior.AllowGet);
             }
-            return Json(response, JsonRequestBehavior.AllowGet);
+            catch (Exception ex)
+            {
+                var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
+                log.Error(ex, mensaje);
+
+                bool resp = ex.Message == Constantes.Excepciones.SecuenciaMultiplesElementos;
+
+                var errorResponse = new
+                {
+                    success = false,
+                    error = ex.Message,
+                    duplicado = resp
+                };
+
+                Response.StatusCode = (int)HttpStatusCode.BadGateway;
+
+                return Json(errorResponse, JsonRequestBehavior.AllowGet);
+            }
+
+           
         }
 
         private OrdenDeCargaDto ajustarOrdenFormatoRequerido(OrdenDeCargaDto orden)
