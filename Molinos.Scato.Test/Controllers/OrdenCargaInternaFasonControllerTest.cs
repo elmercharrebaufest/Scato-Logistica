@@ -6,6 +6,7 @@ using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Recursos;
@@ -59,7 +60,7 @@ namespace Molinos.Scato.Test.Controllers
             contractMock = new Mock<IIngresarOrdenCargaInternaFasonService>();
             listaMock = new Mock<IListaDeWorkflows>();
             cacheMock = new Mock<ICache>();
-
+            servicioSap = new Mock<ZSDWS_SCATO>();
             logger = new NullLogger();
             target = new IngresarOrdenCargaInternaFasonController(logger, servRepositorioMock.Object, servOperacionesMock.Object, actFactoryMock.Object, servComandosMock.Object, listaMock.Object, cacheMock.Object, servicioSap.Object);
 
@@ -209,5 +210,6 @@ namespace Molinos.Scato.Test.Controllers
             var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }) as ViewResult;
             Assert.That(target.ModelState.First().Value.Errors.First().ErrorMessage, Is.EqualTo(string.Format(Textos.Error_ChoferYaEstaEnPlanta, dto.Chofer.NombreCompleto, dto.NumeroOrden, "OtroRe")));
         }
+
     }
 }
