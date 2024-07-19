@@ -102,7 +102,23 @@ function seleccionarOrdenDeCargaOperaciones() {
                 manejarRespuestaAjaxSeleccion(data, selectedElement);
             },
             error: function (xhr, status, error) {
-                MostrarAlertaError("Error en la petición AJAX: " + status + " - " + error);
+                if (xhr.responseJSON.duplicado) {
+                    $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
+                    $('#dialogo-advertir').css({
+                        'top': '30%',
+                        'margin-left': function () {
+                            return -($(this).width() / 2);
+                        },
+                        'left': '50%',
+                        'margin-top': function () {
+                            return -($(this).height() / 2.6);
+                        }
+                    });
+                    $("#dialogo-advertir").modal('show');
+                    return false;
+                } else {
+                    MostrarAlertaError("Error en la petición AJAX: " + status + " - " + error)
+                }
             },
             complete: function () {
                 $.unblockUI();
