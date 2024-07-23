@@ -109,8 +109,16 @@
             <div class="control">
                 @Html.LabelFor(model => model.NumeroOrdenExterno, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.NumeroOrdenExterno, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()", data_selected_value = Model.NumeroOrdenExterno })
-                    @Html.ValidationMessageFor(model => model.NumeroOrdenExterno)
+                    @if (!string.IsNullOrEmpty(Model.NumeroOrdenExterno))
+                    {
+                        @Html.TextBoxFor(model => model.NumeroOrdenExterno, new { @class = "control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.NumeroOrdenExterno)
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.NumeroOrdenExterno, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()", data_selected_value = Model.NumeroOrdenExterno })
+                        @Html.ValidationMessageFor(model => model.NumeroOrdenExterno)
+                    }
                 </div>
             </div>
             <div class="control">
