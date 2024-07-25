@@ -8,7 +8,7 @@
 	<setParameter name="ListaDeWorkflows Service Endpoint Address" value="http://localhost/Scato.workflow/ListaDeWorkflows.svc?wsdl" />
 	<setParameter name="FirmaProvider Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
 	<setParameter name="ServicioNotificarUsuario Service Endpoint Address" value="http://localhost/Scato.web/ServicioHub/ServicioNotificarUsuario.svc" />
-	<setParameter name="Orquestador Service Endpoint Address" value="http://GSLOSCATOQA01.molinosagro.ad:8080/ServicioOrquestador" />
+	<setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
 	<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gviceccqa.molinosagro.ad:8001/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
 	<setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
 	<setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />
@@ -19,27 +19,27 @@
 	<setParameter name="MailSettings Smtp Port" value="25" />
 	<setParameter name="MailSettings Smtp EnableSsl" value="false" />
 	<setParameter name="ReportingServices Url" value="http://asvwqrptsv00.molinosagro.ad/Reportserver" />
-	<setParameter name="ReportingServices Viewer" value="https://ASVWUSCATO00.molinosagro.com.ar/Scato.Web/MvcReportViewer.aspx" />
-	<setParameter name="ReportingServices Username" value="GScatoSRV_qa" />
-	<setParameter name="ReportingServices Password" value="tLdswBzCfYsSgD5rCIMVVg==" />
+	<setParameter name="ReportingServices Viewer" value="https://localhost/Scato.Web/MvcReportViewer.aspx" />
+	<setParameter name="ReportingServices Username" value="Scato_Logistica_uat" />
+	<setParameter name="ReportingServices Password" value="BEYFNXh3bWflUijnqncUB1SgPweYzgK9ZIU2ZnDJcEo=" />
 	<setParameter name="ReportingServices Domain" value="molinosagro" />
 	<setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
 	<setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
 	<setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
-	<setParameter name="HostsServiciosWeb Config" value="http://ASVWUSCATO00/Scato.serviciosWeb/" />
+	<setParameter name="HostsServiciosWeb Config" value="http://localhost/Scato.serviciosWeb/" />
 	<setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
 	<setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
 	<setParameter name="AppPools Config" value="Scato.serviciosWeb;Scato.web;Scato.workflow" />
 	<setParameter name="ArchivoDeMovimientosIngresosPath Config" value="\\GSLOFSPRD00\Scato\ScatoUAT\Ingresos\" />
 	<setParameter name="ArchivoDeMovimientosEgresosPath Config" value="\\GSLOFSPRD00\Scato\ScatoUAT\Redespachos\" />
 	<setParameter name="Ambiente Config" value="UAT" />
-	<setParameter name="UrlExternaOperacionesPuerto Config" value="https://ASVWUSCATO00/Scato.WebMobile/PesadasHistorica" />
+	<setParameter name="UrlExternaOperacionesPuerto Config" value="https://localhost/Scato.WebMobile/PesadasHistorica" />
 	<setParameter name="FondoAmbiente Config" value="body-background-UAT" />
 	<setParameter name="WorkflowIngresoPorCompra Config" value="1029-IngresoPorCompraDeGranosCaladaExterna" />
 	<setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
-	<setParameter name="ICWebServerUrl Config" value="https://ASVWUSCATO00.molinosagro.ad:8889/rtc" />
-	<setParameter name="ICWSServerUrl Config" value="wss://ASVWUSCATO00.molinosagro.ad:8889/rtc" />
+	<setParameter name="ICWebServerUrl Config" value="https://localhost:8889/rtc" />
+	<setParameter name="ICWSServerUrl Config" value="wss://localhost:8889/rtc" />
 	<setParameter name="FotosPathLogALPR Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\UAT\FotosLogAlpr" />
-	<setParameter name="UrlBaseWebAPI Config" value="http://ASVWUSCATO00.molinosagro.ad/Scato.WebApiCore/" />
+	<setParameter name="UrlBaseWebAPI Config" value="http://localhost/Scato.WebApiCore/" />
 	<setParameter name="ActivarHangFire Config" value="true" />
 </parameters>

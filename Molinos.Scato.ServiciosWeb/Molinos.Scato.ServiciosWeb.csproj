@@ -184,12 +184,6 @@
     <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="bfdev258.DeployParameters.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="bfdev258-Branch.DeployParameters.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="AdministradorDeCalles.svc" />
     <Content Include="ServicioLlamadoAutomatico.svc" />
     <Content Include="ServicioEstadoPuesto.svc" />
@@ -208,9 +202,9 @@
     <Content Include="Global.asax" />
     <Content Include="ServicioSapAsincronico.svc" />
     <Content Include="ServicioSapAsincronicoPoison.svc" />
-    <Content Include="ASVWUSCATO00.DeployParameters.xml">
-		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	</Content>
+    <Content Include="VICSCATOUAT.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AVVWHSCATAPP00.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
