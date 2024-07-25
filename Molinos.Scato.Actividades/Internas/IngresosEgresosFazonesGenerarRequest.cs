@@ -38,6 +38,7 @@ namespace Molinos.Scato.Actividades.Internas
         public InArgument<string> PatenteAcoplado { get; set; }
         public InArgument<string> ComisionistaCodigoSap { get; set; }
         public InArgument<string> RemitenteCodigoSap { get; set; }
+        public InArgument<string> DestinoMercaderia { get; set; } 
         public OutArgument<IngresosEgresosFazonesRequest> Request { get; set; }
         public OutArgument<Resultado> Resultado { get; set; }
         protected override void Execute(CodeActivityContext context)
@@ -60,6 +61,7 @@ namespace Molinos.Scato.Actividades.Internas
                 var km = Km.Get<decimal?>(context);
                 var pesoNeto = PesoNeto.Get<decimal>(context);
                 var nroDocumento = NumeroDocumento.Get<string>(context);
+                var destinoMercaderia = DestinoMercaderia.Get<string>(context);
                 if (!String.IsNullOrEmpty(nroDocumento) && nroDocumento.Length == 12 && nroDocumento[4] != '-')
                 {
                     nroDocumento = nroDocumento.Substring(0, 4) + "-" + nroDocumento.Substring(4, 8);
@@ -108,6 +110,7 @@ namespace Molinos.Scato.Actividades.Internas
                                 IM_NUM_SCATO = recorrido.Id.ToString(CultureInfo.InvariantCulture) ,
                                 IM_CTG = orden != null ? orden.NroCTG : string.Empty,
                                 IM_CPEDG =  orden != null ? orden.Sucursal + orden.NroOrden : string.Empty,
+                                IM_DESTINO_MERCADERIA = destinoMercaderia ?? string.Empty,
                         }
                     };
 

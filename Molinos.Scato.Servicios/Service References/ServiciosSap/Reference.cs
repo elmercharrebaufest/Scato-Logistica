@@ -10429,6 +10429,8 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         
         private string iM_CTGField;
         
+        private string iM_DESTINO_MERCADERIAField;
+        
         private string iM_NUM_SCATOField;
         
         private decimal kmField;
@@ -10545,6 +10547,18 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public string IM_DESTINO_MERCADERIA {
+            get {
+                return this.iM_DESTINO_MERCADERIAField;
+            }
+            set {
+                this.iM_DESTINO_MERCADERIAField = value;
+                this.RaisePropertyChanged("IM_DESTINO_MERCADERIA");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
         public string IM_NUM_SCATO {
             get {
                 return this.iM_NUM_SCATOField;
@@ -10556,7 +10570,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
         public decimal Km {
             get {
                 return this.kmField;
@@ -10580,7 +10594,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
         public string LocalidadOrig {
             get {
                 return this.localidadOrigField;
@@ -10592,7 +10606,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
         public string Material {
             get {
                 return this.materialField;
@@ -10604,7 +10618,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
         public string NombreChofer {
             get {
                 return this.nombreChoferField;
@@ -10616,7 +10630,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
         public string NroDocumento {
             get {
                 return this.nroDocumentoField;
@@ -10628,7 +10642,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
         public string Patente {
             get {
                 return this.patenteField;
@@ -10640,7 +10654,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=15)]
         public string Patente2 {
             get {
                 return this.patente2Field;
@@ -10652,7 +10666,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=15)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=16)]
         public string Procedencia {
             get {
                 return this.procedenciaField;
@@ -10664,7 +10678,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=16)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=17)]
         public string ProvinciaOrig {
             get {
                 return this.provinciaOrigField;
@@ -10676,7 +10690,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=17)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=18)]
         public string TipoDoc {
             get {
                 return this.tipoDocField;
@@ -10688,7 +10702,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=18)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=19)]
         public string TipoMov {
             get {
                 return this.tipoMovField;
@@ -10700,7 +10714,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=19)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=20)]
         public string Transportista {
             get {
                 return this.transportistaField;
@@ -10712,7 +10726,7 @@ namespace Molinos.Scato.Servicios.ServiciosSap {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=20)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=21)]
         public string UniMedCant {
             get {
                 return this.uniMedCantField;
