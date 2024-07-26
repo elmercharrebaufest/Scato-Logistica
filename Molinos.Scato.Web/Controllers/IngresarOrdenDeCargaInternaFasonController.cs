@@ -377,8 +377,22 @@ namespace Molinos.Scato.Web.Controllers
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No existe material con el codigo de SAP {materialSAP}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
                 if (resultadoEscalables.HayErrores)
+                {
+                    var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
+                    {
+                        ClienteId = cliente?.Id,
+                        ClienteDescripcion = cliente?.Descripcion != null ? cliente.Descripcion : "",
+                        TransportistaId = transportista?.Id,
+                        TransportistaDescripcion = transportista?.RazonSocial != null ? transportista.RazonSocial : "",
+                        TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
+                        MaterialId = material.Id,
+                        EsDerivadoGranario = material.EsDerivadoGranario,
+                        Orden = orden,
+                        TieneErrorCNRT = resultadoEscalables.HayErrores
+                    };
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Error al obtener el tipo de vehículo por patente: {resultadoEscalables.Errores.Values.First()}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-
+                    response.Data = ordenDeCargaComplementario;
+                }
                 if (response.EsValido)
                 {
                     var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
@@ -390,7 +404,8 @@ namespace Molinos.Scato.Web.Controllers
                         TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
                         MaterialId = material.Id,
                         EsDerivadoGranario = material.EsDerivadoGranario,
-                        Orden = orden
+                        Orden = orden,
+                        TieneErrorCNRT = resultadoEscalables.HayErrores
                     };
 
                     response.Data = ordenDeCargaComplementario;

@@ -76,6 +76,7 @@
                 public const string EstablecimientoPantalla = "Establecimiento";
                 public const string TableroComandoLogistica = "TableroComandoLogistica";
                 public const string TableroComandoPuerto = "TableroComandoPuerto";
+                public const string IngresarOrdenCargaInternaFason = "IngresarOrdenCargaInternaFason";
             }
 
             public struct EficienciaCalado
@@ -129,6 +130,11 @@
             {
                 public const string Actividad = "ImpresionReciboMunicipal";
                 public const string MaterialesPagoRealizado = "MaterialesPagoRealizado";
+            }
+
+            public struct CNRT
+            {
+                public const string CNRTDummy = "CNRTDummy";
             }
         }
 
@@ -250,5 +256,6 @@
         {
             public const string SecuenciaMultiplesElementos = "La secuencia contiene más de un elemento";
         }
+
     }
 }

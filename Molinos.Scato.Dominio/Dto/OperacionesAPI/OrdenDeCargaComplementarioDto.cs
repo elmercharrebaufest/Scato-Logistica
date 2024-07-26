@@ -10,6 +10,6 @@
         public int? MaterialId { get; set; }
         public bool? EsDerivadoGranario { get; set; } 
         public object Orden { get; set; }
-
+        public bool TieneErrorCNRT { get; set; } = false;
     }
 }
