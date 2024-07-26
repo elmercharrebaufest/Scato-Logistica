@@ -1534,6 +1534,11 @@ BEGIN
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('ImpresionReciboMunicipal', 'MaterialesPagoRealizado', '99319,94687,94705,19908017,19908036', NULL, GETDATE(), 'SCATO')
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'IngresarOrdenCargaInternaFason' AND  Nombre = 'CNRTDummy' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('IngresarOrdenCargaInternaFason', 'CNRTDummy', 'false', NULL, GETDATE(), 'SCATO')
+END
+
 --Equivalencias de Característica de Calidad
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
 BEGIN 

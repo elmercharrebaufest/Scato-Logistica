@@ -149,6 +149,7 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
 
     if (!data.EsValido) {
         MostrarAlertaError(data.Mensajes[0].Mensaje);
+        rellenarCampos(data, selectedElement);
         return;
     }
 
@@ -159,7 +160,9 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
 function rellenarCampos(data, selectedElement) {
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`;
 
-    $('#tiposComerciales').find('select').val(10)
+    let tipoComercial = $('#tiposComerciales').find('option').eq(1).val();
+
+    $('#tiposComerciales').find('select').val(tipoComercial)
     $("#PatenteAcoplado").val(selectedElement.PatenteAcoplado);
     $("#ClienteId").val(data.Data.ClienteId);
     $("#Cliente").val(data.Data.ClienteDescripcion);
@@ -181,8 +184,30 @@ function rellenarCampos(data, selectedElement) {
     $("#MaterialId[type='hidden']").val(data.Data.MaterialId);
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
     $("#KmARecorrer[type='hidden']").val(selectedElement.KmARecorrer);
+    $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
+    $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
+    $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
 
-   
+
+    let tipoComercialList = $('#tiposComerciales').val();
+    console.log(tipoComercialList);
+    if (data.Data.TieneErrorCNRT) {
+        $("#TipoVehiculo").prop("disabled", false); // Habilitar campos
+    }
+    else {
+        $("#TipoVehiculo").prop("disabled", true);
+    }
+
+    if (data.Data.Orden.FleteMOA) {
+        $("#PagadorFlete").val(data.Data.Orden.RazonSocialDestinatario)
+        
+    }
+    else {
+        $("#PagadorFlete").val(data.Data.Orden.Cliente)
+       
+      
+    }
+
 
     const select = document.getElementById('localidadDestinoDropdown');
     const option = document.createElement('option');
@@ -193,7 +218,7 @@ function rellenarCampos(data, selectedElement) {
     option.selected = true;
     select.appendChild(option);
 
-    let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Transportista", "#IntermediarioFlete"];
+    let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Transportista", "#IntermediarioFlete", "#PagadorFlete"];
 
     elementos.forEach(function (selector) {
         let $element = $(selector);
