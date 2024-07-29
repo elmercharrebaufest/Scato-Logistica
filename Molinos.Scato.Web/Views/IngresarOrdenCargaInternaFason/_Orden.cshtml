@@ -175,6 +175,7 @@
                 <div class="" id="tiposComerciales" data-alta-rapida='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.TiposComercialesTransportista).Select(x => x)))'>
                     @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control ", @disabled = "disabled" })
                     @Html.ValidationMessageFor(model => model.TipoComercialId)
+                    @Html.HiddenFor(model => model.TipoComercialId)
                 </div>
             </div>
             <div class="control">

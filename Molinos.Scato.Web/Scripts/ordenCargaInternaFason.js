@@ -18,6 +18,10 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
         return; 
     }
 
+    let tipoComercial = $('#tiposComerciales').find('option').eq(1).val();
+    $('#tiposComerciales').find('select').val(tipoComercial)
+    $("#TipoComercialId[type='hidden']").val(tipoComercial)
+
     BlockUI();
     $.ajax({
         url: $('#links').data().urlObtenerOrdenDeCargaOperacionesPorPatente,
@@ -187,10 +191,10 @@ function rellenarCampos(data, selectedElement) {
     $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
     $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
     $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
+    $("#TipoComercialId[type='hidden']").val(tipoComercial)
 
 
-    let tipoComercialList = $('#tiposComerciales').val();
-    console.log(tipoComercialList);
+
     if (data.Data.TieneErrorCNRT) {
         $("#TipoVehiculo").prop("disabled", false); // Habilitar campos
     }
@@ -205,7 +209,6 @@ function rellenarCampos(data, selectedElement) {
     else {
         $("#PagadorFlete").val(data.Data.Orden.Cliente)
        
-      
     }
 
 

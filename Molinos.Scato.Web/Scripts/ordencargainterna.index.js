@@ -4,6 +4,10 @@
     $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
+    let tipoComercial = $('#tiposComerciales').find('option').eq(1).val();
+    $('#tiposComerciales').find('select').val(tipoComercial)
+    $("#TipoComercialId[type='hidden']").val(tipoComercial)
+
     $('#PatenteCamion').on("focusout", function () {
         if($('#WorkflowDescripcion').val().search('Fasón') > 0){
             $.getJSON($('#links').data().urlObtenerMensaje, { patente: $('#PatenteCamion').val()})
