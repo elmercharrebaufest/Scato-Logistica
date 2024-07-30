@@ -135,6 +135,7 @@
             public struct CNRT
             {
                 public const string CNRTDummy = "CNRTDummy";
+                public const string VehiculoDummy = "VehiculoDummy";
             }
         }
 

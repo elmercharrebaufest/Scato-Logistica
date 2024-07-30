@@ -17,7 +17,7 @@ using Molinos.Scato.Servicios.Orquestador;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorConsultarEscalables : ProcesadorComando<ConsultarEscalables>
+    public class ProcesadorConsultarEscalablesDummy : ProcesadorComando<ConsultarEscalablesDummy>
     {
         private readonly string URL = ConfigurationManager.AppSettings["ServicioCNRTTipoVehiculoRest"];
         private readonly IRepositorio _repositorio;
@@ -25,7 +25,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private readonly ILogger _log;
         private readonly HttpClient _httpClient;
 
-        public ProcesadorConsultarEscalables(IRepositorio repositorio, IConversor conversor, ILogger log , HttpClient httpClient)
+        public ProcesadorConsultarEscalablesDummy(IRepositorio repositorio, IConversor conversor, ILogger log , HttpClient httpClient)
             : base(repositorio, conversor, log)
         {
             _repositorio = repositorio;
@@ -36,7 +36,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public override Resultado Ejecutar(ConsultarEscalables comando)
+        public override Resultado Ejecutar(ConsultarEscalablesDummy comando)
         {
             var resultado = new ResultadoEscalables();
 
@@ -50,22 +50,42 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     return resultado;
                 }
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                 
-                    
-                    var response = _httpClient.GetAsync(URL +  FormatearParametrosConsulta(comando)).Result;
 
-                    if (response.IsSuccessStatusCode)
+                string categoria = ObtenerTipoVehiculoDummy();
+
+                if(categoria != string.Empty)
+                {
+                    var rto = new ConsultaEscalableRtoDto()
                     {
-                        var content = response.Content.ReadAsStringAsync().Result;
-                        var consulta = JsonConvert.DeserializeObject<ConsultaEscalablesDto>(content);
-                        resultado.Categoria = consulta.Data.MapeoCategoriaEscalado;
-                    }
-                    else
+                        CantEjes = categoria.Equals("B") ? "7" : "2"
+                    };
+                    var dominio = new ConsultaEscalableDominioDto()
                     {
-                        _log.Error($"No se pudo consultar el tipo de vehiculo para la patente {comando.Patente} {response.StatusCode} {response.ReasonPhrase}");
-                        resultado.Error("respuestaAfip", "No pudimos conectarnos con CNRT para consultar el tipo de vehículo, deberá completarlo manualmente.");
-                    }
+                        Dominio = comando.Patente,
+                        Rto = rto
+                    };
+
+                    ConsultaEscalablesDto consulta = new ConsultaEscalablesDto()
+                    {
+                        Data = new ConsultaEscalableValoresDto()
+                        {
+                            CategoriaEscalado = categoria,
+                            Dominios = new List<ConsultaEscalableDominioDto>()
+                            {
+                                dominio
+                            }
+                        }
+
+                    };
+                   
+                    resultado.Categoria = consulta.Data.MapeoCategoriaEscalado;
+                }
+                else
+                {
+                    _log.Error($"No se pudo consultar el tipo de vehiculo para la patente {comando.Patente} Dummy");
+                    resultado.Error("respuestaAfip", "No pudimos conectarnos con CNRT para consultar el tipo de vehículo, deberá completarlo manualmente.");
+                }
+              
                 
             }
             catch (Exception e)
@@ -76,7 +96,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
-        public void ValidarConsultarEscalables(ConsultarEscalables comando, ResultadoEscalables resultado)
+        public void ValidarConsultarEscalables(ConsultarEscalablesDummy comando, ResultadoEscalables resultado)
         {
             if (string.IsNullOrEmpty(comando.Patente))
             {
@@ -85,18 +105,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
-        private string FormatearParametrosConsulta(ConsultarEscalables comando)
-        {
-            var listaPatentes = new List<string>
-            {
-                comando.Patente
-            };
-            if (!string.IsNullOrEmpty(comando.Acoplado))
-                listaPatentes.Add(comando.Acoplado);
-            if (!string.IsNullOrEmpty(comando.Acoplado2))
-                listaPatentes.Add(comando.Acoplado2);
-            return string.Join(",", listaPatentes);
-        }
 
+        private string ObtenerTipoVehiculoDummy()
+        {
+            var configuracionGeneral = _repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.IngresarOrdenCargaInternaFason && x.Nombre == Constantes.ConfiguracionGeneral.CNRT.VehiculoDummy && x.CentroId == null);
+            return configuracionGeneral.Valor;
+        }
+       
     }
 }
