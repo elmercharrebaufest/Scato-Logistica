@@ -558,6 +558,7 @@
     <Compile Include="Procesamiento\ProcesadoLimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarEscalablesDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />

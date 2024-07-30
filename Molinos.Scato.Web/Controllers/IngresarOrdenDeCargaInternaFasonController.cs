@@ -4,6 +4,7 @@ using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
@@ -366,7 +367,9 @@ namespace Molinos.Scato.Web.Controllers
 
                 var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
 
-                var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
+
+                var resultadoEscalables = servicioComandos.Ejecutar(GenerarConsultaEscalables(patente, acoplado, datosUsuario.NombreUsuario)) as ResultadoEscalables;
+
                 if (cliente == null)
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Cliente para el cuit {clienteCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
@@ -518,7 +521,25 @@ namespace Molinos.Scato.Web.Controllers
                 return !string.IsNullOrEmpty(orden.CUITDestinatario) ? orden.CUITDestinatario : orden.CUITDestino;
             }
         }
-        
+
+        private bool ValidarDummyActivo() 
+        {
+            var configuracionGeneral = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.IngresarOrdenCargaInternaFason, Constantes.ConfiguracionGeneral.CNRT.CNRTDummy, null);
+            return configuracionGeneral is null ? false : bool.Parse(configuracionGeneral.Valor);
+        }
+        private Comando GenerarConsultaEscalables(string patente , string acoplado , string usuario)
+        {
+            if (ValidarDummyActivo())
+            {
+                return new ConsultarEscalablesDummy { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario };
+            }
+
+            else
+            {
+                return new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario };
+            }
+            
+        }
     }
 
 }
