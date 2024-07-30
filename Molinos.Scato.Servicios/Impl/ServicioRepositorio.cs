@@ -1903,7 +1903,7 @@ namespace Molinos.Scato.Servicios.Impl
             try
             {
                 entidad =
-                    repositorio.Obtener<Cliente>(
+                    repositorio.ObtenerPrimero<Cliente>(
                         f => f.Activo && (f.Descripcion.Contains(criteria) || f.Cuit.Contains(criteria)));
             }
             catch
