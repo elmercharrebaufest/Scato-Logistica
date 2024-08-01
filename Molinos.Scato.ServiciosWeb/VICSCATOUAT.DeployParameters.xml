@@ -31,7 +31,7 @@
 	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\Testing\" />
 
 	<setParameter name="MailSettings Smtp From" value="scatoUATMOA@molinosagro.com.ar" />
-	<setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
+	<setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
 	<setParameter name="MailSettings Smtp Port" value="25" />
 	<setParameter name="MailSettings Smtp EnableSsl" value="false" />
 	<setParameter name="ServicioCNRTTipoVehiculoRest Config" value="https://api.cnrt.gob.ar/dut/v1/public/equipos?dominios=" />
