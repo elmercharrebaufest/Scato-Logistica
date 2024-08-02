@@ -27,5 +27,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public int? IntermediarioFleteId { get; set; }
         public int? DestinatarioId { get; set; }
         public bool AplicaDestinatario { get; set; }
+        public string Observaciones { get; set; }
     }
 }

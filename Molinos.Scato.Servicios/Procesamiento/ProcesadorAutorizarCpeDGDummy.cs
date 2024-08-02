@@ -177,7 +177,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             cuitChofer = !string.IsNullOrEmpty(comando.ChoferCuit) ? long.Parse(comando.ChoferCuit.Replace("-", string.Empty)) : 0,
                             cuitPagadorFlete = !string.IsNullOrEmpty(pagadorFlete.Cuit) ? long.Parse(pagadorFlete.Cuit.Replace("-", string.Empty)) : 0,
                         },
-                        intervinientes = new IntervinientesAutomotorDGSolicitud()
+                        intervinientes = new IntervinientesAutomotorDGSolicitud(),
+                        observaciones = comando.Observaciones
                     }
                 };
 
