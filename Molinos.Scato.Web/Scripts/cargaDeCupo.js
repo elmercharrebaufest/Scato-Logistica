@@ -203,6 +203,7 @@ function DefinirFlujoFasFason(patente) {
 
 function ObtenerDatosFason(patente) {
     let respuesta = true;
+    $('#MaterialId').prop('disabled', true);
     BlockUI($("#MensajeBuscandoDatos").val());
     $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: $('#Patente').val() }, function (data) {
         if (data.sonVariosMateriales == true) {
