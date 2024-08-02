@@ -303,10 +303,43 @@ namespace Molinos.Scato.Web.Controllers
             
             try
             {
-                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
+                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente);                
 
                 if (restResponse != null)
                 {
+                    foreach (var item in restResponse)
+                    {
+                        var choferCuil = ConvertirCuil(item.CUILChofer);
+                        var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
+
+                        if (chofer == null)
+                        {
+                            string[] partes = item.NombreChofer?.Trim()?.Split(' ');
+
+                            string nombre = partes[0];
+                            string apellido = partes[partes.Length - 1];
+
+                            var choferNuevo = new ChoferDto
+                            {
+                                Nombre = nombre,
+                                Apellido = apellido,
+                                TipoDocumentoIdentidadId = 1,
+                                Cuil = choferCuil,
+                                NumeroDeDocumento = ObtenerDocumentoDesdeCuil(item.CUILChofer)
+                            };
+
+                            var resultChofer = SetearChofer(choferNuevo);
+
+                            if (!resultChofer)
+                            {
+                                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se pudo ingresar el chofer " + item.NombreChofer + " del numero de orden: " + item.Id, TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                                break;
+
+                            }
+                        }
+
+                    }
+
                     if (restResponse.Count == 0)
                         response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se encontró ninguna Orden de Carga Fason con la patente ingresada", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
                     else
@@ -538,7 +571,19 @@ namespace Molinos.Scato.Web.Controllers
             {
                 return new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario };
             }
-            
+
+        }
+        private string ObtenerDocumentoDesdeCuil(string cuil)
+        {
+            cuil = cuil.Replace("-", "");
+
+            if (string.IsNullOrEmpty(cuil) || cuil.Length != 11)
+            {
+                throw new ArgumentException("El CUIL debe tener 11 dígitos.");
+            }
+            string documento = cuil.Substring(2, 8);
+
+            return documento.TrimStart('0');
         }
     }
 
