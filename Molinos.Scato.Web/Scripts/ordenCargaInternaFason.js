@@ -165,11 +165,11 @@ function rellenarCampos(data, selectedElement) {
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`;
 
     let tipoComercial = $('#tiposComerciales').find('option').eq(1).val();
-
+    $("#Cliente").val(null);
     $('#tiposComerciales').find('select').val(tipoComercial)
     $("#PatenteAcoplado").val(selectedElement.PatenteAcoplado);
     $("#ClienteId").val(data.Data.ClienteId);
-    $("#Cliente").val(data.Data.ClienteDescripcion);
+    $("#Cliente").val(data.Data.DerivadoGranarioHabilitado ? data.Data.LocalidadDestinoDescripcion: data.Data.ClienteDescripcion);
     $("#TransportistaId").val(data.Data.TransportistaId);
     $("#Transportista").val(data.Data.TransportistaDescripcion);
     $("#Chofer_Cuil").val(convertirCuil(selectedElement.CUILChofer));
