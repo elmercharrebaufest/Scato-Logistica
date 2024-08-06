@@ -4,6 +4,10 @@
     {
         public int? ClienteId { get; set; }
         public string ClienteDescripcion { get; set; }
+
+        public int? DestinoId { get; set; }
+        public string DestinoDescripcion { get; set; }
+
         public int? TransportistaId { get; set; }
         public string TransportistaDescripcion { get; set; }
         public int TipoDeVehiculo { get; set; }
