@@ -142,7 +142,8 @@ function obtenerDatosAjax(selectedElement) {
         patente: selectedElement.PatenteChasis,
         acoplado: selectedElement.PatenteAcoplado,
         materialSAP: selectedElement.CodigoProducto,
-        ordenId: selectedElement.Id
+        ordenId: selectedElement.Id,
+        DestinoCuit: selectedElement.CUITDestino
     };
 }
 
@@ -169,7 +170,10 @@ function rellenarCampos(data, selectedElement) {
     $('#tiposComerciales').find('select').val(tipoComercial)
     $("#PatenteAcoplado").val(selectedElement.PatenteAcoplado);
     $("#ClienteId").val(data.Data.ClienteId);
-    $("#Cliente").val(data.Data.DerivadoGranarioHabilitado ? data.Data.LocalidadDestinoDescripcion: data.Data.ClienteDescripcion);
+    $("#Cliente").val(data.Data.ClienteDescripcion);
+    $("#ClienteOriginalId").val(data.Data.ClienteId);
+    $("#ClienteOriginal").val(data.Data.ClienteDescripcion);    
+    
     $("#TransportistaId").val(data.Data.TransportistaId);
     $("#Transportista").val(data.Data.TransportistaDescripcion);
     $("#Chofer_Cuil").val(convertirCuil(selectedElement.CUILChofer));
@@ -179,7 +183,8 @@ function rellenarCampos(data, selectedElement) {
     $("#IntermediarioFlete").val(data.Data.Orden.RazonSocialIntermediarioFlete);
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
-    $("#DestinoGranario").val(data.Data.Orden.RazonSocialDestino);
+    $("#DestinoGranario").val(data.Data.DestinoDescripcion);
+    $("#DestinoGranarioId").val(data.Data.DestinoId);
     $("#Corredor").val(data.Data.Orden.Corredor);
 
     //rellenar campos ocultos
@@ -211,6 +216,8 @@ function rellenarCampos(data, selectedElement) {
        
     }
 
+    ValidarDerivadoGranario();
+
 
     const select = document.getElementById('localidadDestinoDropdown');
     const option = document.createElement('option');
@@ -233,7 +240,7 @@ function rellenarCampos(data, selectedElement) {
         }
     });
 
-    ValidarDerivadoGranario();
+    
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
         $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
@@ -247,7 +254,31 @@ function rellenarCampos(data, selectedElement) {
     }, 2000);
 }
 
+function ValidarDerivadoGranario() {
+    let materialId = $("#MaterialId").val();
+    let materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
+    if (materialesDerivadoGranario.includes(parseInt(materialId))) {
+        $('#DerivadoGranarioHabilitado').val('true')
+        $('.derivadoGranario').removeClass('hidden');
+        $("label[for='Cliente']").text('Destino');
+        $("#Cliente").val($("#DestinoGranario").val());
+        $("#ClienteId").val($("#DestinoGranarioId").val());
 
+        CargarPlantas();
+        CargarDomicilios();
+    } else {
+        $("#Cliente").val($("#ClienteOriginal").val());
+        $("#ClienteId").val($("#ClienteOriginalId").val());
+        $('#DerivadoGranarioHabilitado').val('false')
+        $('.derivadoGranario').addClass('hidden');
+        $("label[for='Cliente']").text('Cliente');
+        $('#PlantaDGDestino').val('');
+        $('#TipoYOrdenDestino').val('');
+        $('#PagadorFlete').val('');
+        $('#PagadorFleteId').val('');
+        $("#PlantaSeleccionada").val('')
+    }
+}
 function limpiarCamposOrdenDeCargaOperaciones() {
     $("#PatenteAcoplado").val(null);
     $("#NumeroOrdenExterno").val(null);

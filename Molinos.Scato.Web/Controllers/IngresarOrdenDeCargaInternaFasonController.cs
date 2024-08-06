@@ -367,10 +367,12 @@ namespace Molinos.Scato.Web.Controllers
         }
         
         [DatosUsuario]
-        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId, DatosUsuario datosUsuario)
+        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId,string DestinoCUIT, DatosUsuario datosUsuario)
         {
             clienteCUIT = ConvertirCuil(clienteCUIT);
             transportistaCUIT = ConvertirCuil(transportistaCUIT);
+            DestinoCUIT = ConvertirCuil(DestinoCUIT);
+
             var response = new RespuestaEstandarDto<OrdenDeCargaComplementariaDto>();
 
             try
@@ -387,6 +389,9 @@ namespace Molinos.Scato.Web.Controllers
                 };
 
                 var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
+
+                var destino = servicio.ObtenerClientePorCuit(DestinoCUIT);
+
                 var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
                 var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
                 var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
@@ -424,7 +429,9 @@ namespace Molinos.Scato.Web.Controllers
                         MaterialId = material.Id,
                         EsDerivadoGranario = material.EsDerivadoGranario,
                         Orden = orden,
-                        TieneErrorCNRT = resultadoEscalables.HayErrores
+                        TieneErrorCNRT = resultadoEscalables.HayErrores,
+                        DestinoId = destino?.Id,
+                        DestinoDescripcion = destino?.Descripcion != null ? destino.Descripcion : "",
                     };
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Error al obtener el tipo de vehículo por patente: {resultadoEscalables.Errores.Values.First()}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     response.Data = ordenDeCargaComplementario;
@@ -441,7 +448,9 @@ namespace Molinos.Scato.Web.Controllers
                         MaterialId = material.Id,
                         EsDerivadoGranario = material.EsDerivadoGranario,
                         Orden = orden,
-                        TieneErrorCNRT = resultadoEscalables.HayErrores
+                        TieneErrorCNRT = resultadoEscalables.HayErrores,
+                        DestinoId = destino?.Id,
+                        DestinoDescripcion = destino?.Descripcion != null ? destino.Descripcion : "",
                     };
 
                     response.Data = ordenDeCargaComplementario;
