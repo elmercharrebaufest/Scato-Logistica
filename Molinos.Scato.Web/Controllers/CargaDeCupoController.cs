@@ -187,6 +187,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult IndexNoGranos(CargaDeCupoDto model, DatosUsuario datosUsuario)
         {
+            TieneFleteMoa(ref model);
             model.Patente = model.Patente.ToUpper();
             ViewBag.Materiales = servicio.ListarMaterialGranoPorCentro(datosUsuario.CentroId, model.CircuitoNoGranos)
                 .ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
@@ -277,6 +278,14 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
             return View("Form", model);
+        }
+
+        private void TieneFleteMoa(ref CargaDeCupoDto model)
+        {
+            if (model.FleteMOA != null && model.MaterialId != 0)
+            {
+                model.MaterialId = 0;
+            }
         }
 
         private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false)
