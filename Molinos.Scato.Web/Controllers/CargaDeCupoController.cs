@@ -968,18 +968,23 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// El Objetivo de este metodo es generar una una excepcion si hay mas de un cliente con el mismo cuit
+        /// </summary>
+        /// <param name="cuitCliente"></param>
+        /// <returns></returns>
         private bool ComprobarClienteUnico(string cuitCliente)
         {
             try
             {
-                if (servicio.ObtenerClientePorCuit(ConvertirCuil(cuitCliente)) != null) return true;
+                var respuesta = servicio.ListarClientesPorCuit(ConvertirCuil(cuitCliente));
+                if (respuesta.Count == 1 ) return true;
+                throw new InvalidOperationException("La secuencia contiene más de un elemento");
             }
             catch (Exception)
             {
                 throw;
             }
-
-            return false;
         }
 
         private string ConvertirCuil(string cuil)
