@@ -972,7 +972,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             try
             {
-                if (servicio.ObtenerClientePorCuit(cuitCliente) != null) return true;
+                if (servicio.ObtenerClientePorCuit(ConvertirCuil(cuitCliente)) != null) return true;
             }
             catch (Exception)
             {
@@ -980,6 +980,18 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             return false;
+        }
+
+        private string ConvertirCuil(string cuil)
+        {
+            if (String.IsNullOrEmpty(cuil))
+            {
+                return "";
+            }
+            string validador1 = cuil.Substring(0, 2);
+            string documento = cuil.Substring(2, 8);
+            string validador2 = cuil.Substring(10, 1);
+            return validador1 + "-" + documento + "-" + validador2;
         }
 
         private object CrearRespuestaOperaciones(List<OrdenDeCargaDto> ordenes, List<object> materiales, List<OrdenDeCargaDto> ordenAnterior)
