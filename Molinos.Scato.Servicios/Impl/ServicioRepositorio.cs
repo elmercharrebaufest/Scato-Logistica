@@ -11084,7 +11084,11 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return repositorio.Existe<OrdenCargaInternaFason>(x => x.NumeroOrdenExterno == ordenExterno);
         }
-
+		
+		public int ContarClientes(string nCuit)
+        {
+            return ListarClientesPorCuit(nCuit).Count;
+        }
     }
 
 

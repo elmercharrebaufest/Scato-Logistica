@@ -3031,6 +3031,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ExisteOrdenCargaFason(string ordenExterno);
+		
+		[OperationContract]
+        int ContarClientes(string nCuit);
     }
 
 }
