@@ -24,7 +24,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -945,27 +947,41 @@ namespace Molinos.Scato.Web.Controllers
                 var materiales = ObtenerMaterialesOperaciones(ordenesFiltradas);
                 var ordenAnterior = ObtenerOrdenAnteriorOperaciones(ordenesFiltradas, materiales.Count > 1);
 
-                var clienteRepetido = ordenAnterior?.FirstOrDefault()?.CUITCliente != null ? ComprobarClienteUnico(ordenAnterior.First().CUITCliente) : false;           
-
+                ComprobarClienteUnico(ordenAnterior?.FirstOrDefault()?.CUITCliente ?? string.Empty);
+                
                 var response = CrearRespuestaOperaciones(ordenesFiltradas, materiales, ordenAnterior);
 
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                bool resp = ex.Message == Constantes.Excepciones.SecuenciaMultiplesElementos;
-
                 var errorResponse = new
                 {
                     success = false,
                     error = ex.Message,
-                    duplicado = resp
+                    duplicado = true
                 };
 
-                Response.StatusCode = (int)HttpStatusCode.BadGateway;
+
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
                 return Json(errorResponse, JsonRequestBehavior.AllowGet);
             }
+            catch (Exception ex)
+            {
+                var errorResponse = new
+                {
+                    success = false,
+                    error = ex.Message,
+                    duplicado = false
+                };
+
+
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                return Json(errorResponse, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         /// <summary>
@@ -973,13 +989,12 @@ namespace Molinos.Scato.Web.Controllers
         /// </summary>
         /// <param name="cuitCliente"></param>
         /// <returns></returns>
-        private bool ComprobarClienteUnico(string cuitCliente)
+        private void ComprobarClienteUnico(string cuitCliente)
         {
             try
             {
-                var respuesta = servicio.ListarClientesPorCuit(ConvertirCuil(cuitCliente));
-                if (respuesta.Count == 1 ) return true;
-                throw new InvalidOperationException("La secuencia contiene más de un elemento");
+                var respuesta = servicio.ContarClientes(ConvertirCuil(cuitCliente));
+                if (respuesta > 1 ) throw new InvalidOperationException("La secuencia contiene más de un elemento");
             }
             catch (Exception)
             {
