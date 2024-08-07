@@ -12,7 +12,6 @@ using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
-using Molinos.Scato.Web.App_Start;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
@@ -25,7 +24,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
