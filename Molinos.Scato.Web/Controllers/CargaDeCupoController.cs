@@ -24,9 +24,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -962,10 +962,15 @@ namespace Molinos.Scato.Web.Controllers
                     duplicado = true
                 };
 
+                var json = new JavaScriptSerializer().Serialize(errorResponse);
 
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.ContentType = "application/json";
+                Response.Write(json);
 
-                return Json(errorResponse, JsonRequestBehavior.AllowGet);
+                Response.End();
+
+                return null;
             }
             catch (Exception ex)
             {
@@ -977,9 +982,15 @@ namespace Molinos.Scato.Web.Controllers
                 };
 
 
-                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                var json = new JavaScriptSerializer().Serialize(errorResponse);
 
-                return Json(errorResponse, JsonRequestBehavior.AllowGet);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.ContentType = "application/json";
+                Response.Write(json);
+
+                Response.End();
+
+                return null;
             }
 
         }
