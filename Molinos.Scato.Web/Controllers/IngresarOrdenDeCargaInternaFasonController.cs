@@ -463,7 +463,7 @@ namespace Molinos.Scato.Web.Controllers
                 var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
                 log.Error(ex, mensaje);
 
-                bool resp = ex.Message == Constantes.Excepciones.SecuenciaMultiplesElementos;
+                bool resp = ex.Message == "Sequence contains more than one element";
 
                 var data = new
                 {

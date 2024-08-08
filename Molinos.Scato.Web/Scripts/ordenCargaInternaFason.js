@@ -164,6 +164,8 @@ function manejarErrorAjax(data) {
         return;
     } else {
         MostrarAlertaError("Error en la petición AJAX: " + data.errorResponse.error)
+        $.unblockUI();
+        return;
     }
 }
 
