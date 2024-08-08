@@ -106,23 +106,7 @@ function seleccionarOrdenDeCargaOperaciones() {
                 manejarRespuestaAjaxSeleccion(data, selectedElement);
             },
             error: function (xhr, status, error) {
-                if (xhr.responseJSON.duplicado) {
-                    $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
-                    $('#dialogo-advertir').css({
-                        'top': '30%',
-                        'margin-left': function () {
-                            return -($(this).width() / 2);
-                        },
-                        'left': '50%',
-                        'margin-top': function () {
-                            return -($(this).height() / 2.6);
-                        }
-                    });
-                    $("#dialogo-advertir").modal('show');
-                    return false;
-                } else {
-                    MostrarAlertaError("Error en la petición AJAX: " + status + " - " + error)
-                }
+               
             },
             complete: function () {
                 $.unblockUI();
@@ -148,6 +132,7 @@ function obtenerDatosAjax(selectedElement) {
 }
 
 function manejarRespuestaAjaxSeleccion(data, selectedElement) {
+    if (typeof data.errorResponse === "object") manejarErrorAjax(data);
     if (data.TieneAdvertencias) {
         MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
     }
@@ -161,6 +146,26 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
     rellenarCampos(data, selectedElement);
 }
 
+function manejarErrorAjax(data) {
+    if (data.errorResponse.duplicado === true) {
+        $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
+        $('#dialogo-advertir').css({
+            'top': '30%',
+            'margin-left': function () {
+                return -($(this).width() / 2);
+            },
+            'left': '50%',
+            'margin-top': function () {
+                return -($(this).height() / 2.6);
+            }
+        });
+        $("#dialogo-advertir").modal('show');
+        $.unblockUI();
+        return;
+    } else {
+        MostrarAlertaError("Error en la petición AJAX: " + data.errorResponse.error)
+    }
+}
 
 function rellenarCampos(data, selectedElement) {
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`;
