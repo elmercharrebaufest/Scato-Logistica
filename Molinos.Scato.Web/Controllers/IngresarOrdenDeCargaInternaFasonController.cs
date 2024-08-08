@@ -465,16 +465,17 @@ namespace Molinos.Scato.Web.Controllers
 
                 bool resp = ex.Message == Constantes.Excepciones.SecuenciaMultiplesElementos;
 
-                var errorResponse = new
+                var data = new
                 {
                     success = false,
-                    error = ex.Message,
-                    duplicado = resp
+                    errorResponse = new
+                    {
+                        error = ex.Message,
+                        duplicado = resp
+                    }
                 };
 
-                Response.StatusCode = (int)HttpStatusCode.BadGateway;
-
-                return Json(errorResponse, JsonRequestBehavior.AllowGet);
+                return Json(data, JsonRequestBehavior.AllowGet);
             }
 
            
