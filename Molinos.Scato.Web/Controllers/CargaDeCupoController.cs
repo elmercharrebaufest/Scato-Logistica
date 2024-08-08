@@ -958,39 +958,32 @@ namespace Molinos.Scato.Web.Controllers
                 var errorResponse = new
                 {
                     success = false,
-                    error = ex.Message,
-                    duplicado = true
+                    errorResponse = new
+                    {
+                        error = ex.Message,
+                        duplicado = true
+                    }
                 };
 
-                var json = new JavaScriptSerializer().Serialize(errorResponse);
+               // Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                Response.ContentType = "application/json";
-                Response.Write(json);
-
-                Response.End();
-
-                return null;
+                return Json(errorResponse, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 var errorResponse = new
                 {
                     success = false,
-                    error = ex.Message,
-                    duplicado = false
+                    errorResponse = new
+                    {
+                        error = ex.Message,
+                        duplicado = false
+                    }
                 };
 
+            //  Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                var json = new JavaScriptSerializer().Serialize(errorResponse);
-
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                Response.ContentType = "application/json";
-                Response.Write(json);
-
-                Response.End();
-
-                return null;
+                return Json(errorResponse, JsonRequestBehavior.AllowGet);
             }
 
         }

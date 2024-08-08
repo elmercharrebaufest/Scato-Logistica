@@ -206,7 +206,13 @@ function ObtenerDatosFason(patente) {
     $('#MaterialId').prop('disabled', true);
     BlockUI($("#MensajeBuscandoDatos").val());
     $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: $('#Patente').val() }, function (data) {
-        if (data.sonVariosMateriales == true) {
+        if (typeof data.errorResponse === 'object' && data.errorResponse.duplicado == true) {
+            crearRespuestaErrorFason(data.errorResponse)
+            respuesta = false;
+        } else if (typeof data.errorResponse === 'object' && data.errorResponse.duplicado == false) {
+            crearRespuestaErrorFason(data.errorResponse)
+            respuesta = false;
+        } else if (data.sonVariosMateriales == true) {
             llenarMateriales(data, false, false);
         } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
             llenarMateriales(data, true);
@@ -215,18 +221,17 @@ function ObtenerDatosFason(patente) {
             respuesta = false;
         }
     }).fail(function (xhr, status, error) {
-        crearRespuestaErrorFason(xhr)
-        respuesta = false;
+        
     }).complete(function () {
         $.unblockUI();
     });
     return respuesta;
 }
 
-function crearRespuestaErrorFason(xhr) {
+function crearRespuestaErrorFason(data) {
     let message = "";
-    if (xhr.responseJSON.duplicado == false) {
-        message = xhr.responseJSON.error ;
+    if (data.duplicado == false) {
+        message = data.error ;
     } else {
         $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
         $('#dialogo-advertir').css({
