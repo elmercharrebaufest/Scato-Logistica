@@ -388,6 +388,7 @@ namespace Molinos.Scato.Web.Controllers
                     ConsultaOrdenDeCarga = consultaOrdenDeCarga
                 };
 
+                ComprobarClienteUnico(clienteCUIT);
                 var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
 
                 var destino = servicio.ObtenerClientePorCuit(DestinoCUIT);
@@ -458,12 +459,10 @@ namespace Molinos.Scato.Web.Controllers
 
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
                 var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
                 log.Error(ex, mensaje);
-
-                bool resp = ex.Message == "Sequence contains more than one element";
 
                 var data = new
                 {
@@ -471,7 +470,24 @@ namespace Molinos.Scato.Web.Controllers
                     errorResponse = new
                     {
                         error = ex.Message,
-                        duplicado = resp
+                        duplicado = true
+                    }
+                };
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
+                log.Error(ex, mensaje);
+
+                var data = new
+                {
+                    success = false,
+                    errorResponse = new
+                    {
+                        error = ex.Message,
+                        duplicado = false
                     }
                 };
 
@@ -479,6 +495,19 @@ namespace Molinos.Scato.Web.Controllers
             }
 
            
+        }
+
+        private void ComprobarClienteUnico(string cuitCliente)
+        {
+            try
+            {
+                var respuesta = servicio.ContarClientes(ConvertirCuil(cuitCliente));
+                if (respuesta > 1) throw new InvalidOperationException("La secuencia contiene más de un elemento");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private OrdenDeCargaDto ajustarOrdenFormatoRequerido(OrdenDeCargaDto orden)
