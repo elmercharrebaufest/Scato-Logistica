@@ -501,7 +501,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             try
             {
-                var respuesta = servicio.ContarClientes(ConvertirCuil(cuitCliente));
+                var respuesta = servicio.ContarClientes(cuitCliente);
                 if (respuesta > 1) throw new InvalidOperationException("La secuencia contiene más de un elemento");
             }
             catch (Exception)
