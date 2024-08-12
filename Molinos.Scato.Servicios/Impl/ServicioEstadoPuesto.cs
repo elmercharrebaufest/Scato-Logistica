@@ -304,7 +304,7 @@ namespace Molinos.Scato.Servicios.Impl
             catch (Exception e)
             {
                 var datosString = string.Join(", ", notificacion.Datos.Select(d => $"{d.Key}: {d.Value}"));
-                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e, datosString);
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, NotificarSensorBarrera - detalle del error : {1}", sensor, e, datosString);
             }
         }
 
@@ -445,7 +445,7 @@ namespace Molinos.Scato.Servicios.Impl
             catch (Exception e)
             {
                 var datosString = string.Join(", ", notificacion.Datos.Select(d => $"{d.Key}: {d.Value}"));
-                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e, datosString);
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, NotificarSensorBarreraHidraulicas - detalle del error : {1}", sensor, e, datosString);
             }
         }
     }
