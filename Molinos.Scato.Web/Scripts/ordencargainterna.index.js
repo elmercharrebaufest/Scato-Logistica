@@ -167,7 +167,16 @@
 
     DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
     $('#TipoComercialId').change(function () {
-        DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, true, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
+
+        DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
+
+        var valorTransportista = $('#Transportista').val();
+        var arrayPartesTransportista = valorTransportista.split(' - ');
+        var nombreTransportista = arrayPartesTransportista[arrayPartesTransportista.length - 1].trim();
+        var inputTransportista = $('#Transportista');
+        inputTransportista.val(nombreTransportista);
+        inputTransportista.trigger('keydown').trigger('focusout');
+        setTimeout(() => inputTransportista.blur(), 100);
     });
     completarKmRecorrerYLocalidad();
     $('#localidadDestinoDropdown').change(function () {
