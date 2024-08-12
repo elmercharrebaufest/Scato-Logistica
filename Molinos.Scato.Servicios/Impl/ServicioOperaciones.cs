@@ -106,6 +106,7 @@ namespace Molinos.Scato.Servicios.Impl
             try
             {
                  errorContent = JsonConvert.DeserializeObject<ErrorResponse>(restResponse.Content);
+
                // var errorContent = JsonConvert.DeserializeObject<Dictionary<string, string>>(restResponse.Content);
 
             }
@@ -120,7 +121,7 @@ namespace Molinos.Scato.Servicios.Impl
                 }
             }
 
-            log.Trace(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + errorContent.ExceptionMessage);
+            log.Trace(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + (errorContent?.Message ?? restResponse.ErrorMessage));
 
             switch ((HttpStatusCode)restResponse.StatusCode)
             {
