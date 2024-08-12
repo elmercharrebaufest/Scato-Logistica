@@ -59,7 +59,7 @@ function manejarRespuestaExitosa(data) {
     }
 
     cachedOrdenDeCargaOperaciones = data.Data;
-    $("#NumeroOrdenExterno").append($("<option></option>").attr("value", "0").text("(Ninguno)"));
+    $("#NumeroOrdenExterno").append($("<option></option>").attr("value", "").text("(Ninguno)"));
 
     if (Array.isArray(data.Data)) {
         data.Data.forEach(function (value) {
