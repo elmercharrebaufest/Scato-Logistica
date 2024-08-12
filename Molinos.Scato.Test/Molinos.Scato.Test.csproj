@@ -918,6 +918,7 @@
     </Compile>
     <Compile Include="Servicios\CalculadoraDescuentoTest.cs" />
     <Compile Include="Servicios\ServicioComandosTest.cs" />
+    <Compile Include="Servicios\ServicioOperacionesTest.cs" />
     <Compile Include="Servicios\ServicioMercadoPagoTest.cs" />
     <Compile Include="Servicios\ServicioRepositorioTest.cs" />
     <Compile Include="Servicios\ServicioWorkflowsTest.cs" />

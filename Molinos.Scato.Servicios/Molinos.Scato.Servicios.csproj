@@ -364,6 +364,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\VinedoPropioMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ImpIdentificacionMuestraAuditoriaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VinedoTercerosMappingProfile.cs" />
+    <Compile Include="ErrorRespons.cs" />
     <Compile Include="IAdministradorDeCalles.cs" />
     <Compile Include="IExternalServiceException.cs" />
     <Compile Include="IFirmware.cs" />
@@ -371,10 +372,13 @@
     <Compile Include="CrearException.cs" />
     <Compile Include="IFirmwareFactory.cs" />
     <Compile Include="Impl\ExternalServiceException.cs" />
+    <Compile Include="Impl\RestClientFactory.cs" />
     <Compile Include="Impl\ServicioEstadoPuesto.cs" />
     <Compile Include="Impl\ServicioCircular.cs" />
     <Compile Include="Impl\ServicioLlamadoAutomatico.cs" />
     <Compile Include="Impl\ServicioOperaciones.cs" />
+    <Compile Include="InnerException.cs" />
+    <Compile Include="IRestClientFactory.cs" />
     <Compile Include="IServicioEstadoPuesto.cs" />
     <Compile Include="IServicioCircular.cs" />
     <Compile Include="IServicioLlamadoAutomatico.cs" />

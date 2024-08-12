@@ -1,11 +1,13 @@
 ﻿using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
+using Molinos.Scato.Servicios.Properties;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net;
 
 
@@ -15,11 +17,13 @@ namespace Molinos.Scato.Servicios.Impl
     {
         private readonly ILogger log;
         private readonly IExternalServiceException externalServiceException;
+        private readonly IRestClientFactory clientFactory;
 
-        public ServicioOperaciones(ILogger log, IExternalServiceException externalServiceException)
+        public ServicioOperaciones(ILogger log, IExternalServiceException externalServiceException, IRestClientFactory clientFactory)
         {
             this.log = log;
             this.externalServiceException = externalServiceException;
+            this.clientFactory = clientFactory;
         }
 
         public IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente)
@@ -31,7 +35,6 @@ namespace Molinos.Scato.Servicios.Impl
             if (string.IsNullOrWhiteSpace(patente))
                 throw externalServiceException.ThrowException("La patente no puede ser nula o estar vacía.");
 
-            var client = CrearCliente();
             var request = CrearRequest(RECURSO);
             IRestResponse<IEnumerable<OrdenDeCargaDto>> restResponse;
 
@@ -43,7 +46,8 @@ namespace Molinos.Scato.Servicios.Impl
 
             try
             {
-               restResponse = client.Get<IEnumerable<OrdenDeCargaDto>>(request);
+               var Client = clientFactory.CrearClientOperaciones();
+               restResponse = Client.Get<IEnumerable<OrdenDeCargaDto>>(request);
             }
             catch (Exception ex)
             {
@@ -67,18 +71,18 @@ namespace Molinos.Scato.Servicios.Impl
             if (ingresosEgresosFasonesDto == null)
                 throw externalServiceException.ThrowException("El objeto de datos no puede ser nulo.");
 
-            var client = CrearCliente();
+
             var request = CrearRequest(RECURSO);
             IRestResponse restResponse;
-
             var json = JsonConvert.SerializeObject(ingresosEgresosFasonesDto);
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
 
             log.Trace("Se ejecuta la consulta a la Api");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
 
             try
             {
-                restResponse = client.Post(request);
+                var Client = clientFactory.CrearClientOperaciones();
+                restResponse = Client.Post(request);
             }
             catch (Exception ex)
             {
@@ -97,23 +101,26 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void RespuestaError(IRestResponse restResponse)
         {
-            string RestMessage = "";
+            ErrorResponse errorContent;
 
             try
             {
-                var errorContent = JsonConvert.DeserializeObject<Dictionary<string, string>>(restResponse.Content);
+                 errorContent = JsonConvert.DeserializeObject<ErrorResponse>(restResponse.Content);
+               // var errorContent = JsonConvert.DeserializeObject<Dictionary<string, string>>(restResponse.Content);
 
-                if (errorContent != null && errorContent.ContainsKey("Message"))
-                {
-                    RestMessage += errorContent["Message"];
-                }
             }
             catch (JsonException jsonEx)
             {
-                throw externalServiceException.ThrowException("Error al deserializar la respuesta del servicio externo.", jsonEx.Message, jsonEx);
+                if (jsonEx != null)
+                {
+                    throw externalServiceException.ThrowException("Error al deserializar la respuesta del servicio externo.", jsonEx.Message, jsonEx);
+                } else
+                {
+                    throw externalServiceException.ThrowException("Error al deserializar la respuesta del servicio MoaOperaciones.");
+                }
             }
 
-            log.Trace(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + RestMessage);
+            log.Trace(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + errorContent.ExceptionMessage);
 
             switch ((HttpStatusCode)restResponse.StatusCode)
             {
@@ -130,36 +137,31 @@ namespace Molinos.Scato.Servicios.Impl
                 case HttpStatusCode.RequestTimeout:
                     throw externalServiceException.ThrowException("El Servicio de MoaOperaciones ha excedido el tiempo de espera de 5 segundos.");
 
+                case HttpStatusCode.InternalServerError:
+                    throw externalServiceException.ThrowException("El Servicio de MoaOperaciones ha respondido con un mensaje de error interno 'InternalServerError'.");
+
                 default:
                     throw restResponse.ErrorException;
             }
-        }
-
-        public IRestClient CrearCliente()
-        {
-            log.Trace("Empieza el método ORDEN FASON");
-            log.Trace("Se crean variables de url, token y resource");
-            string url = ConfigurationManager.AppSettings["URLOperacionesAPI"]; // /externalApi/external/api/
-
-
-            log.Trace("Se inicializa RestClien y parametros de configuracion");
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-            var client = new RestClient(url);
-            client.Timeout = 5000;
-            client.UserAgent = "RestSharp v106";
-
-            return client;
         }
 
         public IRestRequest CrearRequest(string recurso)
         {
             string token = ConfigurationManager.AppSettings["APITokenOperacionesAPI"];
             log.Trace("Se inicializa RestRequest y se agrega token");
+
             var request = new RestRequest(recurso);
             request.AddHeader("X-Api-Key", token);
 
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new System.NullReferenceException("La propiedad APITokenOperacionesAPI no está configurada.");
+            }
+            
             return request;
-        }
-    }
 
+        }
+
+
+    }
 }
