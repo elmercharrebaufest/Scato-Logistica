@@ -44,6 +44,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 CuitComisionista = !string.IsNullOrEmpty(orden?.Comisionista?.Cuit) ? long.Parse(orden?.Comisionista?.Cuit?.Replace("-", string.Empty)) : 0,
                 CuitRemitente = !string.IsNullOrEmpty(orden?.Remitente?.Cuit) ? long.Parse(orden?.Remitente?.Cuit?.Replace("-", string.Empty)) : 0,
                 CuitIntermediarioFlete = !string.IsNullOrEmpty(orden?.IntermediarioFlete?.Cuil) ? long.Parse(orden?.IntermediarioFlete?.Cuil.Replace("-", string.Empty)) : 0,
+                Observaciones = orden.Observaciones
+                
             };
             return request;
         }

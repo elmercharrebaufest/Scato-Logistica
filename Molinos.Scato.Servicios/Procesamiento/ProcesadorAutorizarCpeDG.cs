@@ -205,7 +205,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             cuitComisionista = orden.CuitComisionista.GetValueOrDefault(),
                             cuitRemitenteComercialSpecified = orden.CuitRemitente.GetValueOrDefault() != 0,
                             cuitRemitenteComercial = orden.CuitRemitente.GetValueOrDefault(),
-                        }
+                        },
+                        observaciones = orden.Observaciones
                     }
                 };
 

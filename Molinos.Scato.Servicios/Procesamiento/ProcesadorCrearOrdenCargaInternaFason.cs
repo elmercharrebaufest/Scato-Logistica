@@ -62,6 +62,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino,
                         Destinatario = Repositorio.Obtener<Cliente>(comando.Orden.DestinatarioId),
                         NumeroOrdenExterno = comando.Orden.NumeroOrdenExterno,
+                        Observaciones = comando.Orden.Observaciones
                     };
 
                     Repositorio.Agregar(ordenCargaInternaFason);

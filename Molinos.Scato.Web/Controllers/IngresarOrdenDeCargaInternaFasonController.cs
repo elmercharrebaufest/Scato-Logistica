@@ -165,6 +165,7 @@ namespace Molinos.Scato.Web.Controllers
                     ComisionistaId = orden.ComisionistaId,
                     IntermediarioFleteId = orden.IntermediarioFleteId,
                     AplicaDestinatario = true,
+                    Observaciones = orden.Observaciones
                 }) as ResultadoCartaPorteElectronicaDummy;
 
                 if (resultadoAltaDummy.HayErrores)
