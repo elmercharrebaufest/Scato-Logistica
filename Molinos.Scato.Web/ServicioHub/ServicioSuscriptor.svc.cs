@@ -788,8 +788,7 @@ namespace Molinos.Scato.Web.ServicioHub
             }
             catch (Exception e)
             {
-                var datosString = string.Join(", ", notificacion.Datos.Select(d => $"{d.Key}: {d.Value}"));
-                log.Error("Notificar cambio sensor vagones error no controlado sensor : {0} - NotificarSensorVagonesSinalR - detalle del error : {1}, Datos {2}, machine: {3}", sensor, e, datosString, System.Environment.MachineName);
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
             }
         }
 
