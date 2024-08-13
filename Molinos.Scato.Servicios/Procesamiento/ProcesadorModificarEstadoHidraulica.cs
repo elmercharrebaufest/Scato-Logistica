@@ -69,14 +69,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     automatismosActivosConLaHidraulica.All(a => a.Hidraulicas.Count(h => h.ActivoAutomatico) == 1);
 
                 // Obtener una lista de IDs de los automatismos que contienen la hidráulica
-                var idsAutomatismosConLaHidraulica = string.Join(", ", automatismosActivosConLaHidraulica.Select(a => a.Id.ToString()));
+                var idsAutomatismosConLaHidraulica = string.Join(", ", automatismosActivosConLaHidraulica.Where(c => c.Hidraulicas.Count(h => h.ActivoAutomatico) == 1).Select(a => a.Id.ToString()));
 
                 // Generar error si se cumplen las condiciones para no permitir la deshabilitación
                 if (hidraulicaUnicaEnAlgunAutomatismoActivo || hidraulicaUnicaEnVariosAutomatismosActivos)
                 {
                     resultado.Error("Hidraulica", string.Format(Textos.HidraulicaUtilizadaEnVariosAutomatismoActivo, idsAutomatismosConLaHidraulica));
                 }
-
             }
         }
     }

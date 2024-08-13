@@ -10558,6 +10558,9 @@
   <data name="HidraulicaUtilizadaEnVariosAutomatismoActivo" xml:space="preserve">
     <value>No es posible deshabilitar la Hidráulica ya que se encuentra utilizada en los siguientes Automatismos con Id: ´{0}´ </value>
   </data>
+  <data name="Automatismo_HidarulicasDesactivadas" xml:space="preserve">
+    <value>Debe existir una hidráulica habilitada</value>
+  </data>
   <data name="RespuestaOperacionesVariasOrdenes" xml:space="preserve">
     <value>Se ha encontrado más de un Recorrido con la misma Orden de Operaciones</value>
   </data>
