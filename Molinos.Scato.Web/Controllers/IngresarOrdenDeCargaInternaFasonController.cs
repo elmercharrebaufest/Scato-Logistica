@@ -304,8 +304,8 @@ namespace Molinos.Scato.Web.Controllers
             
             try
             {
-                var restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(patente);                
-
+                var restResponse = OrdenesFiltradas(ObtenerRespuestaOrdenDeCargaOperaciones(patente));
+                
                 if (restResponse != null)
                 {
                     foreach (var item in restResponse)
@@ -366,7 +366,12 @@ namespace Molinos.Scato.Web.Controllers
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }
-        
+
+        private List<OrdenDeCargaDto> OrdenesFiltradas(List<OrdenDeCargaDto> ordenDeCargaDtos)
+        {
+            return ordenDeCargaDtos.Where(orden => !servicio.ExisteOrdenCargaFason(orden.Id.ToString())).ToList();
+        }
+
         [DatosUsuario]
         public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId,string DestinoCUIT, DatosUsuario datosUsuario)
         {
