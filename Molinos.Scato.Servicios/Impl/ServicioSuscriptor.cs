@@ -9,6 +9,8 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading;
 using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Servicios.Impl
@@ -22,6 +24,15 @@ namespace Molinos.Scato.Servicios.Impl
         private readonly IServicioEstadoPuesto estadoPuesto;
         private readonly IServicioOrquestador servicioOrquestador;
         private readonly IConfiguracionProvider configuracion;
+        private static int entradaActivadaCount;
+        private static int entradaDesactivadaCount;
+        private static int balanzadaRecibidaCount;
+        private static int cambioEstadoSensorCount;
+        private static int lecturaCPECount;
+        private static int cambioEstadoSensorCamaraALPRCount;
+        private static int cambioEstadoSensorGeneralCount;
+        private static TimeSpan startTimeSpan;
+        private static bool countIsRunning = false;
 
         public ServicioSuscriptor(IServicioComandos servicioComandos, ILogger log
             , IServicioRepositorio repositorio, IServicioEstadoPuesto estadoPuesto
@@ -33,6 +44,59 @@ namespace Molinos.Scato.Servicios.Impl
             this.estadoPuesto = estadoPuesto;
             this.servicioOrquestador = servicioOrquestador;
             this.configuracion = configuracion;
+
+            if (!countIsRunning)
+            {
+                countIsRunning = true;
+                entradaActivadaCount = 0;
+                entradaDesactivadaCount = 0;
+                balanzadaRecibidaCount = 0;
+                cambioEstadoSensorCount = 0;
+                lecturaCPECount = 0;
+                cambioEstadoSensorCamaraALPRCount = 0;
+                cambioEstadoSensorGeneralCount = 0;
+
+                startTimeSpan = DateTime.Now.TimeOfDay;
+                var min = configuracion.AppSettings["LogCountAfterMinutes"] != null ?
+                    Convert.ToInt32(configuracion.AppSettings["LogCountAfterMinutes"]) : 5;
+
+                StartLoggerCountAsync(TimeSpan.FromMinutes(min));
+            }
+        }
+
+        public async Task StartLoggerCountAsync(TimeSpan interval, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                while (true)
+                {
+                    await Task.Run(() => { LogContadores(); });
+                    await Task.Delay(interval, cancellationToken);
+                }
+            }
+            catch
+            {
+                countIsRunning = false;
+            }
+        }
+
+        private void LogContadores()
+        {
+            try
+            {
+                log.Info("Start Contador: " + startTimeSpan);
+                log.Info("Request EntradaActivada: " + entradaActivadaCount);
+                log.Info("Request EntradaDesactivada: " + entradaDesactivadaCount);
+                log.Info("Request BalanzadaRecibida: " + balanzadaRecibidaCount);
+                log.Info("Request CambioEstadoSensor: " + cambioEstadoSensorCount);
+                log.Info("Request LecturaCPE: " + lecturaCPECount);
+                log.Info("Request CambioEstadoSensorCamaraALPR: " + cambioEstadoSensorCamaraALPRCount);
+                log.Info("Request CambioEstadoSensorGeneral: " + cambioEstadoSensorGeneralCount);
+            }
+            catch (Exception e)
+            {
+                log.Info("No se pudo loguear contadores de notificaciones: " + e.Message);
+            }
         }
 
         public void Recibir(NotificacionEvento notificacion)
@@ -43,16 +107,19 @@ namespace Molinos.Scato.Servicios.Impl
                 switch (notificacion.CodigoEvento)
                 {
                     case "EntradaActivada":
+                        entradaActivadaCount++;
                         var resultadoApertura = servicioComandos.Ejecutar(new CrearMotivoQuiebreBarrera { CodigoDispositivo = notificacion.CodigoDispositivo, Apertura = true });
                         EnviarMail(Textos.MailQuiebreBarrera, resultadoApertura, notificacion);
                         break;
 
                     case "EntradaDesactivada":
+                        entradaDesactivadaCount++;
                         var resultadoCierre = servicioComandos.Ejecutar(new CrearMotivoQuiebreBarrera { CodigoDispositivo = notificacion.CodigoDispositivo, Apertura = false });
                         EnviarMail(Textos.MailCierreBarrera, resultadoCierre, notificacion);
                         break;
 
                     case "BalanzadaRecibida":
+                        balanzadaRecibidaCount++;
                         if (notificacion.Datos["tipoBalanzada"] == "fin")
                         {
                             servicioComandos.Ejecutar(new ValidarConsistenciaBalanzadas { Balanza = notificacion.CodigoDispositivo, CodigoDispositivo = notificacion.CodigoDispositivo, Hasta = Int32.Parse(notificacion.Datos["id"]) });
@@ -60,6 +127,7 @@ namespace Molinos.Scato.Servicios.Impl
                         break;
 
                     case "CambioEstadoSensor":
+                        cambioEstadoSensorCount++;
                         estadoPuesto.NotificarSensorBarrera(notificacion);
                         estadoPuesto.NotificarSensorBarreraHidraulicas(notificacion);
                         bool estado;
@@ -77,10 +145,12 @@ namespace Molinos.Scato.Servicios.Impl
                         break;
 
                     case "LecturaCPE":
+                        lecturaCPECount++;
                         LecturaCartaPorteElectronica(notificacion.CodigoDispositivo, int.Parse(notificacion.Datos["QR"]));
                         break;
 
                     case CodigosEventos.CambioEstadoSensorCamaraALPR:
+                        cambioEstadoSensorCamaraALPRCount++;
                         log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorCamaraALPR - Inicio");
                         var patente = notificacion.Datos["Patente"];
                         var hidraulicasDisponibles = repositorio.ListarHidraulicasPorEstado(EstadoHidraulica.Disponible);
@@ -106,6 +176,7 @@ namespace Molinos.Scato.Servicios.Impl
                         break;
 
                     case CodigosEventos.CambioEstadoSensorGeneral:
+                        cambioEstadoSensorGeneralCount++;
                         log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - Inicio");
                         if (Enum.TryParse(notificacion.Datos["Accion"], out TipoAccionSensor tipoAccion))
                         {
