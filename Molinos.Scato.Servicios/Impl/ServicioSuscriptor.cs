@@ -64,14 +64,14 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
-        public async Task StartLoggerCountAsync(TimeSpan interval, CancellationToken cancellationToken = default)
+        public async Task StartLoggerCountAsync(TimeSpan interval)
         {
             try
             {
                 while (true)
                 {
                     await Task.Run(() => { LogContadores(); });
-                    await Task.Delay(interval, cancellationToken);
+                    await Task.Delay(interval, CancellationToken.None);
                 }
             }
             catch
