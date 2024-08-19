@@ -194,6 +194,7 @@ function rellenarCampos(data, selectedElement) {
     $("#DestinoGranarioId").val(data.Data.DestinoId);
     $("#Corredor").val(data.Data.Orden.Corredor);
     $("#Observaciones").val(data.Data.Orden.Observacion);
+    $("#Remitente").val(data.Data.Orden.RemitenteComercial);
 
     //rellenar campos ocultos
     $("#Chofer_Cuil[type='hidden']").val(convertirCuil(selectedElement.CUILChofer));
@@ -205,6 +206,7 @@ function rellenarCampos(data, selectedElement) {
     $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
     $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
     $("#TipoComercialId[type='hidden']").val(tipoComercial)
+    $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId)
 
 
 
@@ -236,7 +238,7 @@ function rellenarCampos(data, selectedElement) {
     option.selected = true;
     select.appendChild(option);
 
-    let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Transportista", "#IntermediarioFlete", "#PagadorFlete"];
+    let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Transportista", "#IntermediarioFlete", "#PagadorFlete", "#Remitente"];
 
     elementos.forEach(function (selector) {
         let $element = $(selector);
@@ -314,6 +316,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#Corredor").val(null);
     $("#localidadDestinoDropdown").empty();
     $("#Observaciones").val(null);
+    $("#RemitenteId").val(null);
 }
 
 function convertirCuil(cuil) {

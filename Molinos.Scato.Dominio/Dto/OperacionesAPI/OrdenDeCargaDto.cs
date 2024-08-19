@@ -39,5 +39,7 @@
         public string RazonSocialDestino { get; set; }
         public string CUITIntermediarioFlete { get; set; }
         public string RazonSocialIntermediarioFlete { get; set; }
+        public string RemitenteComercial { get; set; }
+        public long RemitenteComercialId { get; set; }
     }
 }
