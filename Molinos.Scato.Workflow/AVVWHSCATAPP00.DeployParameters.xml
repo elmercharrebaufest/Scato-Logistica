@@ -14,7 +14,7 @@
   <setParameter name="Impresora Key" value="\\vicfsp02\PVicSiste010" />
   <setParameter name="ImpresoraTicket Key" value="\\vicfsp02\PSLOSiste567" />
   <setParameter name="MailSettings Smtp From" value="scatoprodMOA@molinosagro.com.ar" />
-  <setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
+  <setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
   <setParameter name="MailSettings Smtp Port" value="25" />
   <setParameter name="MailSettings Smtp EnableSsl" value="false" />
   <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
