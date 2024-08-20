@@ -23,9 +23,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 
 namespace Molinos.Scato.Web.Controllers
@@ -189,7 +187,8 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult IndexNoGranos(CargaDeCupoDto model, DatosUsuario datosUsuario)
         {
-            TieneFleteMoa(ref model);
+            bool? fleteMOA = bool.TryParse(model.FleteMOA, out bool respValor) ? (bool?)respValor : null;
+
             model.Patente = model.Patente.ToUpper();
             ViewBag.Materiales = servicio.ListarMaterialGranoPorCentro(datosUsuario.CentroId, model.CircuitoNoGranos)
                 .ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
@@ -251,7 +250,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap , true);
+                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap , true, fleteMOA);
                     }
                     if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
                     {
@@ -282,22 +281,16 @@ namespace Molinos.Scato.Web.Controllers
             return View("Form", model);
         }
 
-        private void TieneFleteMoa(ref CargaDeCupoDto model)
-        {
-            if (model.FleteMOA != null && model.MaterialId != 0)
-            {
-                model.MaterialId = 0;
-            }
-        }
-
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false, bool? FleteMOA = null)
         {
             try
             {
                 var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
                 var resultado = servicioComandos.Ejecutar(new CrearCallePorRecorrido
                 {
-                    TipoCalle = circuitoNoGranos ? TipoCalle.NoGranos : titular.Equals(codigoSapPuertoRosario) ? TipoCalle.PostCalado : TipoCalle.PreCalado,
+                    TipoCalle = FleteMOA != null ? TipoCalle.NoGranos :
+                    (circuitoNoGranos ? TipoCalle.NoGranos :
+                    (titular.Equals(codigoSapPuertoRosario) ? TipoCalle.PostCalado : TipoCalle.PreCalado)),
                     CargaDeCupoId = cargaDeCupoId,
                     TurnoActivo = turnoActivo,
                     CentroId = centroId
@@ -1020,6 +1013,12 @@ namespace Molinos.Scato.Web.Controllers
 
         private object CrearRespuestaOperaciones(List<OrdenDeCargaDto> ordenes, List<object> materiales, List<OrdenDeCargaDto> ordenAnterior)
         {
+            if (ordenAnterior.Count != 0)
+            {
+                var material = servicio.ObtenerMaterialPorCodigoSap(ordenAnterior[0].CodigoProducto);
+                ordenAnterior[0].CodigoProducto = material.Id.ToString();
+            }
+
             return new
             {
                 success = true,
@@ -1047,11 +1046,24 @@ namespace Molinos.Scato.Web.Controllers
 
         private List<object> ObtenerMaterialesOperaciones(List<OrdenDeCargaDto> ordenes) 
         {
-            return ordenes
-                     .GroupBy(o => o.CodigoProducto)
-                     .Select(g => g.First())
-                     .Select(os => new { Value = os.CodigoProducto, Text = os.DescripcionProducto })
-                     .ToList<object>();
+            var listaMateriales = new List<object>();
+
+            foreach (var orden in ordenes.GroupBy(o => o.CodigoProducto))
+            {
+                var primerOrden = orden.First();
+                var material = servicio.ObtenerMaterialPorCodigoSap(primerOrden.CodigoProducto);
+
+                if (material != null)
+                {
+                    listaMateriales.Add(new
+                    {
+                        Value = material.Id, 
+                        Text = primerOrden.DescripcionProducto 
+                    });
+                }
+            }
+
+            return listaMateriales;
         }
 
         private List<OrdenDeCargaDto> FiltrarOrdenesExistentesOperaciones(List<OrdenDeCargaDto> ordenes)

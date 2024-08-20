@@ -189,43 +189,48 @@ function RefrescarFotoPatente() {
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
     if (existePatenteYesNoGranos) {
-        DefinirFlujoFasFason(existePatenteYesNoGranos);
+        DefinirFlujoFasFason($('#Patente').val());
     }
 
 }
 
-function DefinirFlujoFasFason(patente) {
-    var respuesta = ObtenerDatosFason(patente);
+async function DefinirFlujoFasFason(patente) {
+    const respuesta = await ObtenerDatosFason(patente);
     if (!respuesta) {
         ObtenerDatosSap();
     }
 }
 
-function ObtenerDatosFason(patente) {
-    let respuesta = true;
+async function ObtenerDatosFason(patente) {
     $('#MaterialId').prop('disabled', true);
+    $('#FleteMOA').val("");
     BlockUI($("#MensajeBuscandoDatos").val());
-    $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: $('#Patente').val() }, function (data) {
-        if (typeof data.errorResponse === 'object' && data.errorResponse.duplicado == true) {
-            crearRespuestaErrorFason(data.errorResponse)
-            respuesta = false;
-        } else if (typeof data.errorResponse === 'object' && data.errorResponse.duplicado == false) {
-            crearRespuestaErrorFason(data.errorResponse)
-            respuesta = false;
-        } else if (data.sonVariosMateriales == true) {
-            llenarMateriales(data, false, false);
-        } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
-            llenarMateriales(data, true);
-        } else {
-            limpiarComboMateriales();
-            respuesta = false;
-        }
-    }).fail(function (xhr, status, error) {
-        
-    }).complete(function () {
-        $.unblockUI();
+
+    return new Promise((resolve, reject) => {
+        $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
+            if (typeof data.errorResponse === 'object') {
+                if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
+                    crearRespuestaErrorFason(data.errorResponse);
+                    resolve(false);
+                }
+            }
+
+            if (data.sonVariosMateriales) {
+                llenarMateriales(data, false, false);
+                resolve(true);
+            } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
+                llenarMateriales(data, true);
+                resolve(true);
+            } else {
+                limpiarComboMateriales();
+                resolve(false);
+            }
+        }).fail(function (xhr, status, error) {
+            reject(error); // Manejo de errores
+        }).always(function () {
+            $.unblockUI();
+        });
     });
-    return respuesta;
 }
 
 function crearRespuestaErrorFason(data) {
