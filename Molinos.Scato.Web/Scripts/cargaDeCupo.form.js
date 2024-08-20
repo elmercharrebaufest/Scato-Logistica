@@ -336,6 +336,7 @@ function llenarFleteMoa(data) {
 function ajustarFleteMoa(materialId = "") {
     let valor = dataFleteMoa.get(materialId);
     $('#FleteMOA').val(valor);
+    $('#matId').val(materialId);
 }
 
 function BlockCupos(msg) {
