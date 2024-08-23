@@ -30,7 +30,7 @@
 	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\" />
 
 	<setParameter name="MailSettings Smtp From" value="scatoprodMOA@molinosagro.com.ar" />
-	<setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
+	<setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
 	<setParameter name="MailSettings Smtp Port" value="25" />
 	<setParameter name="MailSettings Smtp EnableSsl" value="false" />
 	<setParameter name="ServicioCNRTTipoVehiculoRest Config" value="https://api.cnrt.gob.ar/dut/v1/public/equipos?dominios=" />
@@ -42,4 +42,5 @@
 	<setParameter name="UrlBaseWebAPI Config" value="https://scato.molinosagro.com.ar/Scato.WebApiCore/" />
 	<setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
 	<setParameter name="APITokenOperacionesAPI Config" value="ZHBCyyW4SM0UoJr9nfmJTTgBBgsBky81dHka3Q6ZOCHtbZFF1W" />
+	<setParameter name="LogCountAfterMinutes Config" value="5" />
 </parameters>

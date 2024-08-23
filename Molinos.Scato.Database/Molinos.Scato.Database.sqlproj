@@ -106,6 +106,7 @@
     <None Include="Molinos.Scato.Database.GVICSQLTEST2016.Puerto.publish.xml" />
     <Build Include="dbo\Tables\ConfiguracionAutomatizacionEtapas.sql" />
     <None Include="Molinos.Scato.Database.ASVWUSCATO00.publish.xml" />
+    <None Include="Molinos.Scato.Database.GVICSQLUAT.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Balanza.sql" />

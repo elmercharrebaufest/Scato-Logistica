@@ -4,7 +4,7 @@
 	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSQA.molinosagro.ad,1450;Initial Catalog=MOAScatoUAT;Integrated Security=True" />
 
 	<setParameter name="LoginCms Service Endpoint Address" value="https://wsaahomo.afip.gov.ar/ws/services/LoginCms" />
-	<setParameter name="Orquestador Service Endpoint Address" value="http://GSLOSCATOQA01.molinosagro.ad:8080/ServicioOrquestador" />
+	<setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
 	<!--<setParameter name="Orquestador Service Endpoint Address" value="net.tcp://scatoqaor.molinos.com.ar:8081/ServicioOrquestador" />-->
 	<setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://fwshomo.afip.gov.ar/wsctg/services/CTGService_v4.0" />
 	<!--<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://GVICECCDES.ar.molinos.local:8010/sap/bc/srt/rfc/sap/zsdws_scato/220/zsdws_scato/zsdws_scato" />-->
@@ -30,8 +30,8 @@
 	<setParameter name="FotosPath Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\" />
 	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\Testing\" />
 
-	<setParameter name="MailSettings Smtp From" value="scatoQAMOA@molinosagro.com.ar" />
-	<setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
+	<setParameter name="MailSettings Smtp From" value="scatoUATMOA@molinosagro.com.ar" />
+	<setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
 	<setParameter name="MailSettings Smtp Port" value="25" />
 	<setParameter name="MailSettings Smtp EnableSsl" value="false" />
 	<setParameter name="ServicioCNRTTipoVehiculoRest Config" value="https://api.cnrt.gob.ar/dut/v1/public/equipos?dominios=" />
@@ -43,4 +43,5 @@
 	<setParameter name="UrlBaseWebAPI Config" value="https://ASVWUSCATO00.molinosagro.com.ar/Scato.WebApiCore/" />
 	<setParameter name="URLOperacionesAPI Config" value="https://prenuevo.moaoperaciones.com.ar/externalApi/external/api/" />
 	<setParameter name="APITokenOperacionesAPI Config" value="RL9ArEV37xhTXZYJvlhAweUHZljMreDP7P1fE6mMzmn0ODBDvu" />
+	<setParameter name="LogCountAfterMinutes Config" value="5" />
 </parameters>

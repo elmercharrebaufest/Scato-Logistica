@@ -114,7 +114,7 @@ namespace Molinos.Scato.Servicios.Impl
             var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
             if (puesto == null)
             {
-                log.Info($"No hay puesto con contrador para el sensor: {sensor}");
+                log.Debug($"No hay puesto con contrador para el sensor: {sensor}");
 
                 return;
             }
@@ -143,7 +143,7 @@ namespace Molinos.Scato.Servicios.Impl
             var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
             if (puesto == null)
             {
-                log.Info($"No hay puesto con contrador para el sensor: {sensor}");
+                log.Debug($"No hay puesto con contrador para el sensor: {sensor}");
 
                 return;
             }
@@ -303,7 +303,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             catch (Exception e)
             {
-                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, NotificarSensorBarrera - detalle del error : {1}, machine: {2}", sensor, e, System.Environment.MachineName);
             }
         }
 
@@ -443,7 +443,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             catch (Exception e)
             {
-                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, NotificarSensorBarreraHidraulicas - detalle del error : {1}, machine: {2}", sensor, e, System.Environment.MachineName);           
             }
         }
     }

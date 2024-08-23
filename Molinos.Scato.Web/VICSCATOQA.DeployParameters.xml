@@ -15,7 +15,7 @@
 	<setParameter name="UrlServicioNotificaciones Config" value="http://localhost/Scato.web/" />
 	<setParameter name="CertificateValidation Identity Configuration" value="None" />
 	<setParameter name="MailSettings Smtp From" value="grupoproveedoresscato@molinos.com.ar" />
-	<setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
+	<setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
 	<setParameter name="MailSettings Smtp Port" value="25" />
 	<setParameter name="MailSettings Smtp EnableSsl" value="false" />
 	<setParameter name="ReportingServices Url" value="http://asvwqrptsv00.molinosagro.ad/Reportserver" />

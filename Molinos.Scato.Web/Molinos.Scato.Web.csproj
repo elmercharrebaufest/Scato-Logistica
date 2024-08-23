@@ -15,7 +15,7 @@
     <AssemblyName>Molinos.Scato.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>
     </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>
@@ -774,10 +774,6 @@
   <ItemGroup>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml" />
-    <Content Include="bfdev258.DeployParameters.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-duallistbox.css" />
     <Content Include="Content\bootstrap-duallistbox.min.css" />
@@ -880,10 +876,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Content\ui.jqgrid.css" />
-    <Content Include="bfdev258-Branch.DeployParameters.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="MvcReportViewer.aspx" />
     <Content Include="MvcReportViewerErrorPage.html" />
     <Content Include="Scripts\area\configuracionEficienciaCalado\index.js" />
@@ -1219,7 +1211,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ASVWUSCATO00.DeployParameters.xml">
+    <Content Include="VICSCATOUAT.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

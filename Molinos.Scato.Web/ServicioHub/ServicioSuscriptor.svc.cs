@@ -60,6 +60,57 @@ namespace Molinos.Scato.Web.ServicioHub
             hubClientNotificar = hubClientFactory.GetClientNotificar("notificarUsuario");
         }
 
+        //private void LogContadores(string codigoEvento)
+        //{
+        //    try
+        //    {
+        //        var eventoCount = 0;
+        //        var countActual = cache.Existe("Contadores:" + codigoEvento) ? cache.Obtener<string>("Contadores:" + codigoEvento) : string.Empty;
+        //        if (!string.IsNullOrEmpty(countActual))
+        //        {
+        //            eventoCount = Convert.ToInt32(countActual) + 1;
+        //            cache.Remover("Contadores:" + codigoEvento);
+        //        }
+        //        cache.Agregar("Contadores:" + codigoEvento, eventoCount.ToString(), DateTimeOffset.Now.AddHours(24));
+
+        //        var horaAnteriorStr = cache.Existe("Contadores:HoraUltimoLog") ? cache.Obtener<string>("Contadores:HoraUltimoLog") : string.Empty;
+
+        //        bool guardarLog = false;
+        //        if (!string.IsNullOrEmpty(horaAnteriorStr))
+        //        {
+        //            var fechaAnterior = new DateTime();
+        //            DateTime.TryParse(horaAnteriorStr, out fechaAnterior);
+        //            if (DateTime.UtcNow > fechaAnterior.AddMinutes(10))
+        //            {
+        //                cache.Remover("HoraUltimoLog:" + codigoEvento);
+        //                guardarLog = true;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            guardarLog = true;
+        //        }
+
+        //        if (guardarLog)
+        //        {
+        //            log.Info("Request LecturaTarjetaRecibida: " + (cache.Existe("Contadores:LecturaTarjetaRecibida") ? cache.Obtener<string>("Contadores:LecturaTarjetaRecibida") : "0"));
+        //            log.Info("Request ErrorConexionDispositivo: " + (cache.Existe("Contadores:ErrorConexionDispositivo") ? cache.Obtener<string>("Contadores:ErrorConexionDispositivo") : "0"));
+        //            log.Info("Request ConexionDispositivoCorrecta: " + (cache.Existe("Contadores:ConexionDispositivoCorrecta") ? cache.Obtener<string>("Contadores:ConexionDispositivoCorrecta") : "0"));
+        //            log.Info("Request LecturaQr: " + (cache.Existe("Contadores:LecturaQr") ? cache.Obtener<string>("Contadores:LecturaQr") : "0"));
+        //            log.Info("Request EntradaActivada: " + (cache.Existe("Contadores:EntradaActivada") ? cache.Obtener<string>("Contadores:EntradaActivada") : "0"));
+        //            log.Info("Request EntradaDesactivada: " + (cache.Existe("Contadores:EntradaDesactivada") ? cache.Obtener<string>("Contadores:EntradaDesactivada") : "0"));
+        //            log.Info("Request CambioEstadoIntercomunicador: " + (cache.Existe("Contadores:CambioEstadoIntercomunicador") ? cache.Obtener<string>("Contadores:CambioEstadoIntercomunicador") : "0"));
+
+        //            cache.Agregar("Contadores:HoraUltimoLog", DateTime.UtcNow.ToString(), DateTimeOffset.Now.AddHours(24));
+        //        }
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        log.Info("No se pudo agrega valores al Contador de notificaciones: " + e.Message);
+        //    }
+
+        //}
         public void Recibir(NotificacionEvento notificacion)
         {
             if (notificacion.CodigoEvento == "LecturaTarjetaRecibida")
@@ -727,7 +778,7 @@ namespace Molinos.Scato.Web.ServicioHub
 
             if (puestoTrabajo == null)
             {
-                log.Info($"No hay puesto con contrador para el sensor: {sensor}");
+                log.Debug($"No hay puesto con contrador para el sensor: {sensor}");
                 return;
             }
 
@@ -788,7 +839,7 @@ namespace Molinos.Scato.Web.ServicioHub
             }
             catch (Exception e)
             {
-                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, NotificarSensorVagonesSinalR - detalle del error : {1}, machine: {2}", sensor, e, System.Environment.MachineName);
             }
         }
 

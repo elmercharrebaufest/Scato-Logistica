@@ -13,8 +13,8 @@
   <setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />
   <setParameter name="Impresora Key" value="\\vicfsp02\PVicSiste010" />
   <setParameter name="ImpresoraTicket Key" value="\\vicfsp02\PSLOSiste567" />
-  <setParameter name="MailSettings Smtp From" value="scatoprodMOA@molinosagro.com.ar" />
-  <setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
+  <setParameter name="MailSettings Smtp From" value="scatouatMOA@molinosagro.com.ar" />
+  <setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
   <setParameter name="MailSettings Smtp Port" value="25" />
   <setParameter name="MailSettings Smtp EnableSsl" value="false" />
   <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
@@ -22,6 +22,6 @@
   <setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
   <setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
   <setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
-  <setParameter name="WebMobile Config" value="https://ASVWUSCATO00.molinosagro.com.ar/Scato.WebMobile/" />
+  <setParameter name="WebMobile Config" value="https://localhost/Scato.WebMobile/" />
 
 </parameters>
