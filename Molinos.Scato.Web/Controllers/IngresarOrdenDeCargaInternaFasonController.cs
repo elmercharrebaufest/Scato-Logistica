@@ -401,8 +401,13 @@ namespace Molinos.Scato.Web.Controllers
 
                 var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
                 var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
-                var orden = ajustarOrdenFormatoRequerido(resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
-           
+                var orden = ajustarOrdenFormatoRequerido( resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
+                if (orden != null && orden.RemitenteComercial != null)
+                {
+                    var remitente = servicio.ObtenerClientePorCuit(MascaraCuit(orden.RemitenteComercial));
+                    orden.RemitenteComercialId = Convert.ToInt64(orden.RemitenteComercial);
+                    orden.RemitenteComercial = $"{remitente.CodigoSap} - {remitente.Descripcion}";
+                }
 
                 var choferCuil = ConvertirCuil(orden.CUILChofer);
                 var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
