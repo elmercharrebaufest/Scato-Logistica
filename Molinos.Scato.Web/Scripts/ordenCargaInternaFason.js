@@ -186,6 +186,7 @@ function rellenarCampos(data, selectedElement) {
     $("#DestinoGranario").val(data.Data.DestinoDescripcion);
     $("#DestinoGranarioId").val(data.Data.DestinoId);
     $("#Corredor").val(data.Data.Orden.Corredor);
+    $("#PagadorFlete").val(data.Data.Orden.PagadorFlete)
 
     //rellenar campos ocultos
     $("#Chofer_Cuil[type='hidden']").val(convertirCuil(selectedElement.CUILChofer));
@@ -207,14 +208,6 @@ function rellenarCampos(data, selectedElement) {
         $("#TipoVehiculo").prop("disabled", true);
     }
 
-    if (data.Data.Orden.FleteMOA) {
-        $("#PagadorFlete").val(data.Data.Orden.RazonSocialDestinatario)
-        
-    }
-    else {
-        $("#PagadorFlete").val(data.Data.Orden.Cliente)
-       
-    }
 
     ValidarDerivadoGranario();
 
