@@ -521,10 +521,12 @@ namespace Molinos.Scato.Web.Controllers
             var destinatario = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestinatario));
             var intermediario = servicio.ObtenerProveedorPorCuit(ConvertirCuil(orden?.CUITIntermediarioFlete), new TiposProveedor { PR = true });
             var destino = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestino));
+            var pagadorFlete = ConvertirCuil(orden?.PagadorFlete);
 
             orden.RazonSocialIntermediarioFlete = intermediario?.RazonSocial != null ? intermediario.RazonSocial : "";
             orden.RazonSocialDestinatario = destinatario?.Descripcion != null ? destinatario.Descripcion : "";
             orden.RazonSocialDestino = destino?.Descripcion != null ? destino.Descripcion : "";
+            orden.PagadorFlete = pagadorFlete;
             return orden; 
         }
 
