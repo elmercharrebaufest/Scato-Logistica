@@ -161,7 +161,7 @@
             <div id="controlRemitente" class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.Remitente, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.TextBoxFor(model => model.Remitente, new { @readonly = "readonly", @class = "control" })
+                    @Html.TextBoxFor(model => model.Remitente, new { @class = "control" })
                     @Html.ValidationMessageFor(model => model.Remitente)
                     @Html.HiddenFor(model => model.RemitenteId)
                 </div>
