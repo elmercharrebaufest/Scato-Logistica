@@ -42,7 +42,7 @@ namespace Molinos.Scato.Servicios.Impl
             request.AddParameter("fason", FASON);
             request.AddParameter("fas", FAS);
 
-            log.Trace("Se ejecuta la consulta a la Api");
+            log.Debug("Se ejecuta la consulta a la Api");
 
             try
             {
@@ -76,7 +76,7 @@ namespace Molinos.Scato.Servicios.Impl
             IRestResponse restResponse;
             var json = JsonConvert.SerializeObject(ingresosEgresosFasonesDto);
 
-            log.Trace("Se ejecuta la consulta a la Api");
+            log.Debug("Se ejecuta la consulta a la Api");
             request.AddParameter("application/json", json, ParameterType.RequestBody);
 
             try
@@ -91,7 +91,7 @@ namespace Molinos.Scato.Servicios.Impl
 
             if (restResponse.IsSuccessful)
             {
-                log.Trace("Viaje informado con éxito.");
+                log.Debug("Viaje informado con éxito.");
             }
             else
             {
@@ -121,7 +121,7 @@ namespace Molinos.Scato.Servicios.Impl
                 }
             }
 
-            log.Trace(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + (errorContent?.Message ?? restResponse.ErrorMessage));
+            log.Debug(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + (errorContent?.Message ?? restResponse.ErrorMessage));
 
             switch ((HttpStatusCode)restResponse.StatusCode)
             {
@@ -149,7 +149,7 @@ namespace Molinos.Scato.Servicios.Impl
         public IRestRequest CrearRequest(string recurso)
         {
             string token = ConfigurationManager.AppSettings["APITokenOperacionesAPI"];
-            log.Trace("Se inicializa RestRequest y se agrega token");
+            log.Debug("Se inicializa RestRequest y se agrega token");
 
             var request = new RestRequest(recurso);
             request.AddHeader("X-Api-Key", token);
