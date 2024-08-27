@@ -13,7 +13,7 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     $("#NumeroOrdenExterno").empty();
     if (hayError !== "True") limpiarCamposOrdenDeCargaOperaciones();
 
-    if (!regex1.test(patente) && !regex2.test(patente)) {
+    if (patente && (!regex1.test(patente) && !regex2.test(patente))) {
         ValidarDerivadoGranario()
         return; 
     }

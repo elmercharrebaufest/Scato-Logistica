@@ -8058,5 +8058,69 @@ namespace Molinos.Scato.Test.Servicios
             Assert.NotNull(result);
             Assert.AreEqual(result.Id, 3);
         }
+
+        [Test]
+        public void ExisteOrdenCargaFason_DebeDevolver_True_SiRecorridoNoEsRechazadoYNoEstaTerminado() 
+        {
+            string ordenExterno = "2122";
+            var recorrido = new Recorrido { Rechazado = false, Terminado = false };
+            var ordenCarga = new OrdenCargaInternaFason { NumeroOrdenExterno = ordenExterno, Recorrido = recorrido };
+
+            repositorioMock.Setup(r => r.ObtenerMayor<OrdenCargaInternaFason, int>(
+                It.IsAny<Expression<Func<OrdenCargaInternaFason, bool>>>(),
+                It.IsAny<Expression<Func<OrdenCargaInternaFason, int>>>()))
+                .Returns(ordenCarga);
+
+            var result = target.ExisteOrdenCargaFason(ordenExterno);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void ExisteOrdenCargaFason_DebeDevolver_False_SiRecorridoNoEsRechazadoYEstaTerminado()
+        {
+            string ordenExterno = "2122";
+            var recorrido = new Recorrido { Rechazado = false, Terminado = true };
+            var ordenCarga = new OrdenCargaInternaFason { NumeroOrdenExterno = ordenExterno, Recorrido = recorrido };
+
+            repositorioMock.Setup(r => r.ObtenerMayor<OrdenCargaInternaFason, int>(
+                It.IsAny<Expression<Func<OrdenCargaInternaFason, bool>>>(),
+                It.IsAny<Expression<Func<OrdenCargaInternaFason, int>>>()))
+                .Returns(ordenCarga);
+
+            var result = target.ExisteOrdenCargaFason(ordenExterno);
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void ExisteOrdenCargaFason_DebeDevolver_False_SiRecorridoEsRechazadoYEstaTerminado()
+        {
+            string ordenExterno = "2122";
+            var recorrido = new Recorrido { Rechazado = true, Terminado = true };
+            var ordenCarga = new OrdenCargaInternaFason { NumeroOrdenExterno = ordenExterno, Recorrido = recorrido };
+
+            repositorioMock.Setup(r => r.ObtenerMayor<OrdenCargaInternaFason, int>(
+                It.IsAny<Expression<Func<OrdenCargaInternaFason, bool>>>(),
+                It.IsAny<Expression<Func<OrdenCargaInternaFason, int>>>()))
+                .Returns(ordenCarga);
+
+            var result = target.ExisteOrdenCargaFason(ordenExterno);
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void ExisteOrdenCargaFason_DebeDevolver_True_SiRecorridoEsRechazadoYNoEstaTerminado() 
+        {
+            string ordenExterno = "2122";
+            var recorrido = new Recorrido { Rechazado = true, Terminado = false };
+            var ordenCarga = new OrdenCargaInternaFason { NumeroOrdenExterno = ordenExterno, Recorrido = recorrido };
+
+            repositorioMock.Setup(r => r.ObtenerMayor<OrdenCargaInternaFason, int>(
+                It.IsAny<Expression<Func<OrdenCargaInternaFason, bool>>>(),
+                It.IsAny<Expression<Func<OrdenCargaInternaFason, int>>>()))
+                .Returns(ordenCarga);
+
+            var result = target.ExisteOrdenCargaFason(ordenExterno);
+            Assert.IsTrue(result);
+        }
     }
 }
