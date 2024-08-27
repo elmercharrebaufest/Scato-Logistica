@@ -231,7 +231,7 @@ function rellenarCampos(data, selectedElement) {
     option.selected = true;
     select.appendChild(option);
 
-    let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Transportista", "#IntermediarioFlete", "#PagadorFlete", "#Remitente"];
+    let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Remitente", "#Transportista", "#IntermediarioFlete", "#PagadorFlete"];
 
     elementos.forEach(function (selector) {
         let $element = $(selector);
