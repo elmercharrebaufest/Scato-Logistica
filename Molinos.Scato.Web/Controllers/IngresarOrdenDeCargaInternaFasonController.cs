@@ -402,13 +402,7 @@ namespace Molinos.Scato.Web.Controllers
                 var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
                 var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
                 var orden = ajustarOrdenFormatoRequerido( resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
-                if (orden != null && orden.RemitenteComercial != null)
-                {
-                    var remitente = servicio.ObtenerClientePorCuit(MascaraCuit(orden.RemitenteComercial));
-                    orden.RemitenteComercialId = Convert.ToInt64(orden.RemitenteComercial);
-                    orden.RemitenteComercial = $"{remitente.CodigoSap} - {remitente.Descripcion}";
-                }
-
+                
                 var choferCuil = ConvertirCuil(orden.CUILChofer);
                 var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
 
@@ -527,12 +521,16 @@ namespace Molinos.Scato.Web.Controllers
             var intermediario = servicio.ObtenerProveedorPorCuit(ConvertirCuil(orden?.CUITIntermediarioFlete), new TiposProveedor { PR = true });
             var destino = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestino));
             var pagadorFlete = ConvertirCuil(orden?.PagadorFlete);
+            var remitente = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.RemitenteComercial));
 
             orden.RazonSocialIntermediarioFlete = intermediario?.RazonSocial != null ? intermediario.RazonSocial : "";
             orden.RazonSocialDestinatario = destinatario?.Descripcion != null ? destinatario.Descripcion : "";
             orden.RazonSocialDestino = destino?.Descripcion != null ? destino.Descripcion : "";
+            orden.RemitenteComercialId = Convert.ToInt64(orden.RemitenteComercial);
+            orden.RemitenteComercial = remitente?.Descripcion != null ? remitente.Descripcion : "";
             orden.PagadorFlete = pagadorFlete;
-            return orden; 
+            return orden;
+
         }
 
         public JsonResult CachearOrdenesDeCargaOperaciones()
