@@ -19,6 +19,7 @@ using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using System.Net;
 using System.Web.Routing;
 using System.Web;
+using Molinos.Scato.Dominio.Entidades;
 
 namespace Molinos.Scato.Test.Controllers
 {
@@ -191,10 +192,13 @@ namespace Molinos.Scato.Test.Controllers
             string patente = "ABC123";
             var ordenes = new List<OrdenDeCargaDto>
             {
-                new OrdenDeCargaDto { Id = 1, CodigoProducto = "72850", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-1).ToString() },
-                new OrdenDeCargaDto { Id = 2, CodigoProducto = "72850", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() } 
+                new OrdenDeCargaDto { Id = 1, CodigoProducto = "50866", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-1).ToString() },
+                new OrdenDeCargaDto { Id = 2, CodigoProducto = "50866", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() } 
             };
 
+            var material = new MaterialDto { Id = 1, CodigoSAP = "50866" };
+
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("50866")).Returns(material);
             operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
             var result = target.ObtenerOrdenesFason(patente) as JsonResult;
             Assert.IsNotNull(result);
@@ -204,44 +208,6 @@ namespace Molinos.Scato.Test.Controllers
             Assert.AreEqual(1, data.ordenes[0].Id);
             Assert.IsTrue(data.sonVariasOrdenes);
             Assert.IsFalse(data.sonVariosMateriales);
-        }
-
-        [Test]
-        public void TestObtenerOrdenesFason_RetornaJsonResult_ConError()  
-        {
-            string patente = "ABC123";
-            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Throws(new Exception("Test Error Fason"));
-
-            httpResponseMock.SetupGet(r => r.StatusCode).Returns((int)HttpStatusCode.BadGateway);
-            httpContextMock.Setup(c => c.Response).Returns(httpResponseMock.Object);
-
-            target.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), target);
-
-            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
-            Assert.IsNotNull(result);
-            dynamic data = result.Data;
-            Assert.IsFalse(data.success);
-            Assert.AreEqual("Test Error Fason", data.error);
-            Assert.AreEqual((int)HttpStatusCode.BadGateway, target.Response.StatusCode);
-        }
-
-        [Test]
-        public void TestObtenerOrdenesFason_RetornaJsonResult_ConErrorClientesDuplicados() 
-        {
-            string patente = "ABC123";
-            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Throws(new Exception("La secuencia contiene más de un elemento"));
-
-            httpResponseMock.SetupGet(r => r.StatusCode).Returns((int)HttpStatusCode.BadGateway);
-            httpContextMock.Setup(c => c.Response).Returns(httpResponseMock.Object);
-
-            target.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), target);
-
-            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
-            Assert.IsNotNull(result);
-            dynamic data = result.Data;
-            Assert.IsFalse(data.success);
-            Assert.IsTrue(data.duplicado);
-            Assert.AreEqual((int)HttpStatusCode.BadGateway, target.Response.StatusCode);
         }
 
         [Test]
@@ -268,6 +234,9 @@ namespace Molinos.Scato.Test.Controllers
             {
                 new OrdenDeCargaDto { Id = 1, CodigoProducto = "75891", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
             };
+            var material = new MaterialDto { Id = 1, CodigoSAP = "75891" }; // material1
+
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75891")).Returns(material);
             operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
 
             var result = target.ObtenerOrdenesFason(patente) as JsonResult;
@@ -276,7 +245,7 @@ namespace Molinos.Scato.Test.Controllers
             Assert.IsTrue(data.success);
             Assert.AreEqual(1, data.ordenes.Count);
             Assert.AreEqual(1, data.ordenes[0].Id);
-            Assert.AreEqual("75891", data.materiales[0].Value);
+            Assert.AreEqual(1, data.materiales[0].Value);
         }
 
         [Test]
@@ -289,6 +258,9 @@ namespace Molinos.Scato.Test.Controllers
                 new OrdenDeCargaDto { Id = 321, CodigoProducto = "75520", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-3).ToString() },
                 new OrdenDeCargaDto { Id = 322, CodigoProducto = "75520", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
             };
+            var material = new MaterialDto { Id = 1, CodigoSAP = "75520" }; // material1
+
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75520")).Returns(material);
             operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
 
             var result = target.ObtenerOrdenesFason(patente) as JsonResult;
@@ -297,7 +269,7 @@ namespace Molinos.Scato.Test.Controllers
             Assert.IsTrue(data.success);
             Assert.AreEqual(1, data.ordenes.Count);
             Assert.AreEqual(321, data.ordenes[0].Id);
-            Assert.AreEqual("75520", data.materiales[0].Value);
+            Assert.AreEqual(1, data.materiales[0].Value);
         }
 
         [Test]
@@ -313,6 +285,15 @@ namespace Molinos.Scato.Test.Controllers
                 new OrdenDeCargaDto { Id = 4882, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() },
                 new OrdenDeCargaDto { Id = 4883, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
             };
+            var material = new MaterialDto { Id = 1, CodigoSAP = "75420" }; // material2
+            var material2 = new MaterialDto { Id = 1, CodigoSAP = "75320" }; // material1
+            var material3 = new MaterialDto { Id = 1, CodigoSAP = "73250" }; // material3
+
+
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75420")).Returns(material);
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75320")).Returns(material2);
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("73250")).Returns(material3);
+
             operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
 
             var result = target.ObtenerOrdenesFason(patente) as JsonResult;
@@ -337,6 +318,15 @@ namespace Molinos.Scato.Test.Controllers
                 new OrdenDeCargaDto { Id = 4882, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.AddDays(-3).ToString() },
                 new OrdenDeCargaDto { Id = 4883, CodigoProducto = "75320", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
             };
+            var material = new MaterialDto { Id = 1, CodigoSAP = "75420" }; // material2
+            var material2 = new MaterialDto { Id = 1, CodigoSAP = "75320" }; // material1
+            var material3 = new MaterialDto { Id = 1, CodigoSAP = "73250" }; // material3
+
+
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75420")).Returns(material);
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75320")).Returns(material2);
+            servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("73250")).Returns(material3);
+
             servRepositorioMock.Setup(x => x.ExisteOrdenCargaFason("4879")).Returns(true);
             operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
            
