@@ -958,8 +958,6 @@ namespace Molinos.Scato.Web.Controllers
                     }
                 };
 
-               // Response.StatusCode = (int)HttpStatusCode.BadRequest;
-
                 return Json(errorResponse, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
