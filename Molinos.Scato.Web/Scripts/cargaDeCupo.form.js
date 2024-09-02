@@ -254,7 +254,6 @@ $(document).ready(function () {
     if ($('#cpe').is(':checked')) {
         ConfiguracionCPEActiva(false);
     } else if ($('#circuitoNoGranos').is(':checked')) {
-        debugger
         ConfiguracionNoGranosActiva();
     } else {
         ConfiguracionNoGranosInactiva();
