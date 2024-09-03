@@ -790,6 +790,7 @@
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\LlamadoAutomaticoHidraulicaDto.cs" />
     <Compile Include="Dto\ConfirmacionCargaDescargaDto.cs" />
     <Compile Include="Dto\CartaPorteDerivadoGranarioDto.cs" />
+    <Compile Include="Dto\OperacionesAPI\OrdenResiduosDto.cs" />
     <Compile Include="Dto\PuntoDeCargaDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaComplementarioDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaDto.cs" />
