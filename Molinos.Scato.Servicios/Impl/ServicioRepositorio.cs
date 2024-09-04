@@ -30,6 +30,9 @@ using System.Linq.Expressions;
 using System.Printing;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
+using System.Threading.Tasks;
+using System.Web.Configuration;
+using static NPOI.HSSF.Util.HSSFColor;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
 namespace Molinos.Scato.Servicios.Impl
@@ -11087,11 +11090,32 @@ namespace Molinos.Scato.Servicios.Impl
                         ((ordenCarga.Recorrido.Rechazado == false && ordenCarga.Recorrido.Terminado == false) ||
                         (ordenCarga.Recorrido.Rechazado == true && ordenCarga.Recorrido.Terminado == false));
         }
-		
-		public int ContarClientes(string nCuit)
+
+        public bool ExisteOrdenCarga(string ordenExterno)
+        {
+            var ordenCarga = repositorio.ObtenerMayor<OrdenCargaInterna, int>(x => x.Id_operaciones == ordenExterno &&
+                                                                                (x.Recorrido.Rechazado == false || x.Recorrido.Terminado == false),
+                                                                                f => f.Id);
+            return ordenCarga != null;
+        }
+
+        public int ContarClientes(string nCuit)
         {
             return ListarClientesPorCuit(nCuit).Count;
         }
+
+        public IEnumerable<ChoferDto> ObtenerChoferesPorCuits(List<string> cuils)
+        {
+
+           return  Listar<Chofer, ChoferDto>(x => cuils.Contains(x.Cuil));
+
+        }
+
+        public MaterialDto ObtenerMaterialPorId(int id)
+        {
+            return Obtener<Material, MaterialDto>(x => x.Id.Equals(id));
+        }
+
     }
 
 

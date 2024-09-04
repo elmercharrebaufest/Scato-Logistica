@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace Molinos.Scato.Servicios
 {
@@ -3034,6 +3035,18 @@ namespace Molinos.Scato.Servicios
 		
 		[OperationContract]
         int ContarClientes(string nCuit);
+
+        [OperationContract]
+        bool ExisteOrdenCarga(string ordenExterno);
+
+        [OperationContract]
+        IEnumerable<ChoferDto> ObtenerChoferesPorCuits(List<string> cuils);
+
+        [OperationContract]
+        MaterialDto ObtenerMaterialPorId(int id);
+
+
+
     }
 
 }

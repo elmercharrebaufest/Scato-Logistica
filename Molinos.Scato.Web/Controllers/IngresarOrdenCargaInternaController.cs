@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
@@ -238,10 +239,13 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (restResponse != null)
                 {
+                    var choferCuils = restResponse.Select(item => ConvertirCuil(item.CUILChofer)).ToList();
+                    var choferes = servicio.ObtenerChoferesPorCuits(choferCuils.ToList());
+
                     foreach (var item in restResponse)
                     {
                         var choferCuil = ConvertirCuil(item.CUILChofer);
-                        var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
+                        var chofer = choferes.FirstOrDefault(c => c.Cuil == choferCuil);
 
                         if (chofer == null)
                         {
@@ -265,10 +269,8 @@ namespace Molinos.Scato.Web.Controllers
                             {
                                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se pudo ingresar el chofer " + item.NombreChofer + " del numero de orden: " + item.Id, TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
                                 break;
-
                             }
                         }
-
                     }
 
                     if (restResponse.Count == 0)
@@ -298,7 +300,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId, string DestinoCUIT, DatosUsuario datosUsuario)
+        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, int materialSAP, string ordenId, string DestinoCUIT, DatosUsuario datosUsuario)
         {
             clienteCUIT = ConvertirCuil(clienteCUIT);
             transportistaCUIT = ConvertirCuil(transportistaCUIT);
@@ -319,24 +321,18 @@ namespace Molinos.Scato.Web.Controllers
                     ConsultaOrdenDeCarga = consultaOrdenDeCarga
                 };
 
-                ComprobarClienteUnico(clienteCUIT);
+                var respuesta = servicio.ContarClientes(clienteCUIT);
+                if (respuesta > 1) throw new InvalidOperationException("La secuencia contiene más de un elemento");
+
                 var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
-
                 var destino = servicio.ObtenerClientePorCuit(DestinoCUIT);
-
                 var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
+                var material = servicio.ObtenerMaterialPorId(materialSAP);
                 var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
+
                 var orden = resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId));
-
-
                 var choferCuil = ConvertirCuil(orden.CUILChofer);
                 var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
-
-                //var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
-                //var destinatarioDescrip = servicio.ObtenerClientePorCuit(string.IsNullOrEmpty(destinatarioCuit) ? "" : destinatarioCuit);
-
-                var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
-
 
                 var resultadoEscalables = servicioComandos.Ejecutar(GenerarConsultaEscalables(patente, acoplado, datosUsuario.NombreUsuario)) as ResultadoEscalables;
 
@@ -351,38 +347,24 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (resultadoEscalables.HayErrores)
                 {
-                    var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
-                    {
-                        ClienteId = cliente?.Id,
-                        ClienteDescripcion = cliente?.Descripcion != null ? cliente.Descripcion : "",
-                        TransportistaId = transportista?.Id,
-                        TransportistaDescripcion = transportista?.RazonSocial != null ? transportista.RazonSocial : "",
-                        TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
-                        MaterialId = material.Id,
-                        EsDerivadoGranario = material.EsDerivadoGranario,
-                        Orden = orden,
-                        TieneErrorCNRT = resultadoEscalables.HayErrores,
-                        DestinoId = destino?.Id,
-                        DestinoDescripcion = destino?.Descripcion != null ? destino.Descripcion : "",
-                    };
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Error al obtener el tipo de vehículo por patente: {resultadoEscalables.Errores.Values.First()}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-                    response.Data = ordenDeCargaComplementario;
                 }
+
                 if (response.EsValido)
                 {
                     var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
                     {
                         ClienteId = cliente?.Id,
-                        ClienteDescripcion = cliente?.Descripcion != null ? cliente.Descripcion : "",
+                        ClienteDescripcion = cliente?.Descripcion ?? "",
                         TransportistaId = transportista?.Id,
-                        TransportistaDescripcion = transportista?.RazonSocial != null ? transportista.RazonSocial : "",
+                        TransportistaDescripcion = transportista?.RazonSocial ?? "",
                         TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
                         MaterialId = material.Id,
                         EsDerivadoGranario = material.EsDerivadoGranario,
                         Orden = orden,
                         TieneErrorCNRT = resultadoEscalables.HayErrores,
                         DestinoId = destino?.Id,
-                        DestinoDescripcion = destino?.Descripcion != null ? destino.Descripcion : "",
+                        DestinoDescripcion = destino?.Descripcion ?? "",
                     };
 
                     response.Data = ordenDeCargaComplementario;
@@ -392,40 +374,30 @@ namespace Molinos.Scato.Web.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
-                log.Error(ex, mensaje);
-
-                var data = new
-                {
-                    success = false,
-                    errorResponse = new
-                    {
-                        error = ex.Message,
-                        duplicado = true
-                    }
-                };
-
-                return Json(data, JsonRequestBehavior.AllowGet);
+                return HandleException(ex, patente, true);
             }
             catch (Exception ex)
             {
-                var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
-                log.Error(ex, mensaje);
-
-                var data = new
-                {
-                    success = false,
-                    errorResponse = new
-                    {
-                        error = ex.Message,
-                        duplicado = false
-                    }
-                };
-
-                return Json(data, JsonRequestBehavior.AllowGet);
+                return HandleException(ex, patente, false);
             }
+        }
 
+        private JsonResult HandleException(Exception ex, string patente, bool duplicado)
+        {
+            var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
+            log.Error(ex, mensaje);
 
+            var data = new
+            {
+                success = false,
+                errorResponse = new
+                {
+                    error = ex.Message,
+                    duplicado
+                }
+            };
+
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         //private OrdenResiduosDto ajustarOrdenFormatoRequerido(OrdenResiduosDto orden)
@@ -455,7 +427,7 @@ namespace Molinos.Scato.Web.Controllers
 
         private List<OrdenResiduosDto> OrdenesFiltradas(List<OrdenResiduosDto> ordenDeCargaDtos)
         {
-            return ordenDeCargaDtos.Where(orden => !servicio.ExisteOrdenCargaFason(orden.Id.ToString())).ToList();
+            return ordenDeCargaDtos.Where(orden => !servicio.ExisteOrdenCarga(orden.Id.ToString())).ToList();
         }
 
         private void Validar(OrdenCargaInternaDto orden)
@@ -574,5 +546,6 @@ namespace Molinos.Scato.Web.Controllers
 
             return documento.TrimStart('0');
         }
+       
     }
 }

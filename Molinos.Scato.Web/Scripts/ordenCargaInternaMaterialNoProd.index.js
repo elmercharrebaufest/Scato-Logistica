@@ -133,13 +133,15 @@ function llenarSelectDomicilio(domicilios) {
     });
 }
 
-function llenarSelectAlmacen(almacenes) {
+function llenarSelectAlmacen(almacenes, almacenId = 0) {
 
     almacenSelect.innerHTML = '';
     almacenes.forEach(function (almacen) {
         const option = document.createElement("option");
         option.value = almacen.value;
         option.textContent = almacen.text
+        if (almacen.value === almacenId)
+            option.selected = true;
         almacenSelect.appendChild(option);
     });
 }
@@ -175,6 +177,16 @@ function llenarInputDate(value, element, att) {
 function seleccionarElemento(value, element, att) {
     element.value = value;
     att = value;
+}function seleccionarElementoAlmacen(value, element, att) {
+    for (var i = 0; i < element.options.length; i++) {
+        
+        if (element.options[i].value === value) {
+            console.log(element.options[i])
+            element.options[i].selected = true;
+            att = value;
+
+        }
+    }
 }
 
 function activarInput(element)
@@ -208,9 +220,9 @@ function ObtenerPlantas() {
     }
 }
 
-function ObtenerAlamacenesPorMaterial()
+function ObtenerAlamacenesPorMaterial(almacenId)
 {
-    const material = $("#MaterialId").val();
+    const material = materialIdInput.value;
 
     if (!material) {
         return;
@@ -220,7 +232,7 @@ function ObtenerAlamacenesPorMaterial()
             if (Array.isArray(allData) && allData.length > 0) {
                 const almacenesSelect = almacenInicial.concat(allData.map(almacen => ({ value: almacen.Id, text: almacen.Descripcion })))
 
-                llenarSelectAlmacen(almacenesSelect);
+                llenarSelectAlmacen(almacenesSelect, almacenId);
 
             } else {
 
@@ -235,15 +247,16 @@ function ObtenerAlamacenesPorMaterial()
 }
 
 function validarPatenteCamion() {
-    const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
-    const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
+    const regex1 = /^[A-Z]{5,6}\d{1,2}$/;  //^[A-Z0-9]{7}$Regex para formato ABC123
+    //const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
+    
     let url = window.location.search;
     let urlParams = new URLSearchParams(url);
     let workflowId = urlParams.get("workflow");
 
     var patente = ordenModel.patenteCamion.toUpperCase();
 
-    if (!regex1.test(patente) && !regex2.test(patente)) {
+    if (!regex1.test(patente)) {
         return;
     }
     else {
@@ -300,10 +313,10 @@ function manejarRespuestaExitosa(data) {
         llenarSelectOrdenes(ordenesSelect);
         var selectedValue = $("#NumeroOrdenExterno").data('selected-value');
         if (data.Data.length === 1 && selectedValue !== undefined && selectedValue !== null) {
-            $("#NumeroOrdenExterno").val(data.Data[0].Id);
+            ordenSelect.value = data.Data[0].Id;
             seleccionarOrdenDeCargaOperaciones();
         } else if (selectedValue) {
-            $("#NumeroOrdenExterno").val(selectedValue);
+            ordenSelect.value = selectedValue;
         } else if (data.Data.length > 1) {
             MostrarAlertaAdvertencia(textoVariasOrdenes);
         }
@@ -313,97 +326,63 @@ function manejarRespuestaExitosa(data) {
 
 function mostrarInfoAlerta() {
     MostrarAlertaAdvertencia(patenteNoEncontrada);
-    //ValidarDerivadoGranario()
     limpiarCamposOrdenDeCargaOperaciones()
 }
 
 function seleccionarOrdenDeCargaOperaciones() {
+   
+    var numeroOrdenValor = ordenSelect.value;
+    var selectedElement = obtenerElementoSeleccionado(numeroOrdenValor);
 
-    var ddlNumeroOrden = $("#NumeroOrdenExterno");
-    var selectedElement = obtenerElementoSeleccionado(ddlNumeroOrden.val());
-
-    if (!selectedElement) {
+    if (!selectedElement || numeroOrdenValor === '0') {
         return;
     }
 
-    if (ddlNumeroOrden.val() !== '0') {
-        BlockUI();
-        $.ajax({
-            url: $('#links').data().urlObtenerOrdenDeCargaOperacionesSeleccionada,
-            dataType: 'json',
-            data: obtenerDatosAjax(selectedElement),
-            type: "GET",
-            success: function (data) {
+    BlockUI();
 
-                manejarRespuestaAjaxSeleccion(data, selectedElement);
-            },
-            error: function (xhr, status, error) {
-
-            },
-            complete: function () {
-                $.unblockUI();
-            }
-        });
-    }
+    $.ajax({
+        url: $('#links').data().urlObtenerOrdenDeCargaOperacionesSeleccionada,
+        dataType: 'json',
+        data: obtenerDatosAjax(selectedElement),
+        type: "GET",
+        success: (data) => manejarRespuestaAjaxSeleccion(data, selectedElement),
+        error: (xhr, status, error) => {
+            const err = xhr.responseText.match(/<h2>(.*?)<\/h2>/);
+            MostrarAlertaError(err ? err[1] : `Error en la petición AJAX: ${status} - ${error}`);
+        },
+        complete: () => $.unblockUI()
+    });
 }
 
 function obtenerElementoSeleccionado(id) {
     return cachedOrdenDeCargaOperaciones.find(x => x.Id == id);
 }
 
-function ValidarDerivadoGranario() {
-    let materialId = $("#MaterialId").val();
-    let materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
-    if (materialesDerivadoGranario.includes(parseInt(materialId))) {
-        $('#DerivadoGranarioHabilitado').val('true')
-        $('.derivadoGranario').removeClass('hidden');
-        $("label[for='Cliente']").text('Destino');
-        $("#Cliente").val($("#DestinoGranario").val());
-        $("#ClienteId").val($("#DestinoGranarioId").val());
-
-        //CargarPlantas();
-        CargarDomicilios();
-    } else {
-        $("#Cliente").val($("#ClienteOriginal").val());
-        $("#ClienteId").val($("#ClienteOriginalId").val());
-        $('#DerivadoGranarioHabilitado').val('false')
-        $('.derivadoGranario').addClass('hidden');
-        $("label[for='Cliente']").text('Cliente');
-        //$('#PlantaDGDestino').val('');
-        $('#TipoYOrdenDestino').val('');
-        $('#PagadorFlete').val('');
-        $('#PagadorFleteId').val('');
-        $("#PlantaSeleccionada").val('')
-    }
-}
-
 function limpiarCamposOrdenDeCargaOperaciones() {
-    $("#PatenteAcoplado").val(null);
-    $("#NumeroOrdenExterno").val(null);
-    $("#ClienteId").val(null);
-    $("#Cliente").val(null);
-    $("#TransportistaId").val(null);
-    $("#Transportista").val(null);
-    $("#Chofer_Cuil").val(null);
+
+    patenteAcopladoInput.value = '';
+    numeExternoInput.value = '';
+    clienteIdInput.value = '';
+    transportistaIdInput.value = '';
+    transportistaInput.value = '';
+    chofer_CuilInput.value = '';
+
     $("#Chofer_Nombre").val(null);
     $("#Chofer_Apellido").val(null);
     $("#Chofer_NumeroDeDocumento").val(null);
-    $("#KmARecorrer").val(null);
-    $("#MaterialId").val(null);
-    $("#TipoVehiculo").val(null);
-    $("#Destinatario").val(null);
-    $("#TipoVehiculo").val(null);
-    $("#Destinatario").val(null); /*DA*/
-    $("#Remitente").val(null);
-    $("#TipoComercialId").val(null);
-    $("#IntermediarioFlete").val(null);
-    $("#LocalidadDestinoId").val(null);
-   // $("#PlantaDGDestino").val(null);
-    $("#TipoYOrdenDestino").val(null);
-    $("#PagadorFlete").val(null);
-    $("#Corredor").val(null);
-    $("#localidadDestinoDropdown").empty();
-    $("#Observaciones").val(null);
+
+    kmARecorrerInput.value = '';
+    materialIdInput.value = '';
+    tipoVehiculoInput.value = '';
+    destinatarioInput.value = '';
+    remitenteInput.value = '';
+    tipoComercialInput.value = '';
+    intermediarioFleteInput.value = '';
+    localidadSeleccionadaInput.value = '';
+    corredorInput.value = '';
+
+    init()
+    
 }
 
 function CargarDomicilios() {
@@ -447,10 +426,6 @@ function convertirCuil(cuil) {
     return validador1 + "-" + documento + "-" + validador2;
 }
 
-function establecerDestinatario(data) {
-    $('#DestinatarioId').val(data.DestinatarioId); // Establecer ID del destinatario
-}
-
 function obtenerDatosAjax(selectedElement) {
     return {
         clienteCUIT: selectedElement.CUITCliente,
@@ -464,14 +439,15 @@ function obtenerDatosAjax(selectedElement) {
 }
 
 function manejarRespuestaAjaxSeleccion(data, selectedElement) {
-
+    
     if (typeof data.errorResponse === "object") manejarErrorAjax(data);
     if (data.TieneAdvertencias) {
-        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
+        MostrarAlertaAdvertencia(ddata.errorResponse.error);
     }
 
     if (!data.EsValido) {
-        MostrarAlertaError(data.Mensajes[0].Mensaje);
+        
+        MostrarAlertaError(data.errorResponse.error);
         rellenarCampos(data, selectedElement);
         return;
     }
@@ -480,12 +456,12 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
 }
 
 function rellenarCampos(data, selectedElement) {
-    ObtenerAlamacenesPorMaterial();
+
+    
     ObtenerPlantas();
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`;
-
     llenarInput(selectedElement.PatenteAcoplado, patenteAcopladoInput, ordenModel.patenteAcoplado)
-    llenarInput(data.Data.TransportistaId, transportistaIdInput, ordenModel.transportistaId)
+    llenarInput(convertirCuil(data.Data.CUITTransporte), transportistaIdInput, ordenModel.transportistaId)
     llenarInput(data.Data.TransportistaDescripcion, transportistaInput, ordenModel.transportista)
     llenarInput(convertirCuil(selectedElement.CUILChofer), chofer_CuilInput, ordenModel.chofer_Cuil)
     seleccionarElemento(data.Data.MaterialId, materialIdInput, ordenModel.materialId)
@@ -496,8 +472,7 @@ function rellenarCampos(data, selectedElement) {
     seleccionarElemento(data.Data.Orden.PlantaCodigo, plantaSelect, ordenModel.selectedPlanta)
     data.Data.TieneErrorCNRT ? activarInput(tipoVehiculoInput) : desactivarInput(tipoVehiculoInput)
     seleccionarElemento(data.Data.MaterialId === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
-    //console.log(plantaSelect)
-    seleccionarElemento(data.Data.AlmacenId, almacenSelect, ordenModel.selectedAlmacen)
+    ObtenerAlamacenesPorMaterial(data.Data.Orden.AlmacenId);
     llenarInputDate(data.Data.Orden.FechaCreacion, fechaEmisionInput, ordenModel.fechaEmision)
     llenarInput(data.Data.Orden.KmARecorrer, kmARecorrerInput, ordenModel.kmARecorrer)
 
@@ -510,8 +485,7 @@ function rellenarCampos(data, selectedElement) {
     option.selected = true;
     select.appendChild(option);
 
-    //let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Transportista", "#IntermediarioFlete", "#PagadorFlete"];
-    let elementos = [chofer_CuilInput , transportistaInput ];
+     let elementos = [chofer_CuilInput , transportistaInput ];
 
     elementos.forEach(function (selector) {
         let $element = $(selector);
@@ -545,7 +519,6 @@ function rellenarCampos(data, selectedElement) {
             }
         );
     }
-
 
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
