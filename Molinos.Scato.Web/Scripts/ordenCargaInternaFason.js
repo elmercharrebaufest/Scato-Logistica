@@ -195,7 +195,7 @@ function rellenarCampos(data, selectedElement) {
     $("#Corredor").val(data.Data.Orden.Corredor);
     $("#Observaciones").val(data.Data.Orden.Observacion);
     $("#Remitente").val(data.Data.Orden.RemitenteComercial);
-    $("#PagadorFlete").val(data.Data.Orden.PagadorFlete)
+    $("#PagadorFlete").val(data.Data.Orden.PagadorFlete);
 
     //rellenar campos ocultos
     $("#Chofer_Cuil[type='hidden']").val(convertirCuil(selectedElement.CUILChofer));
@@ -206,8 +206,9 @@ function rellenarCampos(data, selectedElement) {
     $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
     $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
     $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
-    $("#TipoComercialId[type='hidden']").val(tipoComercial)
-    $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId)
+    $("#TipoComercialId[type='hidden']").val(tipoComercial);
+    $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId);
+    $("#DestinoMercaderia[type='hidden']").val(data.Data.Orden.DestinoMercaderia);
 
 
 
@@ -310,6 +311,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#localidadDestinoDropdown").empty();
     $("#Observaciones").val(null);
     $("#RemitenteId").val(null);
+    $("#DestinoMercaderia").val(null);
 }
 
 function convertirCuil(cuil) {
