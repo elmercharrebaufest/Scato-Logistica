@@ -2,7 +2,7 @@
     activarCPE();
     var notificaLectura = $.connection.notificaLectura;
 
-    notificaLectura.client.informarLectura = function (notificacion) {        
+    notificaLectura.client.informarLectura = function (notificacion) {
         $("#validation-patente-alert").addClass("hide");
         $("#validation-patente-danger").addClass("hide");
         if (!notificacion.TarjetaValida && !notificacion.EsTarjetaSupervisor) {
@@ -15,7 +15,7 @@
             $("#Numero").val('');
         } else if (notificacion.NumeroDeTarjeta !== null && notificacion.NumeroDeTarjeta !== "") {
             $("#Numero").val(notificacion.NumeroDeTarjeta);
-            
+
             if (ValidarCP()) {
                 if (ValidarNumeroTarjeta()) {
                     TomarFotoCP();
@@ -44,7 +44,7 @@
         }
 
         window.hubReady.done(function () {
-            if (puestoDeTrabajo != null &&  puestoDeTrabajo.Automatico) {
+            if (puestoDeTrabajo != null && puestoDeTrabajo.Automatico) {
                 notificaLectura.server.escucharPuestosDeTrabajo($('#centroId').val(), puestoDeTrabajo.Id);
             }
             $.unblockUI();
@@ -189,54 +189,43 @@ function RefrescarFotoPatente() {
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
     if (existePatenteYesNoGranos) {
-        DefinirFlujoFasFason($('#Patente').val());
+        ObtenerDatosFason($('#Patente').val());
     }
 
 }
 
-async function DefinirFlujoFasFason(patente) {
-    const respuesta = await ObtenerDatosFason(patente);
-    if (!respuesta) {
-        ObtenerDatosSap();
-    }
-}
 
-async function ObtenerDatosFason(patente) {
+function ObtenerDatosFason(patente) {
     $('#MaterialId').prop('disabled', true);
     $('#FleteMOA').val("");
     BlockUI($("#MensajeBuscandoDatos").val());
 
-    return new Promise((resolve, reject) => {
-        $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
-            if (typeof data.errorResponse === 'object') {
-                if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
-                    crearRespuestaErrorFason(data.errorResponse);
-                    resolve(false);
-                }
+    $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
+        if (typeof data.errorResponse === 'object') {
+            if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
+                crearRespuestaErrorFason(data.errorResponse);
             }
+        }
 
-            if (data.sonVariosMateriales) {
-                llenarMateriales(data, false, false);
-                resolve(true);
-            } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
-                llenarMateriales(data, true);
-                resolve(true);
-            } else {
-                limpiarComboMateriales();
-                resolve(false);
-            }
-        }).fail(function (xhr, status, error) {
-            reject(error); // Manejo de errores
-        }).always(function () {
-            $.unblockUI();
-        });
+        if (data.sonVariosMateriales) {
+            llenarMateriales(data, false, false);
+        } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
+            llenarMateriales(data, true);
+        } else {
+            limpiarComboMateriales();
+            ObtenerDatosSap();
+        }
+    }).fail(function (xhr, status, error) {
+        // Manejo de errores
+    }).always(function () {
+        $.unblockUI();
     });
 }
 
 function crearRespuestaErrorFason(data) {
     let message = "";
     if (data.duplicado == false) {
-        message = data.error ;
+        message = data.error;
     } else {
         $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
         $('#dialogo-advertir').css({
@@ -281,7 +270,7 @@ function llenarMateriales(data, comboDisable, preSeleccionable = true) {
             text: "(material)",
             selected: true
         }));
-        $.each(data.materiales , function (index, data) {
+        $.each(data.materiales, function (index, data) {
             combo.append($('<option/>', {
                 value: data.Value,
                 text: data.Text,
@@ -297,7 +286,7 @@ function llenarMateriales(data, comboDisable, preSeleccionable = true) {
         ajustarFleteMoa()
     }
 
-    
+
 }
 
 function ObtenerDatosSap() {
@@ -309,7 +298,7 @@ function ObtenerDatosSap() {
         BlockUI($("#MensajeBuscandoDatos").val());
         $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
             if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
-                if (data.datosSap.length == 1 ) {
+                if (data.datosSap.length == 1) {
                     $('#MaterialId').val(data.datosSap[0].MaterialId);
                     $('#matId').val(data.datosSap[0].MaterialId);
                 } else if (data.datosSap.length > 1) {
