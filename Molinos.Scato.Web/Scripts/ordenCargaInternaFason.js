@@ -1,6 +1,8 @@
 ﻿var cachedOrdenDeCargaOperaciones;
 var domicilioConcat = "";
-var $selectOption ;
+var $selectOption;
+
+
 
 function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
@@ -15,7 +17,7 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
 
     if (patente && (!regex1.test(patente) && !regex2.test(patente))) {
         ValidarDerivadoGranario()
-        return; 
+        return;
     }
 
     let tipoComercial = $('#tiposComerciales').find('option').eq(1).val();
@@ -106,7 +108,7 @@ function seleccionarOrdenDeCargaOperaciones() {
                 manejarRespuestaAjaxSeleccion(data, selectedElement);
             },
             error: function (xhr, status, error) {
-               
+
             },
             complete: function () {
                 $.unblockUI();
@@ -179,14 +181,14 @@ function rellenarCampos(data, selectedElement) {
     $("#ClienteId").val(data.Data.ClienteId);
     $("#Cliente").val(data.Data.ClienteDescripcion);
     $("#ClienteOriginalId").val(data.Data.ClienteId);
-    $("#ClienteOriginal").val(data.Data.ClienteDescripcion);    
-    
+    $("#ClienteOriginal").val(data.Data.ClienteDescripcion);
+
     $("#TransportistaId").val(data.Data.TransportistaId);
     $("#Transportista").val(data.Data.TransportistaDescripcion);
     $("#Chofer_Cuil").val(convertirCuil(selectedElement.CUILChofer));
     $("#MaterialId").val(data.Data.MaterialId);
     $("#TipoVehiculo").val(data.Data.TipoDeVehiculo);
-    $("#Destinatario").val(data.Data.Orden.RazonSocialDestinatario); 
+    $("#Destinatario").val(data.Data.Orden.RazonSocialDestinatario);
     $("#IntermediarioFlete").val(data.Data.Orden.RazonSocialIntermediarioFlete);
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
@@ -209,13 +211,13 @@ function rellenarCampos(data, selectedElement) {
     $("#TipoComercialId[type='hidden']").val(tipoComercial)
     $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId)
 
-
-
     if (data.Data.TieneErrorCNRT) {
-        $("#TipoVehiculo").prop("disabled", false); // Habilitar campos
+
+        $('#TipoVehiculo').css({ 'pointer-events': '', 'background-color': '', 'color': '' });
     }
     else {
-        $("#TipoVehiculo").prop("disabled", true);
+        $('#TipoVehiculo').css({ 'pointer-events': 'none', 'background-color': '#f0f0f0', 'color': '#666' });
+
     }
 
 
@@ -243,12 +245,12 @@ function rellenarCampos(data, selectedElement) {
         }
     });
 
-    
+
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
         $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
         $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
-       
+
         if (existeDomicilio.length > 0) {
             $("#TipoYOrdenDestino").val(domicilioConcat);
         } else {
