@@ -2275,6 +2275,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pesada Bruto Exportación.
+        /// </summary>
+        public static string ActPesadaBrutoExportacion {
+            get {
+                return ResourceManager.GetString("ActPesadaBrutoExportacion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pesada Bruto Vagón.
         /// </summary>
         public static string ActPesadaBrutoVagon {
@@ -2298,6 +2307,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ActPesadaTara {
             get {
                 return ResourceManager.GetString("ActPesadaTara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pesada Tara Exportación.
+        /// </summary>
+        public static string ActPesadaTaraExportacion {
+            get {
+                return ResourceManager.GetString("ActPesadaTaraExportacion", resourceCulture);
             }
         }
         
@@ -4782,6 +4800,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Automatismo_EsEscalableIncoincidente {
             get {
                 return ResourceManager.GetString("Automatismo_EsEscalableIncoincidente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debe existir una hidráulica habilitada.
+        /// </summary>
+        public static string Automatismo_HidarulicasDesactivadas {
+            get {
+                return ResourceManager.GetString("Automatismo_HidarulicasDesactivadas", resourceCulture);
             }
         }
         
@@ -13907,6 +13934,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La configuración con el tipo de impresión y puesto de trabajo ya existe.
+        /// </summary>
+        public static string Error_DocumentoDeImpresionPorCentro_ConfiguracionExistente {
+            get {
+                return ResourceManager.GetString("Error_DocumentoDeImpresionPorCentro_ConfiguracionExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El Tipo de Documento seleccionado no puede ser modificado.
         /// </summary>
         public static string Error_DocumentoIngresadoNoModificable {
@@ -17354,6 +17390,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No es posible deshabilitar la Hidráulica ya que se encuentra utilizada en los siguientes Automatismos con Id: ´{0}´ .
+        /// </summary>
+        public static string HidraulicaUtilizadaEnVariosAutomatismoActivo {
+            get {
+                return ResourceManager.GetString("HidraulicaUtilizadaEnVariosAutomatismoActivo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Histórico de Fotos por Camión.
         /// </summary>
         public static string HistoricoDeCamiones {
@@ -17665,6 +17710,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Idioma {
             get {
                 return ResourceManager.GetString("Idioma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El id de operaciones ya fue utilizado.
+        /// </summary>
+        public static string IdOperacionesYaUtilizado {
+            get {
+                return ResourceManager.GetString("IdOperacionesYaUtilizado", resourceCulture);
             }
         }
         
@@ -23621,6 +23675,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id Operaciones.
+        /// </summary>
+        public static string OrdenCargaInterna_NumeroOperaciones {
+            get {
+                return ResourceManager.GetString("OrdenCargaInterna_NumeroOperaciones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patente Acoplado.
         /// </summary>
         public static string OrdenCargaInterna_PatenteAcoplado {
@@ -23963,6 +24026,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Se encontró más de una orden de carga asociada a la patente, por favor seleccione una en Id Operaciones..
+        /// </summary>
+        public static string OrdenesFasonOperApiVarias {
+            get {
+                return ResourceManager.GetString("OrdenesFasonOperApiVarias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El almacen es requerido cuando se ingresan &quot;Residuos Organicos&quot;.
         /// </summary>
         public static string OrdenInterna_AlmacenRequerido {
@@ -24247,6 +24319,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PatenteEnOtroWorkflow {
             get {
                 return ResourceManager.GetString("PatenteEnOtroWorkflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se encontró ninguna Orden asociada a esta patente.
+        /// </summary>
+        public static string PatenteNoEncontradaApiOpera {
+            get {
+                return ResourceManager.GetString("PatenteNoEncontradaApiOpera", resourceCulture);
             }
         }
         
@@ -26931,6 +27012,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Responsable {
             get {
                 return ResourceManager.GetString("Responsable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Se ha encontrado más de un Recorrido con la misma Orden de Operaciones.
+        /// </summary>
+        public static string RespuestaOperacionesVariasOrdenes {
+            get {
+                return ResourceManager.GetString("RespuestaOperacionesVariasOrdenes", resourceCulture);
             }
         }
         

@@ -40,5 +40,7 @@
 	<setParameter name="PdfCpeDpiX Config" value="300" />
 	<setParameter name="PdfCpeDpiY Config" value="300" />
 	<setParameter name="UrlBaseWebAPI Config" value="https://scato.molinosagro.com.ar/Scato.WebApiCore/" />
-  <setParameter name="LogCountAfterMinutes Config" value="5" />
+	<setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
+	<setParameter name="APITokenOperacionesAPI Config" value="ZHBCyyW4SM0UoJr9nfmJTTgBBgsBky81dHka3Q6ZOCHtbZFF1W" />
+	<setParameter name="LogCountAfterMinutes Config" value="5" />
 </parameters>

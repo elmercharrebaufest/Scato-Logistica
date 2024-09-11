@@ -22,35 +22,38 @@ namespace Molinos.Scato.WebMobile.Controllers
             this.servicio = servicio;
             this.servicioComandos = servicioComandos;
         }
-
-        // GET: /CartelesVolcables/
         public ActionResult Index()
         {
             var hidraulicas = servicio.ListarHidraulicasAutomatizadas();
-
             return View(hidraulicas);
         }
 
         public JsonResult EstadoDeVolcadoras()
         {
             var hidraulicas = servicio.ListarHidraulicasAutomatizadas();
-          
             return Json(new {hidraulicas}, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult CambiarEstado(int nuevoEstado, int id, string nombre)
         {
+            var resultado = new Resultado();
             try
             {
-                servicioComandos.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica { Id = id, Estado = (EstadoHidraulica)nuevoEstado, Patente = string.Empty });
+                resultado = servicioComandos.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica { Id = id, Estado = (EstadoHidraulica)nuevoEstado, Patente = string.Empty });
+                if ((EstadoHidraulica)nuevoEstado == EstadoHidraulica.Inhabilitado)
+                    servicioComandos.Ejecutar(new ModificarEstadoHidraulica
+                    {
+                        Id = id,
+                        ActivoAutomatico = false
+                    });
             }
             catch (Exception e)
             {
                 log.Error(e, $"No se pudo actualizar la hidráulica {nombre}");
+                resultado.Error("MensajeError", $"Error al actualizar la hidráulica {nombre}");
             }
-            return Json("ok", JsonRequestBehavior.AllowGet);
-
+            return Json(resultado, JsonRequestBehavior.AllowGet);
         }
 
     }

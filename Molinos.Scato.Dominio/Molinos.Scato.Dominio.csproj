@@ -94,6 +94,7 @@
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarAsignacionAutomatismoGranoEnRecorrido .cs" />
+    <Compile Include="Comandos\ConsultarEscalablesDummy.cs" />
     <Compile Include="Comandos\CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\ConfirmarCTGVencidas.cs" />
     <Compile Include="Comandos\EliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Comandos\InformarViajeOrdenFason.cs" />
     <Compile Include="Comandos\LimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\ModificarAutomatismoGranos.cs" />
     <Compile Include="Comandos\EliminarAutomatismoGranos.cs" />
@@ -782,12 +784,15 @@
     <Compile Include="Dto\DomicilioDto.cs" />
     <Compile Include="Dto\HistorialMensajeCartelLedDto.cs" />
     <Compile Include="Dto\InfoCalleDto.cs" />
+    <Compile Include="Dto\IngresosEgresosFasonesDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\ConfiguracionCalleHidraulicaDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\CamionHidraulicaDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\LlamadoAutomaticoHidraulicaDto.cs" />
     <Compile Include="Dto\ConfirmacionCargaDescargaDto.cs" />
     <Compile Include="Dto\CartaPorteDerivadoGranarioDto.cs" />
     <Compile Include="Dto\PuntoDeCargaDto.cs" />
+    <Compile Include="Dto\OperacionesAPI\OrdenDeCargaComplementarioDto.cs" />
+    <Compile Include="Dto\OperacionesAPI\OrdenDeCargaDto.cs" />
     <Compile Include="Dto\RespuestaEstandar\MensajeEstandarAutomatismoDto.cs" />
     <Compile Include="Dto\TipoCallePlantaDto.cs" />
     <Compile Include="Dto\ConfigSensoresDto.cs" />

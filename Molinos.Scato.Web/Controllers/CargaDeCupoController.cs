@@ -3,6 +3,7 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
@@ -24,6 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
+
 namespace Molinos.Scato.Web.Controllers
 {
     [Autorizacion(PermisosScato.CargaDeCupo)]
@@ -37,11 +39,12 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IConfiguracionProvider configuracion;
         private readonly IFirmaProvider firma;
         private readonly IServicioActividadFactory<ICargarCartaPorteService> factory;
+        private readonly IServicioOperaciones servicioOperaciones;
 
         public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
             IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador,
             IConfiguracionProvider configuracion, IFirmaProvider firma,
-            IServicioActividadFactory<ICargarCartaPorteService> factory)
+            IServicioActividadFactory<ICargarCartaPorteService> factory, IServicioOperaciones servicioOperaciones)
             : base(servicio)
         {
             this.servicioComandos = servicioComandos;
@@ -52,6 +55,7 @@ namespace Molinos.Scato.Web.Controllers
             this.firma = firma;
             this.factory = factory;
             this.configuracion = configuracion;
+            this.servicioOperaciones = servicioOperaciones;
         }
 
         [DatosUsuario]
@@ -183,6 +187,8 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult IndexNoGranos(CargaDeCupoDto model, DatosUsuario datosUsuario)
         {
+            bool? fleteMOA = bool.TryParse(model.FleteMOA, out bool respValor) ? (bool?)respValor : null;
+
             model.Patente = model.Patente.ToUpper();
             ViewBag.Materiales = servicio.ListarMaterialGranoPorCentro(datosUsuario.CentroId, model.CircuitoNoGranos)
                 .ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
@@ -223,7 +229,7 @@ namespace Molinos.Scato.Web.Controllers
                         return View("Form", model);
                     }
                 }
-
+           
                 model.Fecha = DateTime.Now;
                 model.CentroId = datosUsuario.CentroId;
                 model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
@@ -244,7 +250,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap , true);
+                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap , true, fleteMOA);
                     }
                     if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
                     {
@@ -275,14 +281,16 @@ namespace Molinos.Scato.Web.Controllers
             return View("Form", model);
         }
 
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false, bool? FleteMOA = null)
         {
             try
             {
                 var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
                 var resultado = servicioComandos.Ejecutar(new CrearCallePorRecorrido
                 {
-                    TipoCalle = circuitoNoGranos ? TipoCalle.NoGranos : titular.Equals(codigoSapPuertoRosario) ? TipoCalle.PostCalado : TipoCalle.PreCalado,
+                    TipoCalle = FleteMOA != null ? TipoCalle.NoGranos :
+                    (circuitoNoGranos ? TipoCalle.NoGranos :
+                    (titular.Equals(codigoSapPuertoRosario) ? TipoCalle.PostCalado : TipoCalle.PreCalado)),
                     CargaDeCupoId = cargaDeCupoId,
                     TurnoActivo = turnoActivo,
                     CentroId = centroId
@@ -772,6 +780,7 @@ namespace Molinos.Scato.Web.Controllers
             var materiales = servicio.ListarMaterialGranoPorCentro(datosUsuario.CentroId, esGrano).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
 
             return Json(materiales, JsonRequestBehavior.AllowGet);
+
         }
 
         [DatosUsuario]
@@ -918,6 +927,146 @@ namespace Molinos.Scato.Web.Controllers
                 log.Info(e, "No se pudo obtener la carta de porte CTG-CPE en carga de Cupo. {0}", numeroCtg);
                 throw;
             }
+        }
+
+        [AjaxOnly]
+        public JsonResult ObtenerOrdenesFason(string patente)
+        {
+            try
+            {
+                var ordenes = servicioOperaciones.ObtenerOrdenesDeCarga(patente)?.ToList() ?? new List<OrdenDeCargaDto>();
+
+                var ordenesFiltradas = FiltrarOrdenesExistentesOperaciones(ordenes);
+                var materiales = ObtenerMaterialesOperaciones(ordenesFiltradas);
+                var ordenAnterior = ObtenerOrdenAnteriorOperaciones(ordenesFiltradas, materiales.Count > 1);
+
+                ComprobarClienteUnico(ordenAnterior?.FirstOrDefault()?.CUITCliente ?? string.Empty);
+                
+                var response = CrearRespuestaOperaciones(ordenesFiltradas, materiales, ordenAnterior);
+
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch (InvalidOperationException ex)
+            {
+                var errorResponse = new
+                {
+                    success = false,
+                    errorResponse = new
+                    {
+                        error = ex.Message,
+                        duplicado = true
+                    }
+                };
+
+                return Json(errorResponse, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new
+                {
+                    success = false,
+                    errorResponse = new
+                    {
+                        error = ex.Message,
+                        duplicado = false
+                    }
+                };
+
+            //  Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                return Json(errorResponse, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        /// <summary>
+        /// El Objetivo de este metodo es generar una una excepcion si hay mas de un cliente con el mismo cuit
+        /// </summary>
+        /// <param name="cuitCliente"></param>
+        /// <returns></returns>
+        private void ComprobarClienteUnico(string cuitCliente)
+        {
+            try
+            {
+                var respuesta = servicio.ContarClientes(ConvertirCuil(cuitCliente));
+                if (respuesta > 1 ) throw new InvalidOperationException("La secuencia contiene más de un elemento");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private string ConvertirCuil(string cuil)
+        {
+            if (String.IsNullOrEmpty(cuil))
+            {
+                return "";
+            }
+            string validador1 = cuil.Substring(0, 2);
+            string documento = cuil.Substring(2, 8);
+            string validador2 = cuil.Substring(10, 1);
+            return validador1 + "-" + documento + "-" + validador2;
+        }
+
+        private object CrearRespuestaOperaciones(List<OrdenDeCargaDto> ordenes, List<object> materiales, List<OrdenDeCargaDto> ordenAnterior)
+        {
+            if (ordenAnterior.Count != 0)
+            {
+                var material = servicio.ObtenerMaterialPorCodigoSap(ordenAnterior[0].CodigoProducto);
+                ordenAnterior[0].CodigoProducto = material.Id.ToString();
+            }
+
+            return new
+            {
+                success = true,
+                ordenes = ordenAnterior ?? ordenes,
+                sonVariasOrdenes = ordenes.Count > 1,
+                sonVariosMateriales = materiales.Count > 1,
+                materiales
+            };
+        }
+
+        private List<OrdenDeCargaDto> ObtenerOrdenAnteriorOperaciones(List<OrdenDeCargaDto> ordenes, bool sonVariosMateriales)
+        {
+            if (ordenes.Count > 1 && !sonVariosMateriales)
+            {
+                var ordenMasAntigua = ordenes.OrderBy(o => o.FechaCreacion).FirstOrDefault();
+                return ordenMasAntigua != null ? new List<OrdenDeCargaDto> { ordenMasAntigua } : new List<OrdenDeCargaDto>();
+            } 
+            else if (ordenes.Count >= 2 && sonVariosMateriales)
+            {
+                return ordenes.OrderBy(o => o.FechaCreacion).GroupBy(o => o.CodigoProducto).Select(g => g.First()).ToList();
+            }
+
+            return ordenes;
+        }
+
+        private List<object> ObtenerMaterialesOperaciones(List<OrdenDeCargaDto> ordenes) 
+        {
+            var listaMateriales = new List<object>();
+
+            foreach (var orden in ordenes.GroupBy(o => o.CodigoProducto))
+            {
+                var primerOrden = orden.First();
+                var material = servicio.ObtenerMaterialPorCodigoSap(primerOrden.CodigoProducto);
+
+                if (material != null)
+                {
+                    listaMateriales.Add(new
+                    {
+                        Value = material.Id, 
+                        Text = primerOrden.DescripcionProducto 
+                    });
+                }
+            }
+
+            return listaMateriales;
+        }
+
+        private List<OrdenDeCargaDto> FiltrarOrdenesExistentesOperaciones(List<OrdenDeCargaDto> ordenes)
+        {
+            return ordenes.Where(orden => !servicio.ExisteOrdenCargaFason(orden.Id.ToString())).ToList();
         }
 
         private void AperturaDeBarrera(string codigo)
@@ -1484,5 +1633,6 @@ namespace Molinos.Scato.Web.Controllers
 
             return tipoComercialId;
         }
+
     }
 }

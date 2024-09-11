@@ -76,6 +76,7 @@
                 public const string EstablecimientoPantalla = "Establecimiento";
                 public const string TableroComandoLogistica = "TableroComandoLogistica";
                 public const string TableroComandoPuerto = "TableroComandoPuerto";
+                public const string IngresarOrdenCargaInternaFason = "IngresarOrdenCargaInternaFason";
             }
 
             public struct EficienciaCalado
@@ -124,6 +125,18 @@
                 public const string PreBalanza = "LlamadoAutomaticoPreBalanza";
                 public const string NoGranos = "LlamadoAutomaticoGeneralNoGranos";
             }
+
+            public struct ImpresionReciboMunicipal
+            {
+                public const string Actividad = "ImpresionReciboMunicipal";
+                public const string MaterialesPagoRealizado = "MaterialesPagoRealizado";
+            }
+
+            public struct CNRT
+            {
+                public const string CNRTDummy = "CNRTDummy";
+                public const string VehiculoDummy = "VehiculoDummy";
+            }
         }
 
         public struct EtapaWorkflow
@@ -132,6 +145,7 @@
             public const string ConfirmacionCargaDescarga = "ConfirmacionCargaDescarga";
             public const string PesadaBruto = "PesadaBruto";
             public const string PesadaTara = "PesadaTara";
+            public const string OrdenCargaInterna = "IngresarOrdenCargaInternaFason";
         }
 
         public struct CartelTramaPare
@@ -232,5 +246,17 @@
             public const string UnoAUno = "1A1";
             public const string PaseDirecto = "PDR";
         }
+
+        public struct WorkFlow
+        {
+            public const string workflowFason = "SLO.EgresoClienteFason";
+            public const string workflowFasonSinFlete = "SLO.EgresoClienteFasonSinFlete";
+        }
+
+        public struct Excepciones
+        {
+            public const string SecuenciaMultiplesElementos = "La secuencia contiene más de un elemento";
+        }
+
     }
 }

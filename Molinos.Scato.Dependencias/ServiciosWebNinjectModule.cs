@@ -43,6 +43,9 @@ namespace Molinos.Scato.Dependencias
             Bind<IServicioEstadoPuesto, ServicioEstadoPuesto>().To<ServicioEstadoPuesto>().InScope(ctx => OperationContext.Current);
             Bind<ICache, Cache>().To<Cache>().InSingletonScope();
             Bind<IServicioLlamadoAutomatico, ServicioLlamadoAutomatico>().To<ServicioLlamadoAutomatico>().InScope(ctx => OperationContext.Current);
+            Bind<IServicioOperaciones, ServicioOperaciones>().To<ServicioOperaciones>();
+            Bind<IExternalServiceException, ExternalServiceException>().To<ExternalServiceException>();
+            Bind<IRestClientFactory, RestClientFactory>().To<RestClientFactory>().InSingletonScope();
 
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<LoginCMS>("LoginCms");

@@ -39,4 +39,6 @@
 	<setParameter name="ICWebServerUrl Config" value="https://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
 	<setParameter name="ICWSServerUrl Config" value="wss://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
 	<setParameter name="ActivarHangFire Config" value="false" />
+	<setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
+	<setParameter name="APITokenOperacionesAPI Config" value="ZHBCyyW4SM0UoJr9nfmJTTgBBgsBky81dHka3Q6ZOCHtbZFF1W" />
 </parameters>

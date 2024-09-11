@@ -63,7 +63,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             catch (Exception e)
             {
-                Log.Error(e, "Ocurrió un error al crear la entidad");
+                Log.Error(e, Textos.Error_ActualizarGenerico);
                 resultado.Error("", Textos.Error_ActualizarGenerico);
             }
             return resultado;

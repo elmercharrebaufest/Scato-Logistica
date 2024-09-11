@@ -110,7 +110,7 @@
                                 @Html.LabelFor(model => model.FechaIngreso, new { @class = "control-label" })
                                 <div class="controls">
                                     @{
-                                        var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy");
+                                        var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy HH:mm");
                                     }
                                     @Html.DisplayFor(model => fecha, new { @class = "input-large" })
                                 </div>

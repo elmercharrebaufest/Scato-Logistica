@@ -15,6 +15,6 @@
 	<setParameter name="Thumbprint Identity Configuration" value="97E9185D47464277B783E73CA7AC59E2A98589AB" />
 	<setParameter name="AudienceUrl Identity Configuration" value="http://scatouat.molinosagro.com.ar/Scato.webmobile/" />
 	<setParameter name="UrlAdfsLogoff Config" value="https://pase.molinosagro.com.ar/adfs/ls/?wa=wsignout1.0" />
-
-	<setParameter name="ServiciosScatoBinding Security Configuration" value="Transport" />
+	
+	<setParameter name="ServiciosScatoBinding Security Configuration" value="None" />
 </parameters>

@@ -1,6 +1,8 @@
 ﻿using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
@@ -15,7 +17,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 using WebGrease.Css.Extensions;
 
@@ -60,7 +61,7 @@ namespace Molinos.Scato.Web.Controllers
             ////////
             if (profiling != null)
             {
-                Response.AppendCookie(new HttpCookie("profiling"));
+                Response.AppendCookie(new System.Web.HttpCookie("profiling"));
             }
             /////
 
@@ -133,8 +134,16 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo)
+        public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo, string fleteMoa = "")
         {
+            if (bool.TryParse(fleteMoa, out bool esFleteNoa))
+            {
+                var nameWorkflow = esFleteNoa
+                    ? Constantes.WorkFlow.workflowFason
+                    : Constantes.WorkFlow.workflowFasonSinFlete;
+
+                return RedirectToAction("Index", Constantes.EtapaWorkflow.OrdenCargaInterna, new { workflow = nameWorkflow, cargaDeCupoId = id});
+            }
             return RedirectToAction("Index", proximaAccion, new { id });
         }
 
@@ -185,6 +194,7 @@ namespace Molinos.Scato.Web.Controllers
             filtro.NombreUsuario = datosUsuario.NombreUsuario;
             filtro.MostrarCamionesPendientes = PermisosHelper.Is(PermisosScato.CamionesPendientesMesa);
             filtro.MostrarCamionesPendientesNoGranos = PermisosHelper.Is(PermisosScato.CamionesPendientesNoGranos);
+            
 
             var instancias = workflows.ListarWorkFlows(paginacion, filtro);
 

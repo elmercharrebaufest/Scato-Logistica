@@ -20,7 +20,7 @@
 	<setParameter name="ReportingServices Url" value="http://asvwqrptsv00.molinosagro.ad/Reportserver" />
 	<setParameter name="ReportingServices Viewer" value="https://scatoqa.molinosagro.com.ar/Scato.Web/MvcReportViewer.aspx" />
 	<setParameter name="ReportingServices Username" value="GScatoSRV_qa" />
-	<setParameter name="ReportingServices Password" value="tLdswBzCfYsSgD5rCIMVVg==" />
+	<setParameter name="ReportingServices Password" value="iXJySJ0uWlj+U/7MqDH+dQ==" />
 	<setParameter name="ReportingServices Domain" value="molinosagro" />
 	<setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
 	<setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
@@ -40,4 +40,6 @@
 	<setParameter name="ICWSServerUrl Config" value="wss://localhost:8889/rtc" />
 	<setParameter name="FotosPathLogALPR Config" value="\\GVICFSPRD00\Scato\ScatoFotos\SLO\Testing\FotosLogAlpr" />
 	<setParameter name="UrlBaseWebAPI Config" value="http://localhost.molinosagro.ad/Scato.WebApiCore/" />
+	<setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
+	<setParameter name="APITokenOperacionesAPI Config" value="ZHBCyyW4SM0UoJr9nfmJTTgBBgsBky81dHka3Q6ZOCHtbZFF1W" />
 </parameters>

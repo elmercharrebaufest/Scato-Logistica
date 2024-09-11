@@ -32,7 +32,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             if (Repositorio.Existe<DocumentoDeImpresionPorCentro>(x => x.DocumentoDeImpresion.Id == comando.Dto.DocumentoDeImpresionId && x.Centro.Id == comando.Dto.CentroId && ((x.PuestoDeTrabajo == null && comando.Dto.PuestoDeTrabajoId == null) || x.PuestoDeTrabajo.Id == comando.Dto.PuestoDeTrabajoId)))
             {
-                resultado.Error("", string.Format(Textos.Error_Existente, Textos.DocumentoDeImpresion));
+                resultado.Error(string.Empty, Textos.Error_DocumentoDeImpresionPorCentro_ConfiguracionExistente);
             }
         }
     }

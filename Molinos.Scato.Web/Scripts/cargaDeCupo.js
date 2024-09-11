@@ -1,5 +1,5 @@
 ﻿jQuery(document).ready(function ($) {
-    activarCPE()
+    activarCPE();
     var notificaLectura = $.connection.notificaLectura;
 
     notificaLectura.client.informarLectura = function (notificacion) {        
@@ -127,7 +127,6 @@
     $('#NumeroCartaPorte').focus();
     TomarFotoConPatente();
 
-
     $('#Patente').change(validarEgresoVentaFas)
     $('#circuitoNoGranos').change(validarEgresoVentaFas)
 
@@ -190,10 +189,117 @@ function RefrescarFotoPatente() {
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
     if (existePatenteYesNoGranos) {
-        ObtenerDatosSap()
+        DefinirFlujoFasFason($('#Patente').val());
     }
 
 }
+
+async function DefinirFlujoFasFason(patente) {
+    const respuesta = await ObtenerDatosFason(patente);
+    if (!respuesta) {
+        ObtenerDatosSap();
+    }
+}
+
+async function ObtenerDatosFason(patente) {
+    $('#MaterialId').prop('disabled', true);
+    $('#FleteMOA').val("");
+    BlockUI($("#MensajeBuscandoDatos").val());
+
+    return new Promise((resolve, reject) => {
+        $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
+            if (typeof data.errorResponse === 'object') {
+                if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
+                    crearRespuestaErrorFason(data.errorResponse);
+                    resolve(false);
+                }
+            }
+
+            if (data.sonVariosMateriales) {
+                llenarMateriales(data, false, false);
+                resolve(true);
+            } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
+                llenarMateriales(data, true);
+                resolve(true);
+            } else {
+                limpiarComboMateriales();
+                resolve(false);
+            }
+        }).fail(function (xhr, status, error) {
+            reject(error); // Manejo de errores
+        }).always(function () {
+            $.unblockUI();
+        });
+    });
+}
+
+function crearRespuestaErrorFason(data) {
+    let message = "";
+    if (data.duplicado == false) {
+        message = data.error ;
+    } else {
+        $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
+        $('#dialogo-advertir').css({
+            'top': '30%',
+            'margin-left': function () {
+                return -($(this).width() / 2);
+            },
+            'left': '50%',
+            'margin-top': function () {
+                return -($(this).height() / 2.6);
+            }
+        });
+        $("#dialogo-advertir").modal('show');
+        return false;
+    }
+
+    $("#validation-fason").html("<strong>" + "Fason. " + message + "</strong>");
+    $("#validation-fason-error").removeClass("hide");
+}
+
+function limpiarComboMateriales() {
+    $('#MaterialId').empty();
+    $('#MaterialId').append($('<option/>', {
+        value: "",
+        text: "(material)",
+        selected: true
+    }));
+}
+
+function llenarMateriales(data, comboDisable, preSeleccionable = true) {
+    $('#MaterialId').each(function () {
+        let value = ""
+        llenarFleteMoa(data.ordenes);
+        if (comboDisable && preSeleccionable) {
+            value = data.ordenes[0].CodigoProducto;
+        }
+
+        let combo = $(this);
+        combo.empty();
+        combo.append($('<option/>', {
+            value: "",
+            text: "(material)",
+            selected: true
+        }));
+        $.each(data.materiales , function (index, data) {
+            combo.append($('<option/>', {
+                value: data.Value,
+                text: data.Text,
+                selected: data.Value == value
+            }));
+        });
+        combo.val(value);
+        ajustarFleteMoa(value)
+    });
+
+    if (!comboDisable) {
+        $('#MaterialId').prop('disabled', false);
+        ajustarFleteMoa()
+    }
+
+    
+}
+
 function ObtenerDatosSap() {
     if ($('#Patente').val().length == 0) {
         $('input').attr('disabled', 'disabled');

@@ -1811,6 +1811,7 @@
             <xsd:element minOccurs="0" name="FechaIng" type="tns:date10" />
             <xsd:element minOccurs="0" name="IM_CPEDG" type="tns:char13" />
             <xsd:element minOccurs="0" name="IM_CTG" type="tns:char12" />
+            <xsd:element minOccurs="0" name="IM_DESTINO_MERCADERIA" type="tns:char40" />
             <xsd:element minOccurs="0" name="IM_NUM_SCATO" type="tns:char12" />
             <xsd:element minOccurs="0" name="Km" type="tns:decimal5.0" />
             <xsd:element minOccurs="0" name="LocalidadOrig" type="tns:char5" />

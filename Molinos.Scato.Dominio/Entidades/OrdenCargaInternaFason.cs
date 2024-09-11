@@ -38,5 +38,8 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Proveedor IntermediarioFlete { get; set; }
         public virtual int? TipoDomicilioDestino { get; set; }
         public virtual Cliente Destinatario { get; set; }
+        public virtual string NumeroOrdenExterno { get; set; }
+        public virtual string Observaciones { get; set; }
+
     }
 }

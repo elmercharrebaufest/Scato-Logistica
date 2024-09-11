@@ -28,6 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Printing;
+using System.ServiceModel;
 using System.ServiceModel.Configuration;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
@@ -1902,7 +1903,7 @@ namespace Molinos.Scato.Servicios.Impl
             try
             {
                 entidad =
-                    repositorio.Obtener<Cliente>(
+                    repositorio.ObtenerPrimero<Cliente>(
                         f => f.Activo && (f.Descripcion.Contains(criteria) || f.Cuit.Contains(criteria)));
             }
             catch
@@ -11058,6 +11059,38 @@ namespace Molinos.Scato.Servicios.Impl
         public AsignacionNoGranoEnRecorridoDto ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(int recorridoId)
         {
             return Obtener<AsignacionNoGranoEnRecorrido, AsignacionNoGranoEnRecorridoDto>(x => x.RecorridoId == recorridoId);
+        }
+        public IList<AlmacenDto> ListarAlmacenesPorMateriaVariedadIds(List<int> tipoVariedadesIds, int materialId)
+        {
+            return Listar<Almacen, AlmacenDto>(x => x.TipoVariedadPorMateriales.Any(y => tipoVariedadesIds.Contains(y.TipoVariedadId) && y.MaterialId == materialId));
+        }
+
+        public RecorridoDto ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero)
+        {
+            var ordenesInternas = Listar<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero).Select(o => o.NumeroOrden);
+
+            try
+            {
+                return Obtener<Recorrido, RecorridoDto>(r => ordenesInternas.Any(orden => r.NumeroDocumentoIngreso.Contains(orden)) && !r.Rechazado);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new FaultException(Textos.RespuestaOperacionesVariasOrdenes, new FaultCode("NotSingle"));
+            }
+
+        }
+
+        public bool ExisteOrdenCargaFason(string ordenExterno)
+        {
+            var ordenCarga = repositorio.ObtenerMayor<OrdenCargaInternaFason, int>(x => x.NumeroOrdenExterno == ordenExterno,f => f.Id);
+            return ordenCarga != null && ordenCarga.Recorrido != null &&
+                        ((ordenCarga.Recorrido.Rechazado == false && ordenCarga.Recorrido.Terminado == false) ||
+                        (ordenCarga.Recorrido.Rechazado == true && ordenCarga.Recorrido.Terminado == false));
+        }
+		
+		public int ContarClientes(string nCuit)
+        {
+            return ListarClientesPorCuit(nCuit).Count;
         }
     }
 

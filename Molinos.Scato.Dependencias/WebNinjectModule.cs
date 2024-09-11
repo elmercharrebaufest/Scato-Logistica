@@ -2,6 +2,7 @@
 using System.Reflection;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
 using Molinos.Scato.Servicios.Impl;
@@ -40,7 +41,10 @@ namespace Molinos.Scato.Dependencias
             Bind(typeof(IServicioActividadFactory<>)).To(typeof(ServicioActividadFactory<>)).InSingletonScope();
             Bind(typeof(IServicioComandosFactory)).To(typeof(ServicioComandosFactory)).InSingletonScope();
             Bind(typeof(IServicioRepositorioFactory)).To(typeof(ServicioRepositorioFactory)).InSingletonScope();
-
+            Bind<IServicioOperaciones, ServicioOperaciones>().To<ServicioOperaciones>();
+            Bind<IExternalServiceException, ExternalServiceException>().To<ExternalServiceException>();
+            Bind<IRestClientFactory, RestClientFactory>().To<RestClientFactory>().InSingletonScope();
+            Bind<ICache, Cache>().To<Cache>().InSingletonScope();
             BindServiciosActividad();
 
             this.BindChannelFactory<ZSDWS_SCATO>("ZSDWS_SCATO", "SapServiceUsername", "SapServicePassword");

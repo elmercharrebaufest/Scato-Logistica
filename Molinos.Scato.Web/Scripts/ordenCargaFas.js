@@ -496,7 +496,7 @@ function ValidarDerivadoGranario() {
         $('#DerivadoGranarioHabilitado').val('false')
         $('.derivadoGranario').addClass('hidden');
         $('#PlantaDGDestino').val('');
-        $('#TipoYOrdenDestino').val('');
+       /* $('#TipoYOrdenDestino').val('');*/
         $('#PagadorFlete').val('');
         $('#PagadorFleteId').val('');
     }

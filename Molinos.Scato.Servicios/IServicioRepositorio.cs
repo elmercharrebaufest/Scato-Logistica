@@ -3022,6 +3022,18 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoLlamadosActivos();
+
+        [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesPorMateriaVariedadIds(List<int> tipoVariedadesIds, int materialId);
+        
+        [OperationContract]
+        RecorridoDto ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero);
+
+        [OperationContract]
+        bool ExisteOrdenCargaFason(string ordenExterno);
+		
+		[OperationContract]
+        int ContarClientes(string nCuit);
     }
 
 }

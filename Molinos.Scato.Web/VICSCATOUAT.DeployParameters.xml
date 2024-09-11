@@ -19,9 +19,9 @@
 	<setParameter name="MailSettings Smtp Port" value="25" />
 	<setParameter name="MailSettings Smtp EnableSsl" value="false" />
 	<setParameter name="ReportingServices Url" value="http://asvwqrptsv00.molinosagro.ad/Reportserver" />
-	<setParameter name="ReportingServices Viewer" value="https://localhost/Scato.Web/MvcReportViewer.aspx" />
-	<setParameter name="ReportingServices Username" value="Scato_Logistica_uat" />
-	<setParameter name="ReportingServices Password" value="BEYFNXh3bWflUijnqncUB1SgPweYzgK9ZIU2ZnDJcEo=" />
+	<setParameter name="ReportingServices Viewer" value="https://ASVWUSCATO00.molinosagro.com.ar/Scato.Web/MvcReportViewer.aspx" />
+	<setParameter name="ReportingServices Username" value="GScatoSRV_qa" />
+	<setParameter name="ReportingServices Password" value="iXJySJ0uWlj+U/7MqDH+dQ==" />
 	<setParameter name="ReportingServices Domain" value="molinosagro" />
 	<setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
 	<setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
@@ -42,4 +42,6 @@
 	<setParameter name="FotosPathLogALPR Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\UAT\FotosLogAlpr" />
 	<setParameter name="UrlBaseWebAPI Config" value="http://localhost/Scato.WebApiCore/" />
 	<setParameter name="ActivarHangFire Config" value="true" />
+	<setParameter name="URLOperacionesAPI Config" value="https://prenuevo.moaoperaciones.com.ar/externalApi/external/api/" />
+	<setParameter name="APITokenOperacionesAPI Config" value="RL9ArEV37xhTXZYJvlhAweUHZljMreDP7P1fE6mMzmn0ODBDvu" />
 </parameters>

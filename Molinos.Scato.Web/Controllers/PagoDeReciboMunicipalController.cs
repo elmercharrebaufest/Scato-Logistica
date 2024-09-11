@@ -167,13 +167,6 @@ namespace Molinos.Scato.Web.Controllers
 
         private ValidarProximaAccionDto ValidarTarjeta(ValoresPagarConMercadoPagoDto valoresDeEntrada, ResultadoPagarMercadoPago resultadoPago)
         {
-            var materialPagoRealizado = new List<string>
-            {
-                Constantes.MaterialPagoRealizado.BiodiselAgranel, 
-                Constantes.MaterialPagoRealizado.AceiteGirasolCrudoSAP,
-                Constantes.MaterialPagoRealizado.AceiteSojaCrudoGranelSAP
-            };
-
             var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { valoresDeEntrada.NumeroDeTarjeta });
             if (recorrido == null)
             {
@@ -195,6 +188,9 @@ namespace Molinos.Scato.Web.Controllers
             //validar el vehiculo ya realizo el pago en el dia
             var validarPagoRealizado = servicio.ExistePagoRealizado(recorrido.Patente);
             var material = servicio.ObtenerMaterialPorWorkflow(recorrido.WorkflowId);
+
+            var configuracionMaterialPagoRealizado = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad, Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado);
+            var materialPagoRealizado = !string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor) ? configuracionMaterialPagoRealizado.Valor.Split(',').ToList() : new List<string>();
 
             //validar que hizo el pago en el dia y es Biodisel (Revisar) 
             if (validarPagoRealizado == false && materialPagoRealizado.Contains(material?.MaterialCodigoSap))
