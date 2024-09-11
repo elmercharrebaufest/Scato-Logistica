@@ -302,9 +302,7 @@ function llenarMateriales(data, comboDisable, preSeleccionable = true) {
 
 function ObtenerDatosSap() {
     if ($('#Patente').val().length == 0) {
-        $('input').attr('disabled', 'disabled');
-        $('select').attr('disabled', 'disabled');
-        $('#Patente').removeAttr('disabled');
+       
     } else {
         BlockUI($("#MensajeBuscandoDatos").val());
         $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
