@@ -261,6 +261,11 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
             }
 
+            if (string.IsNullOrEmpty(orden.KmARecorrer))
+            {
+                ModelState.AddModelError("KmARecorrer", string.Format(Textos.Error_Requerido, "km"));
+            }
+
             if (material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
             {
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
