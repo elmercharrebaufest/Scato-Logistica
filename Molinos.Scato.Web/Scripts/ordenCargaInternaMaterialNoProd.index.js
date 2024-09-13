@@ -1,7 +1,6 @@
 ﻿var formatoFecha = Globalize.culture().calendars.standard.patterns.d.replace(/[a-z]/g, '9');
 formatoFecha = formatoFecha.replace(/[A-Z]/g, '9');
 $('#FechaEmision').mask(formatoFecha);
-$("#FechaEmision").datepicker();
 
 var cachedOrdenDeCargaOperaciones;
 var domicilioConcat = "";
@@ -85,6 +84,7 @@ const almacenSelect = document.getElementById("Almacen_Id");
 
 function init()
 {
+    FechaActualDatePicker()
     llenarSelectOrdenes(ordenInicial);
     llenarSelectLocalidad(localidadInicial);
     llenarSelectPlanta(plantaInicial);
@@ -182,7 +182,8 @@ function llenarInputDate(value, element, att) {
 function seleccionarElemento(value, element, att) {
     element.value = value;
     att = value;
-}function seleccionarElementoAlmacen(value, element, att) {
+}
+function seleccionarElementoAlmacen(value, element, att) {
     for (var i = 0; i < element.options.length; i++) {
         
         if (element.options[i].value === value) {
@@ -207,7 +208,6 @@ function makeReadonly(dropdown) {
     dropdown.style.pointerEvents = 'none'; // Desactiva la interacción del usuario
 }
 
-// Función para hacer el dropdown editable
 function makeEditable(dropdown) {
     dropdown.style.backgroundColor = ''; // Restaura el color de fondo original
     dropdown.style.cursor = ''; // Restaura el cursor original
@@ -266,6 +266,7 @@ function ObtenerAlamacenesPorMaterial(almacenId)
         })
 
 }
+
 function validarPatenteCamion() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex for format ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex for format AB123CD
@@ -294,9 +295,10 @@ function servicioObtenerOrden(patente, workflowId) {
             const err = xhr.responseText.match(regex);
             //"Error en la petición AJAX: " + status + " - " +
             MostrarAlertaError(err[1]);
+            $.unblockUI();
         },
         complete: function () {
-            $.unblockUI();
+           
         }
     });
 }
@@ -310,6 +312,7 @@ function manejarRespuestaExitosa(data) {
 
     if (data.TieneAdvertencias) {
         MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
+        $.unblockUI();
     }
 
     if (!data.EsValido) {
@@ -344,6 +347,7 @@ function manejarRespuestaExitosa(data) {
 function mostrarInfoAlerta() {
     MostrarAlertaAdvertencia(patenteNoEncontrada);
     limpiarCamposOrdenDeCargaOperacionesMaterial()
+    $.unblockUI();
 }
 
 
@@ -367,8 +371,8 @@ function seleccionarOrdenDeCargaOperaciones() {
         error: (xhr, status, error) => {
             const err = xhr.responseText.match(/<h2>(.*?)<\/h2>/);
             MostrarAlertaError(err ? err[1] : `Error en la petición AJAX: ${status} - ${error}`);
-        },
-        complete: () => $.unblockUI()
+            $.unblockUI()
+        }
     });
 }
 
@@ -386,7 +390,7 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     choferNumDocumentoInput.value = null;
     kmARecorrerInput.value = null;
     materialIdInput.value = '';
-    tipoVehiculoInput.value = '';
+    tipoVehiculoInput.value = 0;
     tipoComercialInput.value = '';
     localidadSeleccionadaInput.value = null;
     destinoInput.value = null;
@@ -398,6 +402,9 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     removeSuccesStyle(choferNumDocumentoInput)
     removeSuccesStyle(destinoInput)
     removeSuccesStyle(choferTipoDocumentoInput)
+    makeEditable(tipoVehiculoInput)
+    makeEditable(localidadSelect)
+    
     init()
 }
 
@@ -428,6 +435,15 @@ function CargarDomicilios() {
     }
 }
 
+function FechaActualDatePicker() {
+    fechaEmisionInput.blur()
+    $('#FechaEmision').datepicker({
+        autoclose: true,
+        format: 'mm/dd/yyyy',
+
+    }).datepicker("setDate", 'now');
+}
+
 function convertirCuil(cuil) {
     if (!cuil || cuil.length !== 11) {
         return "";
@@ -453,7 +469,7 @@ function obtenerDatosAjax(selectedElement) {
 }
 
 function manejarRespuestaAjaxSeleccion(data, selectedElement) {
-    BlockUI();
+    
     if (typeof data.errorResponse === "object") {
         manejarErrorAjax(data);
         return;
@@ -483,7 +499,7 @@ function rellenarCampos(data, selectedElement) {
     let localidades = [{ value: data.Data.Orden.LocalidadId, text: data.Data.Orden.LocalidadDescripcion }];
     let elementos = [chofer_CuilInput, transportistaInput, destinoInput]
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`
-    data.Data.TieneErrorCNRT ? activarInput(tipoVehiculoInput) : desactivarInput(tipoVehiculoInput)
+   
 
     llenarInput(selectedElement.PatenteAcoplado, patenteAcopladoInput, ordenModel.patenteAcoplado)
     llenarInput(convertirCuil(data.Data.CUITTransporte), transportistaIdInput, ordenModel.transportistaId)
@@ -502,6 +518,9 @@ function rellenarCampos(data, selectedElement) {
     llenarSelectLocalidad(localidades)
     if (destinoInput.value.length > 0) {
         makeReadonly(localidadSelect)
+    }
+    if (!data.Data.TieneErrorCNRT) {
+        makeReadonly(tipoVehiculoInput)
     }
     seleccionarElemento(data.Data.Orden.AlmacenId, almacenSelect, ordenModel.selectedAlmacen)
 
@@ -594,7 +613,7 @@ subscribe(function () {
     validarPatenteCamion()
 });
 
-patenteCamionInput.addEventListener("input", function (event) {
+patenteCamionInput.addEventListener("blur", function (event) {
     ordenModel.patenteCamion = event.target.value;
     notifySubscribers();
 });
