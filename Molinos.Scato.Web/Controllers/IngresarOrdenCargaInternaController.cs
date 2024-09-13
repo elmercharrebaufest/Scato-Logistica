@@ -249,15 +249,10 @@ namespace Molinos.Scato.Web.Controllers
 
                         if (chofer == null)
                         {
-                            string[] partes = item.NombreChofer?.Trim()?.Split(' ');
-
-                            string nombre = partes[0];
-                            string apellido = partes[partes.Length - 1];
-
                             var choferNuevo = new ChoferDto
                             {
-                                Nombre = nombre,
-                                Apellido = apellido,
+                                Nombre = item.NombreChofer,
+                                Apellido = item.ApellidoChofer,
                                 TipoDocumentoIdentidadId = 1,
                                 Cuil = choferCuil,
                                 NumeroDeDocumento = ObtenerDocumentoDesdeCuil(item.CUILChofer)
