@@ -15,6 +15,7 @@
     var plantasDG = new List<SelectListItem>();
     var domiciliosDG = new List<SelectListItem>();
     var listaMaterialesDerivadoGranario = (List<int>)ViewBag.MaterialesDerivadoGranario;
+    var emptySelectListItem = new List<SelectListItem>();
 }
 
 @if (Model != null)
@@ -43,7 +44,10 @@
      data-url-obtener-almacenes-por-material="@Url.Action("ObtenerAlmacenesPorMaterial", "IngresarOrdenCargaInterna")"
      data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"
      data-url-obtener-plantas-por-cliente="@Url.Action("ObtenerPlantasDGPorClienteId", "Consultas")"
-     data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")">
+     data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")"
+     data-url-obtener-orden-de-carga-operaciones-por-patente="@Url.Action("ObtenerOrdenDeCargaOperacionesPorPatente","IngresarOrdenCargaInterna")"
+     data-url-obtener-orden-de-carga-operaciones-seleccionada="@Url.Action("ObtenerOrdenDeCargaOperacionesSeleccionada","IngresarOrdenCargaInterna")">
+
 </div>
 
 <script type="text/javascript">
@@ -105,21 +109,37 @@
         </div>
     </fieldset>
 </div>
+
 <div class="row-fluid row-fluid-ie7">
     <div class="span6">
         <fieldset class="grupo-carta-porte">
-            <div class="control">
-                @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small margin10" })
-                <div class="">
-                    @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new { @class = "control ", autocomplete = "off" })
-                    @Html.ValidationMessageFor(model => model.TipoVehiculo)
-                </div>
-            </div>
             <div class="control">
                 @Html.LabelFor(model => model.PatenteCamion, new { @class = "control-label small margin10" })
                 <div class="">
                     @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
                     @Html.ValidationMessageFor(model => model.PatenteCamion)
+                </div>
+            </div>
+            <div class="control">
+                @Html.LabelFor(model => model.NumeroOrdenExterno, new { @class = "control-label small margin10" })
+                <div class="">
+                    @if (!string.IsNullOrEmpty(Model.NumeroOrdenExterno))
+                    {
+                        @Html.TextBoxFor(model => model.NumeroOrdenExterno, new { @class = "control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.NumeroOrdenExterno)
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.NumeroOrdenExterno, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()", data_selected_value = Model.NumeroOrdenExterno })
+                        @Html.ValidationMessageFor(model => model.NumeroOrdenExterno)
+                    }
+                </div>
+            </div>
+            <div class="control">
+                @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small margin10" })
+                <div class="">
+                    @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new { @class = "control ", autocomplete = "off" })
+                    @Html.ValidationMessageFor(model => model.TipoVehiculo)
                 </div>
             </div>
             <div class="control">
@@ -163,7 +183,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "localidadDestinoDropdown" })
+                    @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "Localidad" })
                     @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
                 </div>
             </div>
@@ -278,3 +298,6 @@
 <div id="autocompleteTran"></div>
 <div id="autocompleteDestino"></div>
 <div id="autocompletePagadorFlete"></div>
+
+<script src="~/Scripts/ordenCargaInternaMaterialNoProd.index.js"></script>
+

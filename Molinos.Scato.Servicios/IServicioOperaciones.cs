@@ -13,6 +13,7 @@ namespace Molinos.Scato.Servicios
         /// <exception cref="FileNotFoundException">Why it's thrown.</exception>
         /// <returns></returns>
         IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente);
+        IEnumerable<OrdenResiduosDto> ObtenerOrdenesResiduos(string patente);
 
         /// <summary>
         /// InformarViajeOrdenesDeCargaFason
