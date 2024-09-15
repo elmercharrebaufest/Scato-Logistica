@@ -1,4 +1,7 @@
-﻿jQuery(document).ready(function ($) {
+﻿const materialInicial = [{ value: '', text: '(Material)' }];
+const [getMaterial, setMaterial] = useState([]);
+const [getMaterialInput, setMaterialInput] = useState(null)
+document.addEventListener("DOMContentLoaded", function (event) {
     activarCPE();
     var notificaLectura = $.connection.notificaLectura;
 
@@ -136,10 +139,25 @@
     });
     if ($("#matId").val() != $("#MaterialId").val())
         $("#matId").val("");
-});
-var patenteNoReconocida = 'Patente no reconocida';
 
+    setMaterialInput(document.getElementById('MaterialId'))
+
+    $.unblockUI();
+    //OptenerSelectOptionsValues()
+});
+
+
+
+
+var patenteNoReconocida = 'Patente no reconocida';
 var iniciarLoopFotoPatenteActivo = false;
+function OptenerSelectOptionsValues() {
+    var material = getMaterialInput().options;
+    const materialSelect = materialInicial.concat(
+        Array.from(material).map(x => ({ value: x.value, text: x.text }))
+    );
+    setMaterial(materialSelect);
+}
 function TomarFotoConPatente() {
     if ($('#checkvalidarPatente').is(':checked') && !iniciarLoopFotoPatenteActivo) {
         RefrescarFotoPatente();
@@ -189,7 +207,8 @@ function RefrescarFotoPatente() {
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
     if (existePatenteYesNoGranos) {
-        DefinirFlujoFasFason($('#Patente').val());
+       // DefinirFlujoFasFason($('#Patente').val());
+        DefinirFlujoInsumos($('#Patente').val())
     }
 
 }
@@ -201,8 +220,16 @@ async function DefinirFlujoFasFason(patente) {
     }
 }
 
+async function DefinirFlujoInsumos(patente) {
+    const respuesta = await ObtenerDatosInsumos(patente);
+    if (!respuesta) {
+        ObtenerDatosSap();
+    }
+}
+
 async function ObtenerDatosFason(patente) {
-    $('#MaterialId').prop('disabled', true);
+
+    desactivarInput(getMaterialInput());
     $('#FleteMOA').val("");
     BlockUI($("#MensajeBuscandoDatos").val());
 
@@ -222,6 +249,42 @@ async function ObtenerDatosFason(patente) {
                 llenarMateriales(data, true);
                 resolve(true);
             } else {
+                limpiarComboMateriales();
+                resolve(false);
+            }
+        }).fail(function (xhr, status, error) {
+            reject(error); // Manejo de errores
+        }).always(function () {
+            $.unblockUI();
+        });
+    });
+}
+
+async function ObtenerDatosInsumos(patente) {
+
+    desactivarInput(getMaterialInput());
+    $('#FleteMOA').val("");
+    BlockUI($("#MensajeBuscandoDatos").val());
+
+    return new Promise((resolve, reject) => {
+        $.getJSON($("#links").data().urlObtenerOrdenesInsumos, { patente: patente }, function (data) {
+            if (typeof data.errorResponse === 'object') {
+                if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
+                    crearRespuestaErrorFason(data.errorResponse);
+                    resolve(false);
+                }
+            }
+            if (data.sonVariosMateriales) {
+                llenarMateriales(data, false, false);
+                resolve(true);
+            } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
+                llenarMateriales(data, true);
+                resolve(true);
+            } else if (typeof data.ordenesInsumos === 'object' && data.ordenesInsumos.length > 0) {
+                llenarMateriales(data, true);
+                resolve(true);
+            }
+            else {
                 limpiarComboMateriales();
                 resolve(false);
             }
@@ -258,58 +321,75 @@ function crearRespuestaErrorFason(data) {
 }
 
 function limpiarComboMateriales() {
-    $('#MaterialId').empty();
-    $('#MaterialId').append($('<option/>', {
-        value: "",
-        text: "(material)",
-        selected: true
-    }));
+    setMaterial(materialInicial)
 }
 
 function llenarMateriales(data, comboDisable, preSeleccionable = true) {
-    $('#MaterialId').each(function () {
-        let value = ""
-        llenarFleteMoa(data.ordenes);
-        if (comboDisable && preSeleccionable) {
+    let value = "";
+    let materialSelect = [];
+    llenarFleteMoa(data.ordenes);
+
+    if (comboDisable && preSeleccionable) {
+        if (data.ordenes.length > 0) {
             value = data.ordenes[0].CodigoProducto;
+        } else if (data.ordenesInsumos.length > 0) {
+            value = data.ordenesInsumos[0].CodigoProducto;
         }
-
-        let combo = $(this);
-        combo.empty();
-        combo.append($('<option/>', {
-            value: "",
-            text: "(material)",
-            selected: true
-        }));
-        $.each(data.materiales , function (index, data) {
-            combo.append($('<option/>', {
-                value: data.Value,
-                text: data.Text,
-                selected: data.Value == value
-            }));
-        });
-        combo.val(value);
-        ajustarFleteMoa(value)
-    });
-
-    if (!comboDisable) {
-        $('#MaterialId').prop('disabled', false);
-        ajustarFleteMoa()
     }
 
+    materialSelect = [
+        ...data.ordenes.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto })),
+        ...data.ordenesInsumos.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto }))
+    ];
+
+    materialInputState.options = materialSelect;
+    setMaterial(materialSelect);
+
+    ajustarFleteMoa(value);
+
+    if (!comboDisable) {
+        activarInput(getMaterialInput());
+        ajustarFleteMoa();
+    }
+}
+
+function onFailure(xhr, status, error) {
     
+    $.unblockUI();
+    $('#dialogo-confirmar').modal('hide');
+    MostrarAlertaError("Error en flujo material no productivo");
+}
+
+function onSuccess(response) {
+    if (response && response.workflow && response.cargaDeCupoId) {
+        const workflow = encodeURIComponent(response.workflow);
+        const cargaDeCupoId = encodeURIComponent(response.cargaDeCupoId);
+
+        const url = new URL('/Scato.Web/IngresarOrdenCargaInterna', window.location.origin);
+        const params = new URLSearchParams({
+            workflow: workflow,
+            cargaDeCupoId: cargaDeCupoId
+        });
+
+        url.search = params.toString();
+        window.location.href = url.toString();
+    } else {
+        console.error('El objeto respuesta no tiene las propiedades obligatorias.');
+    }
 }
 
 function ObtenerDatosSap() {
     if ($('#Patente').val().length == 0) {
-        $('input').attr('disabled', 'disabled');
-        $('select').attr('disabled', 'disabled');
-        $('#Patente').removeAttr('disabled');
+        //$('input').attr('disabled', 'disabled');
+        //$('select').attr('disabled', 'disabled');
+        //$('#Patente').removeAttr('disabled');
     } else {
         BlockUI($("#MensajeBuscandoDatos").val());
         $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
             if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
-                if (data.datosSap.length == 1 ) {
+                
+                if (data.datosSap.length == 1) {
+                    
                     $('#MaterialId').val(data.datosSap[0].MaterialId);
                     $('#matId').val(data.datosSap[0].MaterialId);
                 } else if (data.datosSap.length > 1) {
@@ -330,3 +410,42 @@ function activarCPE() {
     $('#cpe').trigger("change");
     $('.check-cpe').hide()
 }
+
+function useState(initialValue) {
+    let value = initialValue;
+    function setValue(newValue) {
+        value = newValue;
+    }
+    return [() => value, setValue];
+}
+function llenarSelect(element, options) {
+    element.innerHTML = '';
+    options.forEach(function (opt) {
+        const option = document.createElement("option");
+        option.value = opt.value;
+        option.textContent = opt.text
+        element.appendChild(option);
+    });
+}
+function activarInput(element) {
+    element.disabledbled = false;
+}
+function desactivarInput(element) {
+    element.disabledbled = true;
+}
+
+// Handler para observar cambios en materialInput
+const materialHandler = {
+    set(target, property, value) {
+        target[property] = value; // Actualizamos el valor
+        // Si cambiamos las opciones, renderizamos nuevamente el select
+        if (property === 'options') {
+            llenarSelect(getMaterialInput(), value);
+        }
+        return true;
+    }
+};
+
+// Creación del proxy que manejará el estado de materialInput
+const materialInputState = new Proxy({ options: materialInicial }, materialHandler);
+
