@@ -126,9 +126,7 @@
 
     $('#NumeroCartaPorte').focus();
     TomarFotoConPatente();
-
-    $('#Patente').change(validarEgresoVentaFas)
-    $('#circuitoNoGranos').change(validarEgresoVentaFas)
+    $(document).on('change', '#Patente', validarEgresoVentaFas);
 
     $("#validation-ventaFas-close").on("click", function () {
         $("#validation-ventaFas-error").addClass("hide");
@@ -290,27 +288,21 @@ function llenarMateriales(data, comboDisable, preSeleccionable = true) {
 }
 
 function ObtenerDatosSap() {
-    if ($('#Patente').val().length == 0) {
-        $('input').attr('disabled', 'disabled');
-        $('select').attr('disabled', 'disabled');
-        $('#Patente').removeAttr('disabled');
-    } else {
-        BlockUI($("#MensajeBuscandoDatos").val());
-        $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
-            if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
-                if (data.datosSap.length == 1) {
-                    $('#MaterialId').val(data.datosSap[0].MaterialId);
-                    $('#matId').val(data.datosSap[0].MaterialId);
-                } else if (data.datosSap.length > 1) {
-                    $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
-                    $("#validation-ventaFas-error").removeClass("hide");
-                }
-
+    BlockUI($("#MensajeBuscandoDatos").val());
+    $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
+        if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
+            if (data.datosSap.length == 1) {
+                $('#MaterialId').val(data.datosSap[0].MaterialId);
+                $('#matId').val(data.datosSap[0].MaterialId);
+            } else if (data.datosSap.length > 1) {
+                $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
+                $("#validation-ventaFas-error").removeClass("hide");
             }
-        }).complete(function () {
-            $.unblockUI();
-        });
-    }
+
+        }
+    }).complete(function () {
+        $.unblockUI();
+    });
 }
 
 function activarCPE() {
