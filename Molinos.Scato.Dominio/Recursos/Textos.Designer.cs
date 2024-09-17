@@ -22766,6 +22766,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Se ha creado una nueva Orden de Fason con el No: {0}.
+        /// </summary>
+        public static string NuevaOrdenFasonCreada {
+            get {
+                return ResourceManager.GetString("NuevaOrdenFasonCreada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nuevo.
         /// </summary>
         public static string Nuevo {
