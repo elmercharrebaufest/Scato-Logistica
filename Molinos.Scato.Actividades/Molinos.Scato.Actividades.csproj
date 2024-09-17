@@ -90,6 +90,7 @@
     <Compile Include="ActualizarCupo.cs" />
     <Compile Include="ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="InformarOrdenInsumosOperaciones.cs" />
     <Compile Include="Internas\ActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Internas\VerificarAutomatismoGranos.cs" />
     <Compile Include="InformarOrdenFasonOperaciones.cs" />
