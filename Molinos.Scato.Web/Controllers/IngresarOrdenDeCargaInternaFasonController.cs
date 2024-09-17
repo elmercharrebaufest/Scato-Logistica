@@ -71,8 +71,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaInternaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObje = servicio.ObtenerWorkflowPorCodigo(workflow);
-            orden.NumeroOrden = servicio.ObtenerNuevoNumeroDeOrdenFason();
-
+            
             if (orden.TipoYOrdenDestino != null)
             {
                 var domicilio = orden.TipoYOrdenDestino.Split('-');
@@ -138,6 +137,7 @@ namespace Molinos.Scato.Web.Controllers
                 ViewBag.HasErrors = true;
                 return View(orden);
             }
+
 
             if (orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
             {
@@ -208,6 +208,7 @@ namespace Molinos.Scato.Web.Controllers
                 Comentario = orden.Rechazado ? $"Vehiculo Rechazado. {orden.MotivoRechazo}" : (orden.Demorado ? $"Vehiculo Demorado. {orden.MotivoDemora}" : string.Empty)
             };
 
+            orden.NumeroOrden = servicio.ObtenerNuevoNumeroDeOrdenFason();
             int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
             var servicioWf = factory.CrearServicio(workflowDefinicionId);
             var resultadoActividad = servicioWf.IngresarOrdenCargaInternaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
@@ -220,6 +221,7 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             ModelState.AgregarErrores(resultadoActividad);
+            ClearNumeroOrden(ref orden);
             SetearVista(workflowObje, datosUsuario.CentroId);
             ViewBag.HasErrors = true;
             return View(orden);
@@ -608,7 +610,7 @@ namespace Molinos.Scato.Web.Controllers
             if (!orden.Reventa)
             {
                 // Si los campos CUITCliente y Pedido no están vacíos
-                if (!string.IsNullOrEmpty(orden.CUITCliente) && !string.IsNullOrEmpty(orden.Pedido))
+                if (!string.IsNullOrEmpty(orden.CUITCliente))
                 {
                     // Usa CUITDestinatario si no está vacío, de lo contrario usa CUITCliente
                     return !string.IsNullOrEmpty(orden.CUITDestinatario) ? orden.CUITDestinatario : orden.CUITCliente;
