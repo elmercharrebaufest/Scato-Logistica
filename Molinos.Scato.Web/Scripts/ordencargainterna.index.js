@@ -23,7 +23,6 @@
     var formatoFecha = Globalize.culture().calendars.standard.patterns.d.replace(/[a-z]/g, '9');
     formatoFecha = formatoFecha.replace(/[A-Z]/g, '9');
     $('#FechaEmision').mask(formatoFecha);
-    $("#FechaEmision").datepicker();
 
     $.validator.addMethod("clienteRequerido", function (value, element) {
         return value.length > 0;
