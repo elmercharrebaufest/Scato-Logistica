@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
-using System.Threading.Tasks;
 
 namespace Molinos.Scato.Servicios
 {

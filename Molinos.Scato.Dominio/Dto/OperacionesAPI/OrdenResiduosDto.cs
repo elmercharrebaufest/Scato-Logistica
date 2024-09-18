@@ -24,6 +24,7 @@
         public string PlantaCodigo { get; set; }
         public string RazonSocialTransporte { get; set; }
         public string TipoOrden { get; set; }
+        public string KmRecorridos { get; set; }
 
     }
 }
