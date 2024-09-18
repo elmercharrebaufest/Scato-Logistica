@@ -510,6 +510,8 @@ function CargarPlantas() {
                     if (plantaSeleccionada.length > 0 && allData.Plantas.includes(parseInt(plantaSeleccionada))) {
                         $('#PlantaDGDestino').val(parseInt(plantaSeleccionada))
                     }
+                } else {
+                    MostrarAlertaError("Error al consultar Plantas - " + allData.Errores["2"]);
                 }
             }
         );
@@ -537,6 +539,8 @@ function CargarDomicilios() {
                         $('#TipoYOrdenDestino').val(`${tipoDomicilioSeleccionado}-${ordenDomicilioSeleccionado}`)
                         $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
                     }
+                } else {
+                    MostrarAlertaError("Error al consultar Domicilios - " + allData.Errores["2"]);
                 }
             }
         );

@@ -62,7 +62,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (responseCp.respuesta.errores.Any())
                 {
                     var error = responseCp.respuesta.errores.FirstOrDefault();
-                    resultado.Errores.Add("2", $"{error.codigo} - {error.descripcion}");
+                    resultado.Errores.Add("2", $"Respuesta de AFIP, error: {error.codigo} - {error.descripcion}");
                     return resultado;
                 }
 
@@ -76,7 +76,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             catch (Exception e)
             {
                 Log.Error(e, $"o se pudo hacer la consulta de Plantas DG por el cuit {comando.Cuit}");
-                resultado.Errores.Add("2", Textos.Error_Generico);
+                resultado.Errores.Add("2", "Respuesta de AFIP, error: " + Textos.Error_Generico);
             }
             return resultado;
         }
