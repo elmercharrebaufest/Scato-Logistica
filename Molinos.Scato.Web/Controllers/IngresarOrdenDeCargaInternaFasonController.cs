@@ -408,7 +408,7 @@ namespace Molinos.Scato.Web.Controllers
                 var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
                 var orden = ajustarOrdenFormatoRequerido( resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
                 
-                var choferCuil = ConvertirCuil(orden.CUILChofer);
+                var choferCuil = ConvertirCuil(orden.CUILChofer); 
                 var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
 
                 var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
@@ -560,9 +560,9 @@ namespace Molinos.Scato.Web.Controllers
 
         private string ConvertirCuil(string cuil)
         {
-            if (String.IsNullOrEmpty(cuil))
+            if (String.IsNullOrEmpty(cuil) || cuil.Length != 11)
             {
-                return "";
+                throw new ArgumentException(Textos.DatoConLongitudIncorrecta);
             }
             string validador1 = cuil.Substring(0, 2);
             string documento = cuil.Substring(2, 8);
