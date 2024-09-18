@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     activarCPE();
     var notificaLectura = $.connection.notificaLectura;
 
-    notificaLectura.client.informarLectura = function (notificacion) {        
+    notificaLectura.client.informarLectura = function (notificacion) {
         $("#validation-patente-alert").addClass("hide");
         $("#validation-patente-danger").addClass("hide");
         if (!notificacion.TarjetaValida && !notificacion.EsTarjetaSupervisor) {
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             $("#Numero").val('');
         } else if (notificacion.NumeroDeTarjeta !== null && notificacion.NumeroDeTarjeta !== "") {
             $("#Numero").val(notificacion.NumeroDeTarjeta);
-            
+
             if (ValidarCP()) {
                 if (ValidarNumeroTarjeta()) {
                     TomarFotoCP();
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
 
         window.hubReady.done(function () {
-            if (puestoDeTrabajo != null &&  puestoDeTrabajo.Automatico) {
+            if (puestoDeTrabajo != null && puestoDeTrabajo.Automatico) {
                 notificaLectura.server.escucharPuestosDeTrabajo($('#centroId').val(), puestoDeTrabajo.Id);
             }
             $.unblockUI();
@@ -129,9 +129,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     $('#NumeroCartaPorte').focus();
     TomarFotoConPatente();
-
-    $('#Patente').change(validarEgresoVentaFas)
-    $('#circuitoNoGranos').change(validarEgresoVentaFas)
+    $(document).on('change', '#Patente', validarEgresoVentaFas);
 
     $("#validation-ventaFas-close").on("click", function () {
         $("#validation-ventaFas-error").addClass("hide");
@@ -207,21 +205,15 @@ function RefrescarFotoPatente() {
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
     if (existePatenteYesNoGranos) {
-       // DefinirFlujoFasFason($('#Patente').val());
-        DefinirFlujoInsumos($('#Patente').val())
+        //DefinirFlujoFasFason($('#Patente').val());
+        DefinirFlujoFasonInsumos($('#Patente').val())
     }
 
 }
 
-async function DefinirFlujoFasFason(patente) {
-    const respuesta = await ObtenerDatosFason(patente);
-    if (!respuesta) {
-        ObtenerDatosSap();
-    }
-}
 
-async function DefinirFlujoInsumos(patente) {
-    const respuesta = await ObtenerDatosInsumos(patente);
+async function DefinirFlujoFasonInsumos(patente) {
+    const respuesta = await ObtenerDatosFasonInsumos(patente);
     if (!respuesta) {
         ObtenerDatosSap();
     }
@@ -233,34 +225,29 @@ async function ObtenerDatosFason(patente) {
     $('#FleteMOA').val("");
     BlockUI($("#MensajeBuscandoDatos").val());
 
-    return new Promise((resolve, reject) => {
-        $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
-            if (typeof data.errorResponse === 'object') {
-                if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
-                    crearRespuestaErrorFason(data.errorResponse);
-                    resolve(false);
-                }
+    $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
+        if (typeof data.errorResponse === 'object') {
+            if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
+                crearRespuestaErrorFason(data.errorResponse);
             }
+        }
 
-            if (data.sonVariosMateriales) {
-                llenarMateriales(data, false, false);
-                resolve(true);
-            } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
-                llenarMateriales(data, true);
-                resolve(true);
-            } else {
-                limpiarComboMateriales();
-                resolve(false);
-            }
-        }).fail(function (xhr, status, error) {
-            reject(error); // Manejo de errores
-        }).always(function () {
-            $.unblockUI();
-        });
+        if (data.sonVariosMateriales) {
+            llenarMateriales(data, false, false);
+        } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
+            llenarMateriales(data, true);
+        } else {
+            limpiarComboMateriales();
+            ObtenerDatosSap();
+        }
+    }).fail(function (xhr, status, error) {
+        // Manejo de errores
+    }).always(function () {
+        $.unblockUI();
     });
 }
 
-async function ObtenerDatosInsumos(patente) {
+async function ObtenerDatosFasonInsumos(patente) {
 
     desactivarInput(getMaterialInput());
     $('#FleteMOA').val("");
@@ -299,7 +286,7 @@ async function ObtenerDatosInsumos(patente) {
 function crearRespuestaErrorFason(data) {
     let message = "";
     if (data.duplicado == false) {
-        message = data.error ;
+        message = data.error;
     } else {
         $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
         $('#dialogo-advertir').css({
@@ -354,7 +341,7 @@ function llenarMateriales(data, comboDisable, preSeleccionable = true) {
 }
 
 function onFailure(xhr, status, error) {
-    
+
     $.unblockUI();
     $('#dialogo-confirmar').modal('hide');
     MostrarAlertaError("Error en flujo material no productivo");
@@ -375,36 +362,33 @@ function onSuccess(response) {
             url.search = params.toString();
             window.location.href = url.toString();
         }
-        
+
     } else {
         console.error('El objeto respuesta no tiene las propiedades obligatorias.');
     }
 }
 
 function ObtenerDatosSap() {
-    if ($('#Patente').val().length == 0) {
-        //$('input').attr('disabled', 'disabled');
-        //$('select').attr('disabled', 'disabled');
-        //$('#Patente').removeAttr('disabled');
-    } else {
-        BlockUI($("#MensajeBuscandoDatos").val());
-        $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
-            if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
-                
-                if (data.datosSap.length == 1) {
-                    
-                    $('#MaterialId').val(data.datosSap[0].MaterialId);
-                    $('#matId').val(data.datosSap[0].MaterialId);
-                } else if (data.datosSap.length > 1) {
-                    $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
-                    $("#validation-ventaFas-error").removeClass("hide");
-                }
 
+    BlockUI($("#MensajeBuscandoDatos").val());
+    $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
+        if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
+
+            if (data.datosSap.length == 1) {
+
+                $('#MaterialId').val(data.datosSap[0].MaterialId);
+                $('#matId').val(data.datosSap[0].MaterialId);
+            } else if (data.datosSap.length > 1) {
+                $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
+                $("#validation-ventaFas-error").removeClass("hide");
             }
-        }).complete(function () {
-            $.unblockUI();
-        });
+
+        }
+
     }
+    ).complete(function () {
+        $.unblockUI();
+    });
 }
 
 function activarCPE() {
