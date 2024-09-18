@@ -65,7 +65,7 @@ function manejarRespuestaExitosa(data) {
 
     if (Array.isArray(data.Data)) {
         data.Data.forEach(function (value) {
-            $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).text(value.Id.toString().padStart(8, '0')));
+            $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).attr("title", value.Cliente).text(value.Id.toString().padStart(8, '0') + " | " + value.Cliente));
         });
 
         var selectedValue = $("#NumeroOrdenExterno").data('selected-value');
