@@ -560,10 +560,15 @@ namespace Molinos.Scato.Web.Controllers
 
         private string ConvertirCuil(string cuil)
         {
-            if (String.IsNullOrEmpty(cuil) || cuil.Length != 11)
+            if (String.IsNullOrEmpty(cuil))
+            {
+               return "";
+            }
+            if (cuil.Length != 11)
             {
                 throw new ArgumentException(Textos.DatoConLongitudIncorrecta);
             }
+
             string validador1 = cuil.Substring(0, 2);
             string documento = cuil.Substring(2, 8);
             string validador2 = cuil.Substring(10, 1);
