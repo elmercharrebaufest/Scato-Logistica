@@ -53,12 +53,16 @@ namespace Molinos.Scato.Web.Controllers
             SetearVista(workflowObj, datosUsuario.CentroId);
             var numeroOrden = servicio.ObtenerNumeroDocumentoGenerado().ToString(CultureInfo.InvariantCulture).PadLeft(8, '0');
             var orden = new OrdenCargaInternaDto { FechaEmision = DateTime.Now, NumeroOrden = numeroOrden };
-            if(cargaDeCupoId != 0)
+            if (cargaDeCupoId != 0)
             {
                 var cupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
-                orden.PatenteCamion = cupo.Patente;
-                orden.MaterialId = cupo.MaterialId;
-                orden.MaterialDesc = cupo.MaterialDescripcion;
+                if (cupo != null)
+                {
+                    orden.PatenteCamion = cupo.Patente;
+                    orden.MaterialId = cupo.MaterialId;
+                    orden.MaterialDesc = cupo.MaterialDescripcion;
+                }
+               
             }
             return View(orden);
         }

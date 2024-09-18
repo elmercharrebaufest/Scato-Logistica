@@ -141,7 +141,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     setMaterialInput(document.getElementById('MaterialId'))
 
     $.unblockUI();
-    //OptenerSelectOptionsValues()
 });
 
 
@@ -367,26 +366,18 @@ function onSuccess(response) {
         console.error('El objeto respuesta no tiene las propiedades obligatorias.');
     }
 }
-
 function ObtenerDatosSap() {
-
-    BlockUI($("#MensajeBuscandoDatos").val());
     $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
         if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
-
             if (data.datosSap.length == 1) {
-
                 $('#MaterialId').val(data.datosSap[0].MaterialId);
                 $('#matId').val(data.datosSap[0].MaterialId);
             } else if (data.datosSap.length > 1) {
                 $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
                 $("#validation-ventaFas-error").removeClass("hide");
             }
-
         }
-
-    }
-    ).complete(function () {
+    }).done(function () {
         $.unblockUI();
     });
 }
