@@ -385,13 +385,13 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     ModelState.Clear();
                     ViewBag.MostrarAlertaExitosa = true;
-                    return Json(new { cargaDeCupoId = idCargaDeCupo, workflow = workflow }, JsonRequestBehavior.AllowGet);
+                    return Json(new { cargaDeCupoId = idCargaDeCupo, workflow = workflow , esOrdenInsumos  = true }, JsonRequestBehavior.AllowGet);
                     
                 }
 
             }
 
-            return Json(new { cargaDeCupoId = idCargaDeCupo , workflow = workflow }, JsonRequestBehavior.AllowGet);
+            return Json(new { cargaDeCupoId = idCargaDeCupo , workflow = workflow , esOrdenInsumos = true }, JsonRequestBehavior.AllowGet);
         }
 
         private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false, bool? FleteMOA = null)

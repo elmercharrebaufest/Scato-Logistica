@@ -362,17 +362,20 @@ function onFailure(xhr, status, error) {
 
 function onSuccess(response) {
     if (response && response.workflow && response.cargaDeCupoId) {
-        const workflow = encodeURIComponent(response.workflow);
-        const cargaDeCupoId = encodeURIComponent(response.cargaDeCupoId);
+        if (response.esOrdenInsumos) {
+            const workflow = encodeURIComponent(response.workflow);
+            const cargaDeCupoId = encodeURIComponent(response.cargaDeCupoId);
 
-        const url = new URL('/Scato.Web/IngresarOrdenCargaInterna', window.location.origin);
-        const params = new URLSearchParams({
-            workflow: workflow,
-            cargaDeCupoId: cargaDeCupoId
-        });
+            const url = new URL('/Scato.Web/IngresarOrdenCargaInterna', window.location.origin);
+            const params = new URLSearchParams({
+                workflow: workflow,
+                cargaDeCupoId: cargaDeCupoId
+            });
 
-        url.search = params.toString();
-        window.location.href = url.toString();
+            url.search = params.toString();
+            window.location.href = url.toString();
+        }
+        
     } else {
         console.error('El objeto respuesta no tiene las propiedades obligatorias.');
     }
