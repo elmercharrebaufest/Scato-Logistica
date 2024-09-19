@@ -253,8 +253,10 @@
     <Content Include="Content\Images\logo-nuevo.png" />
     <Content Include="Content\Images\Logo.png" />
     <Content Include="Content\dialogModal.css" />
+    <Content Include="Content\Images\pageError.png" />
     <Content Include="Content\mensajeria.css" />
     <Content Include="Content\switches.css" />
+    <Content Include="ErrorPages\GenericError.html" />
     <Content Include="Scripts\area\eficienciaCalado\index.js" />
     <Content Include="Scripts\bloquearPantalla.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
@@ -614,6 +616,7 @@
     <Content Include="Views\GraficoDePlanta\_ToneladasPorDia.cshtml" />
     <Content Include="Views\GraficoDePlanta\_ToneladasPorRangoDeDia.cshtml" />
     <Content Include="Views\GraficoDePlanta\_GraficoDePlantaHead.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -628,7 +631,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Index\Index.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
