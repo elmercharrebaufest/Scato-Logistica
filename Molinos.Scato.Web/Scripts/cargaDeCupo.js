@@ -340,10 +340,12 @@ function llenarMateriales(data, comboDisable, preSeleccionable = true) {
 }
 
 function onFailure(xhr, status, error) {
-
+    console.error("Codigo error: " + xhr.status + " , Descripcion: " + xhr.statusText);
     $.unblockUI();
     $('#dialogo-confirmar').modal('hide');
-    MostrarAlertaError("Error en flujo material no productivo");
+    if (xhr.status === 500) {
+        MostrarAlertaError("Error interno en el servidor. Por favor, recargue la página.");
+    }
 }
 
 function onSuccess(response) {
