@@ -2,11 +2,13 @@
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
@@ -26,12 +28,14 @@ namespace Molinos.Scato.Web.Controllers
     {
         private readonly ILogger log;
         private readonly IListaDeWorkflows workflows;
+        private readonly IServicioOperaciones servicioOperaciones;
 
-        public ListaDeCamionesController(ILogger log, IListaDeWorkflows workflows, IServicioRepositorio servicio)
+        public ListaDeCamionesController(ILogger log, IListaDeWorkflows workflows, IServicioRepositorio servicio, IServicioOperaciones servicioOperaciones)
             : base(servicio)
         {
             this.log = log;
             this.workflows = workflows;
+            this.servicioOperaciones = servicioOperaciones;
         }
 
         [DatosUsuario]
@@ -136,13 +140,20 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo, string fleteMoa = "")
         {
+            string nameWorkflow = string.Empty;
             if (bool.TryParse(fleteMoa, out bool esFleteNoa))
             {
-                var nameWorkflow = esFleteNoa
+                
+                     nameWorkflow = esFleteNoa
                     ? Constantes.WorkFlow.workflowFason
                     : Constantes.WorkFlow.workflowFasonSinFlete;
 
                 return RedirectToAction("Index", Constantes.EtapaWorkflow.OrdenCargaInterna, new { workflow = nameWorkflow, cargaDeCupoId = id});
+            }
+            if (ValidarExistenciaOrdenesInsumo(id))
+            {
+                nameWorkflow = Constantes.WorkFlow.workflowMaterialNoProductivo;
+                return RedirectToAction("Index", Constantes.EtapaWorkflow.MaterialNoProductivo, new { workflow = nameWorkflow, cargaDeCupoId = id });
             }
             return RedirectToAction("Index", proximaAccion, new { id });
         }
@@ -295,6 +306,18 @@ namespace Molinos.Scato.Web.Controllers
             cookie.ActualizarValor("TipoMaterial", filtro.TipoMaterial.ToString());
             cookie.ActualizarValor("TieneEntregador", filtro.TieneEntregador.ToString());
             return filtro;
+        }
+
+        private bool ValidarExistenciaOrdenesInsumo(int id)
+        {
+            bool existeOrden = false;
+
+            var patente = servicio.ObtenerPatentePorIdCargaCupo(id);
+            var ordenesInsumos = servicioOperaciones.ObtenerOrdenesResiduos(patente)?.ToList() ?? new List<OrdenResiduosDto>();
+
+            existeOrden = ordenesInsumos.Any();
+
+            return existeOrden;
         }
     }
 }

@@ -1,8 +1,11 @@
-﻿jQuery(document).ready(function ($) {
+﻿const materialInicial = [{ value: '', text: '(Material)' }];
+const [getMaterial, setMaterial] = useState([]);
+const [getMaterialInput, setMaterialInput] = useState(null)
+document.addEventListener("DOMContentLoaded", function (event) {
     activarCPE();
     var notificaLectura = $.connection.notificaLectura;
 
-    notificaLectura.client.informarLectura = function (notificacion) {        
+    notificaLectura.client.informarLectura = function (notificacion) {
         $("#validation-patente-alert").addClass("hide");
         $("#validation-patente-danger").addClass("hide");
         if (!notificacion.TarjetaValida && !notificacion.EsTarjetaSupervisor) {
@@ -15,7 +18,7 @@
             $("#Numero").val('');
         } else if (notificacion.NumeroDeTarjeta !== null && notificacion.NumeroDeTarjeta !== "") {
             $("#Numero").val(notificacion.NumeroDeTarjeta);
-            
+
             if (ValidarCP()) {
                 if (ValidarNumeroTarjeta()) {
                     TomarFotoCP();
@@ -44,7 +47,7 @@
         }
 
         window.hubReady.done(function () {
-            if (puestoDeTrabajo != null &&  puestoDeTrabajo.Automatico) {
+            if (puestoDeTrabajo != null && puestoDeTrabajo.Automatico) {
                 notificaLectura.server.escucharPuestosDeTrabajo($('#centroId').val(), puestoDeTrabajo.Id);
             }
             $.unblockUI();
@@ -126,9 +129,7 @@
 
     $('#NumeroCartaPorte').focus();
     TomarFotoConPatente();
-
-    $('#Patente').change(validarEgresoVentaFas)
-    $('#circuitoNoGranos').change(validarEgresoVentaFas)
+    $(document).on('change', '#Patente', validarEgresoVentaFas);
 
     $("#validation-ventaFas-close").on("click", function () {
         $("#validation-ventaFas-error").addClass("hide");
@@ -136,10 +137,24 @@
     });
     if ($("#matId").val() != $("#MaterialId").val())
         $("#matId").val("");
-});
-var patenteNoReconocida = 'Patente no reconocida';
 
+    setMaterialInput(document.getElementById('MaterialId'))
+
+    $.unblockUI();
+});
+
+
+
+
+var patenteNoReconocida = 'Patente no reconocida';
 var iniciarLoopFotoPatenteActivo = false;
+function OptenerSelectOptionsValues() {
+    var material = getMaterialInput().options;
+    const materialSelect = materialInicial.concat(
+        Array.from(material).map(x => ({ value: x.value, text: x.text }))
+    );
+    setMaterial(materialSelect);
+}
 function TomarFotoConPatente() {
     if ($('#checkvalidarPatente').is(':checked') && !iniciarLoopFotoPatenteActivo) {
         RefrescarFotoPatente();
@@ -189,39 +204,73 @@ function RefrescarFotoPatente() {
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
     if (existePatenteYesNoGranos) {
-        DefinirFlujoFasFason($('#Patente').val());
+        //DefinirFlujoFasFason($('#Patente').val());
+        DefinirFlujoFasonInsumos($('#Patente').val())
     }
 
 }
 
-async function DefinirFlujoFasFason(patente) {
-    const respuesta = await ObtenerDatosFason(patente);
+
+async function DefinirFlujoFasonInsumos(patente) {
+    const respuesta = await ObtenerDatosFasonInsumos(patente);
     if (!respuesta) {
         ObtenerDatosSap();
     }
 }
 
 async function ObtenerDatosFason(patente) {
-    $('#MaterialId').prop('disabled', true);
+
+    desactivarInput(getMaterialInput());
+    $('#FleteMOA').val("");
+    BlockUI($("#MensajeBuscandoDatos").val());
+
+    $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
+        if (typeof data.errorResponse === 'object') {
+            if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
+                crearRespuestaErrorFason(data.errorResponse);
+            }
+        }
+
+        if (data.sonVariosMateriales) {
+            llenarMateriales(data, false, false);
+        } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
+            llenarMateriales(data, true);
+        } else {
+            limpiarComboMateriales();
+            ObtenerDatosSap();
+        }
+    }).fail(function (xhr, status, error) {
+        // Manejo de errores
+    }).always(function () {
+        $.unblockUI();
+    });
+}
+
+async function ObtenerDatosFasonInsumos(patente) {
+
+    desactivarInput(getMaterialInput());
     $('#FleteMOA').val("");
     BlockUI($("#MensajeBuscandoDatos").val());
 
     return new Promise((resolve, reject) => {
-        $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
+        $.getJSON($("#links").data().urlObtenerOrdenesInsumos, { patente: patente }, function (data) {
             if (typeof data.errorResponse === 'object') {
                 if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
                     crearRespuestaErrorFason(data.errorResponse);
                     resolve(false);
                 }
             }
-
             if (data.sonVariosMateriales) {
                 llenarMateriales(data, false, false);
                 resolve(true);
             } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
                 llenarMateriales(data, true);
                 resolve(true);
-            } else {
+            } else if (typeof data.ordenesInsumos === 'object' && data.ordenesInsumos.length > 0) {
+                llenarMateriales(data, true);
+                resolve(true);
+            }
+            else {
                 limpiarComboMateriales();
                 resolve(false);
             }
@@ -236,7 +285,7 @@ async function ObtenerDatosFason(patente) {
 function crearRespuestaErrorFason(data) {
     let message = "";
     if (data.duplicado == false) {
-        message = data.error ;
+        message = data.error;
     } else {
         $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
         $('#dialogo-advertir').css({
@@ -258,70 +307,81 @@ function crearRespuestaErrorFason(data) {
 }
 
 function limpiarComboMateriales() {
-    $('#MaterialId').empty();
-    $('#MaterialId').append($('<option/>', {
-        value: "",
-        text: "(material)",
-        selected: true
-    }));
+    setMaterial(materialInicial)
 }
 
 function llenarMateriales(data, comboDisable, preSeleccionable = true) {
-    $('#MaterialId').each(function () {
-        let value = ""
-        llenarFleteMoa(data.ordenes);
-        if (comboDisable && preSeleccionable) {
-            value = data.ordenes[0].CodigoProducto;
-        }
+    let value = "";
+    let materialSelect = [];
+    llenarFleteMoa(data.ordenes);
 
-        let combo = $(this);
-        combo.empty();
-        combo.append($('<option/>', {
-            value: "",
-            text: "(material)",
-            selected: true
-        }));
-        $.each(data.materiales , function (index, data) {
-            combo.append($('<option/>', {
-                value: data.Value,
-                text: data.Text,
-                selected: data.Value == value
-            }));
-        });
-        combo.val(value);
-        ajustarFleteMoa(value)
-    });
+    if (comboDisable && preSeleccionable) {
+        if (data.ordenes.length > 0) {
+            value = data.ordenes[0].CodigoProducto;
+        } else if (data.ordenesInsumos.length > 0) {
+            value = data.ordenesInsumos[0].CodigoProducto;
+        }
+    }
+
+    materialSelect = [
+        ...data.ordenes.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto })),
+        ...data.ordenesInsumos.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto }))
+    ];
+
+    materialInputState.options = materialSelect;
+    setMaterial(materialSelect);
+
+    ajustarFleteMoa(value);
 
     if (!comboDisable) {
-        $('#MaterialId').prop('disabled', false);
-        ajustarFleteMoa()
+        activarInput(getMaterialInput());
+        ajustarFleteMoa();
     }
-
-    
 }
 
-function ObtenerDatosSap() {
-    if ($('#Patente').val().length == 0) {
-        $('input').attr('disabled', 'disabled');
-        $('select').attr('disabled', 'disabled');
-        $('#Patente').removeAttr('disabled');
-    } else {
-        BlockUI($("#MensajeBuscandoDatos").val());
-        $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
-            if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
-                if (data.datosSap.length == 1 ) {
-                    $('#MaterialId').val(data.datosSap[0].MaterialId);
-                    $('#matId').val(data.datosSap[0].MaterialId);
-                } else if (data.datosSap.length > 1) {
-                    $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
-                    $("#validation-ventaFas-error").removeClass("hide");
-                }
-
-            }
-        }).complete(function () {
-            $.unblockUI();
-        });
+function onFailure(xhr, status, error) {
+    console.error("Codigo error: " + xhr.status + " , Descripcion: " + xhr.statusText);
+    $.unblockUI();
+    $('#dialogo-confirmar').modal('hide');
+    if (xhr.status === 500) {
+        MostrarAlertaError("Error interno en el servidor. Por favor, recargue la página.");
     }
+}
+
+function onSuccess(response) {
+    if (response && response.workflow && response.cargaDeCupoId) {
+        if (response.esOrdenInsumos) {
+            const workflow = encodeURIComponent(response.workflow);
+            const cargaDeCupoId = encodeURIComponent(response.cargaDeCupoId);
+
+            const url = new URL('/Scato.Web/IngresarOrdenCargaInterna', window.location.origin);
+            const params = new URLSearchParams({
+                workflow: workflow,
+                cargaDeCupoId: cargaDeCupoId
+            });
+
+            url.search = params.toString();
+            window.location.href = url.toString();
+        }
+
+    } else {
+        console.error('El objeto respuesta no tiene las propiedades obligatorias.');
+    }
+}
+function ObtenerDatosSap() {
+    $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
+        if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
+            if (data.datosSap.length == 1) {
+                $('#MaterialId').val(data.datosSap[0].MaterialId);
+                $('#matId').val(data.datosSap[0].MaterialId);
+            } else if (data.datosSap.length > 1) {
+                $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
+                $("#validation-ventaFas-error").removeClass("hide");
+            }
+        }
+    }).done(function () {
+        $.unblockUI();
+    });
 }
 
 function activarCPE() {
@@ -330,3 +390,42 @@ function activarCPE() {
     $('#cpe').trigger("change");
     $('.check-cpe').hide()
 }
+
+function useState(initialValue) {
+    let value = initialValue;
+    function setValue(newValue) {
+        value = newValue;
+    }
+    return [() => value, setValue];
+}
+function llenarSelect(element, options) {
+    element.innerHTML = '';
+    options.forEach(function (opt) {
+        const option = document.createElement("option");
+        option.value = opt.value;
+        option.textContent = opt.text
+        element.appendChild(option);
+    });
+}
+function activarInput(element) {
+    element.disabledbled = false;
+}
+function desactivarInput(element) {
+    element.disabledbled = true;
+}
+
+// Handler para observar cambios en materialInput
+const materialHandler = {
+    set(target, property, value) {
+        target[property] = value; // Actualizamos el valor
+        // Si cambiamos las opciones, renderizamos nuevamente el select
+        if (property === 'options') {
+            llenarSelect(getMaterialInput(), value);
+        }
+        return true;
+    }
+};
+
+// Creación del proxy que manejará el estado de materialInput
+const materialInputState = new Proxy({ options: materialInicial }, materialHandler);
+

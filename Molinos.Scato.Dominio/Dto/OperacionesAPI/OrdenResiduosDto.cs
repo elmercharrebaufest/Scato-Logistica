@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int AlmacenId { get; set; }
         public string Cliente { get; set; }
-        public string CodigoProducto { get; set; }
+        public int CodigoProducto { get; set; }
         public string CUILChofer { get; set; }
         public string CUITCliente { get; set; }
         public string CUITTransporte { get; set; }
