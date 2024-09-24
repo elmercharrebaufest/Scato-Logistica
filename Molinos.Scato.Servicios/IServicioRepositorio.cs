@@ -3044,8 +3044,8 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         MaterialDto ObtenerMaterialPorId(int id);
 
-
-
+        [OperationContract]
+        string ObtenerPatentePorIdCargaCupo(int id);
     }
 
 }

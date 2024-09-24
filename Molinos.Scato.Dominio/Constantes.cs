@@ -146,6 +146,7 @@
             public const string PesadaBruto = "PesadaBruto";
             public const string PesadaTara = "PesadaTara";
             public const string OrdenCargaInterna = "IngresarOrdenCargaInternaFason";
+            public const string MaterialNoProductivo = "IngresarOrdenCargaInterna";
         }
 
         public struct CartelTramaPare
@@ -251,6 +252,7 @@
         {
             public const string workflowFason = "SLO.EgresoClienteFason";
             public const string workflowFasonSinFlete = "SLO.EgresoClienteFasonSinFlete";
+            public const string workflowMaterialNoProductivo = "SLO.EgresoMaterialNoProductivo";
         }
 
         public struct Excepciones

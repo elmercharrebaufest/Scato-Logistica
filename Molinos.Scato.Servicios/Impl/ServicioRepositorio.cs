@@ -11113,6 +11113,11 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<Material, MaterialDto>(x => x.Id.Equals(id));
         }
 
+        public string ObtenerPatentePorIdCargaCupo(int id)
+        {
+            return repositorio.ObtenerProyeccion<CargaDeCupo, string>(x => x.Id == id, x => x.Patente);
+        }
+
     }
 
 

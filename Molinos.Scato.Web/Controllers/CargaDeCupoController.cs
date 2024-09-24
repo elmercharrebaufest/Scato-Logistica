@@ -302,8 +302,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.AvanzaAutomatico = centro.AvanzaCpe;
             ModelState.Remove("NumeroCartaPorte");
             ModelState.Remove("CTG");
-            int idCargaDeCupo = 0;
-            string workflow = "SLO.EgresoMaterialNoProductivo";
+
             if (ModelState.IsValid)
             {
                 log.Debug("Asignación de Cupo No Granos {0}, tarjeta {1}, centro {2}", model.Cupo, model.Numero, datosUsuario.CentroId);
@@ -342,7 +341,7 @@ namespace Molinos.Scato.Web.Controllers
                 model.CentroId = datosUsuario.CentroId;
                 model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
                 
-                var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupo { Dto = model }) as ResultadoCrear;
+                var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupoNoGrano { Dto = model }) as ResultadoCrear;
 
                 if (resultado.HayErrores)
                 {
@@ -354,7 +353,6 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 else
                 {
-                    idCargaDeCupo = resultado.Id;
                     var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
                     if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId != 0)
                     {
@@ -385,13 +383,13 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     ModelState.Clear();
                     ViewBag.MostrarAlertaExitosa = true;
-                    return Json(new { cargaDeCupoId = idCargaDeCupo, workflow = workflow , esOrdenInsumos  = true }, JsonRequestBehavior.AllowGet);
-                    
+                    return View("Form", model);
+
                 }
 
             }
 
-            return Json(new { cargaDeCupoId = idCargaDeCupo , workflow = workflow , esOrdenInsumos = true }, JsonRequestBehavior.AllowGet);
+            return View("Form", model);
         }
 
         private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false, bool? FleteMOA = null)
