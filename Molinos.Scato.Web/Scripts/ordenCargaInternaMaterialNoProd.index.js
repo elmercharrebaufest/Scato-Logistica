@@ -10,7 +10,6 @@ const obtenerProveedor = $('#links').data().urlBuscarProveedor;
 const obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    $.unblockUI();
     init();
 });
 
@@ -82,6 +81,7 @@ const plantaSelect = document.getElementById("PlantaDGDestino");
 const domicilioSelect = document.getElementById("TipoYOrdenDestino");
 const almacenSelect = document.getElementById("Almacen_Id");
 
+const [getKmARecorrer, setKmARecorrer] = useState(null);
 
 function init()
 {
@@ -268,6 +268,25 @@ function ObtenerAlamacenesPorMaterial(almacenId)
 
 }
 
+function completarKmRecorrerYLocalidad() {
+    var clienteId;
+    if ($('#Destino').length > 0) {
+        clienteId = $('#DestinoId').val();
+    }
+    if ($('#Cliente').length > 0) {
+        clienteId = $('#ClienteId').val();
+    }
+    if (clienteId > 0) {
+        llenarInput(getKmARecorrer(), kmARecorrerInput, ordenModel.kmARecorrer)
+        $('#KmARecorrer').removeAttr("disabled");
+    } else {
+        llenarInput(getKmARecorrer(), kmARecorrerInput, ordenModel.kmARecorrer)
+        $('#KmARecorrer').removeAttr("disabled");
+        makeReadonly(kmARecorrerInput)
+    }
+}
+
+
 function validarPatenteCamion() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex for format ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex for format AB123CD
@@ -299,7 +318,7 @@ function servicioObtenerOrden(patente, workflowId) {
             $.unblockUI();
         },
         complete: function () {
-           
+            $.unblockUI();
         }
     });
 }
@@ -307,16 +326,19 @@ function servicioObtenerOrden(patente, workflowId) {
 function manejarRespuestaExitosa(data) {
    
     if (!data || (!data.Data && !Array.isArray(data.Mensajes)) || (!Array.isArray(data.Data) && data.Mensajes.length === 0)) {
+        $.unblockUI();
         mostrarInfoAlerta();
         return;
     }
 
     if (data.TieneAdvertencias) {
-        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
         $.unblockUI();
+        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
+       
     }
 
     if (!data.EsValido) {
+        $.unblockUI();
         MostrarAlertaError(data.Mensajes[0].Mensaje);
         
         return;
@@ -346,9 +368,10 @@ function manejarRespuestaExitosa(data) {
 }
 
 function mostrarInfoAlerta() {
+    $.unblockUI();
     MostrarAlertaAdvertencia(patenteNoEncontrada);
     limpiarCamposOrdenDeCargaOperacionesMaterial()
-    $.unblockUI();
+    
 }
 
 
@@ -371,8 +394,9 @@ function seleccionarOrdenDeCargaOperaciones() {
         success: (data) => manejarRespuestaAjaxSeleccion(data, selectedElement),
         error: (xhr, status, error) => {
             const err = xhr.responseText.match(/<h2>(.*?)<\/h2>/);
-            MostrarAlertaError(err ? err[1] : `Error en la petición AJAX: ${status} - ${error}`);
             $.unblockUI()
+            MostrarAlertaError(err ? err[1] : `Error en la petición AJAX: ${status} - ${error}`);
+            
         }
     });
 }
@@ -472,6 +496,7 @@ function obtenerDatosAjax(selectedElement) {
 function manejarRespuestaAjaxSeleccion(data, selectedElement) {
     
     if (typeof data.errorResponse === "object") {
+        $.unblockUI();
         manejarErrorAjax(data);
         return;
     }
@@ -481,10 +506,12 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
     }
 
     if (!data.EsValido) {
-        if (data.Mensajes.length > 0) {
+        if (data.Mensajes.length > 0) { 
+            $.unblockUI();
             MostrarAlertaError(data.Mensajes[0].Mensaje);
             return;
         }
+        $.unblockUI();
         MostrarAlertaError(data.errorResponse.error);
         return;
     }
@@ -500,6 +527,7 @@ function rellenarCampos(data, selectedElement) {
     let localidades = [{ value: data.Data.Orden.LocalidadId, text: data.Data.Orden.LocalidadDescripcion }];
     let elementos = [chofer_CuilInput, transportistaInput, destinoInput]
     domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`
+    setKmARecorrer(data.Data.Orden.KmARecorrer)
    
 
     llenarInput(selectedElement.PatenteAcoplado, patenteAcopladoInput, ordenModel.patenteAcoplado)
@@ -515,7 +543,7 @@ function rellenarCampos(data, selectedElement) {
     seleccionarElemento(data.Data.MaterialId === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
     ObtenerAlamacenesPorMaterial(data.Data.Orden.AlmacenId);
     llenarInputDate(data.Data.Orden.FechaCreacion, fechaEmisionInput, ordenModel.fechaEmision)
-    llenarInput(data.Data.Orden.KmARecorrer, kmARecorrerInput, ordenModel.kmARecorrer)
+    completarKmRecorrerYLocalidad()
     llenarSelectLocalidad(localidades)
     if (destinoInput.value.length > 0) {
         makeReadonly(localidadSelect)
@@ -608,6 +636,14 @@ function notifySubscribers() {
 
 function subscribe(callback) {
     ordenModel.subscribers.push(callback);
+}
+
+function useState(initialValue) {
+    let value = initialValue;
+    function setValue(newValue) {
+        value = newValue;
+    }
+    return [() => value, setValue];
 }
 
 subscribe(function () {
