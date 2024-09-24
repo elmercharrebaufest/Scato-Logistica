@@ -74,4 +74,8 @@
 						match="/configuration/appSettings/add[@key='UrlAdfsLogoff']
                            /@value" />
 	</parameter>
+  <parameter name="PersistentSessionLifetime Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/system.identityModel.services/federationConfiguration/cookieHandler/@persistentSessionLifetime" />
+  </parameter>
 </parameters>

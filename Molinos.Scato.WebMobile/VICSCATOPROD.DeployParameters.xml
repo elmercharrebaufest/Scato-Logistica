@@ -15,4 +15,5 @@
   <setParameter name="Thumbprint Identity Configuration" value="97E9185D47464277B783E73CA7AC59E2A98589AB"/>
 
   <setParameter name="ServiciosScatoBinding Security Configuration" value="Transport"/>
+  <setParameter name="PersistentSessionLifetime Config" value="8:0:0" />
 </parameters>
