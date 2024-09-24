@@ -31,6 +31,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(x => x.LocalidadDestinoId, c => c.MapFrom(o => o.LocalidadDestino.Id))
                 .ForMember(x => x.LocalidadDestinoDescripcion, c => c.MapFrom(o => o.LocalidadDestino.Descripcion))
                 .ForMember(x => x.TipoVehiculo, c => c.MapFrom(o => o.Recorrido.TipoVehiculo))
+                .ForMember(x => x.TipoVehiculoLectura, c => c.MapFrom(o =>(int)o.Recorrido.TipoVehiculo))
                 .ForMember(x => x.PagadorFleteId, c => c.MapFrom(o => o.PagadorFlete.Id))
                 .ForMember(x => x.PagadorFlete, c => c.MapFrom(o => o.PagadorFlete.Descripcion))
                 .ForMember(x => x.CorredorId, c => c.MapFrom(o => o.Corredor.Id))

@@ -94,12 +94,12 @@
             </local:ValidarAutomatismoNoGranoActivo.Result>
           </local:ValidarAutomatismoNoGranoActivo>
           <FlowStep.Next>
-            <FlowDecision x:Name="__ReferenceID2" DisplayName="¿Hay errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+            <FlowDecision x:Name="__ReferenceID1" DisplayName="¿Hay errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
               <FlowDecision.Condition>
                 <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
               </FlowDecision.Condition>
               <FlowDecision.True>
-                <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_4">
+                <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_4">
                   <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_1">
                     <local:ControlRecorrido.ControlRecorridoDto>
                       <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -115,7 +115,7 @@
                 </FlowStep>
               </FlowDecision.True>
               <FlowDecision.False>
-                <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_3">
+                <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_3">
                   <local:AsignarAutomatismoNoGranoActivo sap2010:WorkflowViewState.IdRef="AsignarAutomatismoNoGranoActivo_1">
                     <local:AsignarAutomatismoNoGranoActivo.AutomatismoNoGrano>
                       <InArgument x:TypeArguments="msdd:AutomatismoNoGranoDto">
@@ -134,12 +134,12 @@
                     </local:AsignarAutomatismoNoGranoActivo.Result>
                   </local:AsignarAutomatismoNoGranoActivo>
                   <FlowStep.Next>
-                    <FlowDecision x:Name="__ReferenceID3" DisplayName="¿Hay errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
+                    <FlowDecision x:Name="__ReferenceID2" DisplayName="¿Hay errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
                       <FlowDecision.Condition>
                         <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
                       </FlowDecision.Condition>
                       <FlowDecision.True>
-                        <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_5">
+                        <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_5">
                           <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_2">
                             <local:ControlRecorrido.ControlRecorridoDto>
                               <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -152,9 +152,6 @@
                               </OutArgument>
                             </local:ControlRecorrido.Result>
                           </local:ControlRecorrido>
-                          <FlowStep.Next>
-                            <x:Reference>__ReferenceID0</x:Reference>
-                          </FlowStep.Next>
                         </FlowStep>
                       </FlowDecision.True>
                       <FlowDecision.False>
@@ -181,15 +178,15 @@
           </FlowStep.Next>
         </FlowStep>
       </Flowchart.StartNode>
+      <x:Reference>__ReferenceID0</x:Reference>
       <x:Reference>__ReferenceID1</x:Reference>
       <x:Reference>__ReferenceID2</x:Reference>
       <x:Reference>__ReferenceID3</x:Reference>
       <x:Reference>__ReferenceID4</x:Reference>
-      <x:Reference>__ReferenceID0</x:Reference>
       <x:Reference>__ReferenceID5</x:Reference>
       <x:Reference>__ReferenceID6</x:Reference>
     </Flowchart>
-    <sads:DebugSymbol.Symbol>d09DOlxzY2F0by1sb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xBc2lnbmFjaW9uQXV0b21hdGlzbW9Ob0dyYW5vcy54YW1sFkUDwQEOAgEBSgVQGgIBVlEFvwERAgECTQtN6gECAVdUC18zAgFJYxFjZAIBQ3cThwE7AgEwiwEZiwFsAgEqogEbrQE0AgEdjwEbmgE0AgEQZxNyLAIBA1cRV3sCAVBcEVxmAgFKehl6ewIBPX8Zf3cCATeEARmEAW4CATGlASGlAYQEAgEkqgEhqgF2AgEekgEhkgHIAgIBF5cBIZcBdgIBEWoZasACAgEKbxlvbgIBBA==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2pDOlxGZXJuYW5kb1xTY2F0b19naXRcU2NhdG9XZWJcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xBc2lnbmFjaW9uQXV0b21hdGlzbW9Ob0dyYW5vcy54YW1sFkUDvgEOAgEBSgVQGgIBVlEFvAERAgECTQtN6gECAVdUC18zAgFJYxFjZAIBQ3cThwE7AgEwiwEZiwFsAgEqnwEbqgE0AgEdjwEbmgE0AgEQZxNyLAIBA1cRV3sCAVBcEVxmAgFKehl6ewIBPX8Zf3cCATeEARmEAW4CATGiASGiAYQEAgEkpwEhpwF2AgEekgEhkgHIAgIBF5cBIZcBdgIBEWoZasACAgEKbxlvbgIBBA==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -236,7 +233,6 @@
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">280,469</av:Point>
             <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">280,480 280,480</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>

@@ -19,7 +19,8 @@ function Calle(item, context) {
     }
     self.Posiciones = ko.observableArray(posiciones);
     self.Bloqueada = ko.computed(function () {
-        return self.Llamada() && self.CamionesEnCalle() > 0;
+
+        return self.Llamada();
     });
 
     self.LlamarCircular = function () {
