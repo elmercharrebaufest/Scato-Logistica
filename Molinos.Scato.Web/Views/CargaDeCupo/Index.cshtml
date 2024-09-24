@@ -35,7 +35,7 @@
 @Html.Hidden("CodigoCamaraCP", (string)ViewBag.CodigoCamaraCP)
 @Html.Hidden("CodigoCamaraCPDir", (string)ViewBag.CodigoCamaraCPDir)
 
-@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "formContainer" , OnFailure = "onFailure" , OnSuccess = "onSuccess" }, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.CargaDeCupo }))
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "formContainer" , OnFailure = "onFailure" }, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.CargaDeCupo }))
 {
     <div id="formContainer">
         @Html.Partial("Form")
