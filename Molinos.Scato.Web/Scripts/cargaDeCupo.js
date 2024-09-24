@@ -1,6 +1,8 @@
 ﻿const materialInicial = [{ value: '', text: '(Material)' }];
 const [getMaterial, setMaterial] = useState([]);
 const [getMaterialInput, setMaterialInput] = useState(null)
+const [getPatenteInput, setPatenteInput] = useState(null)
+
 document.addEventListener("DOMContentLoaded", function (event) {
     activarCPE();
     var notificaLectura = $.connection.notificaLectura;
@@ -58,8 +60,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     catch (err) {
         window.location.href = window.location.href;
     }
-    //////////////
-
 
     var cupoValido = false;
     $.validator.addMethod("cupoValidacion", function (value, element) {
@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $('#NumeroCartaPorte').focus();
     TomarFotoConPatente();
     $(document).on('change', '#Patente', validarEgresoVentaFas);
+    $(document).on('blur', '#Patente', validarEgresoVentaFas);
 
     $("#validation-ventaFas-close").on("click", function () {
         $("#validation-ventaFas-error").addClass("hide");
@@ -138,13 +139,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
     if ($("#matId").val() != $("#MaterialId").val())
         $("#matId").val("");
 
-    setMaterialInput(document.getElementById('MaterialId'))
+    setMaterialInput(document.getElementById("MaterialId"))
+    setPatenteInput(document.getElementById("Patente"))
 
     $.unblockUI();
 });
-
-
-
 
 var patenteNoReconocida = 'Patente no reconocida';
 var iniciarLoopFotoPatenteActivo = false;
@@ -233,14 +232,19 @@ async function ObtenerDatosFason(patente) {
 
         if (data.sonVariosMateriales) {
             llenarMateriales(data, false, false);
-        } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
+        }
+        else if (typeof data.ordenes === 'object' && data.ordenes.length > 0)
+        {
             llenarMateriales(data, true);
-        } else {
-            limpiarComboMateriales();
+        }
+        else
+        {
             ObtenerDatosSap();
+            activarInput(getMaterialInput())
         }
     }).fail(function (xhr, status, error) {
         // Manejo de errores
+
     }).always(function () {
         $.unblockUI();
     });
@@ -261,6 +265,7 @@ async function ObtenerDatosFasonInsumos(patente) {
                 }
             }
             if (data.sonVariosMateriales) {
+                MostrarAlertaAdvertencia("La patente tiene más de una orden con diferente material relacionado");
                 llenarMateriales(data, false, false);
                 resolve(true);
             } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
@@ -272,12 +277,15 @@ async function ObtenerDatosFasonInsumos(patente) {
             }
             else {
                 limpiarComboMateriales();
+                ObtenerDatosSap();
+                activarInput(getMaterialInput())
                 resolve(false);
             }
         }).fail(function (xhr, status, error) {
             reject(error); // Manejo de errores
         }).always(function () {
             $.unblockUI();
+            
         });
     });
 }
@@ -310,6 +318,11 @@ function limpiarComboMateriales() {
     setMaterial(materialInicial)
 }
 
+function limpiarCheckNoGranos() {
+    var check = document.getElementById("circuitoNoGranos");
+    check.value = false;
+}
+
 function llenarMateriales(data, comboDisable, preSeleccionable = true) {
     let value = "";
     let materialSelect = [];
@@ -323,11 +336,21 @@ function llenarMateriales(data, comboDisable, preSeleccionable = true) {
         }
     }
 
-    materialSelect = [
-        ...data.ordenes.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto })),
-        ...data.ordenesInsumos.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto }))
-    ];
-
+    if (!comboDisable) {
+        materialSelect = [
+            ...materialInicial,
+            ...data.ordenes.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto })),
+            ...data.ordenesInsumos.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto }))
+        ];
+    }
+    else
+    {
+        materialSelect = [
+            ...data.ordenes.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto })),
+            ...data.ordenesInsumos.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto }))
+        ];
+    }
+    
     materialInputState.options = materialSelect;
     setMaterial(materialSelect);
 
@@ -388,10 +411,10 @@ function llenarSelect(element, options) {
     });
 }
 function activarInput(element) {
-    element.disabledbled = false;
+    element.disabled = false;
 }
 function desactivarInput(element) {
-    element.disabledbled = true;
+    element.disabled = true;
 }
 
 // Handler para observar cambios en materialInput
@@ -408,4 +431,6 @@ const materialHandler = {
 
 // Creación del proxy que manejará el estado de materialInput
 const materialInputState = new Proxy({ options: materialInicial }, materialHandler);
+
+
 

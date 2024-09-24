@@ -1228,8 +1228,8 @@ namespace Molinos.Scato.Web.Controllers
                 success = true,
                 ordenes = ordenAnteriorCarga.Count > 0 ? ordenAnteriorCarga : ordenesCarga,
                 ordenesInsumos = ordenAnteriorInsumos.Count > 0 ? ordenAnteriorInsumos : ordenesInsumos,
-                sonVariasOrdenes = ordenesInsumos.Count > 1 || ordenesCarga.Count > 1,
-                sonVariosMateriales = materialesInsumos.Count > 1 || materialesCarga.Count > 1,   
+                sonVariasOrdenes = (ordenesInsumos.Count + ordenesCarga.Count) > 1,
+                sonVariosMateriales = ( materialesInsumos.Count + materialesCarga.Count ) > 1 ,   
             };
         }
 

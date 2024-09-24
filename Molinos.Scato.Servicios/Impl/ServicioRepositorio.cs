@@ -11082,18 +11082,18 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ExisteOrdenCargaFason(string ordenExterno)
         {
-            var ordenCarga = repositorio.ObtenerMayor<OrdenCargaInternaFason, int>(x => x.NumeroOrdenExterno == ordenExterno,f => f.Id);
-            return ordenCarga != null && ordenCarga.Recorrido != null &&
-                        ((ordenCarga.Recorrido.Rechazado == false && ordenCarga.Recorrido.Terminado == false) ||
-                        (ordenCarga.Recorrido.Rechazado == true && ordenCarga.Recorrido.Terminado == false));
+
+            var ordenCarga = repositorio.Existe<OrdenCargaInternaFason>(x => x.NumeroOrdenExterno == ordenExterno &&
+                                                             (x.Recorrido == null || (!x.Recorrido.Rechazado && !x.Recorrido.Terminado)));
+                                       
+            return ordenCarga;
         }
 
         public bool ExisteOrdenCarga(string ordenExterno)
         {
-            var ordenCarga = repositorio.ObtenerMayor<OrdenCargaInterna, int>(x => x.Id_operaciones == ordenExterno &&
-                                                                                (x.Recorrido.Rechazado == false || x.Recorrido.Terminado == false),
-                                                                                f => f.Id);
-            return ordenCarga != null;
+            var ordenCarga = repositorio.Existe<OrdenCargaInterna>(x => x.Id_operaciones == ordenExterno &&
+                                                                                (x.Recorrido.Rechazado == false || x.Recorrido.Terminado == false));
+            return ordenCarga;
         }
 
         public int ContarClientes(string nCuit)
