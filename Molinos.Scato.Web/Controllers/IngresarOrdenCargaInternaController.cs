@@ -235,7 +235,7 @@ namespace Molinos.Scato.Web.Controllers
         public JsonResult ObtenerOrdenDeCargaOperacionesPorPatente(string patente, string workflow, DatosUsuario datosUsuario)
         {
             var response = new RespuestaEstandarDto<List<OrdenResiduosDto>>();
-            bool fleteMoa = workflow == "SLO.EgresoClienteFason";
+            bool fleteMoa = workflow == "SLO.EgresoMaterialNoProductivo";
 
             try
             {
