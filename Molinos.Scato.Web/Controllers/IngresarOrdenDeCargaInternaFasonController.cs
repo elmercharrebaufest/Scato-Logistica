@@ -315,6 +315,8 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     foreach (var item in restResponse)
                     {
+                        var material = servicio.ObtenerMaterialPorCodigoSap(item.CodigoProducto);
+                        item.MaterialId = material?.Id.ToString() ?? "";
                         var choferCuil = ConvertirCuil(item.CUILChofer);
                         var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
 
