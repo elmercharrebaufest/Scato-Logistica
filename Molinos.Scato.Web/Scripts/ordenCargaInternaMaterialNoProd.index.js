@@ -10,6 +10,10 @@ const obtenerProveedor = $('#links').data().urlBuscarProveedor;
 const obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
 
 document.addEventListener("DOMContentLoaded", function (event) {
+    if (patenteCamionInput.value.length > 0) {
+        ordenModel.patenteCamion = patenteCamionInput.value
+        validarPatenteCamion();
+    }
     init();
 });
 
@@ -374,7 +378,6 @@ function mostrarInfoAlerta() {
     
 }
 
-
 function seleccionarOrdenDeCargaOperaciones() {
    
     var numeroOrdenValor = ordenSelect.value;
@@ -628,6 +631,11 @@ tipoComercialInput.addEventListener("change", function (event) {
     if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
 });
 
+patenteCamionInput.addEventListener("blur", function (event) {
+    ordenModel.patenteCamion = event.target.value;
+    notifySubscribers();
+});
+
 function notifySubscribers() {
     ordenModel.subscribers.forEach(function (callback) {
         callback();
@@ -648,9 +656,4 @@ function useState(initialValue) {
 
 subscribe(function () {
     validarPatenteCamion()
-});
-
-patenteCamionInput.addEventListener("blur", function (event) {
-    ordenModel.patenteCamion = event.target.value;
-    notifySubscribers();
 });
