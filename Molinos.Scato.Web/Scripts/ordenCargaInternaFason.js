@@ -208,7 +208,8 @@ function rellenarCampos(data, selectedElement) {
     $("#Corredor").val(data.Data.Orden.Corredor);
     $("#Observaciones").val(data.Data.Orden.Observacion);
     $("#Remitente").val(data.Data.Orden.RemitenteComercial);
-    $("#PagadorFlete").val(data.Data.Orden.PagadorFlete)
+    $("#PagadorFlete").val(data.Data.Orden.PagadorFlete);
+    $("#LocalidadDescripcion").val(data.Data.Orden.LocalidadDescripcion);
 
     //rellenar campos ocultos
     $("#Chofer_Cuil[type='hidden']").val(convertirCuil(selectedElement.CUILChofer));
@@ -233,16 +234,6 @@ function rellenarCampos(data, selectedElement) {
 
 
     ValidarDerivadoGranario();
-
-
-    const select = document.getElementById('localidadDestinoDropdown');
-    const option = document.createElement('option');
-
-    // Asignar valor y texto
-    option.value = data.Data.Orden.LocalidadId;
-    option.text = data.Data.Orden.LocalidadDescripcion;
-    option.selected = true;
-    select.appendChild(option);
 
     let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Remitente", "#Transportista", "#IntermediarioFlete", "#PagadorFlete"];
 
@@ -323,6 +314,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#localidadDestinoDropdown").empty();
     $("#Observaciones").val(null);
     $("#RemitenteId").val(null);
+    $("#LocalidadDescripcion").val(null);
 }
 
 function convertirCuil(cuil) {

@@ -226,7 +226,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "localidadDestinoDropdown" })
+                    @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion" })
                     @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
                     @Html.HiddenFor(model => model.LocalidadDestinoId)
                 </div>
