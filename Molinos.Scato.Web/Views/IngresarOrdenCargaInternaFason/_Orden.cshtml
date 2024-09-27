@@ -137,7 +137,7 @@
             <div class="control">
                 <label class="control-label small margin10" for="Cliente">@(Model.DerivadoGranarioHabilitado ? "Destino" : "Cliente")</label>
                 <div class="">
-                    @Html.TextBoxFor(model => model.Cliente, new { @class = "control  autocompletado-obligatorio clienteRequerido" , autocomplete = "on", @readonly = "readonly" })
+                    @Html.TextBoxFor(model => model.Cliente, new { @class = "control  autocompletado-obligatorio clienteRequerido", autocomplete = "on", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.Cliente)
                     @Html.HiddenFor(model => model.ClienteId)
                 </div>
@@ -210,7 +210,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "localidadDestinoDropdown", @readonly = "readonly" })
+                    @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion", @disabled = "disabled" })
                     @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
                     @Html.HiddenFor(model => model.LocalidadDestinoId)
                 </div>
