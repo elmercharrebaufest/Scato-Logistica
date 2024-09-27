@@ -51,21 +51,20 @@ namespace Molinos.Scato.Actividades
                 });
             }
 
-
-
             try
             {
-
-
-                var req = new IngresosEgresosFasonesDto
+                var req = new IngresosEgresosResiduosDto
                 {
-                    FasonId = Convert.ToInt32(ordenInsumosId),
+                    IdOperaciones = Convert.ToInt32(ordenInsumosId),
                     PesadaNeto = recorrido.PesoNeto ?? 0,
                     PesadaTara = recorrido.PesoTara ?? 0,
-                    FechaIngreso = recorrido.FechaInicio.ToString("yyyy/MM/dd HH:mm:ss"),
-                    FechaEgreso = recorrido.FechaEgreso?.ToString("yyyy/MM/dd HH:mm:ss"),
+                    FechaEntrada = recorrido.FechaInicio.ToString("yyyy/MM/dd HH:mm:ss"),
+                    FechaSalida = recorrido.FechaEgreso?.ToString("yyyy/MM/dd HH:mm:ss"),
                     UniMedCant = "Kilogramos",
-                    NroRemito = cartaDePorte?.NroCTG,
+                    NroCertificacion = cartaDePorte?.NroCTG,
+                    OrdenCargaInterna = cartaDePorte?.Id ?? 0,
+                    PesadaBruto = recorrido.PesoBruto ?? 0,
+                    Balanza = recorrido.BalanzaTaraId.ToString()
                 };
 
                 servicio.Ejecutar(new CrearControlRecorrido
@@ -81,7 +80,7 @@ namespace Molinos.Scato.Actividades
                 });
 
 
-                servicio.Ejecutar(new InformarViajeOrdenFason
+                servicio.Ejecutar(new InformarViajeOrdenesResiduos
                 {
                     Dto = req
                 });
