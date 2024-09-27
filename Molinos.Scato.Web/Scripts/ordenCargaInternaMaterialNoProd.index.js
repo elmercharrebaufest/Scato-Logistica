@@ -472,7 +472,6 @@ function reiniciarAlSeleccionarOrden() {
     makeEditable(localidadSelect)
     makeEditable(kmARecorrerInput)
 
-    //init()
 }
 
 function CargarDomicilios() {
@@ -585,7 +584,6 @@ function rellenarCampos(data, selectedElement) {
     seleccionarElemento(data.Data.MaterialId === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
     ObtenerAlamacenesPorMaterial(data.Data.Orden.AlmacenId);
     llenarInputDate(data.Data.Orden.FechaCreacion, fechaEmisionInput, ordenModel.fechaEmision)
-    //completarKmRecorrerYLocalidad()
     llenarSelectLocalidad(localidades)
    
     
@@ -604,7 +602,6 @@ function rellenarCampos(data, selectedElement) {
         if ($element.val().trim() !== "") {
             $element.trigger('keydown').trigger('focusout');
             $element.blur()
-            //setTimeout(() => $element.blur(), 100);
         }
     });
    
