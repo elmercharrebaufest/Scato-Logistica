@@ -137,6 +137,41 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
+        public void InformarViajeOrdenesResiduos(IngresosEgresosResiduosDto ingresosEgresosResiduosDto)
+        {
+            const string RECURSO = "InformarViajeOrdenesResiduos";
+
+            if (ingresosEgresosResiduosDto == null)
+                throw externalServiceException.ThrowException("El objeto de datos no puede ser nulo.");
+
+
+            var request = CrearRequest(RECURSO);
+            IRestResponse restResponse;
+            var json = JsonConvert.SerializeObject(ingresosEgresosResiduosDto);
+
+            log.Debug("Se ejecuta la consulta a la Api");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+
+            try
+            {
+                var Client = clientFactory.CrearClientOperaciones();
+                restResponse = Client.Patch(request);
+            }
+            catch (Exception ex)
+            {
+                throw externalServiceException.ThrowException("Error general al consumir el servicio externo.", ex.Message, ex);
+            }
+
+            if (restResponse.IsSuccessful)
+            {
+                log.Debug("Viaje informado con éxito.");
+            }
+            else
+            {
+                RespuestaError(restResponse);
+            }
+        }
+
         private void RespuestaError(IRestResponse restResponse)
         {
             ErrorResponse errorContent;
