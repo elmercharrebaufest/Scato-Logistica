@@ -23,7 +23,7 @@ const localidadInicial = [{ value: '', text: '(Localidad)' }];
 const plantaInicial = [{ value: '', text: '(nro. planta)' }];
 const domicilioInicial = [{ value: '', text: '(Domicilio)' }];
 const almacenInicial = [{ value: '', text: '(Almacen)' }];
-const materialGoma = 6427;
+const materialGoma = '64207';
 
 const ordenModel = {
     patenteCamion: "",
@@ -561,6 +561,11 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
     rellenarCampos(data, selectedElement);
 }
 
+function seleccionarTipoComercialPorMaterial() {
+
+    seleccionarElemento(materialIdInput.value === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
+}
+
 function rellenarCampos(data, selectedElement) {
     BlockUI();
     reiniciarAlSeleccionarOrden();
@@ -702,6 +707,10 @@ tipoComercialInput.addEventListener("change", function (event) {
     ordenModel.selectedTipoComercial = event.target.value;
     DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, true, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
     if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
+});
+
+materialIdInput.addEventListener("change", function (event) {
+    seleccionarTipoComercialPorMaterial()
 });
 
 patenteCamionInput.addEventListener("blur", function (event) {
