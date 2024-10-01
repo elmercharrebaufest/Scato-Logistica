@@ -78,4 +78,18 @@
     <parameterEntry kind="XmlFile" scope="Web.config"
 						match="/configuration/system.identityModel.services/federationConfiguration/cookieHandler/@persistentSessionLifetime" />
   </parameter>
+		
+  <!-- Agrega modulo de autenticacion por ADFS para todos los entornos desplegados-->
+	<!-- <add name="WSFederationAuthenticationModule" type="Molinos.Scato.WebMobile.Seguridad.FixedWsFederationAuthenticationModule, Molinos.Scato.WebMobile" preCondition="managedHandler" /> -->
+  <parameter name="WSFederationAuthenticationModule" defaultValue="&lt;add name=&quot;WSFederationAuthenticationModule&quot; type=&quot;Molinos.Scato.WebMobile.Seguridad.FixedWsFederationAuthenticationModule, Molinos.Scato.WebMobile&quot; preCondition=&quot;managedHandler&quot; /&gt;">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/system.webServer/modules" />
+  </parameter>
+
+  <!-- Quita el Dummy de autenticacion al desplegar -->
+  <parameter name="DummyAuthenticationModule" defaultValue="">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/system.webServer/modules/add[@name='DummyAuthenticationModule']" />
+  </parameter>
+
 </parameters>

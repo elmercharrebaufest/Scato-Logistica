@@ -200,11 +200,7 @@
         CargarAlamacenesPorMaterial();
     }
 
-    var patenteCamion = $('#PatenteCamion').val();
-    if (patenteCamion) {
-        obtenerOrdenDeCargaOperacionesPorPatente();
-    }
-
+    
     $("#btnRechazarOrdenCargaInterna").click(function () {
         var valido = true;
 

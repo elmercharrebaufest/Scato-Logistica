@@ -1,6 +1,17 @@
-﻿var cachedOrdenDeCargaOperaciones;
+﻿$(document).ready(function () {
+    var patenteCamion = $('#PatenteCamion').val();
+    if (patenteCamion) {
+        obtenerOrdenDeCargaOperacionesPorPatente();
+    }
+
+})
+
+
+var cachedOrdenDeCargaOperaciones;
 var domicilioConcat = "";
 var $selectOption;
+
+
 
 
 

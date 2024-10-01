@@ -80,6 +80,8 @@ namespace Molinos.Scato.Dominio.Dto
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public TipoVehiculo TipoVehiculo { get; set; }
 
+        public int TipoVehiculoLectura {  get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_DerivadoGranarioHabilitado")]
         public bool DerivadoGranarioHabilitado { get; set; }
 

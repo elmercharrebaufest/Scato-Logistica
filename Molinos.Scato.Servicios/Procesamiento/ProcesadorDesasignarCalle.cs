@@ -79,7 +79,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 if (asignacion.Calle.TipoCalle == TipoCalle.PostCalado)
                 {
-                    Log.Debug("Desasignar calle postcalado");
+                    
                     var resultado = (ResultadoMensajeCartelLedReordenado)servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed
                     {
                         CalleId = asignacion.Calle.Id,
@@ -88,6 +88,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     var cartel = servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePostCalado, Constantes.ConfiguracionGeneral.PostCalado.CartelLedPostCalado);
                     LimpiarHistorialMensajeCartelLed(cartel?.Valor, resultado.ListaDeMensajes);
+
+                    Log.Debug("se realizo la desasignacion de calle postcalado, recorridoId:" + asignacion?.Recorrido?.Id + ", calleId: " + asignacion?.Calle?.Id);
                 }
             }
         }

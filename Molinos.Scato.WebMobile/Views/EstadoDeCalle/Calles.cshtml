@@ -87,7 +87,7 @@
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleCancelar))
                                         {
-                                            <button type="button" style="width: 100%" class="btn btn-danger btn-sm calle" data-bind="click: CancelarLLamado, visible: Bloqueada() && CamionesEnCalle() > 0 "><strong>Liberar</strong>(<strong data-bind="text: TiempoEnCola"></strong>)</button>
+                                            <button type="button" style="width: 100%" class="btn btn-danger btn-sm calle" data-bind="click: CancelarLLamado, visible: Bloqueada()"><strong>Liberar</strong>(<strong data-bind="text: TiempoEnCola"></strong>)</button>
                                         }
                                         <button type="button" style="width: 100%; height: 28.5px;" class="btn btn-success btn-sm calle" disabled data-bind="visible: !Deshabilitada() && (TipoCalle == 5 || TipoCalle == 6)"><strong data-bind="text: TiempoEnCola"></strong></button>
                                         <button type="button" style="width: 100%; height: 28.5px;" class="btn btn-warning btn-sm calle" data-bind="visible: Deshabilitada()" disabled><strong>Deshabilitada</strong></button>
