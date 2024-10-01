@@ -229,7 +229,6 @@ namespace Molinos.Scato.Web.Controllers
 
         private void ClearNumeroOrden(ref OrdenCargaInternaFasonDto orden)
         {
-            orden.NumeroOrdenExterno = "";
             orden.NumeroOrden = "";
         }
 
