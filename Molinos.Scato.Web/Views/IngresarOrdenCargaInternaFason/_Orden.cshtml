@@ -226,9 +226,18 @@
             <div class="control">
                 @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion" })
-                    @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
-                    @Html.HiddenFor(model => model.LocalidadDestinoId)
+                    @if (!string.IsNullOrEmpty(Model.LocalidadDestinoDescripcion))
+                    {
+                        @Html.TextBoxFor(Model => Model.LocalidadDestinoDescripcion, new { @id = "LocalidadDescripcion" })
+                        @Html.ValidationMessageFor(model => model.LocalidadDestinoId) 
+                        @Html.HiddenFor(model => model.LocalidadDestinoId)
+                    } else
+                    {
+                        @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion" })
+                        @Html.ValidationMessageFor(model => model.LocalidadDestinoId) 
+                        @Html.HiddenFor(model => model.LocalidadDestinoId)
+                    }
+                    
                 </div>
             </div>
             <div class="control">
