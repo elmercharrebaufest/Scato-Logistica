@@ -3034,6 +3034,10 @@ namespace Molinos.Scato.Servicios
 		
 		[OperationContract]
         int ContarClientes(string nCuit);
+        
+        [OperationContract]
+        string ObtenerNuevoNumeroDeOrdenFason(); 
+
     }
 
 }
