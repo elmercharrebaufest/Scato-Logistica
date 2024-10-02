@@ -23,7 +23,7 @@ const localidadInicial = [{ value: '', text: '(Localidad)' }];
 const plantaInicial = [{ value: '', text: '(nro. planta)' }];
 const domicilioInicial = [{ value: '', text: '(Domicilio)' }];
 const almacenInicial = [{ value: '', text: '(Almacen)' }];
-const materialGoma = '64207';
+const materialGoma = 64207;
 
 const ordenModel = {
     patenteCamion: "",
@@ -562,8 +562,8 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
 }
 
 function seleccionarTipoComercialPorMaterial() {
-
-    seleccionarElemento(materialIdInput.value === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
+    let inputValue = +materialIdInput.value
+    seleccionarElemento(inputValue === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
 }
 
 function rellenarCampos(data, selectedElement) {
