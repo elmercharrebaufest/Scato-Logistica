@@ -273,7 +273,7 @@ namespace Molinos.Scato.Web.Controllers
                     }
 
                     if (restResponse.Count == 0)
-                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se encontró ninguna Orden de Carga Fason con la patente ingresada", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se encontró ninguna Orden de Residuos con la patente ingresada", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
                     else
                         response.Data = restResponse;
                 }
@@ -282,7 +282,7 @@ namespace Molinos.Scato.Web.Controllers
                     var cachedResponse = cache.Obtener<List<OrdenResiduosDto>>($"Operaciones:OrdenResiduosDto");
                     cachedResponse = cachedResponse.Where(q => q.PatenteChasis == patente).ToList();
                     if (cachedResponse.Count == 0)
-                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se encontró ninguna Orden de Carga Fason con la patente ingresada", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se encontró ninguna Orden de Residuos con la patente ingresada", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
                     else
                         response.Data = cachedResponse;
                 }
