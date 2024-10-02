@@ -169,7 +169,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new { @class = "control ", autocomplete = "off", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new { @class = "control " , autocomplete = "off", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.TipoVehiculo)
                     @Html.HiddenFor(model => model.TipoVehiculo)
                 </div>
@@ -202,7 +202,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control ", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control ", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.MaterialId)
                     @Html.HiddenFor(model => model.MaterialId)
                 </div>
@@ -210,7 +210,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "localidadDestinoDropdown", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
                     @Html.HiddenFor(model => model.LocalidadDestinoId)
                 </div>
@@ -270,7 +270,7 @@
                         @Html.LabelFor(model => model.Chofer.Cuil, new { @class = "control-label small margin10" })
                         <div class="">
                             @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control  cuilValido", data_error_cuil_invalido = string.Format(Textos.CuitInvalido), data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Cuil", @readonly = "readonly" }) })
-                            @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control " })
+                            @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control ", @readonly = "readonly" })
                             @Html.ValidationMessageFor(model => model.Chofer.Cuil)
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                     <div class="control paddingRight">
                         @Html.LabelFor(model => model.Chofer.TipoDocumentoIdentidadId, new { @class = "control-label small margin10" })
                         <div class="">
-                            @Html.DropDownListFor(model => model.Chofer.TipoDocumentoIdentidadId, tiposDocumentos, new { @class = "control ", @disabled = "disabled" })
+                            @Html.DropDownListFor(model => model.Chofer.TipoDocumentoIdentidadId, tiposDocumentos, new { @class = "control ", @readonly = "readonly" })
                             @Html.ValidationMessageFor(model => model.Chofer.TipoDocumentoIdentidadId)
                             @Html.HiddenFor(model => model.Chofer.TipoDocumentoIdentidadId)
                         </div>
