@@ -42,7 +42,6 @@
         public string RemitenteComercial { get; set; }
         public long RemitenteComercialId { get; set; }
         public string PagadorFlete { get; set; }
-
-
+        public string DestinoMercaderia { get; set; }
     }
 }

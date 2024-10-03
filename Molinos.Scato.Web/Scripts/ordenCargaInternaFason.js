@@ -1,3 +1,4 @@
+
 ﻿$(document).ready(function () {
     var patenteCamion = $('#PatenteCamion').val();
     if (patenteCamion) {
@@ -219,6 +220,7 @@ function rellenarCampos(data, selectedElement) {
     $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
     $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
     $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
+    $("#DestinoMercaderia[type='hidden']").val(data.Data.Orden.DestinoMercaderia);
     $("#TipoComercialId[type='hidden']").val(tipoComercial)
     $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId)
 
@@ -323,6 +325,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#localidadDestinoDropdown").empty();
     $("#Observaciones").val(null);
     $("#RemitenteId").val(null);
+    $("#DestinoMercaderia").val(null);
 }
 
 function convertirCuil(cuil) {
