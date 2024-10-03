@@ -337,15 +337,11 @@ namespace Molinos.Scato.Web.Controllers
 
                         if (chofer == null)
                         {
-                            string[] partes = item.NombreChofer?.Trim()?.Split(' ');
-
-                            string nombre = partes[0];
-                            string apellido = partes[partes.Length - 1];
 
                             var choferNuevo = new ChoferDto
                             {
-                                Nombre = nombre,
-                                Apellido = apellido,
+                                Nombre = item.NombreChofer,
+                                Apellido = item.ApellidoChofer,
                                 TipoDocumentoIdentidadId = 1,
                                 Cuil = choferCuil,
                                 NumeroDeDocumento = ObtenerDocumentoDesdeCuil(item.CUILChofer)
@@ -355,7 +351,7 @@ namespace Molinos.Scato.Web.Controllers
 
                             if (!resultChofer)
                             {
-                                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se pudo ingresar el chofer " + item.NombreChofer + " del numero de orden: " + item.Id, TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se pudo ingresar el chofer " + item.NombreChofer + " " + item.ApellidoChofer + " del numero de orden: " + item.Id, TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
                                 break;
 
                             }

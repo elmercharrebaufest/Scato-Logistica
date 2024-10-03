@@ -10,6 +10,7 @@
         public string PatenteChasis { get; set; }
         public string PatenteAcoplado { get; set; }
         public string NombreChofer { get; set; }
+        public string ApellidoChofer { get; set; }
         public string CUILChofer { get; set; }
         public string RazonSocialTransporte { get; set; }
         public string CUITTransporte { get; set; }
