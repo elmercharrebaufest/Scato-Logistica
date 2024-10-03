@@ -75,10 +75,18 @@ function manejarRespuestaExitosa(data) {
 
     cachedOrdenDeCargaOperaciones = data.Data;
     $("#NumeroOrdenExterno").append($("<option></option>").attr("value", "").text("(Ninguno)"));
+    var materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
 
     if (Array.isArray(data.Data)) {
+        var nombreCliente = "";
         data.Data.forEach(function (value) {
-            $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).attr("title", value.Cliente).text(value.Id.toString().padStart(8, '0') + " | " + value.Cliente));
+            if (materialesDerivadoGranario.includes(parseInt(value.MaterialId))) {
+                nombreCliente = value.RazonSocialDestino
+            } else {
+                nombreCliente = value.Cliente
+            }
+
+            $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).attr("title", nombreCliente).text(value.Id.toString().padStart(8, '0') + " | " + nombreCliente));
         });
 
         var selectedValue = $("#NumeroOrdenExterno").data('selected-value');
