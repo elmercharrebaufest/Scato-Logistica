@@ -10,9 +10,15 @@ const obtenerProveedor = $('#links').data().urlBuscarProveedor;
 const obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    if (patenteCamionInput.value.length > 0 && !soloLecturaInput.value) {
+
+    if (patenteCamionInput.value.length > 0 && (soloLecturaInput == null || !soloLecturaInput.value)) {
         ordenModel.patenteCamion = patenteCamionInput.value
-        validarPatenteCamion();
+        obtenerOrdenDeCargaOperacionesPorPatente();
+    }
+    else if (soloLecturaInput !== null) {
+       
+        ObtenerAlamacenesPorMaterial(+almacenSeleccionadoInput.value);
+        completarLocalidad();
     }
     init();
 });
@@ -77,6 +83,8 @@ const choferApellidoInput = document.getElementById("Chofer_Apellido");
 const choferNumDocumentoInput = document.getElementById("Chofer_NumeroDeDocumento");
 const choferTipoDocumentoInput = document.getElementById("Chofer_TipoDocumentoIdentidadId");
 const soloLecturaInput = document.getElementById("soloLectura");
+const almacenSeleccionadoInput = document.getElementById("AlmacenSeleccionado");
+
 
 
 
@@ -294,9 +302,22 @@ function completarKmRecorrerYLocalidad() {
     }
 }
 
+function completarLocalidad() {
+    var clienteId;
+    if ($('#Destino').length > 0) {
+        clienteId = $('#DestinoId').val();
+    }
+    if ($('#Cliente').length > 0) {
+        clienteId = $('#ClienteId').val();
+    }
+    if (clienteId > 0) {
+        obtenerLocalidad(clienteId)
+    }
+}
 
 
-function validarPatenteCamion() {
+
+function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex for format ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex for format AB123CD
     const urlParams = new URLSearchParams(window.location.search);
@@ -685,6 +706,11 @@ function obtenerLocalidad(clienteId)
         });
 }
 
+var patenteCamion = $('#PatenteCamion').val();
+if (patenteCamion) {
+    obtenerOrdenDeCargaOperacionesPorPatente();
+}
+
 
 //Listerners 
 ordenSelect.addEventListener("change", function (event) {
@@ -738,5 +764,5 @@ function useState(initialValue) {
 }
 
 subscribe(function () {
-    validarPatenteCamion()
+    obtenerOrdenDeCargaOperacionesPorPatente()
 });
