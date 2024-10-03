@@ -20,6 +20,7 @@ namespace Molinos.Scato.Servicios
         /// </summary>
         /// <param name="ingresosEgresosFasonesDto"></param>
         void InformarViajeOrdenesDeCargaFason(IngresosEgresosFasonesDto ingresosEgresosFasonesDto);
+        void InformarViajeOrdenesResiduos(IngresosEgresosResiduosDto ingresosEgresosResiduosDto);
     }
    
 }
