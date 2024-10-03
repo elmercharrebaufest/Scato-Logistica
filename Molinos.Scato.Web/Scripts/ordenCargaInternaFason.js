@@ -220,6 +220,8 @@ function rellenarCampos(data, selectedElement) {
     $("#Remitente").val(data.Data.Orden.RemitenteComercial);
     $("#PagadorFlete").val(data.Data.Orden.PagadorFlete);
     $("#LocalidadDescripcion").val(data.Data.Orden.LocalidadDescripcion);
+    $('#DestinatarioId').val(data.Data.Orden.DestinatarioId);
+    $('#PagadorFleteId').val(data.Data.Orden.PagadorFleteId);
 
     //rellenar campos ocultos
     $("#Chofer_Cuil[type='hidden']").val(convertirCuil(selectedElement.CUILChofer));
@@ -326,8 +328,10 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#localidadDestinoDropdown").empty();
     $("#Observaciones").val(null);
     $("#RemitenteId").val(null);
-    $("#LocalidadDescripcion").val(null);
     $("#DestinoMercaderia").val(null);
+    $("#LocalidadDescripcion").val(null);
+    $('#DestinatarioId').val(null);
+    $('#PagadorFleteId').val(null);
 }
 
 function convertirCuil(cuil) {

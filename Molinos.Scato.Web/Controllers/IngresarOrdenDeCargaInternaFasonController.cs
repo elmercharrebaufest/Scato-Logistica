@@ -335,7 +335,7 @@ namespace Molinos.Scato.Web.Controllers
                         item.MaterialId = material?.Id.ToString() ?? "";
                         var choferCuil = ConvertirCuil(item.CUILChofer);
                         var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
-
+                        
                         if (chofer == null)
                         {
 
@@ -469,16 +469,16 @@ namespace Molinos.Scato.Web.Controllers
                     var ordenDeCargaComplementario = new OrdenDeCargaComplementariaDto
                     {
                         ClienteId = cliente?.Id,
-                        ClienteDescripcion = cliente?.Descripcion != null ? cliente.Descripcion : "" ,
+                        ClienteDescripcion = cliente?.Descripcion != null ? $"{cliente.CodigoSap} - {cliente.Descripcion}" : "" ,
                         TransportistaId = transportista?.Id,
-                        TransportistaDescripcion = transportista?.RazonSocial != null ? transportista.RazonSocial : "" ,
+                        TransportistaDescripcion = transportista?.RazonSocial != null ? $"{transportista.Cuil} - {transportista.RazonSocial}" : "" ,
                         TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
                         MaterialId = material.Id,
                         EsDerivadoGranario = material.EsDerivadoGranario,
                         Orden = orden,
                         TieneErrorCNRT = resultadoEscalables.HayErrores,
                         DestinoId = destino?.Id,
-                        DestinoDescripcion = destino?.Descripcion != null ? destino.Descripcion : "",
+                        DestinoDescripcion = destino?.Descripcion != null ? $"{destino.CodigoSap} - {destino.Descripcion}" : "",
                     };
 
                     response.Data = ordenDeCargaComplementario;
@@ -542,15 +542,18 @@ namespace Molinos.Scato.Web.Controllers
             var destinatario = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestinatario));
             var intermediario = servicio.ObtenerProveedorPorCuit(ConvertirCuil(orden?.CUITIntermediarioFlete), new TiposProveedor { PR = true });
             var destino = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.CUITDestino));
-            var pagadorFlete = ConvertirCuil(orden?.PagadorFlete);
+            var pagadorFlete = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.PagadorFlete));
             var remitente = servicio.ObtenerClientePorCuit(ConvertirCuil(orden?.RemitenteComercial));
 
-            orden.RazonSocialIntermediarioFlete = intermediario?.RazonSocial != null ? intermediario.RazonSocial : "";
-            orden.RazonSocialDestinatario = destinatario?.Descripcion != null ? destinatario.Descripcion : "";
-            orden.RazonSocialDestino = destino?.Descripcion != null ? destino.Descripcion : "";
+            orden.RazonSocialIntermediarioFlete = intermediario?.RazonSocial != null ? $"{intermediario.Cuil} - {intermediario.RazonSocial}" : "";
+            orden.RazonSocialDestinatario = destinatario?.Descripcion != null ? $"{destinatario.CodigoSap} - {destinatario.Descripcion}" : "";
+            orden.RazonSocialDestino = destino?.Descripcion != null ? $"{destino.CodigoSap} - {destino.Descripcion}" : "";
             orden.RemitenteComercialId = Convert.ToInt64(orden.RemitenteComercial);
-            orden.RemitenteComercial = remitente?.Descripcion != null ? remitente.Descripcion : "";
-            orden.PagadorFlete = pagadorFlete;
+            orden.RemitenteComercial = remitente?.Descripcion != null ? $"{remitente.CodigoSap} - {remitente.Descripcion}" : "";
+            orden.PagadorFlete = pagadorFlete?.Descripcion != null ? $"{pagadorFlete.CodigoSap} - {pagadorFlete.Descripcion}" : "";
+            orden.PagadorFleteId = Convert.ToInt64(pagadorFlete?.Id);
+            orden.DestinatarioId = Convert.ToInt64(destinatario?.Id);
+
             return orden;
 
         }
