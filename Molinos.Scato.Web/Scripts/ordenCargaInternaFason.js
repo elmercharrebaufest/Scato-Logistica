@@ -25,7 +25,9 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
 
     var patente = $("#PatenteCamion").val().toUpperCase();
     $("#NumeroOrdenExterno").empty();
-    if (hayError !== "True") limpiarCamposOrdenDeCargaOperaciones();
+    if (typeof hayError !== 'undefined' && hayError !== "True") {
+        limpiarCamposOrdenDeCargaOperaciones();
+    }
 
     if (patente && (!regex1.test(patente) && !regex2.test(patente))) {
         ValidarDerivadoGranario()
@@ -48,7 +50,6 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
         error: function (xhr, status, error) {
             const regex = /<h2>(.*?)<\/h2>/;
             const err = xhr.responseText.match(regex);
-            //"Error en la petición AJAX: " + status + " - " +
             MostrarAlertaError(err[1]);
         },
         complete: function () {

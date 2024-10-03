@@ -71,8 +71,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaInternaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObje = servicio.ObtenerWorkflowPorCodigo(workflow);
-            orden.NumeroOrden = servicio.ObtenerNuevoNumeroDeOrdenFason();
-
+            
             if (orden.TipoYOrdenDestino != null)
             {
                 var domicilio = orden.TipoYOrdenDestino.Split('-');
@@ -85,6 +84,7 @@ namespace Molinos.Scato.Web.Controllers
             if (!ModelState.IsValid)
             {
                 SetearVista(workflowObje, datosUsuario.CentroId);
+                ClearNumeroOrden(ref orden);
                 ViewBag.ErrorAfip = ModelState.Values.SelectMany(v => v.Errors).FirstOrDefault()?.ErrorMessage;
                 ViewBag.HasErrors = true;
                 return View(orden);
@@ -104,6 +104,7 @@ namespace Molinos.Scato.Web.Controllers
                 TempData["Alerta"] = string.Format(Textos.IdOperacionesYaUtilizado, orden.NumeroOrdenExterno);
                 TempData["TipoAlerta"] = TipoAlerta.Error;
                 SetearVista(workflowObje, datosUsuario.CentroId);
+                ClearNumeroOrden(ref orden);
                 ViewBag.AceptaPendiente = true;
                 return View(orden);
             }
@@ -120,6 +121,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
                 SetearVista(workflowObj, datosUsuario.CentroId);
+                ClearNumeroOrden(ref orden);
                 ViewBag.HasErrors = true;
                 return View(orden);
             }
@@ -131,9 +133,11 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
                 SetearVista(workflowObj, datosUsuario.CentroId);
+                ClearNumeroOrden(ref orden);
                 ViewBag.HasErrors = true;
                 return View(orden);
             }
+
 
             if (orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
             {
@@ -172,6 +176,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (resultadoAltaDummy.HayErrores)
                 {
                     SetearVista(workflowObje, datosUsuario.CentroId);
+                    ClearNumeroOrden(ref orden);
                     ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
                     ViewBag.HasErrors = true;
                     return View(orden);
@@ -187,6 +192,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (resultadoAnulacionDummy.HayErrores)
                 {
                     SetearVista(workflowObje, datosUsuario.CentroId);
+                    ClearNumeroOrden(ref orden);
                     ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
                     ViewBag.HasErrors = true;
                     return View(orden);
@@ -202,6 +208,7 @@ namespace Molinos.Scato.Web.Controllers
                 Comentario = orden.Rechazado ? $"Vehiculo Rechazado. {orden.MotivoRechazo}" : (orden.Demorado ? $"Vehiculo Demorado. {orden.MotivoDemora}" : string.Empty)
             };
 
+            orden.NumeroOrden = servicio.ObtenerNuevoNumeroDeOrdenFason();
             int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
             var servicioWf = factory.CrearServicio(workflowDefinicionId);
             var resultadoActividad = servicioWf.IngresarOrdenCargaInternaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
@@ -214,9 +221,16 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             ModelState.AgregarErrores(resultadoActividad);
+            ClearNumeroOrden(ref orden);
             SetearVista(workflowObje, datosUsuario.CentroId);
             ViewBag.HasErrors = true;
             return View(orden);
+        }
+
+        private void ClearNumeroOrden(ref OrdenCargaInternaFasonDto orden)
+        {
+            orden.NumeroOrdenExterno = "";
+            orden.NumeroOrden = "";
         }
 
         private void SetearVista(WorkflowDto workflow, int centroId)
@@ -409,8 +423,10 @@ namespace Molinos.Scato.Web.Controllers
 
                 var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
                 var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
-                var orden = ajustarOrdenFormatoRequerido( resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId)));
-                
+                var ordenes = resp.Where(x => x.Id == Convert.ToInt32(ordenId)).ToList();
+                var orden = ajustarOrdenFormatoRequerido(ordenes.FirstOrDefault());
+
+
                 var choferCuil = ConvertirCuil(orden.CUILChofer);
                 var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
 
@@ -594,7 +610,7 @@ namespace Molinos.Scato.Web.Controllers
             if (!orden.Reventa)
             {
                 // Si los campos CUITCliente y Pedido no están vacíos
-                if (!string.IsNullOrEmpty(orden.CUITCliente) && !string.IsNullOrEmpty(orden.Pedido))
+                if (!string.IsNullOrEmpty(orden.CUITCliente))
                 {
                     // Usa CUITDestinatario si no está vacío, de lo contrario usa CUITCliente
                     return !string.IsNullOrEmpty(orden.CUITDestinatario) ? orden.CUITDestinatario : orden.CUITCliente;
