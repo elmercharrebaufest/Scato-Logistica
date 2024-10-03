@@ -22,6 +22,7 @@ namespace Molinos.Scato.Actividades
             var recorrido = repo.ObtenerRecorridoPorGuid(context.WorkflowInstanceId);
             var cartaDePorte = repo.ObtenerCartaPorteDerivadoGranarioPorGuid(context.WorkflowInstanceId);
             var ordenInsumosId = IdOrdenInsumos.Get<String>(context);
+            var ordenCargaInterna = repo.ObtenerOrdenCargaInternaPorInstanceId(context.WorkflowInstanceId);
 
             try
             {
@@ -55,14 +56,14 @@ namespace Molinos.Scato.Actividades
             {
                 var req = new IngresosEgresosResiduosDto
                 {
-                    IdOperaciones = Convert.ToInt32(ordenInsumosId),
+                    IdOperaciones = Convert.ToInt32(ordenCargaInterna.Id_operaciones),
                     PesadaNeto = recorrido.PesoNeto ?? 0,
                     PesadaTara = recorrido.PesoTara ?? 0,
                     FechaEntrada = recorrido.FechaInicio.ToString("yyyy/MM/dd HH:mm:ss"),
                     FechaSalida = recorrido.FechaEgreso?.ToString("yyyy/MM/dd HH:mm:ss"),
                     UniMedCant = "Kilogramos",
                     NroCertificacion = cartaDePorte?.NroCTG,
-                    OrdenCargaInterna = cartaDePorte?.Id ?? 0,
+                    OrdenCargaInterna = Convert.ToInt32(ordenCargaInterna.NumeroOrden),
                     PesadaBruto = recorrido.PesoBruto ?? 0,
                     Balanza = recorrido.BalanzaTaraId.ToString()
                 };
