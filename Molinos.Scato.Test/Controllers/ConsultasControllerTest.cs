@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Test.Mock;
@@ -823,6 +825,29 @@ namespace Molinos.Scato.Test.Controllers
             var result = target.RedireccionarAListaAutomatizada("term", new DatosUsuario { CentroId = 1 });
             Assert.NotNull(result);
             Assert.True((bool)result.Data);
+        }
+
+        [Test]
+        public void ObtenerPlantasDGPorClienteId_ConErrorAfipEnElResultado()
+        {
+            var datosUsuario = new DatosUsuario { CentroId = 1 };
+            var clienteId = 123;
+            var clienteCuit = "20123456789";
+            var errorEsperado = new Dictionary<string, string> { { "2", "Error de Afip" } };
+
+            var resultadoComando = new ResultadoConsultaPlantasDG();
+            resultadoComando.Errores.Add("2", "Error de Afip");
+
+            servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ConsultarPlantasDG>()))
+                .Returns(resultadoComando);
+
+            var jsonResult = target.ObtenerPlantasDGPorClienteId(datosUsuario, clienteId, clienteCuit) as JsonResult;
+
+            Assert.IsNotNull(jsonResult);
+            var resultado = jsonResult.Data as Resultado;
+            Assert.IsNotNull(resultado);
+            Assert.IsTrue(resultado.HayErrores);
+            CollectionAssert.AreEqual(errorEsperado, resultado.Errores);
         }
     }
 }
