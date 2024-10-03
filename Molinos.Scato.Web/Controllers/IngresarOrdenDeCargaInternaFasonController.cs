@@ -430,6 +430,7 @@ namespace Molinos.Scato.Web.Controllers
                 var destinatarioDescrip = servicio.ObtenerClientePorCuit(string.IsNullOrEmpty(destinatarioCuit) ? "" : destinatarioCuit);
 
                 var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
+                orden.KmARecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? orden.KmARecorrer : "0";
 
 
                 var resultadoEscalables = servicioComandos.Ejecutar(GenerarConsultaEscalables(patente, acoplado, datosUsuario.NombreUsuario)) as ResultadoEscalables;

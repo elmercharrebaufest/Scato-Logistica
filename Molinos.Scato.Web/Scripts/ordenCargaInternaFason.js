@@ -217,7 +217,7 @@ function rellenarCampos(data, selectedElement) {
     $("#PatenteAcoplado[type='hidden']").val(selectedElement.PatenteAcoplado);
     $("#MaterialId[type='hidden']").val(data.Data.MaterialId);
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
-    $("#KmARecorrer[type='hidden']").val(selectedElement.KmARecorrer);
+    $("#KmARecorrer[type='hidden']").val(data.Data.Orden.KmARecorrer);
     $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
     $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
     $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
@@ -262,7 +262,7 @@ function rellenarCampos(data, selectedElement) {
 
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
-        $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
+        $('#KmARecorrer').val(data.Data.Orden.KmARecorrer); 
         $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
 
         if (existeDomicilio.length > 0) {
@@ -310,6 +310,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#Chofer_Apellido").val(null);
     $("#Chofer_NumeroDeDocumento").val(null);
     $("#KmARecorrer").val(null);
+    $("#KmARecorrer[type='hidden']").val(null);
     $("#MaterialId").val(null);
     $("#TipoVehiculo").val(null);
     $("#Destinatario").val(null);
