@@ -235,7 +235,7 @@
                         @Html.HiddenFor(model => model.LocalidadDestinoId)
                     } else
                     {
-                        @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion" })
+                        @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion", @disabled = "disabled" })
                         @Html.ValidationMessageFor(model => model.LocalidadDestinoId) 
                         @Html.HiddenFor(model => model.LocalidadDestinoId)
                     }
