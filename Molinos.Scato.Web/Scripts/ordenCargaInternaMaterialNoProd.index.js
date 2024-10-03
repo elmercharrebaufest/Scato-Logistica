@@ -10,7 +10,7 @@ const obtenerProveedor = $('#links').data().urlBuscarProveedor;
 const obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    if (patenteCamionInput.value.length > 0) {
+    if (patenteCamionInput.value.length > 0 && !soloLecturaInput.value) {
         ordenModel.patenteCamion = patenteCamionInput.value
         validarPatenteCamion();
     }
@@ -76,10 +76,11 @@ const choferNombreInput = document.getElementById("Chofer_Nombre");
 const choferApellidoInput = document.getElementById("Chofer_Apellido");
 const choferNumDocumentoInput = document.getElementById("Chofer_NumeroDeDocumento");
 const choferTipoDocumentoInput = document.getElementById("Chofer_TipoDocumentoIdentidadId");
+const soloLecturaInput = document.getElementById("soloLectura");
 
 
 
-const ordenSelect = document.getElementById("NumeroOrdenExterno");
+const ordenSelect = document.getElementById("Id_operaciones");
 const localidadSelect = document.getElementById("Localidad");
 const plantaSelect = document.getElementById("PlantaDGDestino");
 const domicilioSelect = document.getElementById("TipoYOrdenDestino");
@@ -364,7 +365,7 @@ function manejarRespuestaExitosa(data) {
         BlockUI();
         const ordenesSelect = ordenInicial.concat(data.Data.map(x => ({ value: x.Id, text: x.Id.toString().padStart(8, '0') })))
         llenarSelectOrdenes(ordenesSelect);
-        var selectedValue = $("#NumeroOrdenExterno").data('selected-value');
+        var selectedValue = $("#Id_operaciones").data('selected-value');
         if (data.Data.length === 1 && selectedValue !== undefined && selectedValue !== null) {
             ordenSelect.value = data.Data[0].Id;
             seleccionarOrdenDeCargaOperaciones();
