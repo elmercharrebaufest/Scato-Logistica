@@ -54,7 +54,7 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj, datosUsuario.CentroId);
 
-            var numeroOrden = servicio.ObtenerNumeroDocumentoFasonGenerado().ToString(CultureInfo.InvariantCulture).PadLeft(8, '0');
+            var numeroOrden = "";
             var orden = new OrdenCargaInternaFasonDto { FechaEmision = DateTime.Now, NumeroOrden = numeroOrden };
             if (cargaDeCupoId != 0)
             {
@@ -71,6 +71,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaInternaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObje = servicio.ObtenerWorkflowPorCodigo(workflow);
+            orden.NumeroOrden = servicio.ObtenerNuevoNumeroDeOrdenFason();
 
             if (orden.TipoYOrdenDestino != null)
             {
@@ -207,6 +208,8 @@ namespace Molinos.Scato.Web.Controllers
 
             if (resultadoActividad != null && !resultadoActividad.HayErrores)
             {
+                TempData["Alerta"] = string.Format(Textos.NuevaOrdenFasonCreada, orden.NumeroOrden);
+                TempData["TipoAlerta"] = TipoAlerta.Informacion;
                 return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
             }
 

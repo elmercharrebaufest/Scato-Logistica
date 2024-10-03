@@ -10,7 +10,6 @@ namespace Molinos.Scato.Dominio.Dto
     {
         public int Id { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_Numero")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         [StringLength(8, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         [RegularExpression(@"^\d+$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         public string NumeroOrden { get; set; }

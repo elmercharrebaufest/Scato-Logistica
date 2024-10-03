@@ -11068,7 +11068,6 @@ namespace Molinos.Scato.Servicios.Impl
         public RecorridoDto ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero)
         {
             var ordenesInternas = Listar<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero).Select(o => o.NumeroOrden);
-
             try
             {
                 return Obtener<Recorrido, RecorridoDto>(r => ordenesInternas.Any(orden => r.NumeroDocumentoIngreso.Contains(orden)) && !r.Rechazado);
@@ -11077,6 +11076,19 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 throw new FaultException(Textos.RespuestaOperacionesVariasOrdenes, new FaultCode("NotSingle"));
             }
+
+        }
+
+        public string ObtenerNuevoNumeroDeOrdenFason() 
+        {
+            string lastOrderNumber = repositorio.ObtenerMayor<OrdenCargaInternaFason, string, string>(
+            o => true, // No hay filtro específico
+            o => o.NumeroOrden,
+            o => o.NumeroOrden
+            );
+
+            int nextOrderNumber = int.Parse(lastOrderNumber) + 1;
+            return nextOrderNumber.ToString("D8");
 
         }
 

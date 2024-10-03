@@ -10567,4 +10567,7 @@
   <data name="IdOperacionesYaUtilizado" xml:space="preserve">
     <value>El id de operaciones ya fue utilizado</value>
   </data>
+  <data name="NuevaOrdenFasonCreada" xml:space="preserve">
+    <value>Se ha creado una nueva Orden de Fason con el No: {0}</value>
+  </data>
 </root>
