@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Molinos.Scato.WebMobile</RootNamespace>
     <AssemblyName>Molinos.Scato.WebMobile</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>52900</IISExpressSSLPort>
@@ -238,6 +238,7 @@
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seguridad\SameSiteCookieHandler.cs" />
     <Compile Include="Seguridad\DummyAuthenticationModule.cs" />
     <Compile Include="ViewModel\AutomatismoNoGranoConfiguracionViewModel.cs" />
     <Compile Include="ViewModel\AutomatismoNoGranoViewModel.cs" />
