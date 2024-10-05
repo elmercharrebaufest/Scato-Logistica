@@ -238,7 +238,6 @@
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Seguridad\SameSiteCookieHandler.cs" />
     <Compile Include="Seguridad\DummyAuthenticationModule.cs" />
     <Compile Include="ViewModel\AutomatismoNoGranoConfiguracionViewModel.cs" />
     <Compile Include="ViewModel\AutomatismoNoGranoViewModel.cs" />
