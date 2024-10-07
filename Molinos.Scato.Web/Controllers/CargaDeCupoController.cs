@@ -1091,7 +1091,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [AjaxOnly]
-        public JsonResult ObtenerOrdenesInsumos(string patente)
+        public JsonResult ObtenerOrdenesFasonInsumos(string patente)
         {
             try
             {

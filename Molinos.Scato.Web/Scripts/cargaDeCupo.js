@@ -187,13 +187,13 @@ function RefrescarFotoPatente() {
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
     if (existePatenteYesNoGranos) {
-        ObtenerDatosFason($('#Patente').val());
+        ObtenerDatosFasonInsumos($('#Patente').val());
     }
 
 }
 
 
-function ObtenerDatosFason(patente) {
+function ObtenerDatosFasonInsumos(patente) {
     $('#MaterialId').prop('disabled', true);
     $('#FleteMOA').val("");
     BlockUI($("#MensajeBuscandoDatos").val());
