@@ -39,12 +39,7 @@ namespace Molinos.Scato.WebMobile
 
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
-            var cookie = Response.Cookies["FedAuth"];
-            if (cookie != null)
-            {
-                // Set the SameSite attribute to "Strict", "Lax", or "None"
-                cookie.SameSite = SameSiteMode.Lax;
-            }
+
         }
     }
 }
