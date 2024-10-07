@@ -1,9 +1,4 @@
-﻿const materialInicial = [{ value: '', text: '(Material)' }];
-const [getMaterial, setMaterial] = useState([]);
-const [getMaterialInput, setMaterialInput] = useState(null)
-const [getPatenteInput, setPatenteInput] = useState(null)
-
-document.addEventListener("DOMContentLoaded", function (event) {
+﻿jQuery(document).ready(function ($) {
     activarCPE();
     var notificaLectura = $.connection.notificaLectura;
 
@@ -60,6 +55,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     catch (err) {
         window.location.href = window.location.href;
     }
+    //////////////
+
 
     var cupoValido = false;
     $.validator.addMethod("cupoValidacion", function (value, element) {
@@ -130,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $('#NumeroCartaPorte').focus();
     TomarFotoConPatente();
     $(document).on('change', '#Patente', validarEgresoVentaFas);
-    $(document).on('blur', '#Patente', validarEgresoVentaFas);
 
     $("#validation-ventaFas-close").on("click", function () {
         $("#validation-ventaFas-error").addClass("hide");
@@ -138,22 +134,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
     if ($("#matId").val() != $("#MaterialId").val())
         $("#matId").val("");
-
-    setMaterialInput(document.getElementById("MaterialId"))
-    setPatenteInput(document.getElementById("Patente"))
-
-    $.unblockUI();
 });
-
 var patenteNoReconocida = 'Patente no reconocida';
+
 var iniciarLoopFotoPatenteActivo = false;
-function OptenerSelectOptionsValues() {
-    var material = getMaterialInput().options;
-    const materialSelect = materialInicial.concat(
-        Array.from(material).map(x => ({ value: x.value, text: x.text }))
-    );
-    setMaterial(materialSelect);
-}
 function TomarFotoConPatente() {
     if ($('#checkvalidarPatente').is(':checked') && !iniciarLoopFotoPatenteActivo) {
         RefrescarFotoPatente();
@@ -203,27 +187,18 @@ function RefrescarFotoPatente() {
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
     if (existePatenteYesNoGranos) {
-        //DefinirFlujoFasFason($('#Patente').val());
-        DefinirFlujoFasonInsumos($('#Patente').val())
+        ObtenerDatosFason($('#Patente').val());
     }
 
 }
 
 
-async function DefinirFlujoFasonInsumos(patente) {
-    const respuesta = await ObtenerDatosFasonInsumos(patente);
-    if (!respuesta) {
-        ObtenerDatosSap();
-    }
-}
-
-async function ObtenerDatosFason(patente) {
-
-    desactivarInput(getMaterialInput());
+function ObtenerDatosFason(patente) {
+    $('#MaterialId').prop('disabled', true);
     $('#FleteMOA').val("");
     BlockUI($("#MensajeBuscandoDatos").val());
 
-    $.getJSON($("#links").data().urlObtenerOrdenesFason, { patente: patente }, function (data) {
+    $.getJSON($("#links").data().urlObtenerOrdenesInsumos, { patente: patente }, function (data) {
         if (typeof data.errorResponse === 'object') {
             if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
                 crearRespuestaErrorFason(data.errorResponse);
@@ -232,61 +207,19 @@ async function ObtenerDatosFason(patente) {
 
         if (data.sonVariosMateriales) {
             llenarMateriales(data, false, false);
-        }
-        else if (typeof data.ordenes === 'object' && data.ordenes.length > 0)
-        {
+        } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
             llenarMateriales(data, true);
-        }
-        else
-        {
+        } else if (typeof data.ordenes === 'object' && data.ordenesInsumos.length > 0) {
+            llenarMateriales(data, true);
+        } else {
+            //limpiarComboMateriales();
             ObtenerDatosSap();
-            activarInput(getMaterialInput())
+            $('#MaterialId').prop('disabled', false);
         }
     }).fail(function (xhr, status, error) {
         // Manejo de errores
-
     }).always(function () {
         $.unblockUI();
-    });
-}
-
-async function ObtenerDatosFasonInsumos(patente) {
-
-    desactivarInput(getMaterialInput());
-    $('#FleteMOA').val("");
-    BlockUI($("#MensajeBuscandoDatos").val());
-
-    return new Promise((resolve, reject) => {
-        $.getJSON($("#links").data().urlObtenerOrdenesInsumos, { patente: patente }, function (data) {
-            if (typeof data.errorResponse === 'object') {
-                if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
-                    crearRespuestaErrorFason(data.errorResponse);
-                    resolve(false);
-                }
-            }
-            if (data.sonVariosMateriales) {
-                MostrarAlertaAdvertencia("La patente tiene más de una orden con diferente material relacionado");
-                llenarMateriales(data, false, false);
-                resolve(true);
-            } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
-                llenarMateriales(data, true);
-                resolve(true);
-            } else if (typeof data.ordenesInsumos === 'object' && data.ordenesInsumos.length > 0) {
-                llenarMateriales(data, true);
-                resolve(true);
-            }
-            else {
-                limpiarComboMateriales();
-                ObtenerDatosSap();
-                activarInput(getMaterialInput())
-                resolve(false);
-            }
-        }).fail(function (xhr, status, error) {
-            reject(error); // Manejo de errores
-        }).always(function () {
-            $.unblockUI();
-            
-        });
     });
 }
 
@@ -315,63 +248,57 @@ function crearRespuestaErrorFason(data) {
 }
 
 function limpiarComboMateriales() {
-    setMaterial(materialInicial)
-}
-
-function limpiarCheckNoGranos() {
-    var check = document.getElementById("circuitoNoGranos");
-    check.value = false;
+    $('#MaterialId').empty();
+    $('#MaterialId').append($('<option/>', {
+        value: "",
+        text: "(material)",
+        selected: true
+    }));
 }
 
 function llenarMateriales(data, comboDisable, preSeleccionable = true) {
-    let value = "";
-    let materialSelect = [];
-    llenarFleteMoa(data.ordenes);
-
-    if (comboDisable && preSeleccionable) {
-        if (data.ordenes.length > 0) {
-            value = data.ordenes[0].CodigoProducto;
-        } else if (data.ordenesInsumos.length > 0) {
-            value = data.ordenesInsumos[0].CodigoProducto;
+    $('#MaterialId').each(function () {
+        let value = ""
+        llenarFleteMoa(data.ordenes);
+        if (comboDisable && preSeleccionable) {
+            if (data.ordenes.length > 0) {
+                value = data.ordenes[0].CodigoProducto;
+            }
+            if (data.ordenesInsumos.length > 0) {
+                value = data.ordenesInsumos[0].CodigoProducto;
+            }
         }
-    }
+
+        let combo = $(this);
+        combo.empty();
+        combo.append($('<option/>', {
+            value: "",
+            text: "(material)",
+            selected: true
+        }));
+
+        if(data.ordenes.length > 0)
+        {
+            llenarMaterialesPorOrden(data.ordenes, combo);
+        }
+        if (data.ordenesInsumos.length > 0) {
+            llenarMaterialesPorOrden(data.ordenesInsumos, combo);
+        }
+       
+        combo.val(value);
+        ajustarFleteMoa(value)
+    });
 
     if (!comboDisable) {
-        materialSelect = [
-            ...materialInicial,
-            ...data.ordenes.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto })),
-            ...data.ordenesInsumos.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto }))
-        ];
+        $('#MaterialId').prop('disabled', false);
+        ajustarFleteMoa()
     }
-    else
-    {
-        materialSelect = [
-            ...data.ordenes.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto })),
-            ...data.ordenesInsumos.map(x => ({ value: x.CodigoProducto, text: x.DescripcionProducto }))
-        ];
-    }
-    
-    materialInputState.options = materialSelect;
-    setMaterial(materialSelect);
 
-    ajustarFleteMoa(value);
 
-    if (!comboDisable) {
-        activarInput(getMaterialInput());
-        ajustarFleteMoa();
-    }
-}
-
-function onFailure(xhr, status, error) {
-    console.error("Codigo error: " + xhr.status + " , Descripcion: " + xhr.statusText);
-    $.unblockUI();
-    $('#dialogo-confirmar').modal('hide');
-    if (xhr.status === 500) {
-        MostrarAlertaError("Error interno en el servidor. Por favor, recargue la página.");
-    }
 }
 
 function ObtenerDatosSap() {
+    BlockUI($("#MensajeBuscandoDatos").val());
     $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
         if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
             if (data.datosSap.length == 1) {
@@ -381,8 +308,9 @@ function ObtenerDatosSap() {
                 $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
                 $("#validation-ventaFas-error").removeClass("hide");
             }
+
         }
-    }).done(function () {
+    }).complete(function () {
         $.unblockUI();
     });
 }
@@ -394,43 +322,12 @@ function activarCPE() {
     $('.check-cpe').hide()
 }
 
-function useState(initialValue) {
-    let value = initialValue;
-    function setValue(newValue) {
-        value = newValue;
-    }
-    return [() => value, setValue];
-}
-function llenarSelect(element, options) {
-    element.innerHTML = '';
-    options.forEach(function (opt) {
-        const option = document.createElement("option");
-        option.value = opt.value;
-        option.textContent = opt.text
-        element.appendChild(option);
+function llenarMaterialesPorOrden(ordenes, combo) {
+    $.each(ordenes, function (index, data) {
+        combo.append($('<option/>', {
+            value: data.CodigoProducto,
+            text: data.DescripcionProducto,
+            //selected: data.Value == value
+        }));
     });
 }
-function activarInput(element) {
-    element.disabled = false;
-}
-function desactivarInput(element) {
-    element.disabled = true;
-}
-
-// Handler para observar cambios en materialInput
-const materialHandler = {
-    set(target, property, value) {
-        target[property] = value; // Actualizamos el valor
-        // Si cambiamos las opciones, renderizamos nuevamente el select
-        if (property === 'options') {
-            llenarSelect(getMaterialInput(), value);
-        }
-        return true;
-    }
-};
-
-// Creación del proxy que manejará el estado de materialInput
-const materialInputState = new Proxy({ options: materialInicial }, materialHandler);
-
-
-

@@ -1118,13 +1118,6 @@ namespace Molinos.Scato.Web.Controllers
                    
                 }
 
-
-                if (ordenAnteriorInsumos.Count > 0)
-                {
-                    
-                    ComprobarClienteUnico(ordenAnteriorInsumos[0].CUITCliente);
-                }
-
                 var response = CrearRespuestaOperacionesResiduos(ordenesFiltradasInsumos, ordenesFiltradasCarga , materialesInsumos, materialesCarga , ordenAnteriorInsumos , ordenAnteriorCarga);
 
                 return Json(response, JsonRequestBehavior.AllowGet);
