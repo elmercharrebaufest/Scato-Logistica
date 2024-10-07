@@ -1065,8 +1065,8 @@ namespace Molinos.Scato.Web.Controllers
                     errorResponse = new
                     {
                         error = ex.Message,
-                        duplicado = true
-                    }
+                        duplicado = ex.Message == "La secuencia contiene más de un elemento"
+            }
                 };
 
                 return Json(errorResponse, JsonRequestBehavior.AllowGet);
