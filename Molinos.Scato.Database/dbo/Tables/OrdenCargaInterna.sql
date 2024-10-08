@@ -19,6 +19,7 @@
     [OrdenDomicilioDestino] INT NULL, 
     [PagadorFlete_Id] INT NULL, 
     [TipoDomicilioDestino] INT NULL, 
+    [Id_operaciones ] NVARCHAR(40) NULL, 
     CONSTRAINT [PK_dbo.OrdenCargaInterna] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Centro_Destino_Id] FOREIGN KEY ([Destino_Id]) REFERENCES [dbo].[Cliente] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Chofer_Chofer_Id] FOREIGN KEY ([Chofer_Id]) REFERENCES [dbo].[Chofer] ([Id]),

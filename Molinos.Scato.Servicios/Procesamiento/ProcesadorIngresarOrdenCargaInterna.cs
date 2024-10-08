@@ -59,6 +59,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino,
                             PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId),
                             TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino,
+                            Id_operaciones = comando.Orden.Id_operaciones
                     };
 
                     Repositorio.Agregar(ordenCargaInterna);

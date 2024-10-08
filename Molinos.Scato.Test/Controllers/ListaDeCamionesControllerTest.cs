@@ -33,6 +33,7 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<HttpRequestBase> reqbase;
         private Mock<HttpContextBase> httpContext;
         private Mock<HttpResponseBase> respBase;
+        private Mock<IServicioOperaciones> servicioOperaciones;
 
         [SetUp]
         public void SetUp()
@@ -40,6 +41,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorio = new Mock<IServicioRepositorio>();
             log = new NullLogger();
             listaWorkflows = new Mock<IListaDeWorkflows>();
+            servicioOperaciones = new Mock<IServicioOperaciones>();
             HttpContext.Current = new HttpContext(new HttpRequest("", "http://a.com", ""), new HttpResponse(null));
             reqbase = new Mock<HttpRequestBase>();
             httpContext = new Mock<HttpContextBase>();
@@ -47,18 +49,18 @@ namespace Molinos.Scato.Test.Controllers
             usuario = new DatosUsuario { NombreUsuario = "W", NombrePc = "PC" };
             instanceId = Guid.NewGuid();
 
-            target = new ListaDeCamionesController(log, listaWorkflows.Object, servRepositorio.Object);
+            target = new ListaDeCamionesController(log, listaWorkflows.Object, servRepositorio.Object, servicioOperaciones.Object); // Modify this line
             servRepositorio.Setup(s => s.EsActividadAutomatica(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
                            .Returns(false);
             servRepositorio.Setup(s => s.TienePermiso(It.IsAny<string>(), It.IsAny<PermisosScato>())).Returns(true);
             servRepositorio.Setup(s => s.ObtenerTiempoMaximoCentro(It.IsAny<int>())).Returns(10);
             listaWorkflows.Setup(s => s.ListarWorkFlows(It.IsAny<Paginacion>(), It.IsAny<FiltroListaDeWorkflowsDto>()))
                           .Returns(new ListarWorkFlowsDto
-                              {
-                                  InstanciasWorkflowDto =
+                          {
+                              InstanciasWorkflowDto =
                                       new ListaPaginada<InstanciaWorkflowDto>(
                                        new List<InstanciaWorkflowDto> { new InstanciaWorkflowDto { CentroId = 1 } }, 1, 10, 1)
-                              });
+                          });
             listaWorkflows.Setup(s => s.ObtenerWorkflowProximaAccionEjecutable(instanceId, It.IsAny<string>(), It.IsAny<int>()))
                           .Returns(new ProximaAccionEjecutableDto { Ejecutar = true, Actividad = "Actividad" });
             reqbase.Setup(s => s.UrlReferrer).Returns(new Uri("http://a.com"));

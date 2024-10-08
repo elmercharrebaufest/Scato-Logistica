@@ -22,6 +22,7 @@
      data-url-obtener-material="@Url.Action("ObtenerMaterial", "CargaDeCupo")"
      data-url-obtener-cpe="@Url.Action("ObtenerCPE", "CargaDeCupo")"
      data-url-obtener-ordenes-fason="@Url.Action("ObtenerOrdenesFason", "CargaDeCupo")"
+     data-url-obtener-ordenes-insumos="@Url.Action("ObtenerOrdenesFasonInsumos", "CargaDeCupo")"
 ></div>
 
 @Html.Hidden("puestoDeTrabajo", puestoDeTrabajo)
@@ -34,7 +35,7 @@
 @Html.Hidden("CodigoCamaraCP", (string)ViewBag.CodigoCamaraCP)
 @Html.Hidden("CodigoCamaraCPDir", (string)ViewBag.CodigoCamaraCPDir)
 
-@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "formContainer" }, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.CargaDeCupo }))
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "formContainer" , OnFailure = "onFailure" }, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.CargaDeCupo }))
 {
     <div id="formContainer">
         @Html.Partial("Form")
