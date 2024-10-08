@@ -139,7 +139,7 @@ namespace Molinos.Scato.WebMobile.Seguridad
                 httpCookie.Secure = secure;
                 httpCookie.HttpOnly = httpOnly;
                 httpCookie.Path = path;
-                httpCookie.SameSite = SameSiteMode.Lax;
+                httpCookie.SameSite = SameSiteMode.Strict;
                 if (!string.IsNullOrEmpty(domain))
                 {
                     httpCookie.Domain = domain;
