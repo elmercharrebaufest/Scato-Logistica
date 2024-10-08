@@ -196,6 +196,7 @@
   <ItemGroup>
     <Compile Include="AjaxEditSuccessResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\CertificateHandleErrorAttribute.cs" />
     <Compile Include="App_Start\Log4NetConfig.cs" />
     <Compile Include="App_Start\MiniProfiler.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -258,6 +259,7 @@
     <Content Include="Content\Images\pageError.png" />
     <Content Include="Content\mensajeria.css" />
     <Content Include="Content\switches.css" />
+    <Content Include="ErrorPages\ErrorEnCertificado.html" />
     <Content Include="ErrorPages\GenericError.html" />
     <Content Include="Scripts\area\eficienciaCalado\index.js" />
     <Content Include="Scripts\bloquearPantalla.js" />
