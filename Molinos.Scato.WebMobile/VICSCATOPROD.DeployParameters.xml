@@ -16,4 +16,5 @@
 
   <setParameter name="ServiciosScatoBinding Security Configuration" value="Transport"/>
   <setParameter name="PersistentSessionLifetime Config" value="8:0:0" />
+  <setParameter name="WSFederationAuthenticationRequireSsl" value="true" />
 </parameters>

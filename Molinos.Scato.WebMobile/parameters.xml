@@ -92,4 +92,10 @@
 						match="/configuration/system.webServer/modules/add[@name='DummyAuthenticationModule']" />
   </parameter>
 
+  <!-- requireSsl -->
+  <parameter name="WSFederationAuthenticationRequireSsl" defaultValue="false">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/system.identityModel.services/federationConfiguration/cookieHandler/@requireSsl" />
+  </parameter>
+
 </parameters>
