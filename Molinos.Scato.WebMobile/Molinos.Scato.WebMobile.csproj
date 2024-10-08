@@ -196,7 +196,7 @@
   <ItemGroup>
     <Compile Include="AjaxEditSuccessResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\CertificateHandleErrorAttribute.cs" />
+    <Compile Include="App_Start\AuthenticationErrorModule.cs" />
     <Compile Include="App_Start\Log4NetConfig.cs" />
     <Compile Include="App_Start\MiniProfiler.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />

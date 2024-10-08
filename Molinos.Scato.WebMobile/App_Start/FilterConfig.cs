@@ -7,7 +7,6 @@ namespace Molinos.Scato.WebMobile.App_Start
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new CertificateHandleErrorAttribute());
             filters.Add(new HandleErrorAttribute());
             filters.Add(new AvoidCacheFilterAttribute());
         }
