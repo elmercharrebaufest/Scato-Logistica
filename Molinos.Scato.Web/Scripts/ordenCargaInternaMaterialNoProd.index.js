@@ -30,6 +30,7 @@ const plantaInicial = [{ value: '', text: '(nro. planta)' }];
 const domicilioInicial = [{ value: '', text: '(Domicilio)' }];
 const almacenInicial = [{ value: '', text: '(Almacen)' }];
 const materialGoma = 64207;
+const materialReciclableNoPeligroso = 63699;
 
 const ordenModel = {
     patenteCamion: "",
@@ -585,7 +586,7 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
 
 function seleccionarTipoComercialPorMaterial() {
     let inputValue = +materialIdInput.value
-    seleccionarElemento(inputValue === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
+    seleccionarElemento((inputValue === materialGoma || inputValue === materialReciclableNoPeligroso ) ? 6 : 2, tipoComercialInput, ordenModel.selectedTipoComercial)
 }
 
 function rellenarCampos(data, selectedElement) {
@@ -608,7 +609,7 @@ function rellenarCampos(data, selectedElement) {
     llenarInput(data.Data.Orden.CUITCliente, destinoIdInput, ordenModel.destinoId)
     llenarInput(data.Data.Orden.LocalidadId, localidadSeleccionadaInput, ordenModel.localidadSelect)
     seleccionarElemento(data.Data.Orden.PlantaCodigo, plantaSelect, ordenModel.selectedPlanta) 
-    seleccionarElemento(data.Data.MaterialId === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
+    seleccionarElemento((data.Data.MaterialId === materialGoma || data.Data.MaterialId === materialReciclableNoPeligroso) ? 6 : 2, tipoComercialInput, ordenModel.selectedTipoComercial)
     ObtenerAlamacenesPorMaterial(data.Data.Orden.AlmacenId);
     llenarInputDate(data.Data.Orden.FechaCreacion, fechaEmisionInput, ordenModel.fechaEmision)
     llenarSelectLocalidad(localidades)
