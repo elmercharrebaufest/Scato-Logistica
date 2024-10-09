@@ -1,7 +1,13 @@
 ﻿$(document).ready(function () {
-    //Foco en primer elemento
-    $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
-    $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
+    if ($("#cargaCupoIdValue").val() == "0") {
+        //Foco en primer elemento
+        $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
+        $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
+    } else {
+        $('.btn.btn-primary[type="submit"]').focus();
+    }
+
+    //Máscaras
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
     let tipoComercial = $('#tiposComerciales').find('option').eq(1).val();
