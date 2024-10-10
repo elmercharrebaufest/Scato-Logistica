@@ -14,4 +14,5 @@
 	<setParameter name="Thumbprint Identity Configuration" value="b5333d6bc845c216ba23726da9eed40466da1354" />
 	<setParameter name="UrlAdfsLogoff Config" value="https://pase.molinosagro.com.ar/adfs/ls/?wa=wsignout1.0" />
 	<setParameter name="ServiciosScatoBinding Security Configuration" value="None" />
+  <setParameter name="PersistentSessionLifetime Config" value="8:0:0" />
 </parameters>
