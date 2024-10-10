@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    if ($("#cargaCupoIdValue").val() === undefined) {
+    if (cargaCupoIdValue === undefined || cargaCupoIdValue === "") {
         //Foco en primer elemento
         $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
         $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
