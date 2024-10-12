@@ -25,6 +25,7 @@
         public string RazonSocialTransporte { get; set; }
         public string TipoOrden { get; set; }
         public string KmARecorrer { get; set; }
+        public string PagadorFlete  { get; set; }
 
     }
 }
