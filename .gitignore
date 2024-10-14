@@ -396,6 +396,11 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
+#WF Editor binaries
+Molinos.Scato.Build/*/*.wxs
+Molinos.Scato.Build/*/*.wixobj
+Molinos.Scato.Web/WfEditor/*
+
 # JetBrains Rider
 *.sln.iml
 
@@ -407,3 +412,6 @@ Molinos.Scato.Servicios/Service References/Orquestador/Reference.svcmap
 Molinos.Scato.Servicios/Service References/Orquestador/*.xsd
 Molinos.Scato.Servicios/Service References/Orquestador/*.wsdl
 Molinos.Scato.Servicios/Service References/Orquestador/*.disco
+
+
+/Deploy

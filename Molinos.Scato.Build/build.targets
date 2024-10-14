@@ -4,16 +4,16 @@
     <!--General-->
     <ProjectSolution>..\Molinos.Scato.sln</ProjectSolution>
     <NUnitToolPath>C:\Program Files (x86)\NUnit 2.6.3\bin</NUnitToolPath>
-    <NUnitProject>..\Molinos.Scato.Test\bin\Jenkins\Molinos.Scato.Test.dll</NUnitProject>
+    <NUnitProject>..\Molinos.Scato.Test\bin\$(Configuration)\Molinos.Scato.Test.dll</NUnitProject>
     <OutputDir>..\Deploy\</OutputDir>
-    <PackageWeb>..\Molinos.Scato.Web\obj\Jenkins\Package\**\*</PackageWeb>
-    <PackageServicios>..\Molinos.Scato.ServiciosWeb\obj\Jenkins\Package\**\*</PackageServicios>
-    <PackageWorkflow>..\Molinos.Scato.Workflow\obj\Jenkins\Package\**\*</PackageWorkflow>
-    <PackageWebMobile>..\Molinos.Scato.WebMobile\obj\Jenkins\Package\**\*</PackageWebMobile>
-    <PackageWebOperaciones>..\Molinos.Scato.WebOperaciones\obj\Jenkins\Package\**\*</PackageWebOperaciones>
-    <PackageModuloImpresor>..\Molinos.Scato.ModuloImpresor\obj\Jenkins\Package\**\*</PackageModuloImpresor>
-    <PackageWebPuerto>..\Molinos.Scato.WebPuerto\obj\Jenkins\Package\**\*</PackageWebPuerto>
-    <PackageWebPuertoApi>..\Molinos.Scato.WebPuertoApi\obj\Jenkins\Package\**\*</PackageWebPuertoApi>
+    <PackageWeb>..\Molinos.Scato.Web\obj\$(Configuration)\Package\**\*</PackageWeb>
+    <PackageServicios>..\Molinos.Scato.ServiciosWeb\obj\$(Configuration)\Package\**\*</PackageServicios>
+    <PackageWorkflow>..\Molinos.Scato.Workflow\obj\$(Configuration)\Package\**\*</PackageWorkflow>
+    <PackageWebMobile>..\Molinos.Scato.WebMobile\obj\$(Configuration)\Package\**\*</PackageWebMobile>
+    <PackageWebOperaciones>..\Molinos.Scato.WebOperaciones\obj\$(Configuration)\Package\**\*</PackageWebOperaciones>
+    <PackageModuloImpresor>..\Molinos.Scato.ModuloImpresor\obj\$(Configuration)\Package\**\*</PackageModuloImpresor>
+    <PackageWebPuerto>..\Molinos.Scato.WebPuerto\obj\$(Configuration)\Package\**\*</PackageWebPuerto>
+    <PackageWebPuertoApi>..\Molinos.Scato.WebPuertoApi\obj\$(Configuration)\Package\**\*</PackageWebPuertoApi>
 
     <XamlxWorkflow>..\Molinos.Scato.Workflow\**\*.xamlx</XamlxWorkflow>
 
@@ -24,7 +24,7 @@
     <ReportGeneratorTool>C:\Program Files (x86)\ReportGenerator\bin\ReportGenerator.exe</ReportGeneratorTool>
 
     <GendarmeTool>C:\Program Files (x86)\Gendarme\gendarme.exe</GendarmeTool>
-    <GendarmeAssemblies>..\Molinos.Scato.Actividades\bin\Jenkins\Molinos.Scato.Actividades.dll ..\Molinos.Scato.Dominio\bin\Jenkins\Molinos.Scato.Dominio.dll ..\Molinos.Scato.Repositorio\bin\Jenkins\Molinos.Scato.Repositorio.dll ..\Molinos.Scato.Web\bin\Molinos.Scato.Web.dll ..\Molinos.Scato.Workflow\bin\Molinos.Scato.Workflow.dll</GendarmeAssemblies>
+    <GendarmeAssemblies>..\Molinos.Scato.Actividades\bin\$(Configuration)\Molinos.Scato.Actividades.dll ..\Molinos.Scato.Dominio\bin\$(Configuration)\Molinos.Scato.Dominio.dll ..\Molinos.Scato.Repositorio\bin\$(Configuration)\Molinos.Scato.Repositorio.dll ..\Molinos.Scato.Web\bin\Molinos.Scato.Web.dll ..\Molinos.Scato.Workflow\bin\Molinos.Scato.Workflow.dll</GendarmeAssemblies>
 
     <!--<StyleCopCmdToolPath>C:\Program Files (x86)\StyleCopCmd</StyleCopCmdToolPath>-->
 

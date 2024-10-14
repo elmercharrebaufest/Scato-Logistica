@@ -13,6 +13,10 @@
   <setParameter name="IssuerTrust Identity Configuration" value="http://pase.molinosagro.com.ar/adfs/services/trust" />
   <setParameter name="RealmUrl Identity Configuration" value="http://scatomobile.molinosagro.com.ar/" />
   <setParameter name="Thumbprint Identity Configuration" value="b5333d6bc845c216ba23726da9eed40466da1354"/>
-
+  <setParameter name="AudienceUrl Identity Configuration" value="http://scatomobile.molinosagro.com.ar/" />
+  <setParameter name="UrlAdfsLogoff Config" value="https://pase.molinosagro.com.ar/adfs/ls/?wa=wsignout1.0" />
+  
   <setParameter name="ServiciosScatoBinding Security Configuration" value="Transport"/>
+  <setParameter name="PersistentSessionLifetime Config" value="5:0:0" />
+  <setParameter name="WSFederationAuthenticationRequireSsl" value="true" />
 </parameters>

@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Molinos.Scato.WebMobile</RootNamespace>
     <AssemblyName>Molinos.Scato.WebMobile</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>52900</IISExpressSSLPort>
@@ -196,6 +196,7 @@
   <ItemGroup>
     <Compile Include="AjaxEditSuccessResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\AuthenticationErrorModule.cs" />
     <Compile Include="App_Start\Log4NetConfig.cs" />
     <Compile Include="App_Start\MiniProfiler.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seguridad\ChunkedSecurityCookieHandler.cs" />
     <Compile Include="Seguridad\DummyAuthenticationModule.cs" />
     <Compile Include="ViewModel\AutomatismoNoGranoConfiguracionViewModel.cs" />
     <Compile Include="ViewModel\AutomatismoNoGranoViewModel.cs" />
@@ -254,8 +256,11 @@
     <Content Include="Content\Images\logo-nuevo.png" />
     <Content Include="Content\Images\Logo.png" />
     <Content Include="Content\dialogModal.css" />
+    <Content Include="Content\Images\pageError.png" />
     <Content Include="Content\mensajeria.css" />
     <Content Include="Content\switches.css" />
+    <Content Include="ErrorPages\ErrorEnCertificado.html" />
+    <Content Include="ErrorPages\GenericError.html" />
     <Content Include="Scripts\area\eficienciaCalado\index.js" />
     <Content Include="Scripts\bloquearPantalla.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
@@ -508,6 +513,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="VICSCATOUAT.DeployParameters.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -616,6 +622,7 @@
     <Content Include="Views\GraficoDePlanta\_ToneladasPorDia.cshtml" />
     <Content Include="Views\GraficoDePlanta\_ToneladasPorRangoDeDia.cshtml" />
     <Content Include="Views\GraficoDePlanta\_GraficoDePlantaHead.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -630,7 +637,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Index\Index.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>

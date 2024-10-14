@@ -800,6 +800,7 @@
     <Content Include="Content\fonts\icomoon.svg" />
     <Content Include="Content\icomoon.css" />
     <Content Include="Content\images\barcode.png" />
+    <Content Include="Content\images\pageError.png" />
     <Content Include="Content\images\qaimage.png" />
     <Content Include="Content\pesadaCargaExportacion.css" />
     <Content Include="Content\fotos.css" />
@@ -876,6 +877,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Content\ui.jqgrid.css" />
+    <Content Include="ErrorPages\GenericError.html" />
     <Content Include="MvcReportViewer.aspx" />
     <Content Include="MvcReportViewerErrorPage.html" />
     <Content Include="Scripts\area\configuracionEficienciaCalado\index.js" />
@@ -1665,7 +1667,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\TipoDocumentoIdentidad\Index.cshtml" />
     <Content Include="Views\Material\_CrearModificar.cshtml" />
@@ -2470,6 +2471,7 @@
     <Content Include="Views\Comercial\Crear.cshtml" />
     <Content Include="Views\Comercial\_CrearModificar.cshtml" />
     <Content Include="Views\Comercial\Modificar.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
