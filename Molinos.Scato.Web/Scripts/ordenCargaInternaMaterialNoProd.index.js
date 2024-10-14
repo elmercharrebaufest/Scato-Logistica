@@ -101,6 +101,7 @@ const almacenSelect = document.getElementById("Almacen_Id");
 const [getKmARecorrer, setKmARecorrer] = useState(null);
 const [getDomicilio, setDomicilio] = useState(null);
 const [getTieneOrdenes, setTieneOrdenes] = useState(false);
+const [getDomicilioOrdenTipo, setDomicilioOrdenTipo] = useState(false);
 
 function init()
 {
@@ -333,6 +334,7 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     const patente = ordenModel.patenteCamion.toUpperCase();
 
     if (regex1.test(patente) || regex2.test(patente)) {
+        reiniciarAlSeleccionarOrden();
         servicioObtenerOrden(patente, workflowId);
     }
 }
@@ -393,7 +395,7 @@ function manejarRespuestaExitosa(data) {
     if (Array.isArray(data.Data)) {
         BlockUI();
         const ordenesSelect = ordenInicial.concat(data.Data.map(x => ({ value: x.Id, text: x.Id.toString().padStart(8, '0') })))
-        if (data.Data >= 1) {
+        if (data.Data.length >= 1) {
             setTieneOrdenes(true);
         }
         llenarSelectOrdenes(ordenesSelect);
@@ -404,9 +406,8 @@ function manejarRespuestaExitosa(data) {
         } else if (selectedValue) {
             ordenSelect.value = selectedValue;
         } else if (data.Data.length > 1) {
-            MostrarAlertaAdvertencia(textoVariasOrdenes);
-            ordenSelect.value = data.Data[0].Id;
-            seleccionarOrdenDeCargaOperaciones();
+            reiniciarAlSeleccionarOrden()
+            MostrarAlertaAdvertencia(textoVariasOrdenes);  
         }
         $.unblockUI();
     }
@@ -463,9 +464,10 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     materialIdInput.value = '';
     tipoVehiculoInput.value = 0;
     tipoComercialInput.value = '';
-    localidadSeleccionadaInput.value = null;
+    localidadSeleccionadaInput.value = 0;
     destinoInput.value = null;
     choferTipoDocumentoInput.value = 1;
+    ordenDomicilioDestinoInput.value = null;
     removeSuccesStyle(transportistaInput)
     removeSuccesStyle(chofer_CuilInput)
     removeSuccesStyle(choferNombreInput)
@@ -476,7 +478,7 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     makeEditable(tipoVehiculoInput)
     makeEditable(localidadSelect)
     makeEditable(kmARecorrerInput)
-    
+    setTieneOrdenes(false)
     init()
 }
 function reiniciarAlSeleccionarOrden() {
@@ -491,8 +493,9 @@ function reiniciarAlSeleccionarOrden() {
     materialIdInput.value = '';
     tipoVehiculoInput.value = 0;
     tipoComercialInput.value = '';
-    localidadSeleccionadaInput.value = null;
+    localidadSeleccionadaInput.value = 0;
     destinoInput.value = null;
+    ordenDomicilioDestinoInput.value = null;
     choferTipoDocumentoInput.value = 1;
     removeSuccesStyle(transportistaInput)
     removeSuccesStyle(chofer_CuilInput)
@@ -504,6 +507,11 @@ function reiniciarAlSeleccionarOrden() {
     makeEditable(tipoVehiculoInput)
     makeEditable(localidadSelect)
     makeEditable(kmARecorrerInput)
+    llenarSelectLocalidad(localidadInicial);
+    llenarSelectPlanta(plantaInicial);
+    llenarSelectDomicilio(domicilioInicial);
+    llenarSelectAlmacen(almacenInicial);
+    setTieneOrdenes(false);
 
 }
 
@@ -597,6 +605,7 @@ function rellenarCampos(data, selectedElement) {
     reiniciarAlSeleccionarOrden();
     setKmARecorrer(data.Data.Orden.KmARecorrer)
     setDomicilio(`(${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden})${selectedElement.DomicilioDescr}`)
+    setDomicilioOrdenTipo(`${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`)
     ObtenerPlantas();
     let localidades = [{ value: data.Data.Orden.LocalidadId, text: data.Data.Orden.LocalidadDescripcion }];
     let elementos = [chofer_CuilInput, transportistaInput, destinoInput, pagadorFleteInput]
@@ -742,9 +751,10 @@ function ValidarDerivadoGranario() {
 function ValidarDomicilio() {
 
     var existeDomicilio = $("#TipoYOrdenDestino option[value='" + getDomicilio() + "']").end();
+    let domicilio = getDomicilioOrdenTipo();
 
     if (existeDomicilio.length > 0) {
-        $("#TipoYOrdenDestino").val(domicilioConcat);
+        $("#TipoYOrdenDestino").val(getDomicilioOrdenTipo());
     } else {
         MostrarAlertaAdvertencia('El domicilio recibido no coincide con los datos de Scato, verifique ó elija uno correcto.');
     }
