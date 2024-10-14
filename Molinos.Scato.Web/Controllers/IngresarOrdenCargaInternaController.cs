@@ -256,7 +256,7 @@ namespace Molinos.Scato.Web.Controllers
                             var choferNuevo = new ChoferDto
                             {
                                 Nombre = item.NombreChofer,
-                                Apellido = item.ApellidoChofer,
+                                Apellido = item.ChoferApellido,
                                 TipoDocumentoIdentidadId = 1,
                                 Cuil = choferCuil,
                                 NumeroDeDocumento = ObtenerDocumentoDesdeCuil(item.CUILChofer)

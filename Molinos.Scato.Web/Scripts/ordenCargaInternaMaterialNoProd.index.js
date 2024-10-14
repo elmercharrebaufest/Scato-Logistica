@@ -398,6 +398,9 @@ function manejarRespuestaExitosa(data) {
         if (data.Data.length >= 1) {
             setTieneOrdenes(true);
         }
+        else {
+            setTieneOrdenes(false)
+        }
         llenarSelectOrdenes(ordenesSelect);
         var selectedValue = $("#Id_operaciones").data('selected-value');
         if (data.Data.length === 1 && selectedValue !== undefined && selectedValue !== null) {
@@ -468,6 +471,7 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     destinoInput.value = null;
     choferTipoDocumentoInput.value = 1;
     ordenDomicilioDestinoInput.value = null;
+    pagadorFleteInput.value = null;
     removeSuccesStyle(transportistaInput)
     removeSuccesStyle(chofer_CuilInput)
     removeSuccesStyle(choferNombreInput)
@@ -478,7 +482,6 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     makeEditable(tipoVehiculoInput)
     makeEditable(localidadSelect)
     makeEditable(kmARecorrerInput)
-    setTieneOrdenes(false)
     init()
 }
 function reiniciarAlSeleccionarOrden() {
@@ -497,6 +500,7 @@ function reiniciarAlSeleccionarOrden() {
     destinoInput.value = null;
     ordenDomicilioDestinoInput.value = null;
     choferTipoDocumentoInput.value = 1;
+    pagadorFleteInput.value = null;
     removeSuccesStyle(transportistaInput)
     removeSuccesStyle(chofer_CuilInput)
     removeSuccesStyle(choferNombreInput)
@@ -511,8 +515,6 @@ function reiniciarAlSeleccionarOrden() {
     llenarSelectPlanta(plantaInicial);
     llenarSelectDomicilio(domicilioInicial);
     llenarSelectAlmacen(almacenInicial);
-    setTieneOrdenes(false);
-
 }
 
 function CargarDomicilios() {
