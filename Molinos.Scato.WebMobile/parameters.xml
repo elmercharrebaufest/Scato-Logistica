@@ -74,7 +74,7 @@
 						match="/configuration/appSettings/add[@key='UrlAdfsLogoff']
                            /@value" />
 	</parameter>
-  <parameter name="PersistentSessionLifetime Config" defaultValue="">
+  <parameter name="PersistentSessionLifetime Config" defaultValue="0:15:0">
     <parameterEntry kind="XmlFile" scope="Web.config"
 						match="/configuration/system.identityModel.services/federationConfiguration/cookieHandler/@persistentSessionLifetime" />
   </parameter>
@@ -87,7 +87,7 @@
   </parameter>
 
   <!-- Quita el Dummy de autenticacion al desplegar -->
-  <parameter name="DummyAuthenticationModule" defaultValue="0:15:0">
+  <parameter name="DummyAuthenticationModule" defaultValue="">
     <parameterEntry kind="XmlFile" scope="Web.config"
 						match="/configuration/system.webServer/modules/add[@name='DummyAuthenticationModule']" />
   </parameter>
