@@ -583,8 +583,13 @@ namespace Molinos.Scato.Web.Controllers
         {
             if (String.IsNullOrEmpty(cuil))
             {
-                return "";
+               return "";
             }
+            if (cuil.Length != 11)
+            {
+                throw new ArgumentException(Textos.DatoConLongitudIncorrecta);
+            }
+
             string validador1 = cuil.Substring(0, 2);
             string documento = cuil.Substring(2, 8);
             string validador2 = cuil.Substring(10, 1);
