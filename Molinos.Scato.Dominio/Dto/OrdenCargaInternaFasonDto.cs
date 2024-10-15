@@ -126,6 +126,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int? DestinatarioId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_NumeroOperaciones")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string NumeroOrdenExterno { get; set; }
 		public string DestinoMercaderia { get; set; }
 
