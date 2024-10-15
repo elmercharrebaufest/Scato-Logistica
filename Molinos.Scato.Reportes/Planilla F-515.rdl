@@ -3,13 +3,13 @@
   <am:AuthoringMetadata>
     <am:CreatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.5.33502.453</am:Version>
+      <am:Version>17.9.34728.123</am:Version>
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.5.33502.453</am:Version>
+      <am:Version>17.9.34728.123</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2023-03-27T20:43:41.7499679Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-10-14T17:29:25.9056134Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -141,11 +141,7 @@ SELECT ISNULL(tv.descripcion,'Camión') AS 'TipoVehiculo',
        tipocomercial.descripcion AS TipoComercial,
        TipoDocumentoIngreso.Descripcion as TipoDocumentoIngreso,
        TipoDocumentoIngreso.Id as TipoDocumentoIngresoId,
-      (CASE establecimiento.EPA
-            WHEN 1 THEN (material.descripcion + ' EPA')
-            WHEN 0 THEN (material.descripcion)
-            ELSE material.descripcion
-      END) AS Material, 
+       material.descripcion AS Material,
        Recorrido.NumeroDocumentoIngreso,
        Recorrido.Patente,
        Recorrido.FechaInicio,
@@ -226,7 +222,7 @@ AND (Recorrido.balanzabruto_id = @BalanzaBrutop or @BalanzaBrutop = 0)
 AND (Recorrido.balanzatara_id = @BalanzaTarap or @BalanzaTarap = 0)
 AND (Recorrido.centro_id = @CentroIdp or @CentroIdp = 0)
 AND ((@Materialp = -1 AND Material.Esgrano = 1) OR (@Materialp = -2 AND Material.EsGrano = 0 AND Material.EsInsumo = 0) OR (@Materialp = -3 AND Material.EsInsumo = 1) OR (@Materialp = Recorrido.Material_Id) OR (@Materialp = 0))
-AND (tp2.Id = @TipoPesadap or @TipoPesadap = -1)
+AND (@TipoPesadap = Recorrido.PesoTaraModalidad or @TipoPesadap = -1)
 
 AND (Recorrido.TipoComercial_Id = @TipoComercialp or @TipoComercialp = 0)
 AND (recorrido.workflow_id = @Workflowp or @Workflowp = 0)
