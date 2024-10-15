@@ -626,7 +626,7 @@ function rellenarCampos(data, selectedElement) {
     ObtenerAlamacenesPorMaterial(data.Data.Orden.AlmacenId);
     llenarInputDate(data.Data.Orden.FechaCreacion, fechaEmisionInput, ordenModel.fechaEmision)
     llenarSelectLocalidad(localidades)
-    llenarInput(data.Data.Orden.PagadorFlete, pagadorFleteInput, ordenModel.pagadorFlete)
+    llenarInput(convertirCuil(data.Data.Orden.PagadorFlete), pagadorFleteInput, ordenModel.pagadorFlete)
 
 
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
@@ -635,8 +635,7 @@ function rellenarCampos(data, selectedElement) {
     $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
     $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId);
     $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
-    $("#PagadorFlete").val(data.Data.Orden.PagadorFlete);
-
+   
     
     if (destinoInput.value.length > 0) {
         makeReadonly(localidadSelect)
