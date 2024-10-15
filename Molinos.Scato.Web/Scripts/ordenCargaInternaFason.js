@@ -1,17 +1,11 @@
 
 $(document).ready(function () {
+
     if (cargaCupoIdValue != 0) {
-        //Foco en primer elemento
-        $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
-        $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
-    } else {
         $('.btn.btn-primary[type="submit"]').focus();
-    }
-
-
-    var patenteCamion = $('#PatenteCamion').val();
-    if (patenteCamion) {
-        obtenerOrdenDeCargaOperacionesPorPatente();
+    } else {
+        //Foco en primer elemento
+        $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     }
 
 })
