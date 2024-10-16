@@ -51,7 +51,7 @@ namespace Molinos.Scato.Web.Controllers
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
 
-            ViewBag.CargaDeCupoIdValue = cargaDeCupoId;
+            ViewBag.CargaDeCupoIdValue = cargaDeCupoId > 0 ? "true" : "false";
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj, datosUsuario.CentroId);
 

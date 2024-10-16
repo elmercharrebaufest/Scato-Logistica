@@ -1,11 +1,7 @@
 ﻿$(document).ready(function () {
-    if (cargaCupoIdValue === undefined || cargaCupoIdValue === "") {
-        //Foco en primer elemento
-        $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
-        $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
-    } else {
-        $('.btn.btn-primary[type="submit"]').focus();
-    }
+    //Foco en primer elemento
+    $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
+    $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
 
     //Máscaras
     $(".patente-internacional").mask("?*******", { placeholder: "" });

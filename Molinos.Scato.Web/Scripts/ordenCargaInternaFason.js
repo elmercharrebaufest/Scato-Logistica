@@ -1,8 +1,11 @@
 
-﻿$(document).ready(function () {
-    var patenteCamion = $('#PatenteCamion').val();
-    if (patenteCamion) {
-        obtenerOrdenDeCargaOperacionesPorPatente();
+$(document).ready(function () {
+
+    if (cargaCupoIdValue) {
+        $('.btn.btn-primary[type="submit"]').focus();
+    } else {
+        //Foco en primer elemento
+        $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     }
 
 })
