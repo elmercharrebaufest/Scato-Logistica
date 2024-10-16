@@ -301,7 +301,7 @@ namespace Molinos.Scato.Web.Controllers
             if (esClienteProvisorio && (!orden.ComisionistaId.HasValue || orden.ComisionistaId == 0) && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
             {
                 ModelState.AddModelError("Comisionista", string.Format(Textos.Error_Requerido, Textos.Comisionista));
-                ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Comisionista));
+                ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Remitente));
             }
 
             if (material.EsDerivadoGranario && string.IsNullOrEmpty(orden.Destinatario))
