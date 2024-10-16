@@ -549,7 +549,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.RazonSocialIntermediarioFlete = intermediario?.RazonSocial != null ? $"{intermediario.Cuil} - {intermediario.RazonSocial}" : "";
             orden.RazonSocialDestinatario = destinatario?.Descripcion != null ? $"{destinatario.CodigoSap} - {destinatario.Descripcion}" : "";
             orden.RazonSocialDestino = destino?.Descripcion != null ? $"{destino.CodigoSap} - {destino.Descripcion}" : "";
-            orden.RemitenteComercialId = Convert.ToInt64(orden.RemitenteComercial);
+            orden.RemitenteComercialId = Convert.ToInt64(remitente?.Id);
             orden.RemitenteComercial = remitente?.Descripcion != null ? $"{remitente.CodigoSap} - {remitente.Descripcion}" : "";
             orden.PagadorFlete = pagadorFlete?.Descripcion != null ? $"{pagadorFlete.CodigoSap} - {pagadorFlete.Descripcion}" : "";
             orden.PagadorFleteId = Convert.ToInt64(pagadorFlete?.Id);
