@@ -10,4 +10,5 @@
   <setParameter name="IssuerTrust Identity Configuration" value="http://BFDEV271.baunet.local/adfs/services/trust" />
   <setParameter name="RealmUrl Identity Configuration" value="http://scato.baufest.com/scato.webmobile/" />
   <setParameter name="Thumbprint Identity Configuration" value="e3f6dbc4089a19356d8013b21ea48ddb5fdd9d46"/>
+  <setParameter name="PersistentSessionLifetime Config" value="8:0:0" />
 </parameters>
