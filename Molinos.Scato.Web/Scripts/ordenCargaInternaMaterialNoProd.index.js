@@ -30,6 +30,7 @@ const plantaInicial = [{ value: '', text: '(nro. planta)' }];
 const domicilioInicial = [{ value: '', text: '(Domicilio)' }];
 const almacenInicial = [{ value: '', text: '(Almacen)' }];
 const materialGoma = 64207;
+const materialReciclableNoPeligroso = 63699;
 
 const ordenModel = {
     patenteCamion: "",
@@ -59,6 +60,7 @@ const ordenModel = {
     selectedAlmacen: "",
     fechaEmision: "",
     kmARecorrer: "",
+    pagadorFlete:"",
     subscribers: []
 };
 
@@ -84,7 +86,9 @@ const choferNumDocumentoInput = document.getElementById("Chofer_NumeroDeDocument
 const choferTipoDocumentoInput = document.getElementById("Chofer_TipoDocumentoIdentidadId");
 const soloLecturaInput = document.getElementById("soloLectura");
 const almacenSeleccionadoInput = document.getElementById("AlmacenSeleccionado");
-
+const tipoDomicilioDestinoInput = document.getElementById("TipoDomicilioDestino");
+const ordenDomicilioDestinoInput = document.getElementById("OrdenDomicilioDestino");
+const pagadorFleteInput = document.getElementById("PagadorFlete");
 
 
 
@@ -95,6 +99,9 @@ const domicilioSelect = document.getElementById("TipoYOrdenDestino");
 const almacenSelect = document.getElementById("Almacen_Id");
 
 const [getKmARecorrer, setKmARecorrer] = useState(null);
+const [getDomicilio, setDomicilio] = useState(null);
+const [getTieneOrdenes, setTieneOrdenes] = useState(false);
+const [getDomicilioOrdenTipo, setDomicilioOrdenTipo] = useState(false);
 
 function init()
 {
@@ -151,6 +158,7 @@ function llenarSelectDomicilio(domicilios) {
         domicilioSelect.appendChild(option);
     });
 }
+
 
 function llenarSelectAlmacen(almacenes, almacenId = 0) {
 
@@ -238,6 +246,7 @@ function ObtenerPlantas() {
     const derivadoGranarioHabilitado = $("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true';
 
     if (derivadoGranarioHabilitado && cliente) {
+        BlockUI();
         $.getJSON($('#links').data().urlObtenerPlantasPorCliente, { clienteId: cliente })
             .done(function (allData) {
 
@@ -248,9 +257,11 @@ function ObtenerPlantas() {
 
                     llenarSelectPlanta(plantaInicial);
                 }
+                $.unblockUI()
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 console.error('Error en la solicitud para obtener plantas', textStatus, errorThrown);
+                $.unblockUI()
             });
     }
 }
@@ -315,8 +326,6 @@ function completarLocalidad() {
     }
 }
 
-
-
 function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex for format ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex for format AB123CD
@@ -325,6 +334,7 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     const patente = ordenModel.patenteCamion.toUpperCase();
 
     if (regex1.test(patente) || regex2.test(patente)) {
+        reiniciarAlSeleccionarOrden();
         servicioObtenerOrden(patente, workflowId);
     }
 }
@@ -385,6 +395,12 @@ function manejarRespuestaExitosa(data) {
     if (Array.isArray(data.Data)) {
         BlockUI();
         const ordenesSelect = ordenInicial.concat(data.Data.map(x => ({ value: x.Id, text: x.Id.toString().padStart(8, '0') })))
+        if (data.Data.length >= 1) {
+            setTieneOrdenes(true);
+        }
+        else {
+            setTieneOrdenes(false)
+        }
         llenarSelectOrdenes(ordenesSelect);
         var selectedValue = $("#Id_operaciones").data('selected-value');
         if (data.Data.length === 1 && selectedValue !== undefined && selectedValue !== null) {
@@ -393,9 +409,8 @@ function manejarRespuestaExitosa(data) {
         } else if (selectedValue) {
             ordenSelect.value = selectedValue;
         } else if (data.Data.length > 1) {
-            MostrarAlertaAdvertencia(textoVariasOrdenes);
-            ordenSelect.value = data.Data[0].Id;
-            seleccionarOrdenDeCargaOperaciones();
+            reiniciarAlSeleccionarOrden()
+            MostrarAlertaAdvertencia(textoVariasOrdenes);  
         }
         $.unblockUI();
     }
@@ -452,9 +467,11 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     materialIdInput.value = '';
     tipoVehiculoInput.value = 0;
     tipoComercialInput.value = '';
-    localidadSeleccionadaInput.value = null;
+    localidadSeleccionadaInput.value = 0;
     destinoInput.value = null;
     choferTipoDocumentoInput.value = 1;
+    ordenDomicilioDestinoInput.value = null;
+    pagadorFleteInput.value = null;
     removeSuccesStyle(transportistaInput)
     removeSuccesStyle(chofer_CuilInput)
     removeSuccesStyle(choferNombreInput)
@@ -465,7 +482,6 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     makeEditable(tipoVehiculoInput)
     makeEditable(localidadSelect)
     makeEditable(kmARecorrerInput)
-    
     init()
 }
 function reiniciarAlSeleccionarOrden() {
@@ -480,9 +496,11 @@ function reiniciarAlSeleccionarOrden() {
     materialIdInput.value = '';
     tipoVehiculoInput.value = 0;
     tipoComercialInput.value = '';
-    localidadSeleccionadaInput.value = null;
+    localidadSeleccionadaInput.value = 0;
     destinoInput.value = null;
+    ordenDomicilioDestinoInput.value = null;
     choferTipoDocumentoInput.value = 1;
+    pagadorFleteInput.value = null;
     removeSuccesStyle(transportistaInput)
     removeSuccesStyle(chofer_CuilInput)
     removeSuccesStyle(choferNombreInput)
@@ -493,33 +511,29 @@ function reiniciarAlSeleccionarOrden() {
     makeEditable(tipoVehiculoInput)
     makeEditable(localidadSelect)
     makeEditable(kmARecorrerInput)
-
+    llenarSelectLocalidad(localidadInicial);
+    llenarSelectPlanta(plantaInicial);
+    llenarSelectDomicilio(domicilioInicial);
+    llenarSelectAlmacen(almacenInicial);
 }
 
 function CargarDomicilios() {
-    let ordenDomicilioSeleccionado = $("#OrdenDomicilioDestino").val();
-    let tipoDomicilioSeleccionado = $("#TipoDomicilioDestino").val();
+    let ordenDomicilioSeleccionado = ordenDomicilioDestinoInput;
+    let tipoDomicilioSeleccionado = tipoDomicilioDestinoInput;
     let cliente = $("#DestinoId").val() != null ? $("#DestinoId").val() : $("#ClienteId").val();
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
-        $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
-            function (allData) {
-                let options = '<option value="">(domicilio)</option>';
-                $('#TipoYOrdenDestino').html(options);
-
-                if (!allData.HayErrores) {
-                    for (let i = 0; i < allData.Domicilios.length; i++) {
-                        options += `<option value="${allData.Domicilios[i].Tipo}-${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
-                    }
-                    $('#TipoYOrdenDestino').html(options);
-                    if (ordenDomicilioSeleccionado.length > 0
-                        && tipoDomicilioSeleccionado.length > 0
-                        && allData.Domicilios.some(domicilio => domicilio.Orden == ordenDomicilioSeleccionado && domicilio.Tipo == tipoDomicilioSeleccionado)) {
-                        $('#TipoYOrdenDestino').val(`${tipoDomicilioSeleccionado}-${ordenDomicilioSeleccionado}`)
-                        $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
-                    }
-                }
-            }
-        );
+        if (getTieneOrdenes()) {
+            let valueDomicilio = `${tipoDomicilioDestinoInput.value}-${ordenDomicilioDestinoInput.value}`
+            const domicilioSelect = domicilioInicial.concat({ value: valueDomicilio, text: getDomicilio() })
+            llenarSelectDomicilio(domicilioSelect);
+            $('#TipoYOrdenDestino').val(valueDomicilio)
+        }
+        else { 
+           obtenerDomiciliosPorCliente(cliente)
+        }
+    }
+    else {
+        llenarSelectDomicilio(domicilioInicial);
     }
 }
 
@@ -585,19 +599,19 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
 
 function seleccionarTipoComercialPorMaterial() {
     let inputValue = +materialIdInput.value
-    seleccionarElemento(inputValue === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
+    seleccionarElemento((inputValue === materialGoma || inputValue === materialReciclableNoPeligroso ) ? 6 : 2, tipoComercialInput, ordenModel.selectedTipoComercial)
 }
 
 function rellenarCampos(data, selectedElement) {
     BlockUI();
     reiniciarAlSeleccionarOrden();
+    setKmARecorrer(data.Data.Orden.KmARecorrer)
+    setDomicilio(`(${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden})${selectedElement.DomicilioDescr}`)
+    setDomicilioOrdenTipo(`${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`)
     ObtenerPlantas();
     let localidades = [{ value: data.Data.Orden.LocalidadId, text: data.Data.Orden.LocalidadDescripcion }];
-    let elementos = [chofer_CuilInput, transportistaInput, destinoInput]
-    domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`
-    setKmARecorrer(data.Data.Orden.KmARecorrer)
-   
-
+    let elementos = [chofer_CuilInput, transportistaInput, destinoInput, pagadorFleteInput]
+ 
     llenarInput(selectedElement.PatenteAcoplado, patenteAcopladoInput, ordenModel.patenteAcoplado)
     llenarInput(convertirCuil(data.Data.CUITTransporte), transportistaIdInput, ordenModel.transportistaId)
     llenarInput(data.Data.TransportistaDescripcion, transportistaInput, ordenModel.transportista)
@@ -608,10 +622,19 @@ function rellenarCampos(data, selectedElement) {
     llenarInput(data.Data.Orden.CUITCliente, destinoIdInput, ordenModel.destinoId)
     llenarInput(data.Data.Orden.LocalidadId, localidadSeleccionadaInput, ordenModel.localidadSelect)
     seleccionarElemento(data.Data.Orden.PlantaCodigo, plantaSelect, ordenModel.selectedPlanta) 
-    seleccionarElemento(data.Data.MaterialId === materialGoma ? 2 : 6, tipoComercialInput, ordenModel.selectedTipoComercial)
+    seleccionarElemento((data.Data.MaterialId === materialGoma || data.Data.MaterialId === materialReciclableNoPeligroso) ? 6 : 2, tipoComercialInput, ordenModel.selectedTipoComercial)
     ObtenerAlamacenesPorMaterial(data.Data.Orden.AlmacenId);
     llenarInputDate(data.Data.Orden.FechaCreacion, fechaEmisionInput, ordenModel.fechaEmision)
     llenarSelectLocalidad(localidades)
+    llenarInput(convertirCuil(data.Data.Orden.PagadorFlete), pagadorFleteInput, ordenModel.pagadorFlete)
+
+
+    $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
+    $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
+    $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
+    $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
+    $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId);
+    $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
    
     
     if (destinoInput.value.length > 0) {
@@ -620,6 +643,7 @@ function rellenarCampos(data, selectedElement) {
     if (!data.Data.TieneErrorCNRT) {
         makeReadonly(tipoVehiculoInput)
     }
+
     seleccionarElemento(data.Data.Orden.AlmacenId, almacenSelect, ordenModel.selectedAlmacen)
 
     elementos.forEach(function (selector) {
@@ -631,6 +655,7 @@ function rellenarCampos(data, selectedElement) {
             $element.blur()
         }
     });
+
    
     if (destinoIdInput.value.length > 0) {
         BlockUI();
@@ -647,10 +672,6 @@ function rellenarCampos(data, selectedElement) {
                 CargarPlantas();
                 CargarDomicilios();
             },
-            function () {
-                
-                cargarMaterial();
-            }
         );
         $.unblockUI();
     }
@@ -665,6 +686,7 @@ function rellenarCampos(data, selectedElement) {
     llenarInput(data.Data.Orden.KmARecorrer, kmARecorrerInput, ordenModel.kmARecorrer)
     $('#KmARecorrer').removeAttr("disabled");
     makeReadonly(kmARecorrerInput);
+    ValidarDerivadoGranario();
     $.unblockUI()
 }
 
@@ -704,6 +726,63 @@ function obtenerLocalidad(clienteId)
                 llenarSelectLocalidad(localidades);
             } 
         });
+}
+
+function ValidarDerivadoGranario() {
+    let materialId = $("#MaterialId").val();
+    let materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
+    if (materialesDerivadoGranario.includes(parseInt(materialId))) {
+        $('#DerivadoGranarioHabilitado').val('true')
+        $('.derivadoGranario').removeClass('hidden');
+        $("label[for='Cliente']").text('Destino');
+        $("#Cliente").val($("#DestinoGranario").val()); 
+        ValidarDomicilio()
+    } else {
+        $('#DerivadoGranarioHabilitado').val('false')
+        $('.derivadoGranario').addClass('hidden');
+        $("label[for='Cliente']").text('Cliente');
+        $('#PlantaDGDestino').val('');
+        $('#TipoYOrdenDestino').val('');
+        $('#PagadorFlete').val('');
+        $('#PagadorFleteId').val('');
+        $("#PlantaSeleccionada").val('')
+    }
+}
+
+function ValidarDomicilio() {
+
+    var existeDomicilio = $("#TipoYOrdenDestino option[value='" + getDomicilio() + "']").end();
+    let domicilio = getDomicilioOrdenTipo();
+
+    if (existeDomicilio.length > 0) {
+        $("#TipoYOrdenDestino").val(getDomicilioOrdenTipo());
+    } else {
+        MostrarAlertaAdvertencia('El domicilio recibido no coincide con los datos de Scato, verifique ó elija uno correcto.');
+    }
+}
+
+function obtenerDomiciliosPorCliente(cliente) {
+    let ordenDomicilioSeleccionado = ordenDomicilioDestinoInput;
+    let tipoDomicilioSeleccionado = tipoDomicilioDestinoInput;
+    $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
+        function (allData) {
+            let options = '<option value="">(domicilio)</option>';
+            $('#TipoYOrdenDestino').html(options);
+
+            if (!allData.HayErrores) {
+                for (let i = 0; i < allData.Domicilios.length; i++) {
+                    options += `<option value="${allData.Domicilios[i].Tipo}-${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
+                }
+                $('#TipoYOrdenDestino').html(options);
+                if (ordenDomicilioSeleccionado.length > 0
+                    && tipoDomicilioSeleccionado.length > 0
+                    && allData.Domicilios.some(domicilio => domicilio.Orden == ordenDomicilioSeleccionado && domicilio.Tipo == tipoDomicilioSeleccionado)) {
+                    $('#TipoYOrdenDestino').val(`${tipoDomicilioSeleccionado}-${ordenDomicilioSeleccionado}`)
+                    $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
+                }
+            }
+        }
+    );
 }
 
 var patenteCamion = $('#PatenteCamion').val();
