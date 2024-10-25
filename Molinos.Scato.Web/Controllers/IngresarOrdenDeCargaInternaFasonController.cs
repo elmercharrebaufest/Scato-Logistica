@@ -49,7 +49,7 @@ namespace Molinos.Scato.Web.Controllers
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
 
-            ViewBag.CargaDeCupoIdValue = cargaDeCupoId;
+            ViewBag.CargaDeCupoIdValue = cargaDeCupoId > 0 ? "true" : "false";
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj, datosUsuario.CentroId);
 
@@ -304,7 +304,7 @@ namespace Molinos.Scato.Web.Controllers
             if (esClienteProvisorio && (!orden.ComisionistaId.HasValue || orden.ComisionistaId == 0) && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
             {
                 ModelState.AddModelError("Comisionista", string.Format(Textos.Error_Requerido, Textos.Comisionista));
-                ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Comisionista));
+                ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Remitente));
             }
 
             if (material.EsDerivadoGranario && string.IsNullOrEmpty(orden.Destinatario))
@@ -552,7 +552,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.RazonSocialIntermediarioFlete = intermediario?.RazonSocial != null ? $"{intermediario.Cuil} - {intermediario.RazonSocial}" : "";
             orden.RazonSocialDestinatario = destinatario?.Descripcion != null ? $"{destinatario.CodigoSap} - {destinatario.Descripcion}" : "";
             orden.RazonSocialDestino = destino?.Descripcion != null ? $"{destino.CodigoSap} - {destino.Descripcion}" : "";
-            orden.RemitenteComercialId = Convert.ToInt64(orden.RemitenteComercial);
+            orden.RemitenteComercialId = Convert.ToInt64(remitente?.Id);
             orden.RemitenteComercial = remitente?.Descripcion != null ? $"{remitente.CodigoSap} - {remitente.Descripcion}" : "";
             orden.PagadorFlete = pagadorFlete?.Descripcion != null ? $"{pagadorFlete.CodigoSap} - {pagadorFlete.Descripcion}" : "";
             orden.PagadorFleteId = Convert.ToInt64(pagadorFlete?.Id);

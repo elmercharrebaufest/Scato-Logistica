@@ -1,7 +1,7 @@
 
 $(document).ready(function () {
 
-    if (cargaCupoIdValue != 0) {
+    if (cargaCupoIdValue) {
         $('.btn.btn-primary[type="submit"]').focus();
     } else {
         //Foco en primer elemento
