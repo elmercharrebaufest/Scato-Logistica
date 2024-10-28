@@ -18,5 +18,5 @@
   
   <setParameter name="ServiciosScatoBinding Security Configuration" value="Transport"/>
   <setParameter name="PersistentSessionLifetime Config" value="5:0:0" />
-  <setParameter name="WSFederationAuthenticationRequireSsl" value="true" />
+  <setParameter name="WSFederationAuthenticationRequireSsl" value="false" />  <!--En PROD los certificados los aplica el balanceador. No el sitio web. Entonces no fue posible activar este parametro. -->
 </parameters>
