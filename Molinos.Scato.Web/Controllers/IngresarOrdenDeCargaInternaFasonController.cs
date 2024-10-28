@@ -4,7 +4,6 @@ using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
@@ -19,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -51,6 +49,7 @@ namespace Molinos.Scato.Web.Controllers
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
 
+            ViewBag.CargaDeCupoIdValue = cargaDeCupoId > 0 ? "true" : "false";
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj, datosUsuario.CentroId);
 
@@ -272,6 +271,11 @@ namespace Molinos.Scato.Web.Controllers
             var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
 
+            if (orden.NumeroOrdenExterno == null)
+            {
+                ModelState.AddModelError("NumeroOrdenExterno", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_NumeroOperaciones));
+            }
+
             if (otroRecorridoDelChofer != null)
             {
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
@@ -300,7 +304,7 @@ namespace Molinos.Scato.Web.Controllers
             if (esClienteProvisorio && (!orden.ComisionistaId.HasValue || orden.ComisionistaId == 0) && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
             {
                 ModelState.AddModelError("Comisionista", string.Format(Textos.Error_Requerido, Textos.Comisionista));
-                ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Comisionista));
+                ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Remitente));
             }
 
             if (material.EsDerivadoGranario && string.IsNullOrEmpty(orden.Destinatario))
@@ -548,7 +552,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.RazonSocialIntermediarioFlete = intermediario?.RazonSocial != null ? $"{intermediario.Cuil} - {intermediario.RazonSocial}" : "";
             orden.RazonSocialDestinatario = destinatario?.Descripcion != null ? $"{destinatario.CodigoSap} - {destinatario.Descripcion}" : "";
             orden.RazonSocialDestino = destino?.Descripcion != null ? $"{destino.CodigoSap} - {destino.Descripcion}" : "";
-            orden.RemitenteComercialId = Convert.ToInt64(orden.RemitenteComercial);
+            orden.RemitenteComercialId = Convert.ToInt64(remitente?.Id);
             orden.RemitenteComercial = remitente?.Descripcion != null ? $"{remitente.CodigoSap} - {remitente.Descripcion}" : "";
             orden.PagadorFlete = pagadorFlete?.Descripcion != null ? $"{pagadorFlete.CodigoSap} - {pagadorFlete.Descripcion}" : "";
             orden.PagadorFleteId = Convert.ToInt64(pagadorFlete?.Id);
@@ -582,8 +586,13 @@ namespace Molinos.Scato.Web.Controllers
         {
             if (String.IsNullOrEmpty(cuil))
             {
-                return "";
+               return "";
             }
+            if (cuil.Length != 11)
+            {
+                throw new ArgumentException(Textos.DatoConLongitudIncorrecta);
+            }
+
             string validador1 = cuil.Substring(0, 2);
             string documento = cuil.Substring(2, 8);
             string validador2 = cuil.Substring(10, 1);
