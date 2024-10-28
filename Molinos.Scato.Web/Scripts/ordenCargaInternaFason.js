@@ -3,11 +3,6 @@
     if (patenteCamion) {
         obtenerOrdenDeCargaOperacionesPorPatente();
     }
-
-    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
-    if (!kmaRecorrer) {
-        $('#KmRecorridos').removeAttr('readonly');;
-    }
 })
 
 
@@ -235,6 +230,10 @@ function rellenarCampos(data, selectedElement) {
 
     }
 
+    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+    if (!kmaRecorrer) {
+        $('#KmARecorrer').removeAttr('readonly');;
+    }
 
     ValidarDerivadoGranario();
 
@@ -327,6 +326,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#localidadDestinoDropdown").empty();
     $("#Observaciones").val(null);
     $("#RemitenteId").val(null);
+    $('#KmARecorrer').attr('readonly', true);
 }
 
 function convertirCuil(cuil) {
