@@ -231,9 +231,13 @@ function rellenarCampos(data, selectedElement) {
     }
 
     var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
-    if (!kmaRecorrer) {
-        $('#KmARecorrer').removeAttr('readonly');;
+    if (!kmaRecorrer || kmaRecorrer == '0') {
+        $('#KmARecorrer').removeAttr('readonly');
     }
+
+    $('#LocalidadDestinoId').removeAttr('data-val');
+    $('#LocalidadDestinoId').removeAttr('data-val-number');
+    $('#LocalidadDestinoId').removeAttr('data-val-required');
 
     ValidarDerivadoGranario();
 
