@@ -232,12 +232,10 @@
                     @if (!string.IsNullOrEmpty(Model.LocalidadDestinoDescripcion))
                     {
                         @Html.TextBoxFor(Model => Model.LocalidadDestinoDescripcion, new { @id = "LocalidadDescripcion" })
-                        @Html.ValidationMessageFor(model => model.LocalidadDestinoId) 
                         @Html.HiddenFor(model => model.LocalidadDestinoId)
                     } else
                     {
                         @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion", @disabled = "disabled" })
-                        @Html.ValidationMessageFor(model => model.LocalidadDestinoId) 
                         @Html.HiddenFor(model => model.LocalidadDestinoId)
                     }
                     
