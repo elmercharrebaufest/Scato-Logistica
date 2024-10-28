@@ -4,6 +4,10 @@
         obtenerOrdenDeCargaOperacionesPorPatente();
     }
 
+    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+    if (!kmaRecorrer) {
+        $('#KmRecorridos').removeAttr('readonly');;
+    }
 })
 
 
