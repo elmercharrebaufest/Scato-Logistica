@@ -36,5 +36,10 @@ namespace Molinos.Scato.WebMobile
             var logger = LogManager.GetLogger(GetType());
             logger.Error("Excepción no manejada: ", ex);
         }
+
+        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -8,6 +8,10 @@ $(document).ready(function () {
         $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     }
 
+    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+    if (!kmaRecorrer) {
+        $('#KmRecorridos').removeAttr('readonly');;
+    }
 })
 
 

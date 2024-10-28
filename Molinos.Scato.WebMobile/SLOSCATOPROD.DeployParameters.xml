@@ -17,4 +17,6 @@
 	<setParameter name="UrlAdfsLogoff Config" value="https://pase.molinosagro.com.ar/adfs/ls/?wa=wsignout1.0" />
 
 	<setParameter name="ServiciosScatoBinding Security Configuration" value="None" />
+  <setParameter name="PersistentSessionLifetime Config" value="5:0:0" />
+  <setParameter name="WSFederationAuthenticationRequireSsl" value="false" /> <!--En PROD los certificados los aplica el balanceador. No el sitio web. Entonces no fue posible activar este parametro. -->
 </parameters>
