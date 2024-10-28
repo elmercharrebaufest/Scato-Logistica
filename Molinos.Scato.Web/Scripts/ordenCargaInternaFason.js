@@ -7,11 +7,6 @@ $(document).ready(function () {
         //Foco en primer elemento
         $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     }
-
-    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
-    if (!kmaRecorrer) {
-        $('#KmRecorridos').removeAttr('readonly');;
-    }
 })
 
 
@@ -252,6 +247,10 @@ function rellenarCampos(data, selectedElement) {
 
     }
 
+    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+    if (!kmaRecorrer) {
+        $('#KmARecorrer').removeAttr('readonly');;
+    }
 
     ValidarDerivadoGranario();
 
@@ -339,6 +338,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#LocalidadDescripcion").val(null);
     $('#DestinatarioId').val(null);
     $('#PagadorFleteId').val(null);
+    $('#KmARecorrer').attr('readonly', true);
 }
 
 function convertirCuil(cuil) {
