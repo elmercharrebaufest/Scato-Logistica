@@ -7,7 +7,6 @@ $(document).ready(function () {
         //Foco en primer elemento
         $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     }
-
 })
 
 
@@ -248,6 +247,14 @@ function rellenarCampos(data, selectedElement) {
 
     }
 
+    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+    if (!kmaRecorrer || kmaRecorrer == '0') {
+        $('#KmARecorrer').removeAttr('readonly');
+    }
+
+    $('#LocalidadDestinoId').removeAttr('data-val');
+    $('#LocalidadDestinoId').removeAttr('data-val-number');
+    $('#LocalidadDestinoId').removeAttr('data-val-required');
 
     ValidarDerivadoGranario();
 
@@ -335,6 +342,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#LocalidadDescripcion").val(null);
     $('#DestinatarioId').val(null);
     $('#PagadorFleteId').val(null);
+    $('#KmARecorrer').attr('readonly', true);
 }
 
 function convertirCuil(cuil) {

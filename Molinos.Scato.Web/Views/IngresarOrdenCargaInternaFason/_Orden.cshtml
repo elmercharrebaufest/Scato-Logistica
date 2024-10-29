@@ -232,15 +232,13 @@
                     @if (!string.IsNullOrEmpty(Model.LocalidadDestinoDescripcion))
                     {
                         @Html.TextBoxFor(Model => Model.LocalidadDestinoDescripcion, new { @id = "LocalidadDescripcion" })
-                        @Html.ValidationMessageFor(model => model.LocalidadDestinoId) 
-                        @Html.HiddenFor(model => model.LocalidadDestinoId)
-                    } else
+                    }
+                    else
                     {
                         @Html.TextBox("LocalidadDescripcion", "", new { @id = "LocalidadDescripcion", @disabled = "disabled" })
-                        @Html.ValidationMessageFor(model => model.LocalidadDestinoId) 
-                        @Html.HiddenFor(model => model.LocalidadDestinoId)
                     }
-                    
+                    <span class="field-validation-valid help-block"></span>
+                    @Html.HiddenFor(model => model.LocalidadDestinoId)
                 </div>
             </div>
             <div class="control">
