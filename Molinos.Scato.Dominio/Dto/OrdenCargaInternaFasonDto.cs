@@ -74,7 +74,7 @@ namespace Molinos.Scato.Dominio.Dto
         [StringLength(4, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public string KmARecorrer { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "AdministracionDistancia_Localidad")]
-        public int LocalidadDestinoId { get; set; }
+        public int? LocalidadDestinoId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
