@@ -1,11 +1,22 @@
 
 $(document).ready(function () {
+    $('#LocalidadDestinoId').removeAttr('data-val');
+    $('#LocalidadDestinoId').removeAttr('data-val-number');
+    $('#LocalidadDestinoId').removeAttr('data-val-required');
 
-    if (cargaCupoIdValue) {
+
+    if ($("input[name='cargaCupoIdValue']").val() === "true") {
         $('.btn.btn-primary[type="submit"]').focus();
     } else {
         //Foco en primer elemento
         $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
+    }
+
+    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+    if (!kmaRecorrer || kmaRecorrer == '0') {
+        $('#KmARecorrer').removeAttr('readonly');
+    } else {
+        $('#KmARecorrer').attr('readonly', true);
     }
 })
 
@@ -215,6 +226,7 @@ function rellenarCampos(data, selectedElement) {
     $("#IntermediarioFlete").val(data.Data.Orden.RazonSocialIntermediarioFlete);
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
+    $("#LocalidadDestinoDescripcion[type = 'hidden']").val(data.Data.Orden.LocalidadDescripcion);
     $("#DestinoGranario").val(data.Data.DestinoDescripcion);
     $("#DestinoGranarioId").val(data.Data.DestinoId);
     $("#Corredor").val(data.Data.Orden.Corredor);
