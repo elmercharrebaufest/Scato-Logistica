@@ -1,5 +1,8 @@
 
 $(document).ready(function () {
+    $('#LocalidadDestinoId').removeAttr('data-val');
+    $('#LocalidadDestinoId').removeAttr('data-val-number');
+    $('#LocalidadDestinoId').removeAttr('data-val-required');
 
     if ($("input[name='cargaCupoIdValue']").val() === "true") {
         $('.btn.btn-primary[type="submit"]').focus();

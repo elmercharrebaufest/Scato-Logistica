@@ -11094,16 +11094,42 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ExisteOrdenCargaFason(string ordenExterno)
         {
-            var ordenCarga = repositorio.ObtenerMayor<OrdenCargaInternaFason, int>(x => x.NumeroOrdenExterno == ordenExterno,f => f.Id);
-            return ordenCarga != null && ordenCarga.Recorrido != null &&
-                        ((ordenCarga.Recorrido.Rechazado == false && ordenCarga.Recorrido.Terminado == false) ||
-                        (ordenCarga.Recorrido.Rechazado == true && ordenCarga.Recorrido.Terminado == false));
+
+            var ordenCarga = repositorio.Existe<OrdenCargaInternaFason>(x => x.NumeroOrdenExterno == ordenExterno &&
+                                                             (x.Recorrido == null || (!x.Recorrido.Rechazado && !x.Recorrido.Terminado)));
+                                       
+            return ordenCarga;
         }
-		
-		public int ContarClientes(string nCuit)
+
+        public bool ExisteOrdenCarga(string ordenExterno)
+        {
+            var ordenCarga = repositorio.Existe<OrdenCargaInterna>(x => x.Id_operaciones == ordenExterno &&
+                                                                                (x.Recorrido.Rechazado == false || x.Recorrido.Terminado == false));
+            return ordenCarga;
+        }
+
+        public int ContarClientes(string nCuit)
         {
             return ListarClientesPorCuit(nCuit).Count;
         }
+
+        public IEnumerable<ChoferDto> ObtenerChoferesPorCuits(List<string> cuils)
+        {
+
+           return  Listar<Chofer, ChoferDto>(x => cuils.Contains(x.Cuil));
+
+        }
+
+        public MaterialDto ObtenerMaterialPorId(int id)
+        {
+            return Obtener<Material, MaterialDto>(x => x.Id.Equals(id));
+        }
+
+        public string ObtenerPatentePorIdCargaCupo(int id)
+        {
+            return repositorio.ObtenerProyeccion<CargaDeCupo, string>(x => x.Id == id, x => x.Patente);
+        }
+
     }
 
 

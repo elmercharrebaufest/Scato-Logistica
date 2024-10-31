@@ -9,6 +9,7 @@ using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Test.Mock;
 using Molinos.Scato.Web.Controllers;
@@ -50,12 +51,23 @@ namespace Molinos.Scato.Test.Controllers
             actFactoryMock = new Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaService>>();
             contractMock = new Mock<IIngresarOrdenCargaInternaService>();
             listaMock = new Mock<IListaDeWorkflows>();
+            var servicioOperacionesMock = new Mock<IServicioOperaciones>();
+            var cacheMock = new Mock<ICache>();
             logger = new NullLogger();
-            target = new IngresarOrdenCargaInternaController(logger, servRepositorioMock.Object, actFactoryMock.Object, servComandosMock.Object, listaMock.Object);
+
+            target = new IngresarOrdenCargaInternaController(
+                logger,
+                servRepositorioMock.Object,
+                actFactoryMock.Object,
+                servComandosMock.Object,
+                listaMock.Object,
+                servicioOperacionesMock.Object,
+                cacheMock.Object
+            );
 
             dto = new OrdenCargaInternaDto
             {
-                Chofer = new ChoferDto { Id = 1, Nombre = "Emilio", Apellido = "Saionz", NumeroDeDocumento = "123"},
+                Chofer = new ChoferDto { Id = 1, Nombre = "Emilio", Apellido = "Saionz", NumeroDeDocumento = "123" },
                 FechaEmision = new DateTime(2010, 1, 1),
                 DestinoId = 1,
                 MaterialId = 1,
@@ -63,14 +75,13 @@ namespace Molinos.Scato.Test.Controllers
                 PatenteCamion = "AAABBB",
                 TipoComercialId = 1,
                 TransportistaId = 1,
-                
             };
 
             tiposComerciales = new List<TipoComercialDto>
-                {
-                    new TipoComercialDto {Id = 1, Descripcion = "D1"},
-                    new TipoComercialDto {Id = 2, Descripcion = "D2"}
-                };
+            {
+                new TipoComercialDto {Id = 1, Descripcion = "D1"},
+                new TipoComercialDto {Id = 2, Descripcion = "D2"}
+            };
 
             controlRecorridoDto = new ControlRecorridoDto
             {
@@ -86,7 +97,7 @@ namespace Molinos.Scato.Test.Controllers
             };
 
             materiales = new List<MaterialDto> { new MaterialDto { Id = 1, Descripcion = "M1" } };
-            tipos = new List<TipoDocumentoIdentidadDto> { new TipoDocumentoIdentidadDto {Id = 1, DescripcionCorta = "T1"} };
+            tipos = new List<TipoDocumentoIdentidadDto> { new TipoDocumentoIdentidadDto { Id = 1, DescripcionCorta = "T1" } };
 
             servRepositorioMock.Setup(s => s.ListarTiposComercialesPorWfCodigo(It.IsAny<string>()))
                 .Returns(tiposComerciales);
@@ -96,7 +107,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.ListarPesoMaximoPorTipoVehiculoPorCentro(It.IsAny<int>()))
                 .Returns(new List<PesoMaximoPorTipoVehiculoDto> { new PesoMaximoPorTipoVehiculoDto { Activo = true, CentroId = 1, Id = 1, PesoMaxEgreso = 1, PesoMaxIngreso = 1, PesoNetoMaxPlanta = 1, TipoVehiculo = TipoVehiculo.Camión } });
             servRepositorioMock.Setup(s => s.ListarMaterialesPorWorkflow(It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new List<MaterialPorWorkflowDto> { new MaterialPorWorkflowDto { Id = 1, WorkflowId = 1, CentroId = 1, MaterialId = 1 , MaterialDesc = "M1"} });
+                .Returns(new List<MaterialPorWorkflowDto> { new MaterialPorWorkflowDto { Id = 1, WorkflowId = 1, CentroId = 1, MaterialId = 1, MaterialDesc = "M1" } });
             servRepositorioMock.Setup(s => s.ObtenerWorkflowPorCodigo(It.IsAny<string>()))
                 .Returns(new WorkflowDto { TipoDeWorkflow = TipoDeWorkflow.Ingreso, Codigo = "W1", Activo = true });
             servRepositorioMock.Setup(s => s.ObtenerUltimaWorkflowDefinicionPorCordigo(It.IsAny<string>()))
@@ -107,7 +118,7 @@ namespace Molinos.Scato.Test.Controllers
                 .Returns(new List<AlmacenDto>());
 
             contractMock.Setup(s => s.IngresarOrdenCargaInterna(dto, It.IsAny<int>(), workflow, It.IsAny<int>(), It.IsAny<string>(), It.IsAny<ControlRecorridoDto>()))
-                .Returns(new ResultadoCrearWorkflow { InstanciaWorkflowId = InstanciaWfId }); 
+                .Returns(new ResultadoCrearWorkflow { InstanciaWorkflowId = InstanciaWfId });
         }
 
 

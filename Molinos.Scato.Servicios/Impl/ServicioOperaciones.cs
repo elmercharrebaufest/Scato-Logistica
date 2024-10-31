@@ -64,6 +64,44 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
+        public IEnumerable<OrdenResiduosDto> ObtenerOrdenesResiduos(string patente)
+        {
+            const string RECURSO = "OrdenesResiduos";
+        
+
+            if (string.IsNullOrWhiteSpace(patente))
+                throw externalServiceException.ThrowException("La patente no puede ser nula o estar vacía.");
+
+            var request = CrearRequest(RECURSO);
+            IRestResponse<IEnumerable<OrdenResiduosDto>> restResponse;
+
+            request.AddParameter("patenteChasis", patente);
+
+
+            log.Trace("Se ejecuta la consulta a la Api");
+
+            try
+            {
+                var Client = clientFactory.CrearClientOperaciones();
+                restResponse = Client.Get<IEnumerable<OrdenResiduosDto>>(request);
+            }
+            catch (Exception ex)
+            {
+                throw externalServiceException.ThrowException("Error general al consumir el servicio externo MOAOperaciones.", ex.Message, ex);
+            }
+
+            if (restResponse.IsSuccessful)
+            {
+                return restResponse.Data;
+
+            }
+            else
+            {
+                RespuestaError(restResponse);
+                return restResponse.Data;
+            }
+        }
+
         public void InformarViajeOrdenesDeCargaFason(IngresosEgresosFasonesDto ingresosEgresosFasonesDto)
         {
             const string RECURSO = "InformarViajeOrdenesDeCargaFason";
@@ -83,6 +121,41 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 var Client = clientFactory.CrearClientOperaciones();
                 restResponse = Client.Post(request);
+            }
+            catch (Exception ex)
+            {
+                throw externalServiceException.ThrowException("Error general al consumir el servicio externo.", ex.Message, ex);
+            }
+
+            if (restResponse.IsSuccessful)
+            {
+                log.Debug("Viaje informado con éxito.");
+            }
+            else
+            {
+                RespuestaError(restResponse);
+            }
+        }
+
+        public void InformarViajeOrdenesResiduos(IngresosEgresosResiduosDto ingresosEgresosResiduosDto)
+        {
+            const string RECURSO = "InformarViajeOrdenesResiduos";
+
+            if (ingresosEgresosResiduosDto == null)
+                throw externalServiceException.ThrowException("El objeto de datos no puede ser nulo.");
+
+
+            var request = CrearRequest(RECURSO);
+            IRestResponse restResponse;
+            var json = JsonConvert.SerializeObject(ingresosEgresosResiduosDto);
+
+            log.Debug("Se ejecuta la consulta a la Api");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+
+            try
+            {
+                var Client = clientFactory.CrearClientOperaciones();
+                restResponse = Client.Patch(request);
             }
             catch (Exception ex)
             {
