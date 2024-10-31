@@ -281,7 +281,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
             }
 
-            if (string.IsNullOrEmpty(orden.KmARecorrer))
+            if (string.IsNullOrEmpty(orden.KmARecorrer) || !int.TryParse(orden.KmARecorrer, out int km) ||  km <= 0)
             {
                 ModelState.AddModelError("KmARecorrer", string.Format(Textos.Error_Requerido, "km"));
             }
@@ -435,7 +435,7 @@ namespace Molinos.Scato.Web.Controllers
                 var destinatarioDescrip = servicio.ObtenerClientePorCuit(string.IsNullOrEmpty(destinatarioCuit) ? "" : destinatarioCuit);
 
                 var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
-                orden.KmARecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? orden.KmARecorrer : "0";
+                orden.KmARecorrer = orden.KmARecorrer != null ? orden.KmARecorrer : string.Empty;
 
 
                 var resultadoEscalables = servicioComandos.Ejecutar(GenerarConsultaEscalables(patente, acoplado, datosUsuario.NombreUsuario)) as ResultadoEscalables;
