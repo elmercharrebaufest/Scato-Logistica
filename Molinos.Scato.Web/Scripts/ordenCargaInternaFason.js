@@ -1,9 +1,5 @@
 
 $(document).ready(function () {
-    $('#LocalidadDestinoId').removeAttr('data-val');
-    $('#LocalidadDestinoId').removeAttr('data-val-number');
-    $('#LocalidadDestinoId').removeAttr('data-val-required');
-
 
     if ($("input[name='cargaCupoIdValue']").val() === "true") {
         $('.btn.btn-primary[type="submit"]').focus();
@@ -13,7 +9,7 @@ $(document).ready(function () {
     }
 
     var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
-    if (!kmaRecorrer || kmaRecorrer == '0') {
+    if ((!kmaRecorrer && $("input[name='cargaCupoIdValue']").val() !== "true") || kmaRecorrer == '0') {
         $('#KmARecorrer').removeAttr('readonly');
     } else {
         $('#KmARecorrer').attr('readonly', true);
@@ -262,11 +258,9 @@ function rellenarCampos(data, selectedElement) {
     var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
     if (!kmaRecorrer || kmaRecorrer == '0') {
         $('#KmARecorrer').removeAttr('readonly');
+    } else {
+        $('#KmARecorrer').attr('readonly', true);
     }
-
-    $('#LocalidadDestinoId').removeAttr('data-val');
-    $('#LocalidadDestinoId').removeAttr('data-val-number');
-    $('#LocalidadDestinoId').removeAttr('data-val-required');
 
     ValidarDerivadoGranario();
 
