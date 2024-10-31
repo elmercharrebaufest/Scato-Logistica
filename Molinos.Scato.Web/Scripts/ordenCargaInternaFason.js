@@ -282,7 +282,6 @@ function rellenarCampos(data, selectedElement) {
 
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
-        $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
         $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
 
         if (existeDomicilio.length > 0) {
