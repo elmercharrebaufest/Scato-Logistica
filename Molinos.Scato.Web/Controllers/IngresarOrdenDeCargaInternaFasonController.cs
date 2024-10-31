@@ -281,7 +281,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
             }
 
-            if (string.IsNullOrEmpty(orden.KmARecorrer))
+            if (string.IsNullOrEmpty(orden.KmARecorrer) || !int.TryParse(orden.KmARecorrer, out int km) ||  km <= 0)
             {
                 ModelState.AddModelError("KmARecorrer", string.Format(Textos.Error_Requerido, "km"));
             }
