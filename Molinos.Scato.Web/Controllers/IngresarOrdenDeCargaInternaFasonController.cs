@@ -383,9 +383,8 @@ namespace Molinos.Scato.Web.Controllers
             {       
                 var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
                 log.Error(ex,mensaje);
-                throw;
-              //  response.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje + " " + ex.Message, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error }); 
-              //  return Json(response, JsonRequestBehavior.AllowGet);
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje + " " + ex.Message, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error }); 
+                return Json(response, JsonRequestBehavior.AllowGet);
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }

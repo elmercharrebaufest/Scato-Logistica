@@ -60,9 +60,6 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
             manejarRespuestaExitosa(data);
         },
         error: function (xhr, status, error) {
-            const regex = /<h2>(.*?)<\/h2>/;
-            const err = xhr.responseText.match(regex);
-            MostrarAlertaError(err[1]);
         },
         complete: function () {
             $.unblockUI();
