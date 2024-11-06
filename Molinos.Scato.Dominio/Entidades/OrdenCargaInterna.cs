@@ -36,5 +36,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual int? OrdenDomicilioDestino { get; set; }
         public virtual Cliente PagadorFlete { get; set; }
         public virtual int? TipoDomicilioDestino { get; set; }
+        public virtual string Id_operaciones { get; set; }
     }
 }

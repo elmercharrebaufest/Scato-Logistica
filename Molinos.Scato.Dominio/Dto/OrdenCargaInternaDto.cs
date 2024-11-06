@@ -122,5 +122,8 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_TipoYOrdenDestino")]
         public string TipoYOrdenDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_NumeroOperaciones")]
+        public string Id_operaciones { get; set; }
     }
 }

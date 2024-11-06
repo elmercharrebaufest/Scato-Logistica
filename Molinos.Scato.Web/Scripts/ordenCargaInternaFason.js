@@ -1,9 +1,22 @@
-﻿$(document).ready(function () {
-    var patenteCamion = $('#PatenteCamion').val();
-    if (patenteCamion) {
-        obtenerOrdenDeCargaOperacionesPorPatente();
+
+$(document).ready(function () {
+    $('#LocalidadDestinoId').removeAttr('data-val');
+    $('#LocalidadDestinoId').removeAttr('data-val-number');
+    $('#LocalidadDestinoId').removeAttr('data-val-required');
+
+    if ($("input[name='cargaCupoIdValue']").val() === "true") {
+        $('.btn.btn-primary[type="submit"]').focus();
+    } else {
+        //Foco en primer elemento
+        $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     }
 
+    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+    if ((!kmaRecorrer && $("input[name='cargaCupoIdValue']").val() !== "true") || kmaRecorrer == '0') {
+        $('#KmARecorrer').removeAttr('readonly');
+    } else {
+        $('#KmARecorrer').attr('readonly', true);
+    }
 })
 
 
@@ -24,7 +37,9 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
 
     var patente = $("#PatenteCamion").val().toUpperCase();
     $("#NumeroOrdenExterno").empty();
-    if (hayError !== "True") limpiarCamposOrdenDeCargaOperaciones();
+    if (typeof hayError !== 'undefined' && hayError !== "True") {
+        limpiarCamposOrdenDeCargaOperaciones();
+    }
 
     if (patente && (!regex1.test(patente) && !regex2.test(patente))) {
         ValidarDerivadoGranario()
@@ -45,10 +60,6 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
             manejarRespuestaExitosa(data);
         },
         error: function (xhr, status, error) {
-            const regex = /<h2>(.*?)<\/h2>/;
-            const err = xhr.responseText.match(regex);
-            //"Error en la petición AJAX: " + status + " - " +
-            MostrarAlertaError(err[1]);
         },
         complete: function () {
             $.unblockUI();
@@ -73,10 +84,18 @@ function manejarRespuestaExitosa(data) {
 
     cachedOrdenDeCargaOperaciones = data.Data;
     $("#NumeroOrdenExterno").append($("<option></option>").attr("value", "").text("(Ninguno)"));
+    var materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
 
     if (Array.isArray(data.Data)) {
+        var nombreCliente = "";
         data.Data.forEach(function (value) {
-            $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).text(value.Id.toString().padStart(8, '0')));
+            if (materialesDerivadoGranario.includes(parseInt(value.MaterialId))) {
+                nombreCliente = value.RazonSocialDestino
+            } else {
+                nombreCliente = value.Cliente
+            }
+
+            $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).attr("title", nombreCliente).text(value.Id.toString().padStart(8, '0') + " | " + nombreCliente));
         });
 
         var selectedValue = $("#NumeroOrdenExterno").data('selected-value');
@@ -203,22 +222,27 @@ function rellenarCampos(data, selectedElement) {
     $("#IntermediarioFlete").val(data.Data.Orden.RazonSocialIntermediarioFlete);
     $("#LocalidadSeleccionada").val(data.Data.Orden.LocalidadId);
     $("#LocalidadDestinoId").val(data.Data.Orden.LocalidadId);
+    $("#LocalidadDestinoDescripcion[type = 'hidden']").val(data.Data.Orden.LocalidadDescripcion);
     $("#DestinoGranario").val(data.Data.DestinoDescripcion);
     $("#DestinoGranarioId").val(data.Data.DestinoId);
     $("#Corredor").val(data.Data.Orden.Corredor);
     $("#Observaciones").val(data.Data.Orden.Observacion);
     $("#Remitente").val(data.Data.Orden.RemitenteComercial);
-    $("#PagadorFlete").val(data.Data.Orden.PagadorFlete)
+    $("#PagadorFlete").val(data.Data.Orden.PagadorFlete);
+    $("#LocalidadDescripcion").val(data.Data.Orden.LocalidadDescripcion);
+    $('#DestinatarioId').val(data.Data.Orden.DestinatarioId);
+    $('#PagadorFleteId').val(data.Data.Orden.PagadorFleteId);
 
     //rellenar campos ocultos
     $("#Chofer_Cuil[type='hidden']").val(convertirCuil(selectedElement.CUILChofer));
     $("#PatenteAcoplado[type='hidden']").val(selectedElement.PatenteAcoplado);
     $("#MaterialId[type='hidden']").val(data.Data.MaterialId);
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
-    $("#KmARecorrer[type='hidden']").val(selectedElement.KmARecorrer);
+    $("#KmARecorrer[type='hidden']").val(data.Data.Orden.KmARecorrer);
     $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
     $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
     $("#TipoDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioTipo);
+    $("#DestinoMercaderia[type='hidden']").val(data.Data.Orden.DestinoMercaderia);
     $("#TipoComercialId[type='hidden']").val(tipoComercial)
     $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId)
 
@@ -231,18 +255,14 @@ function rellenarCampos(data, selectedElement) {
 
     }
 
+    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+    if (!kmaRecorrer || kmaRecorrer == '0') {
+        $('#KmARecorrer').removeAttr('readonly');
+    } else {
+        $('#KmARecorrer').attr('readonly', true);
+    }
 
     ValidarDerivadoGranario();
-
-
-    const select = document.getElementById('localidadDestinoDropdown');
-    const option = document.createElement('option');
-
-    // Asignar valor y texto
-    option.value = data.Data.Orden.LocalidadId;
-    option.text = data.Data.Orden.LocalidadDescripcion;
-    option.selected = true;
-    select.appendChild(option);
 
     let elementos = ["#Chofer_Cuil", "#Cliente", "#Destinatario", "#Remitente", "#Transportista", "#IntermediarioFlete", "#PagadorFlete"];
 
@@ -259,7 +279,7 @@ function rellenarCampos(data, selectedElement) {
 
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
-        $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
+        $('#KmARecorrer').val(data.Data.Orden.KmARecorrer); 
         $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
 
         if (existeDomicilio.length > 0) {
@@ -307,6 +327,7 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#Chofer_Apellido").val(null);
     $("#Chofer_NumeroDeDocumento").val(null);
     $("#KmARecorrer").val(null);
+    $("#KmARecorrer[type='hidden']").val(null);
     $("#MaterialId").val(null);
     $("#TipoVehiculo").val(null);
     $("#Destinatario").val(null);
@@ -323,6 +344,11 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#localidadDestinoDropdown").empty();
     $("#Observaciones").val(null);
     $("#RemitenteId").val(null);
+    $("#DestinoMercaderia").val(null);
+    $("#LocalidadDescripcion").val(null);
+    $('#DestinatarioId').val(null);
+    $('#PagadorFleteId').val(null);
+    $('#KmARecorrer').attr('readonly', true);
 }
 
 function convertirCuil(cuil) {

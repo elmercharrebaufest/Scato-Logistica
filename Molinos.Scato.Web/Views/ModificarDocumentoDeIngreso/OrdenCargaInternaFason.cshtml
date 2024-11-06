@@ -11,7 +11,7 @@
     {
         ViewBag.SoloLectura = false;
     }
-    bool soloLectura = ViewBag.SoloLectura; 
+    bool soloLectura = ViewBag.SoloLectura;
     string workflow = ViewBag.Workflow;
     int recorridoId = ViewBag.RecorridoId;
     bool esRechazado = ViewBag.Rechazado;
@@ -20,14 +20,16 @@
     string numeroDoc = ViewBag.NumeroDocumento;
 }
 
-@Scripts.Render("~/bundles/jqueryval")   
+@Scripts.Render("~/bundles/jqueryval")
 <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
 <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
 <script src="@Url.Script("~/Scripts/ordencargainterna.index.js")" type="text/javascript"></script>
 <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
 
 <style>
-    .content { padding-top: 20px;}
+    .content {
+        padding-top: 20px;
+    }
 </style>
 
 <div class="container">
@@ -69,7 +71,7 @@
 
 @if (soloLectura && (ViewBag.esDocumentoDeOrigen == null || !ViewBag.esDocumentoDeOrigen))
 {
-    <div class ="container">
+    <div class="container">
         <ul class="nav nav-tabs">
             <li class="active">
                 @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_DatosDeOrigen, "DocumentoOrigen", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = TipoDocumentoIngreso.OrdenCargaInternaFason, numeroDoc = Model.NumeroOrden, patente = Model.PatenteCamion, soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, null)
@@ -94,7 +96,7 @@
                 <label class="text-right " style="color: #FF0000; font-size: 13pt ;position: relative; display: inline-block; float:right; top: 10px">@Textos.Rechazado</label>
             }
         </ul>
-    </div>    
+    </div>
 }
 
 <script>
@@ -115,23 +117,23 @@
     });
 </script>
 
-@Html.Hidden("SoloLectura", (bool)ViewBag.SoloLectura, new {id = "soloLectura"})
+@Html.Hidden("SoloLectura", (bool)ViewBag.SoloLectura, new { id = "soloLectura" })
 @using (Html.BeginForm("OrdenCargaInternaFason", "ModificarDocumentoDeIngreso", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaInternaFason }))
 {
-    @Html.Hidden("CentroId",(int)ViewBag.CentroId)
+    @Html.Hidden("CentroId", (int)ViewBag.CentroId)
     if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
-     {
-         <div class="alert alert-error">
-             @Html.ValidationSummary(true)
-         </div>
-     }
+    {
+        <div class="alert alert-error">
+            @Html.ValidationSummary(true)
+        </div>
+    }
     @Html.Partial("~/Views/IngresarOrdenCargaInternaFason/_Orden.cshtml", Model)
 
     if (!soloLectura)
     {
         <div class="control-group paddingRight cajaButtons">
             <button class="btn btn-primary" type="submit">@Textos.Aceptar</button>
-            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class = "btn"})
+            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
         </div>
     }
 }

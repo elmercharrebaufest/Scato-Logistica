@@ -10,7 +10,6 @@ namespace Molinos.Scato.Dominio.Dto
     {
         public int Id { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_Numero")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         [StringLength(8, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         [RegularExpression(@"^\d+$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         public string NumeroOrden { get; set; }
@@ -74,7 +73,7 @@ namespace Molinos.Scato.Dominio.Dto
         [StringLength(4, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public string KmARecorrer { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "AdministracionDistancia_Localidad")]
-        public int LocalidadDestinoId { get; set; }
+        public int? LocalidadDestinoId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
@@ -127,6 +126,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int? DestinatarioId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_NumeroOperaciones")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string NumeroOrdenExterno { get; set; }
 		public string DestinoMercaderia { get; set; }
 

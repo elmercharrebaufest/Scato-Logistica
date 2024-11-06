@@ -10,6 +10,7 @@
         public string PatenteChasis { get; set; }
         public string PatenteAcoplado { get; set; }
         public string NombreChofer { get; set; }
+        public string ApellidoChofer { get; set; }
         public string CUILChofer { get; set; }
         public string RazonSocialTransporte { get; set; }
         public string CUITTransporte { get; set; }
@@ -42,7 +43,9 @@
         public string RemitenteComercial { get; set; }
         public long RemitenteComercialId { get; set; }
         public string PagadorFlete { get; set; }
-
-
+        public string DestinoMercaderia { get; set; }
+        public string MaterialId { get; set; } 
+        public long DestinatarioId { get; set; }
+        public long PagadorFleteId { get; set; }
     }
 }

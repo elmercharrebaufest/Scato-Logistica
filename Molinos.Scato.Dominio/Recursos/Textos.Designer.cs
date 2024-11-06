@@ -11725,6 +11725,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Algún cuit/cuil no cumple con el largo esperado según formato. Validar los datos ingresados en la carga inicial de la Orden.
+        /// </summary>
+        public static string DatoConLongitudIncorrecta {
+            get {
+                return ResourceManager.GetString("DatoConLongitudIncorrecta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Datos del Chofer.
         /// </summary>
         public static string DatosDelChofer {
@@ -22762,6 +22771,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string NroTarjetaAcceso {
             get {
                 return ResourceManager.GetString("NroTarjetaAcceso", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Se ha creado una nueva Orden de Fason con el No: {0}.
+        /// </summary>
+        public static string NuevaOrdenFasonCreada {
+            get {
+                return ResourceManager.GetString("NuevaOrdenFasonCreada", resourceCulture);
             }
         }
         

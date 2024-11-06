@@ -26,11 +26,6 @@
         if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
     });
 
-    // para que el campo retome el foco al seleccionar una fecha
-    $('input.date').datepicker("option", "onSelect", function () {
-        $(this).focus();
-    });
-
     $('.peso').change(function () {
         var pesoBruto = $('#pesoBruto').val();
         var pesoTara = $('#pesoTara').val();

@@ -2,6 +2,8 @@
     //Foco en primer elemento
     $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
     $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
+
+    //Máscaras
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
     let tipoComercial = $('#tiposComerciales').find('option').eq(1).val();
@@ -23,7 +25,6 @@
     var formatoFecha = Globalize.culture().calendars.standard.patterns.d.replace(/[a-z]/g, '9');
     formatoFecha = formatoFecha.replace(/[A-Z]/g, '9');
     $('#FechaEmision').mask(formatoFecha);
-    $("#FechaEmision").datepicker();
 
     $.validator.addMethod("clienteRequerido", function (value, element) {
         return value.length > 0;
@@ -44,7 +45,6 @@
                 CargarDomicilios();
             },
             function () {
-                deshabilitarKmRecorrerYLocalidad();
                 cargarMaterial();
             }
         );
@@ -59,13 +59,11 @@
             $('#links').data().urlBuscarClienteUnico,
             $('#links').data().urlObtenerClientesSap,
             function () {
-                completarKmRecorrerYLocalidad();
                 cargarMaterial();
                 CargarPlantas();
                 CargarDomicilios();
             },
             function () {
-                deshabilitarKmRecorrerYLocalidad();
                 cargarMaterial();
             }
         );
@@ -178,7 +176,7 @@
         inputTransportista.trigger('keydown').trigger('focusout');
         setTimeout(() => inputTransportista.blur(), 100);
     });
-    completarKmRecorrerYLocalidad();
+
     $('#localidadDestinoDropdown').change(function () {
         $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
     });
@@ -200,7 +198,6 @@
         CargarAlamacenesPorMaterial();
     }
 
-    
     $("#btnRechazarOrdenCargaInterna").click(function () {
         var valido = true;
 
@@ -361,59 +358,6 @@ function onSelectTransportista() {
     $('#EsTransportista').val(true);
 }
 
-function deshabilitarKmRecorrerYLocalidad() {
-    if ($('#ClienteId').length == 0 || $('#ClienteId').val() == null || $('#ClienteId').val() == '0' || $('#localidadDestinoDropdown option').length == 0) {
-        $('#KmARecorrer').val("");
-        $('#LocalidadDestinoId').val(0);
-        $('#localidadDestinoDropdown').html(null);
-        $('#KmARecorrer').attr("disabled", true);
-        $('#localidadDestinoDropdown').attr("disabled", true);
-    }
-}
-
-function completarKmRecorrerYLocalidad() {
-    var clienteId;
-    if ($('#Destino').length > 0) {
-        clienteId = $('#DestinoId').val();
-    }
-    if ($('#Cliente').length > 0) {
-        clienteId = $('#ClienteId').val();
-    }
-    if (clienteId > 0) {
-        $.getJSON($('#links').data().urlBuscarKmporproveedor, { clienteId: clienteId },
-            function (response) {
-                var options = '';
-                for (var i = 0; i < response.length; i++) {
-                    options += "<option data-kilometros='" + response[i].kmRecorrer + "' value='" + response[i].localidadDestinoId + "'" + ">"
-                        + response[i].localidadDescripcion + "</option>";
-                }
-                if (response.length > 0) {
-                    var optdefault = '';
-                    optdefault = "<option value=''> (Localidad) </option>";
-                    optdefault += options;
-                    $('#localidadDestinoDropdown').html(optdefault);
-                    let localidadSeleccionada = $("#LocalidadSeleccionada").val();
-                    let localidadesIds = response.map(localidad => localidad.localidadDestinoId);
-                    if (localidadSeleccionada.length > 0 && localidadesIds.includes(parseInt(localidadSeleccionada))) {
-                        $('#localidadDestinoDropdown').val(parseInt(localidadSeleccionada))
-                    }
-                    $('#localidadDestinoDropdown').removeAttr("disabled");
-                    $('#KmARecorrer').removeAttr("disabled");
-
-                    if ($('#LocalidadDestinoId').val() > 0) {
-                        $('#localidadDestinoDropdown').val($('#LocalidadDestinoId').val());
-                        $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
-                    }
-                } else {
-                    deshabilitarKmRecorrerYLocalidad();
-                    MostrarAlertaAdvertencia("El cliente no tiene km a recorrer asociados");
-                }
-            });
-    } else {
-        deshabilitarKmRecorrerYLocalidad();
-    }
-}
-
 function validarClienteNoBloqueado() {
     var clienteId;
     if ($('#Destino').length > 0) {
@@ -427,14 +371,9 @@ function validarClienteNoBloqueado() {
             .done(function (response) {
                 if (response.bloqueado) {
                     MostrarAlertaError("El cliente se encuentra bloqueado");
-                } else {
-                    completarKmRecorrerYLocalidad();
-                }
+                } 
                 $("#btnAceptar").attr("disabled", response.bloqueado);
             });
-    }
-    else {
-        deshabilitarKmRecorrerYLocalidad();
     }
 }
 
@@ -506,6 +445,8 @@ function CargarPlantas() {
                     if (plantaSeleccionada.length > 0 && allData.Plantas.includes(parseInt(plantaSeleccionada))) {
                         $('#PlantaDGDestino').val(parseInt(plantaSeleccionada))
                     }
+                } else {
+                    MostrarAlertaError("Error al consultar Plantas - " + allData.Errores["2"]);
                 }
             }
         );
@@ -533,6 +474,8 @@ function CargarDomicilios() {
                         $('#TipoYOrdenDestino').val(`${tipoDomicilioSeleccionado}-${ordenDomicilioSeleccionado}`)
                         $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
                     }
+                } else {
+                    MostrarAlertaError("Error al consultar Domicilios - " + allData.Errores["2"]);
                 }
             }
         );

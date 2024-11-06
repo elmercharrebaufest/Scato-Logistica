@@ -319,7 +319,7 @@ $(document).ready(function () {
 
 });
 
-let blockui = [];
+var blockui = [];
 let dataFleteMoa = new Map();
 
 function llenarFleteMoa(data) {

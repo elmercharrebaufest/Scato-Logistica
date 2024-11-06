@@ -902,6 +902,7 @@
     <Content Include="Scripts\draggable_background.js" />
     <Content Include="Scripts\interact.min.js" />
     <Content Include="Scripts\jquery.elevatezoom.js" />
+    <Content Include="Scripts\ordenCargaInternaMaterialNoProd.index.js" />
     <Content Include="Scripts\ordenCargaInternaFason.js" />
     <Content Include="Scripts\pagoDeReciboMunicipal.js" />
     <Content Include="Scripts\Chart.min.js" />

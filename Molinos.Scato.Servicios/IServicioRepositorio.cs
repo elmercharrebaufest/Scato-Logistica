@@ -3034,6 +3034,22 @@ namespace Molinos.Scato.Servicios
 		
 		[OperationContract]
         int ContarClientes(string nCuit);
+
+        [OperationContract]
+        bool ExisteOrdenCarga(string ordenExterno);
+
+        [OperationContract]
+        IEnumerable<ChoferDto> ObtenerChoferesPorCuits(List<string> cuils);
+
+        [OperationContract]
+        MaterialDto ObtenerMaterialPorId(int id);
+
+        [OperationContract]
+        string ObtenerPatentePorIdCargaCupo(int id);
+        
+        [OperationContract]
+        string ObtenerNuevoNumeroDeOrdenFason(); 
+
     }
 
 }

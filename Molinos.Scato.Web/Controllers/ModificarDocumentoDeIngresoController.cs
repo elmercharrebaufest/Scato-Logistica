@@ -768,7 +768,7 @@ namespace Molinos.Scato.Web.Controllers
                     }
                 }
 
-                var docSap = recorrido.NumeroDeDocumentoSap ?? "";
+                var docSap = recorrido.DocumentoInternoSap ?? "";
                 if (docSap == "")
                 {
                     var controles = servicio.ListarControlRecorridoServiciosSap(recorrido.InstanciaWorkflow);

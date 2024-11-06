@@ -40,6 +40,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Cliente Destinatario { get; set; }
         public virtual string NumeroOrdenExterno { get; set; }
         public virtual string Observaciones { get; set; }
+        public virtual string DestinoMercaderia { get; set; }
 
     }
 }
