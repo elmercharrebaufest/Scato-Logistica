@@ -204,17 +204,18 @@ function ObtenerDatosFasonInsumos(patente) {
                 crearRespuestaErrorFason(data.errorResponse);
             }
         }
-
         if (data.sonVariosMateriales) {
             llenarMateriales(data, false, false);
         } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
             llenarMateriales(data, true);
+
         } else if (typeof data.ordenes === 'object' && data.ordenesInsumos.length > 0) {
             llenarMateriales(data, true);
+
         } else {
-            //limpiarComboMateriales();
+            quitarValidacionMaterial();
             ObtenerDatosSap();
-            $('#MaterialId').prop('disabled', false);
+
         }
     }).fail(function (xhr, status, error) {
         // Manejo de errores
@@ -277,20 +278,20 @@ function llenarMateriales(data, comboDisable, preSeleccionable = true) {
             selected: true
         }));
 
-        if(data.ordenes.length > 0)
-        {
+        if (data.ordenes.length > 0) {
             llenarMaterialesPorOrden(data.ordenes, combo);
         }
         if (data.ordenesInsumos.length > 0) {
             llenarMaterialesPorOrden(data.ordenesInsumos, combo);
         }
-       
+
         combo.val(value);
         ajustarFleteMoa(value)
     });
 
     if (!comboDisable) {
         $('#MaterialId').prop('disabled', false);
+        restaurarValidacionMaterial();
         ajustarFleteMoa()
     }
 
@@ -330,4 +331,16 @@ function llenarMaterialesPorOrden(ordenes, combo) {
             //selected: data.Value == value
         }));
     });
+}
+
+function restaurarValidacionMaterial() {
+    $("#MaterialId")
+        .attr("data-val", "true")
+        .attr("data-val-required", "El campo Material es obligatorio");
+}
+
+function quitarValidacionMaterial() {
+    $("#MaterialId")
+        .removeAttr("data-val")
+        .removeAttr("data-val-required");
 }

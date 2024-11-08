@@ -51,8 +51,6 @@
 @Html.HiddenFor(model => model.RecorridoId)
 @Html.HiddenFor(model => model.Rechazado)
 @Html.HiddenFor(model => model.Demorado)
-@* @Html.HiddenFor(model => model.OrdenDomicilioDestino) *@
-@* @Html.HiddenFor(model => model.TipoDomicilioDestino) *@
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
 @Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
 @Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)
@@ -254,15 +252,17 @@
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)", new { @readonly = "readonly" })
+                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)", new { @disabled = "disabled" })
                     @Html.ValidationMessageFor(model => model.PlantaDGDestino)
+                    @Html.HiddenFor(model => model.PlantaDGDestino)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.TipoYOrdenDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.TipoYOrdenDestino, domiciliosDG, "(domicilio)", new { @readonly = "readonly" })
+                    @Html.DropDownListFor(model => model.TipoYOrdenDestino, domiciliosDG, "(domicilio)", new { @disabled = "disabled" })
                     @Html.ValidationMessageFor(model => model.TipoYOrdenDestino)
+                    @Html.HiddenFor(model => model.TipoYOrdenDestino)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
