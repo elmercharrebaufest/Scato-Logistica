@@ -41,11 +41,21 @@
     }
     if (Model.Columnas.Contains("ProximaEtapa"))
     {
-        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion) ?? item.ProximaAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Sustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty)), null, false));
+        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion)
+            ?? item.ProximaAccion
+                + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty))
+        + (item.EsSustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty)
+        ), null
+        ,false));
     }
     if (Model.Columnas.Contains("RechazoEtapa"))
     {
-        columnas.Add(grid.Columna("RechazoAccion", Textos.Workflow_RechazoEtapa, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.RechazoAccion) ?? item.RechazoAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Sustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty)), null, false));
+        columnas.Add(grid.Columna("RechazoAccion", Textos.Workflow_RechazoEtapa, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.RechazoAccion)
+            ?? item.RechazoAccion
+                + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty))
+        + (item.EsSustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty)
+        ), null
+        ,false));
     }
     if (Model.Columnas.Contains("FechaCreacion") || Model.Columnas[0].Contains("FechaCreacion"))
     {

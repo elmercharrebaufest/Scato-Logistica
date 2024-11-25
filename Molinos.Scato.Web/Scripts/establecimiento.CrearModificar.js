@@ -3,6 +3,7 @@ var obtenerCorredoresPorEstablecimiento = $('#links').data().urlObtenerCorredore
 
 $(document).ready(function () {
     ko.applyBindings(new CorredoresListViewModel(), document.getElementById('corredoresViewModel'));
+    $("#CodigoRENSPA").inputmask("99.999.9.99999/99");
 });
 
 function Corredor(id, descripcion, cuil, sap, razonsocial) {

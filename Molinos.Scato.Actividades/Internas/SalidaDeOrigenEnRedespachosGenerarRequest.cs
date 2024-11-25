@@ -1,3 +1,4 @@
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -93,13 +94,10 @@ namespace Molinos.Scato.Actividades.Internas
                 var precinto2Id = Precinto2Id.Get<int>(context);
 
                 var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(InstanceId.Get<Guid>(context).ToString("D"));
+
                 var almacenEmisor = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
-                var materialPorCentro = srvRepositorio.ObtenerMaterialPorCentro(centroReceptorId, materialId);
-                AlmacenDto almacenReceptor = null;
-                if (materialPorCentro != null && materialPorCentro.AlmacenPredId.HasValue)
-                {
-                    almacenReceptor = srvRepositorio.ObtenerAlmacen(materialPorCentro.AlmacenPredId.Value);
-                }
+                var almacenEmisorSap = almacenEmisor != null ? almacenEmisor.CodigoSAP : "";
+                
                 var centroEmisor = srvRepositorio.ObtenerCentro(centroEmisorId);
                 var centroReceptor = srvRepositorio.ObtenerCentro(centroReceptorId);
                 var transportista = srvRepositorio.ObtenerTransportista(transportistaId);
@@ -110,13 +108,22 @@ namespace Molinos.Scato.Actividades.Internas
                 var recorrido = srvRepositorio.ObtenerDatosDeInstanciaAltaCTGPorGuid(InstanceId.Get<Guid>(context));
                 var cartaPorte = srvRepositorio.ObtenerCartaDePortePorrecorrido(recorrido.Id);
 
-                var almacenEmisorSap = almacenEmisor != null ? almacenEmisor.CodigoSAP : "";
                 var almacenReceptorSap = string.Empty;
-
-                if (almacenEmisor != null && almacenEmisor.EsSojaEPA)
+                if (recorrido.CodigoTipoVariedad == Constantes.TipoVariedadMaterial.EPA
+                    || recorrido.CodigoTipoVariedad == Constantes.TipoVariedadMaterial.EUDR
+                    || recorrido.CodigoTipoVariedad == Constantes.TipoVariedadMaterial.EPAyEUDR)
+                {
                     almacenReceptorSap = almacenEmisorSap;
-                else
-                    almacenReceptorSap = almacenReceptor != null ? almacenReceptor.CodigoSAP : "REDE";
+                } else
+                {
+                    var materialPorCentro = srvRepositorio.ObtenerMaterialPorCentro(centroReceptorId, materialId);
+                    var almacenReceptor = materialPorCentro != null && materialPorCentro.AlmacenPredId.HasValue
+                        ? srvRepositorio.ObtenerAlmacen(materialPorCentro.AlmacenPredId.Value)
+                        : null;
+                    almacenReceptorSap = almacenReceptor != null
+                        ? almacenReceptor.CodigoSAP
+                        : "REDE";
+                }
 
                 var centroEmisorSap = centroEmisor != null ? centroEmisor.CodigoSAP : "";
                 var centroReceptorSap = centroReceptor != null ? centroReceptor.CodigoSAP : "";

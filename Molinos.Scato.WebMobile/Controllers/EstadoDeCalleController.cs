@@ -77,17 +77,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            camiones.ForEach(camion =>
-            {
-
-                if (camion.EsSojaIMPO)
-                {
-                    camion.ColorFondo = Constantes.ValoresPorDefecto.ColorFondoSojaIMPO;
-                    camion.ColorTexto = Constantes.ValoresPorDefecto.ColorTextoSojaIMPO;
-                }
-            });
-
-
             var tiposCalleValidas = new List<TipoCalle>() {
                 TipoCalle.PreCalado,
                 TipoCalle.Circular,

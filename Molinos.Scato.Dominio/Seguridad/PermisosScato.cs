@@ -721,6 +721,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         ComparacionCalidad = 470,
         [Display(ResourceType = typeof(Textos), Name = "ReporteInactividadCalado")]
         ReporteInactividadCalado = 471,
+        [Display(ResourceType = typeof(Textos), Name = "ReporteTemplateVisec")]
+        ReporteTemplateVisec = 472,
 
         //Permisos Puerto
         [Display(ResourceType = typeof(Textos), Name = "PreLineUp")]

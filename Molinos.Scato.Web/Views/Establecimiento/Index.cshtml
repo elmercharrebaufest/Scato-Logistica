@@ -5,7 +5,10 @@
     ViewBag.Title = Textos.Establecimiento_Titulo;
 }
 
-<div class ="container-fluid">
+<link href="~/Styles/area/shared/inputs.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.inputmask.bundle.js"></script>
+
+<div class="container-fluid">
     <ul class="nav nav-tabs">
         @if (PermisosHelper.Is(PermisosScato.AbmEstablecimiento))
         {
@@ -25,7 +28,7 @@
                 @Html.ActionLink(Textos.Cosechas_Titulo, "Index", "Cosecha")
             </li>
         }
-     </ul>
+    </ul>
     <div class="titSecciones">@Textos.Administracion_Establecimientos</div>
 </div>
 
@@ -40,7 +43,7 @@
 
             }
         </div>
-        @Html.ActionLink(Textos.Establecimiento_Nuevo, "Crear", "Establecimiento", null, new { @class = "ajax-editar-link btn btn-primary pull-right"})
+        @Html.ActionLink(Textos.Establecimiento_Nuevo, "Crear", "Establecimiento", null, new { @class = "ajax-editar-link btn btn-primary pull-right" })
         @Html.ActionLink(Textos.Exportar_Excel, "DescargarArchivo", "Establecimiento", null, new { @class = "btn btn-secondary pull-right", @style = "margin-right: 0.5rem" })
     </div>
 

@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Consultas;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
@@ -158,13 +159,15 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     TipoComercialId = x.TipoComercial.Id,
                     Workflow = x.Workflow.Descripcion,
                     Codigo = x.Workflow.Codigo,
-                    EsSustentable = x.Establecimiento != null,
+                    EsSustentable = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.Sustentable,
                     FueAsignado = x.Almacen != null,
                     Rechazado = x.Rechazado,
                     TipoVehiculo = x.TipoVehiculo,
                     PagaTicketMunicipal = x.PagaTicketMunicipal != null && x.PagaTicketMunicipal.Value,
                     Calle = x.CallePorRecorridos.Where(o => o.FechaEgreso == null).Select(y => y.Calle.Nombre).FirstOrDefault(),
-                    SojaEPA = x.Establecimiento != null && x.Establecimiento.EPA,
+                    SojaEPA = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPA,
+                    SojaEUDR = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EUDR,
+                    SojaEPAyEUDR = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR
                 }).ToList();
 
             LlenarDatosCaracteristicasAnalizadas(datos, contexto);

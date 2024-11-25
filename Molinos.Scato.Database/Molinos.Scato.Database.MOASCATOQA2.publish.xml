@@ -2,9 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
-    <TargetDatabaseName>MOASCATO</TargetDatabaseName>
+    <TargetDatabaseName>MOASCATOQA2</TargetDatabaseName>
     <DeployScriptFileName>Molinos.Scato.Database.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=SCATOAGLSQA.molinosagro.ad,1450;Integrated Security=True;Pooling=False;Trust Server Certificate=True;</TargetConnectionString>
+    <TargetConnectionString>Data Source=SCATOAGLSQA.molinosagro.ad,1450;Integrated Security=True;Pooling=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
     <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>

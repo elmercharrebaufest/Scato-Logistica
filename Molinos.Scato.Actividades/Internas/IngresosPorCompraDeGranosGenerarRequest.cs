@@ -1,4 +1,3 @@
-using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -12,7 +11,6 @@ using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -91,14 +89,7 @@ namespace Molinos.Scato.Actividades.Internas
 
                 var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(instanceId.ToString("D"));
                 var balanza = srvRepositorio.ObtenerBalanza(asignacion.BalanzaTaraId ?? 0);
-                AlmacenDto almacen = null;
-
-                almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
-                if (ConfigurationManager.AppSettings["SepararAlmacenSustentable"].ToLower() == "false" && srvRepositorio.EsRecorridoSustentable(instanceId) && centro.CodigoSAP == Constantes.Centro.CodigoSAPSanLorenzo)
-                {      
-                    almacen.CodigoSAP = Constantes.TipoSoja.Sustentable.ToUpper();            
-                }
-
+                var almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
                 calado = srvRepositorio.ObtenerCaladoPorGuid(instanceId);
                 var carAnalizadas = srvRepositorio.ObtenerAnalisisDeCalidadPorCaladoId(calado.Id);
                 var material = srvRepositorio.ObtenerMaterialPorCentro(centro.Id, cartaPorte.MaterialId);

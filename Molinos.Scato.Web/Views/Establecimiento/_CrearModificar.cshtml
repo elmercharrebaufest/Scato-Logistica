@@ -38,7 +38,7 @@
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(model => model.Proveedor, new {@class = "control-label"})
+    @Html.LabelFor(model => model.Proveedor, new { @class = "control-label" })
     <div class="controls">
         @Html.TextBoxFor(model => model.Proveedor, new { @class = "control input-medium input-xlarge" })
         @Html.ValidationMessageFor(model => model.Proveedor)
@@ -46,46 +46,40 @@
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(model => model.NombreDeEstablecimiento, new {@class = "control-label"})
+    @Html.LabelFor(model => model.NombreDeEstablecimiento, new { @class = "control-label" })
     <div class="controls">
-        @Html.TextBoxFor(model => model.NombreDeEstablecimiento, new {@class = "input-xlarge", maxlength = 30})
+        @Html.TextBoxFor(model => model.NombreDeEstablecimiento, new { @class = "input-xlarge", maxlength = 30 })
         @Html.ValidationMessageFor(model => model.NombreDeEstablecimiento)
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(model => model.CodigoDeEstablecimiento, new {@class = "control-label"})
+    @Html.LabelFor(model => model.CodigoDeEstablecimiento, new { @class = "control-label" })
     <div class="controls">
-        @Html.TextBoxFor(model => model.CodigoDeEstablecimiento, new {@class = "input-xlarge campoNumerico", maxlength =
-        6})
+        @Html.TextBoxFor(model => model.CodigoDeEstablecimiento, new { @class = "input-xlarge campoNumerico", maxlength = 6 })
         @Html.ValidationMessageFor(model => model.CodigoDeEstablecimiento)
     </div>
 </div>
 <div class="control-group">
     @Html.LabelFor(model => model.Provincia, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.ProvinciaId, provincias,Textos.Default_Provincia, new { id =
-        "provinciasDropDown" })
+        @Html.DropDownListFor(model => model.ProvinciaId, provincias,Textos.Default_Provincia, new { id = "provinciasDropDown" })
         @Html.ValidationMessageFor(model => model.ProvinciaId)
     </div>
 </div>
 <div class="control-group">
     @Html.LabelFor(model => model.Localidad, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.LocalidadId, localidades,Textos.Default_Localidad, new { id =
-        "localidadesDropDown" })
+        @Html.DropDownListFor(model => model.LocalidadId, localidades, Textos.Default_Localidad, new { id = "localidadesDropDown" })
         @Html.ValidationMessageFor(model => model.LocalidadId)
         @Html.Hidden("CargarLocalidades", Url.Action("CargarLocalidades"))
-        @Html.Hidden("ValorDefaultLocalidad",Textos.Default_Localidad)
-        @Html.Hidden("ValorDefaultProvincia",Textos.Default_Provincia)
+        @Html.Hidden("ValorDefaultLocalidad", Textos.Default_Localidad)
+        @Html.Hidden("ValorDefaultProvincia", Textos.Default_Provincia)
     </div>
 </div>
 <div class="control-group">
     @Html.LabelFor(model => model.Comercial, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.ComercialId, comerciales, Textos.Default_Comercial, new
-        {
-            id ="comercialesDropDown"
-        })
+        @Html.DropDownListFor(model => model.ComercialId, comerciales, Textos.Default_Comercial, new { id = "comercialesDropDown" })
         @Html.ValidationMessageFor(model => model.ComercialId)
     </div>
 </div>
@@ -96,24 +90,28 @@
         @Html.ValidationMessageFor(model => model.Observaciones)
     </div>
 </div>
-<div class="row">
-    <div class="span3">
-        <div class="control-group">
-            @Html.LabelFor(model => model.Anulado, new { @class = "control-label" })
-            <div class="controls">
-                @Html.CheckBoxFor(model => model.Anulado)
-                @Html.ValidationMessageFor(model => model.Anulado)
-            </div>
-        </div>
+<div class="inputs__container--checkbox">
+    <div class="inputs__checkbox">
+        @Html.LabelFor(model => model.Anulado, new { @class = "" })
+        @Html.CheckBoxFor(model => model.Anulado)
+        @Html.ValidationMessageFor(model => model.Anulado)
     </div>
-    <div class="span3">
-        <div class="control-group">
-            @Html.LabelFor(model => model.EsSojaEPA, new { @class = "control-label" })
-            <div class="controls">
-                @Html.CheckBoxFor(model => model.EsSojaEPA)
-                @Html.ValidationMessageFor(model => model.EsSojaEPA)
-            </div>
-        </div>
+    <div class="inputs__checkbox">
+        @Html.LabelFor(model => model.EsSojaEPA, new { @class = "" })
+        @Html.CheckBoxFor(model => model.EsSojaEPA)
+        @Html.ValidationMessageFor(model => model.EsSojaEPA)
+    </div>
+    <div class="inputs__checkbox">
+        @Html.LabelFor(model => model.EsEUDR, new { @class = "" })
+        @Html.CheckBoxFor(model => model.EsEUDR)
+        @Html.ValidationMessageFor(model => model.EsEUDR)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoRENSPA, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoRENSPA, new { @class = "input-xlarge", maxlength = 17 })
+        @Html.ValidationMessageFor(model => model.CodigoRENSPA)
     </div>
 </div>
 <div id="autocompleteProv"></div>

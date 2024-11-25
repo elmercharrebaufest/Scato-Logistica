@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Internas;
@@ -140,7 +139,6 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var recorrido = srvRepositorio.ObtenerRecorrido(recorridoId);
                 var muestraEnvioACamara = srvRepositorio.ObtenerUltimaMuestraEnvioACamaraPorCaladoId(recorrido.Calado.Id);
-                ConfigurationManager.AppSettings["SepararAlmacenSustentable"] = "false";
                 var guid = recorrido.InstanciaWorkflow;
 
                 var cartaPorte = srvRepositorio.ObtenerCartaPortePorInstanceId(guid);
@@ -242,7 +240,6 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var recorrido = srvRepositorio.ObtenerRecorrido(recorridoId);
                 var muestraEnvioACamara = srvRepositorio.ObtenerUltimaMuestraEnvioACamaraPorCaladoId(recorrido.Calado.Id);
-                ConfigurationManager.AppSettings["SepararAlmacenSustentable"] = "false";
                 var guid = recorrido.InstanciaWorkflow;
 
                 var cartaPorte = srvRepositorio.ObtenerCartaPortePorInstanceId(guid);
@@ -626,7 +623,6 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var recorrido = srvRepositorio.ObtenerRecorrido(recorridoId);
                 var muestraEnvioACamara = srvRepositorio.ObtenerUltimaMuestraEnvioACamaraPorCaladoId(recorrido.Calado.Id);
-                ConfigurationManager.AppSettings["SepararAlmacenSustentable"] = "false";
                 var guid = recorrido.InstanciaWorkflow;
 
                 var cartaPorte = srvRepositorio.ObtenerCartaPortePorInstanceId(guid);

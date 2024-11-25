@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -120,7 +121,6 @@ namespace Molinos.Scato.Web.Controllers
             var mensajes = servicio.ListarAnalisisYCaladoPorCaracteristicaConAdvertencia(recorrido.InstanciaWorkflow);
 
             ViewBag.CaracteristicasMensajes = mensajes;
-            ViewBag.EsSojaSustentable = recorrido.Establecimiento != null;
             ViewBag.WorkflowDefinicionId = recorrido.WorkflowDefinicionId;
             ViewBag.Material = recorrido.Material.Descripcion;
             ViewBag.CicloDeCalado = recorrido.Calado.CicloDeCalado;
@@ -141,6 +141,18 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.TarjetaDeAcceso = recorrido.TarjetaDeAcceso;
             ViewBag.CupoEsFabrica = false;
             ViewBag.EsTrigoPan = recorrido.Material.CodigoSAP == "19908027";
+            ViewBag.Variedad = recorrido.TipoVariedadCodigo != Constantes.TipoVariedadMaterial.Estandar ? recorrido.TipoVariedadDescripcion : string.Empty;
+            ViewBag.ColorFondoVariedad = recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR ? Constantes.ValoresPorDefecto.ColorFondoSojaEPAyEUDR
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR ? Constantes.ValoresPorDefecto.ColorFondoSojaEUDR
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.Sustentable ? Constantes.ValoresPorDefecto.ColorFondoSojaSustentable
+                                    : string.Empty;
+            ViewBag.ColorTextoVariedad = recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR ? Constantes.ValoresPorDefecto.ColorTextoSojaEPAyEUDR
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR ? Constantes.ValoresPorDefecto.ColorTextoSojaEUDR
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.Sustentable ? Constantes.ValoresPorDefecto.ColorTextoSojaSustentable
+                                    : string.Empty;
+
             if (cupo != null)
             {
                 ViewBag.CupoEsFabrica = cupo.Camara == "03"; //03 es de fabrica (hasta el momento es el unico establecido)

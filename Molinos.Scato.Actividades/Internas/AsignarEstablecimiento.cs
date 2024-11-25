@@ -38,7 +38,7 @@ namespace Molinos.Scato.Actividades.Internas
                     if (!resultado.HayErrores)
                     {
                         var materialId = servicioRepositorio.ObtenerMaterialIdPorInstanceId(instanceId);
-                        var tipoMaterialPorVariedad = servicioRepositorio.ObtenerVariedadIdPorMaterial(materialId, esEpa: establecimientoModel.EsSojaEPA, esSustentable: true);
+                        var tipoMaterialPorVariedad = servicioRepositorio.ObtenerVariedadIdPorMaterial(materialId, esEpa: establecimientoModel.EsSojaEPA, esSustentable: true, esEUDR: establecimientoModel.EsEUDR);
 
                         resultado = servicioComandos.Ejecutar(new ModificarRecorridoEstablecimiento
                         {

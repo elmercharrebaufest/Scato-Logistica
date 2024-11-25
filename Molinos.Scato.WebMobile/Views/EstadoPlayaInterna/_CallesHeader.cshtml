@@ -14,10 +14,16 @@
     <li class="nav-item tagmaterial">
         <div class="nav-link nav-material bg-warning text-white">Girasol(<strong data-bind="text: CantidadGirasol"></strong>)</div>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" data-bind="visible: CantidadSojaEPA() > 0">
         <div class="nav-link nav-material bg-SojaEPA">Soja EPA(<strong data-bind="text: CantidadSojaEPA"></strong>)</div>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" data-bind="visible: CantidadSojaIMPO() > 0">
         <div class="nav-link nav-material bg-SojaIMPO">Soja IMPO(<strong data-bind="text: CantidadSojaIMPO"></strong>)</div>
+    </li>
+    <li class="nav-item" data-bind="visible: CantidadSojaEUDR() > 0">
+        <div class="nav-link nav-material bg-SojaEUDR">Soja EUDR(<strong data-bind="text: CantidadSojaEUDR"></strong>)</div>
+    </li>
+    <li class="nav-item" data-bind="visible: CantidadSojaEPAyEUDR() > 0">
+        <div class="nav-link nav-material bg-SojaEPAyEUDR">Soja EPA/EUDR(<strong data-bind="text: CantidadSojaEPAyEUDR"></strong>)</div>
     </li>
 </ul>

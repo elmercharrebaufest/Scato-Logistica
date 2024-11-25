@@ -14537,24 +14537,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Seleccione Recorridos con soja EPA.
-        /// </summary>
-        public static string Error_NoSojaEPA {
-            get {
-                return ResourceManager.GetString("Error_NoSojaEPA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Seleccione Recorridos con soja IMPO.
-        /// </summary>
-        public static string Error_NoSojaIMPO {
-            get {
-                return ResourceManager.GetString("Error_NoSojaIMPO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to El Campo &apos;{0}&apos; debe ser numérico y dentro del rango permitido.
         /// </summary>
         public static string Error_NumericoYRango {
@@ -15221,11 +15203,29 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Código RENSPA.
+        /// </summary>
+        public static string Establecimiento_CodigoRENSPA {
+            get {
+                return ResourceManager.GetString("Establecimiento_CodigoRENSPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crear Establecimiento.
         /// </summary>
         public static string Establecimiento_Crear {
             get {
                 return ResourceManager.GetString("Establecimiento_Crear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El formato del Código RENSPA no es válido.
+        /// </summary>
+        public static string Establecimiento_Error_FormatoCodigoRENSPA {
+            get {
+                return ResourceManager.GetString("Establecimiento_Error_FormatoCodigoRENSPA", resourceCulture);
             }
         }
         
@@ -15280,6 +15280,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Establecimiento_SojaEPA {
             get {
                 return ResourceManager.GetString("Establecimiento_SojaEPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soja EUDR.
+        /// </summary>
+        public static string Establecimiento_SojaEUDR {
+            get {
+                return ResourceManager.GetString("Establecimiento_SojaEUDR", resourceCulture);
             }
         }
         
@@ -25412,6 +25421,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selecciona Recorridos con soja {0}.
+        /// </summary>
+        public static string PuestoComando_Error_DiferenteVariedadSeleccionada {
+            get {
+                return ResourceManager.GetString("PuestoComando_Error_DiferenteVariedadSeleccionada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Es Soja EPA.
         /// </summary>
         public static string PuestoComando_EsSojaEPA {
@@ -26998,6 +27016,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Template Visec.
+        /// </summary>
+        public static string ReporteTemplateVisec {
+            get {
+                return ResourceManager.GetString("ReporteTemplateVisec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Requiere Cupo.
         /// </summary>
         public static string RequiereCupo {
@@ -28173,6 +28200,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Soja_EPA {
             get {
                 return ResourceManager.GetString("Soja_EPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EUDR.
+        /// </summary>
+        public static string Soja_EUDR {
+            get {
+                return ResourceManager.GetString("Soja_EUDR", resourceCulture);
             }
         }
         

@@ -93,5 +93,13 @@ namespace Molinos.Scato.Dominio.Dto
                 return String.Join(",", this.CorredoresAsociados.ToList().Select(x => x.Descripcion));
             }
         }
+
+        [Display(ResourceType = typeof(Textos), Name = "Establecimiento_SojaEUDR")]
+        public bool EsEUDR { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Establecimiento_CodigoRENSPA")]
+        [RegularExpression(@"^\d{2}\.\d{3}\.\d\.\d{5}/\d{2}$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Establecimiento_Error_FormatoCodigoRENSPA")]
+        public string CodigoRENSPA { get; set; }
+
     }
 }

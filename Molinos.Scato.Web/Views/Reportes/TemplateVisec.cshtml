@@ -1,0 +1,56 @@
+﻿@model Molinos.Scato.Web.Models.TemplateViewModel
+@using Molinos.Scato.Dominio.Recursos
+@{
+    ViewBag.Title = Textos.ReporteTemplateVisec;
+}
+
+<link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.css" />
+
+<script type="text/javascript" src="~/scripts/bootstrap-datetimepicker.js"></script>
+
+<div class="titSecciones">@Textos.ReporteTemplateVisec</div>
+<br />
+
+@using (Ajax.BeginForm(null, null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "causaBlock" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="accordion" style="max-width: 1200px; margin: 0 auto;">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                    <i class="icon-chevron-down"></i>
+                    @Textos.Filtrar
+                </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse in">
+                <div style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap; padding: 1rem;">
+                    <div>
+                        <label for="FechaDesde">Desde</label>
+                        <input type="date" id="FechaDesde" name="FechaDesde" value="@Model.FechaDesde.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div>
+                        <label for="FechaHasta">Hasta</label>
+                        <input type="date" id="FechaHasta" name="FechaHasta" value="@Model.FechaHasta.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div>
+                        <label for="CentroId">Centro</label>
+                        @Html.DropDownListFor(model => model.CentroId, (IEnumerable<SelectListItem>)ViewBag.Centros)
+                    </div>
+                    <div>
+                        <label for="NivelDetalle">Nivel de detalle</label>
+                        @Html.DropDownListFor(model => model.NivelDetalle, (IEnumerable<SelectListItem>)ViewBag.NivelesDetalleTemplate)
+                    </div>
+                    <div>
+                        <label for="TipoMovimiento">Tipo Movimiento</label>
+                        @Html.DropDownListFor(model => model.TipoMovimiento, (IEnumerable<SelectListItem>)ViewBag.TiposMovimiento)
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; padding: 1rem;">
+                    <button type="submit" id="btnBuscar" class="btn">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="gridContainer"></div>

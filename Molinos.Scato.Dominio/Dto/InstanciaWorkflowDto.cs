@@ -83,7 +83,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string TipoComercial { get; set; }
         public int TipoComercialId { get; set; }
 
-        //
         [Display(ResourceType = typeof(Textos), Name = "Workflow_Humedad")]
         public string Humedad { get; set; }
 
@@ -120,7 +119,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string ChoferNombre { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "Procedencia")]
         public string Procedencia { get; set; }
-        public bool Sustentable { get; set; }
         public bool Modificado { get; set; }
         public bool EsHumedad { get; set; }
         public bool EsGranosVerdes { get; set; }
@@ -153,10 +151,10 @@ namespace Molinos.Scato.Dominio.Dto
         public string DiferenciaPesoNeto { get; set; }
         public string EsGrano { get; set; }
         public string EsRechazado { get; set; }
-
-        [Display(ResourceType = typeof(Textos), Name = "Establecimiento_SojaEPA")]
         public bool SojaEPA { get; set; }
         public bool SojaIMPO { get; set; }
         public string FleteMOA { get; set; }
+        public bool SojaEUDR { get; set; }
+        public bool SojaEPAyEUDR { get; set; }
     }
 }

@@ -37,17 +37,20 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   FechaIngreso = x.FechaIngeso,
                                   UltimoDeLaFila = x.UltimoDeLaFila,
                                   Rechazado = x.Recorrido.Rechazado,
-                                  AsignadoEnPuestoComando = x.Recorrido.Calle != null,
+                                  AsignadoEnPuestoComando = x.Recorrido != null && x.Recorrido.Calle != null,
                                   TipoCalle = x.Calle.TipoCalle,
                                   TipoVehiculo = x.Recorrido.TipoVehiculo,
-                                  EPA = x.Recorrido.Establecimiento != null ? x.Recorrido.Establecimiento.EPA : false,
+                                  EsSojaEPA = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPA,
                                   MaterialColorFondo = x.Recorrido.Material.ColorFondo,
                                   MaterialColorTexto = x.Recorrido.Material.ColorTexto,
                                   CargaCupoColorFondo = x.CargaDeCupo.Material.ColorFondo,
                                   CargaCupoColorTexto = x.CargaDeCupo.Material.ColorTexto,
                                   RecorridoCodigoSAP =  x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap,
                                   CargaDeCupoCodigoSAP = x.CargaDeCupo.TitularCartaPorteCodigoSap,
-                                  EsDemorado = x.Recorrido !=null ? x.Recorrido.VehiculoDemorado :false
+                                  EsDemorado = x.Recorrido != null && x.Recorrido.VehiculoDemorado,
+                                  EsSojaEUDR = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EUDR,
+                                  EsSojaIMPO = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.Importacion,
+                                  EsSojaEPAyEUDR = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();

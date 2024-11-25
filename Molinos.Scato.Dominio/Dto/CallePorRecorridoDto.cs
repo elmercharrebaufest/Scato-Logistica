@@ -25,6 +25,8 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsDemorado { get; set; }
         public int? RecorridoId { get; set; }
         public DateTime? FechaEgreso { get; set; }
+        public bool EsSojaEUDR { get; set; }
+        public bool EsSojaEPAyEUDR { get; set; }
     }
 
     public class CallePorRecorridoListadoCamionesDto
@@ -47,9 +49,8 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoVehiculo? TipoVehiculo { get; set; }
         public string ColorFondo { get; set; }
         public string ColorTexto { get; set; }
-        public bool EsSojaEPA { get; set; }
         public bool EsSojaIMPO { get; set; }
-        public bool? EPA { get; set; }
+        public bool EsSojaEPA { get; set; }
         public string MaterialColorFondo { get; set; }
         public string MaterialColorTexto { get; set; }
         public string CargaCupoColorFondo { get; set; }
@@ -57,5 +58,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string RecorridoCodigoSAP { get; set; }
         public string CargaDeCupoCodigoSAP { get; set; }
         public bool EsDemorado { get; set; }
+        public bool EsSojaEUDR { get; set; }
+        public bool EsSojaEPAyEUDR { get; set; }
     }
 }

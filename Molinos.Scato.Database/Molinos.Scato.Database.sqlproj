@@ -107,6 +107,7 @@
     <Build Include="dbo\Tables\ConfiguracionAutomatizacionEtapas.sql" />
     <None Include="Molinos.Scato.Database.ASVWUSCATO00.publish.xml" />
     <None Include="Molinos.Scato.Database.GVICSQLUAT.publish.xml" />
+    <None Include="Molinos.Scato.Database.MOASCATOQA2.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Balanza.sql" />

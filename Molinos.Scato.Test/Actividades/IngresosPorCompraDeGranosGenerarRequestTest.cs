@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Activities.UnitTesting;
 using Molinos.Scato.Actividades.Behaviour;
 using Molinos.Scato.Actividades.Internas;
@@ -152,7 +150,6 @@ namespace Molinos.Scato.Test.Actividades
         {
             host.InArguments.InstanceId = Guid.NewGuid();
             ConfigurationManager.AppSettings["LoguearRequestsSap"] = "1";
-            ConfigurationManager.AppSettings["SepararAlmacenSustentable"] = "true";
             var resultado = host.TestActivity();
 
             var request = resultado.First(f => f.Key == "Request").Value;
@@ -168,7 +165,6 @@ namespace Molinos.Scato.Test.Actividades
         {
             host.InArguments.InstanceId = Guid.NewGuid();
             ConfigurationManager.AppSettings["LoguearRequestsSap"] = "0";
-            ConfigurationManager.AppSettings["SepararAlmacenSustentable"] = "true";
             var resultado = host.TestActivity();
 
             var request = resultado.First(f => f.Key == "Request").Value;

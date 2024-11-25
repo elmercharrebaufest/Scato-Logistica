@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.10.35004.147</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.10.35004.147</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2024-10-10T17:59:38.4141800Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="Scato_Reportes_Datasource">
@@ -78,33 +89,23 @@ SELECT
        R.TipoDocumentoIngreso,
 	case when R.Establecimiento_Id is null then 'NO' else 'SI' end as 'Sustentable',
 	case when ((CartaPorte.TrigoEspecial = 1 and ca.id is null) or (CartaPorte.TrigoEspecial = 1 and ca.CaracteristicasNoCorrenspodenEspecial = 0)) then 'SI' else 'NO' end as 'Especial',
-	case when ((CartaPorte.TrigoEspecial = 1 and ca.id is null) or (CartaPorte.TrigoEspecial = 1 and ca.CaracteristicasNoCorrenspodenEspecial = 0)) or R.Establecimiento_Id is not null then 'SI' else 'NO' end as 'SusEsp'
-
-FROM   dbo.recorrido AS R WITH (NOLOCK)
-	INNER JOIN [tipocomercial] WITH (NOLOCK)
-               ON R.tipocomercial_id = [tipocomercial].id           	
-    INNER JOIN [material] WITH (NOLOCK)
-               ON R.Material_Id = [material].id
-	LEFT JOIN CaracteristicasAnalizadas ca with (nolock)
-				on r.id = ca.Recorrido_Id
-	LEFT JOIN Vehiculo WITH (NOLOCK)
-			   ON R.Vehiculo_Id = Vehiculo.Id
-	LEFT JOIN CartaPorte WITH (NOLOCK)
-			   ON Vehiculo.CartaPorte_Id = CartaPorte.Id
-	LEFT JOIN caladoporcaracteristica WITH (NOLOCK)
-              ON caladoporcaracteristica.calado_id = R.calado_id 
-                 AND EXISTS (SELECT 1 
-                             FROM   caracteristicadecalidad WITH (NOLOCK)
-                             WHERE  caracteristicadecalidad.id = 
-caladoporcaracteristica.caracteristicadecalidad_id 
-AND eshumedad = 1) 
-LEFT JOIN analisisporcaracteristica WITH (NOLOCK)
-ON analisisporcaracteristica.analisisdecalidad_id = R.AnalisisDeCalidad_Id 
-AND EXISTS (SELECT 1 
-FROM   caracteristicadecalidad WITH (NOLOCK)
-WHERE  caracteristicadecalidad.id = 
-analisisporcaracteristica.caracteristicadecalidad_id 
-AND eshumedad = 1)  
+	case when ((CartaPorte.TrigoEspecial = 1 and ca.id is null) or (CartaPorte.TrigoEspecial = 1 and ca.CaracteristicasNoCorrenspodenEspecial = 0)) or R.Establecimiento_Id is not null then 'SI' else 'NO' end as 'SusEsp',
+	variedad.Descripcion as 'Variedad'
+FROM dbo.recorrido AS R WITH (NOLOCK)
+	INNER JOIN [tipocomercial] WITH (NOLOCK) ON R.tipocomercial_id = [tipocomercial].id           	
+    INNER JOIN [material] WITH (NOLOCK) ON R.Material_Id = [material].id
+	LEFT JOIN CaracteristicasAnalizadas ca with (nolock) on r.id = ca.Recorrido_Id
+	LEFT JOIN Vehiculo WITH (NOLOCK) ON R.Vehiculo_Id = Vehiculo.Id
+	LEFT JOIN CartaPorte WITH (NOLOCK) ON Vehiculo.CartaPorte_Id = CartaPorte.Id
+	LEFT JOIN caladoporcaracteristica WITH (NOLOCK) ON caladoporcaracteristica.calado_id = R.calado_id 
+			AND EXISTS (SELECT 1 FROM   caracteristicadecalidad WITH (NOLOCK) 
+						WHERE  caracteristicadecalidad.id = caladoporcaracteristica.caracteristicadecalidad_id 
+							AND eshumedad = 1) 
+	LEFT JOIN analisisporcaracteristica WITH (NOLOCK) ON analisisporcaracteristica.analisisdecalidad_id = R.AnalisisDeCalidad_Id 
+			AND EXISTS (SELECT 1 FROM   caracteristicadecalidad WITH (NOLOCK)
+						WHERE  caracteristicadecalidad.id = analisisporcaracteristica.caracteristicadecalidad_id 
+							AND eshumedad = 1)  
+	LEFT JOIN TipoVariedad variedad WITH (NOLOCK) ON variedad.Id = r.TipoVariedad_Id
 WHERE  R.[Terminado] &lt;&gt; 1 AND R.Rechazado &lt;&gt; 1
 	AND (R.Centro_Id = @CentroIdp)
 	AND (R.Material_Id in (select value from @Materialp))
@@ -179,6 +180,10 @@ WHERE  R.[Terminado] &lt;&gt; 1 AND R.Rechazado &lt;&gt; 1
         </Field>
         <Field Name="SusEsp">
           <DataField>SusEsp</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Variedad">
+          <DataField>Variedad</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -7114,7 +7119,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>Sustentable o Especial</Value>
+                                        <Value>Variedad</Value>
                                         <Style>
                                           <FontSize>8pt</FontSize>
                                           <FontWeight>Bold</FontWeight>
@@ -7292,7 +7297,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                         <TablixMember>
                           <Group Name="Sustentable1">
                             <GroupExpressions>
-                              <GroupExpression>=Fields!SusEsp.Value</GroupExpression>
+                              <GroupExpression>=Fields!Variedad.Value</GroupExpression>
                             </GroupExpressions>
                           </Group>
                           <SortExpressions>
@@ -7310,7 +7315,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>=Fields!SusEsp.Value</Value>
+                                        <Value>=Fields!Variedad.Value</Value>
                                         <Style>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontSize>8pt</FontSize>
@@ -11831,15 +11836,15 @@ SELECT COUNT(*) as PendientesDeIngresar
         <ParameterValues>
           <ParameterValue>
             <Value>0</Value>
-            <Label>Tipo Comercial/Etapa</Label>
+            <Label>Tipo Comercial / Etapa</Label>
           </ParameterValue>
           <ParameterValue>
             <Value>1</Value>
-            <Label>Tipo Comercial/Material/Etapa</Label>
+            <Label>Tipo Comercial / Material / Etapa</Label>
           </ParameterValue>
           <ParameterValue>
             <Value>2</Value>
-            <Label>Etapa/Material</Label>
+            <Label>Etapa / Material</Label>
           </ParameterValue>
           <ParameterValue>
             <Value>3</Value>
@@ -11851,7 +11856,7 @@ SELECT COUNT(*) as PendientesDeIngresar
           </ParameterValue>
           <ParameterValue>
             <Value>4</Value>
-            <Label>Tipo Comercial / Material / Sustentable - Especial / Etapa</Label>
+            <Label>Tipo Comercial / Material / Variedad / Etapa</Label>
           </ParameterValue>
           <ParameterValue>
             <Value>7</Value>

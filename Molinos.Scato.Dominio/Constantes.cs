@@ -11,6 +11,12 @@
             public const string ColorTextoSojaEPA = "#FFFFFF";
             public const string ColorFondoSojaIMPO = "#00D9D9";
             public const string ColorTextoSojaIMPO = "#FFFFFF";
+            public const string ColorFondoSojaEUDR = "#353DFF";
+            public const string ColorTextoSojaEUDR = "#FFFFFF";
+            public const string ColorFondoSojaEPAyEUDR = "#BC35FF";
+            public const string ColorTextoSojaEPAyEUDR = "#FFFFFF";
+            public const string ColorFondoSojaSustentable = "#006302";
+            public const string ColorTextoSojaSustentable = "#FFFFFF";
             public const string CodigoSapTPR = "70809606";
         }
 
@@ -233,6 +239,8 @@
             public const string Sustentable = "SUS";
             public const string Importacion = "IMP";
             public const string Estandar = "EST";
+            public const string EUDR = "EUDR";
+            public const string EPAyEUDR = "EPAEUDR";
         }
 
         public struct Job

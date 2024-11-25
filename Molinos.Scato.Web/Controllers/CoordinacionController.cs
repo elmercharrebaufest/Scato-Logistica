@@ -69,8 +69,17 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.EsAceptable = !caracteristicas.Any();
             ViewBag.CaracteristicasNoAceptables = caracteristicas;
             ViewBag.CaracteristicasMensajes = mensajes;
-            ViewBag.EsSojaSustentable = recorrido.Establecimiento != null;
-            ViewBag.EsSojaEPA = recorrido.Establecimiento != null && recorrido.Establecimiento.EsSojaEPA;
+            ViewBag.Variedad = recorrido.TipoVariedadCodigo != Constantes.TipoVariedadMaterial.Estandar ? recorrido.TipoVariedadDescripcion : string.Empty;
+            ViewBag.ColorFondoVariedad = recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR ? Constantes.ValoresPorDefecto.ColorFondoSojaEPAyEUDR
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR ? Constantes.ValoresPorDefecto.ColorFondoSojaEUDR
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.Sustentable ? Constantes.ValoresPorDefecto.ColorFondoSojaSustentable
+                                    : string.Empty;
+            ViewBag.ColorTextoVariedad = recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR ? Constantes.ValoresPorDefecto.ColorTextoSojaEPAyEUDR
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR ? Constantes.ValoresPorDefecto.ColorTextoSojaEUDR
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA
+                                    : recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.Sustentable ? Constantes.ValoresPorDefecto.ColorTextoSojaSustentable
+                                    : string.Empty;
             ViewBag.AgenteCompras = !string.IsNullOrEmpty(info.AgenteCompras) ? info.AgenteCompras : Textos.No;
             ViewBag.TrigoEspecial = info.TrigoEspecial;
             ViewBag.PatenteAcoplado = recorrido.Vehiculo != null ? recorrido.Vehiculo.PatenteAcoplado : string.Empty;

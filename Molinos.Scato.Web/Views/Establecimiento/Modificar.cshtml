@@ -15,8 +15,6 @@
 <script type="text/javascript" src="@Url.Script("~/scripts/cargaCorredores.js")"></script>
 <script type="text/javascript" src="@Url.Script("~/scripts/establecimiento.CrearModificar.js")"></script>
 
-
-
 @using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal",@id = "form-establecimiento", data_dialogo_titulo = Textos.Establecimiento_Modificar }))
 {
     @Html.Partial("_CrearModificar", Model)

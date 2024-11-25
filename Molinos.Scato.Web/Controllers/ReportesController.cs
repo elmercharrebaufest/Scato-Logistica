@@ -4,8 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Services;
-using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
@@ -16,6 +14,7 @@ using Molinos.Scato.Web.EXCEL;
 using Molinos.Scato.Dominio.Comandos;
 using System.IO;
 using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.Dominio.Seguridad;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -27,9 +26,6 @@ namespace Molinos.Scato.Web.Controllers
         {
             this.configuracion = configuracion;
         }
-
-        //
-        // GET: /Reportes/
 
         [DatosUsuario]
         [AutorizacionReportes]
@@ -79,8 +75,8 @@ namespace Molinos.Scato.Web.Controllers
             });
         }
 
-        [AutorizacionReportes]
         [DatosUsuario]
+        [AutorizacionReportes]
         [AjaxOnly]
         [ActionName("PlanillaF515")]
         public ActionResult Listar(DatosUsuario datosUsuario, PlanillaF515ViewModel filtro)
@@ -125,59 +121,6 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult ObtenerFiltros(int centroId)
         {
             return Json(SetearVista(centroId), JsonRequestBehavior.AllowGet);
-        }
-
-        private dynamic SetearVista(int centroId)
-        {
-            SelectListItem todos = new SelectListItem() { Value = "0", Text = "Todos" };
-            SelectListItem todosNegativo = new SelectListItem() { Value = "-1", Text = "Todos" };
-            SelectListItem todosVehiculos = new SelectListItem() { Value = "-2", Text = "Todos" };
-            var materialesGranosNoGranosInsumos = new List<SelectListItem>()
-            {
-                new SelectListItem() { Value = "-1", Text = "Granos" },
-                new SelectListItem() { Value = "-2", Text = "No Granos" },
-                new SelectListItem() { Value = "-3", Text = "Insumos" }
-            };
-
-            var tiposDeVehiculo = Enum.GetValues(typeof(TipoVehiculo)).Cast<TipoVehiculo>().Select(v => new SelectListItem
-            {
-                Text = v.ToString(),
-                Value = ((int)v).ToString()
-            }).ToList();
-            //var tiposDeVehiculo1 = servicio.ListarPesoMaximoPorTipoVehiculoPorCentro(centroId).OrderBy(x => x.TipoVehiculo.DisplayText()).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.TipoVehiculo.DisplayText());
-            var tipoComercial = servicio.ListarTiposComercialesPorCentro(centroId).OrderBy(x => x.Descripcion).ToSelectList(f => f.Id.Value.ToString(CultureInfo.InvariantCulture), f => f.Descripcion);
-            var balanzas = servicio.ListarTodasLasBalanzas(centroId).OrderBy(x => x.Nombre).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
-            var almacenOrigen = servicio.ListarAlmacenesPorCentro(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
-            var workflows = servicio.ListarWorkflowsPorCentro(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
-            var bocasDestino = servicio.ListarBocasDestino().OrderBy(x => x.Localidad).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Localidad);
-            var tipoPesada = new List<SelectListItem>() { new SelectListItem { Text = "Todos", Value = "-1" }, new SelectListItem { Text = "Manual", Value = "0" }, new SelectListItem { Text = "Automatico", Value = "1" } };
-            var recorridosActivos = new List<SelectListItem>() { new SelectListItem { Text = "Todos", Value = "-1" }, new SelectListItem { Text = "No", Value = "1" }, new SelectListItem { Text = "Si", Value = "0" } };
-            var nivelDetalle = new List<SelectListItem>() { new SelectListItem { Text = "Detallado", Value = "1" }, new SelectListItem { Text = "Resumido", Value = "2" }, new SelectListItem { Text = "Detallado Sustentable", Value = "3" }, new SelectListItem { Text = "Detallado Con Boca Destino", Value = "4" } };
-            var materiales = servicio.ListarMaterialesFiltroF515(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => string.IsNullOrEmpty(x.Descripcion) ? (string.IsNullOrEmpty(x.DescripcionCorta) ? "" : x.DescripcionCorta) : x.Descripcion);
-
-            tiposDeVehiculo.Insert(0, todosVehiculos);
-            tiposDeVehiculo.First().Selected = true;
-            tipoComercial.Insert(0, todos);
-            balanzas.Insert(0, todos);
-            almacenOrigen.Insert(0, todos);
-            workflows.Insert(0, todos);
-            bocasDestino.Insert(0, todos);
-            materiales.Insert(0, todos);
-            materiales.InsertRange(1, materialesGranosNoGranosInsumos);
-
-            return new
-            {
-                tiposDeVehiculo,
-                tipoComercial,
-                balanzas,
-                almacenOrigen,
-                workflows,
-                tipoPesada,
-                bocasDestino,
-                recorridosActivos,
-                nivelDetalle,
-                materiales
-            };
         }
 
         [DatosUsuario]
@@ -234,9 +177,123 @@ namespace Molinos.Scato.Web.Controllers
             TempData["Alerta"] = Textos.Exito_Generico;
             TempData["TipoAlerta"] = TipoAlerta.Exito;
             return View("Index");
-        
-
         }
-        
+
+        [DatosUsuario]
+        [Autorizacion(PermisosScato.ReporteTemplateVisec)]
+        public ActionResult TemplateVisec(DatosUsuario datosUsuario)
+        {
+            var centros = servicio.ListarCentros().ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
+            SelectListItem todos = new SelectListItem() { Value = "-1", Text = "Todos" };
+            centros.Insert(0, todos);
+            var tiposMovimiento = Enum.GetValues(typeof(TipoDeWorkflow)).Cast<TipoDeWorkflow>().Select(v => new SelectListItem
+            {
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList();
+            tiposMovimiento.Insert(0, todos);
+
+
+            ViewBag.Centros = centros;
+            ViewBag.TiposMovimiento = tiposMovimiento;
+            ViewBag.NivelesDetalleTemplate = new List<SelectListItem>
+            {
+                new SelectListItem() { Value = NivelDetalleTemplate.Registracion.ToString(), Text = "Registración" },
+                new SelectListItem() { Value = NivelDetalleTemplate.ActualizacionTrazabilidad.ToString(), Text = "Actualización Trazabilidad" }
+            };
+
+            var model = new TemplateViewModel
+            {
+                FechaDesde = DateTime.Now.AddDays(-1),
+                FechaHasta = DateTime.Now,
+            };
+            return View(model);
+        }
+
+        [DatosUsuario]
+        [Autorizacion(PermisosScato.ReporteTemplateVisec)]
+        [AjaxOnly]
+        [ActionName("TemplateVisec")]
+        public ActionResult TemplateVisec(DatosUsuario datosUsuario, TemplateViewModel filtro)
+        {
+            if (ModelState.IsValid)
+            {
+                var param = new List<KeyValuePair<string, object>>();
+                param.Add(new KeyValuePair<string, object>("Language", SessionManager.CurrentCulture.Name));
+                param.Add(new KeyValuePair<string, object>("FechaIngresoDesde", filtro.FechaDesde.ToString("MM/dd/yyyy HH:mm")));
+                param.Add(new KeyValuePair<string, object>("FechaIngresoHasta", filtro.FechaHasta.ToString("MM/dd/yyyy HH:mm")));
+                param.Add(new KeyValuePair<string, object>("CentroId", filtro.CentroId));
+                param.Add(new KeyValuePair<string, object>("NivelDetalle", filtro.NivelDetalle.ToString()));
+
+                return View("ReportViewer", new ReportViewModel
+                {
+                    ReportPath = "ReporteTemplateVisec",
+                    ReportParameterList = param.ToEnumerable()
+                });
+            }
+            return null;
+        }
+
+        private dynamic SetearVista(int centroId)
+        {
+            SelectListItem todos = new SelectListItem() { Value = "0", Text = "Todos" };
+            SelectListItem todosNegativo = new SelectListItem() { Value = "-1", Text = "Todos" };
+            SelectListItem todosVehiculos = new SelectListItem() { Value = "-2", Text = "Todos" };
+            var materialesGranosNoGranosInsumos = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value = "-1", Text = "Granos" },
+                new SelectListItem() { Value = "-2", Text = "No Granos" },
+                new SelectListItem() { Value = "-3", Text = "Insumos" }
+            };
+
+            var tiposDeVehiculo = Enum.GetValues(typeof(TipoVehiculo)).Cast<TipoVehiculo>().Select(v => new SelectListItem
+            {
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList();
+            //var tiposDeVehiculo1 = servicio.ListarPesoMaximoPorTipoVehiculoPorCentro(centroId).OrderBy(x => x.TipoVehiculo.DisplayText()).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.TipoVehiculo.DisplayText());
+            var tipoComercial = servicio.ListarTiposComercialesPorCentro(centroId).OrderBy(x => x.Descripcion).ToSelectList(f => f.Id.Value.ToString(CultureInfo.InvariantCulture), f => f.Descripcion);
+            var balanzas = servicio.ListarTodasLasBalanzas(centroId).OrderBy(x => x.Nombre).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
+            var almacenOrigen = servicio.ListarAlmacenesPorCentro(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
+            var workflows = servicio.ListarWorkflowsPorCentro(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
+            var bocasDestino = servicio.ListarBocasDestino().OrderBy(x => x.Localidad).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Localidad);
+            var tipoPesada = new List<SelectListItem>() { new SelectListItem { Text = "Todos", Value = "-1" }, new SelectListItem { Text = "Manual", Value = "0" }, new SelectListItem { Text = "Automatico", Value = "1" } };
+            var recorridosActivos = new List<SelectListItem>() { new SelectListItem { Text = "Todos", Value = "-1" }, new SelectListItem { Text = "No", Value = "1" }, new SelectListItem { Text = "Si", Value = "0" } };
+            var nivelDetalle = new List<SelectListItem>() { 
+                new SelectListItem { Text = "Detallado", Value = "1" }, 
+                new SelectListItem { Text = "Resumido", Value = "2" }, 
+                new SelectListItem { Text = "Detallado Sustentable", Value = "3" }, 
+                new SelectListItem { Text = "Detallado Con Boca Destino", Value = "4" },
+                new SelectListItem { Text = "Detallado EPA", Value = "5" },
+                new SelectListItem { Text = "Detallado EUDR", Value = "6" },
+                new SelectListItem { Text = "Detallado EPA/EUDR", Value = "7" }
+            };
+            var materiales = servicio.ListarMaterialesFiltroF515(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => string.IsNullOrEmpty(x.Descripcion) ? (string.IsNullOrEmpty(x.DescripcionCorta) ? "" : x.DescripcionCorta) : x.Descripcion);
+
+            tiposDeVehiculo.Insert(0, todosVehiculos);
+            tiposDeVehiculo.First().Selected = true;
+            tipoComercial.Insert(0, todos);
+            balanzas.Insert(0, todos);
+            almacenOrigen.Insert(0, todos);
+            workflows.Insert(0, todos);
+            bocasDestino.Insert(0, todos);
+            materiales.Insert(0, todos);
+            materiales.InsertRange(1, materialesGranosNoGranosInsumos);
+
+            return new
+            {
+                tiposDeVehiculo,
+                tipoComercial,
+                balanzas,
+                almacenOrigen,
+                workflows,
+                tipoPesada,
+                bocasDestino,
+                recorridosActivos,
+                nivelDetalle,
+                materiales
+            };
+        }
+
     }
 }

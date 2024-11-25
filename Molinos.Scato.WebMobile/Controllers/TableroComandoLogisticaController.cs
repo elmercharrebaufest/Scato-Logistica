@@ -513,8 +513,8 @@ namespace Molinos.Scato.WebMobile.Controllers
             var idsArrayTemp = variedadIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             var variedadesIds = Array.ConvertAll(idsArrayTemp, int.Parse).ToList();
-
-            var almacenes = this.servicio.ListarAlmacenesPorMateriaVariedadIds(variedadesIds, materialId).OrderBy(c => c.Descripcion).Select(x => new AlmacenDto { Id = x.Id, Descripcion = x.Descripcion });
+            var centroId = ObtenerIdCentro();
+            var almacenes = this.servicio.ListarAlmacenesPorMateriaVariedadIds(centroId, variedadesIds, materialId).OrderBy(c => c.Descripcion).Select(x => new AlmacenDto { Id = x.Id, Descripcion = x.Descripcion });
 
             var resultado = almacenes.Select(m => new SelectListItem
             {

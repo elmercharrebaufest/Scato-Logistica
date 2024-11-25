@@ -189,7 +189,7 @@ namespace Molinos.Scato.Workflow
                     instanciaWorkflowDto.ChoferDNI = dato.ChoferDNI;
                     instanciaWorkflowDto.ChoferNombre = dato.ChoferNombre;
                     instanciaWorkflowDto.NumeroDeTarjeta = dato.NumeroDeTarjeta;
-                    instanciaWorkflowDto.Sustentable = dato.Sustentable;
+                    instanciaWorkflowDto.EsSustentable = dato.Sustentable;
                     instanciaWorkflowDto.Entregador = dato.Entregador;
                     instanciaWorkflowDto.EsEspecial = dato.EsEspecial;
                     instanciaWorkflowDto.CaracteristicasNoCorrenspodenEspecial = dato.CaracteristicasNoCorrenspodenEspecial;
@@ -200,6 +200,8 @@ namespace Molinos.Scato.Workflow
                     instanciaWorkflowDto.AlmacenDestino = dato.AlmacenDestino;
                     instanciaWorkflowDto.DiferenciaPesoNeto = dato.DiferenciaPesoNeto.HasValue ? dato.DiferenciaPesoNeto.ToString() : "";
                     instanciaWorkflowDto.SojaEPA = dato.SojaEPA;
+                    instanciaWorkflowDto.SojaEUDR = dato.SojaEUDR;
+                    instanciaWorkflowDto.SojaEPAyEUDR = dato.SojaEPAyEUDR;
                 }
                 instanciaWorkflowDto.NumeroDocumentoDeIngreso = instanciaWorkflowDto.NumeroDocumentoDeIngreso is null ? instanciaWorkflowDto.CTG : instanciaWorkflowDto.NumeroDocumentoDeIngreso;
             }

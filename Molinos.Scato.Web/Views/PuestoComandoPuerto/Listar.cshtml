@@ -41,11 +41,11 @@
             + (x.EsProteinaBaja ? " "+ "<span class='label label-important'>" + Textos.EsProteinaBaja + " <strong>" + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("PROTEINAS") ? x.CaracteristicasDeCalidad["PROTEINAS"] : "") + "</strong></span>" : string.Empty)
             + (x.EsProteinaMedia ? " " + "<span class='label label-info'>" + Textos.EsProteinaMedia + " <strong>" + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("PROTEINAS") ? x.CaracteristicasDeCalidad["PROTEINAS"] : "") + "</strong></span>" : string.Empty)
             + (x.EsProteinaAlta ? " " + "<span class='label label-success'>" + "Proteína Alta" + " <strong>" + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("PROTEINAS") ? x.CaracteristicasDeCalidad["PROTEINAS"] : "") + "</strong></span>" : string.Empty)
-             + (x.SojaEPA ? " " + " <strong style='color:#FC4D75;' >" + Textos.Soja_EPA + "</strong>" : x.SojaIMPO ? " " + " <strong style='color:#00D9D9;' >" + Textos.Soja_IMPO + "</strong>" : (x.EsSustentable ? " " + " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty))
              + (x.TieneInsectosVivos ? " " + "<span class='label label-warning'><i class=\"fas fa-bug\"></i><strong>" + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("INSECTOS VIVOS") ? x.CaracteristicasDeCalidad["INSECTOS VIVOS"] : "") + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("INSECTOS Y ARACNIDOS	") ? " " + x.CaracteristicasDeCalidad["INSECTOS Y ARACNIDOS	"] : "") + "</strong></span>" : string.Empty)
              + (x.TipoVehiculo == TipoVehiculo.CamiónD && x.MaterialId == 4 ? " " + " <span class='label label-inverse'>Camión D(52,5)</span>" : string.Empty )
              )));
     }
+
     if (Model.Columnas.Contains("Transportista"))
     {
         columnas.Add(grid.Columna("Transportista", Textos.Transportista));

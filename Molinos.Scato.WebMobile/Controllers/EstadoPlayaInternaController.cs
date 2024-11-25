@@ -284,14 +284,6 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            camiones.ForEach(camion =>
-            {
-                if (camion.EsSojaIMPO)
-                {
-                    camion.ColorFondo = ValoresPorDefecto.ColorFondoSojaIMPO;
-                    camion.ColorTexto = ValoresPorDefecto.ColorTextoSojaIMPO;
-                }
-            });
             var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle) && !x.Deshabilitada).OrderBy(x => x.Posicion).ToList();
             var tipoCallePlantaLista = new List<TipoCallePlantaDto>();
 
@@ -338,7 +330,9 @@ namespace Molinos.Scato.WebMobile.Controllers
                         MaterialId = camion.MaterialId,
                         Calidad = camion.Calidad,
                         EsSojaEPA = camion.EsSojaEPA,
-                        EsSojaIMPO = camion.EsSojaIMPO
+                        EsSojaIMPO = camion.EsSojaIMPO,
+                        EsSojaEUDR = camion.EsSojaEUDR,
+                        EsSojaEPAyEUDR = camion.EsSojaEPAyEUDR,
                     };
                     callePlanta.Camiones.Add(camionPlanta);
                 }

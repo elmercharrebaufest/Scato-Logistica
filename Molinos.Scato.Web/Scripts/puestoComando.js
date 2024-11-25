@@ -101,12 +101,16 @@ function countChecked() {
     var instanceIdsHidden = "";
     var nSonEPA = [];
     var nSonIMPO = [];
+    var nSonEUDR = [];
+    var nSonEPAyEUDR = [];
     //Armo el Actionlink para Asignar
     $.each(n, function (index, value) {
         nMaterialesId.push(value.getAttribute('data-materialid'));
         nSonSustentables.push(value.getAttribute('data-esSustentable'));
         nSonEPA.push(value.getAttribute('data-SojaEPA'));
         nSonIMPO.push(value.getAttribute('data-SojaIMPO'));
+        nSonEUDR.push(value.getAttribute('data-SojaEUDR'));
+        nSonEPAyEUDR.push(value.getAttribute('data-SojaEPAyEUDR'));
 
         if (instanceIds == "InstanceIds=") {
             instanceIds += $(value).attr('id');
@@ -119,72 +123,58 @@ function countChecked() {
     });
     $("#AsignarSeleccionados").attr("href", $("#AsignarSeleccionados").data().url + "?" + instanceIds);
     $("#InstanceIds").val(instanceIdsHidden);
-    //Habilita el boton ASIGNNAR si hay seleccionados y con diferentes materiales
 
-    if ($("#separarAlmacenSustentable").val() == "true") {
-        if (n.length > 0 && jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonSustentables).length == 1) {
-            $("#AsignarSeleccionados").attr("disabled", false);
-        } else {
-            $("#AsignarSeleccionados").attr("disabled", true);
-        }
-        //Habilita el boton RECHAZAR si hay seleccionados
-        if (n.length > 0) {
-            $("#RechazarSeleccionados").removeClass("disabled");
-        } else {
-            $("#RechazarSeleccionados").addClass("disabled");
-        }
-        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonSustentables).length <= 1 && jQuery.unique(nSonEPA).length <= 1 && jQuery.unique(nSonIMPO).length <= 1) {
-            $("#AsignarSeleccionadosValid").html("");
-            $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
-            $("#AsignarSeleccionadosValid").removeClass('field-validation-error');
-        } else {
-            let mensajeError = ArmarMensajeError(jQuery.unique(nSonEPA).length <= 1, jQuery.unique(nMaterialesId).length <= 1, jQuery.unique(nSonIMPO).length <= 1);
-            $("#AsignarSeleccionadosValid").html(mensajeError);
-            $("#AsignarSeleccionadosValid").addClass('field-validation-error');
-            $("#AsignarSeleccionadosValid").removeClass('field-validation-valid');
-        }
+    //Habilita el boton RECHAZAR si hay seleccionados
+    if (n.length > 0) {
+        $("#RechazarSeleccionados").removeClass("disabled");
     } else {
-        if (n.length > 0 && jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonEPA).length <= 1) {
-            $("#AsignarSeleccionados").attr("disabled", false);
-        } else {
-            $("#AsignarSeleccionados").attr("disabled", true);
-        }
-        if (n.length > 0 && jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonIMPO).length <= 1) {
-            $("#AsignarSeleccionados").attr("disabled", false);
-        } else {
-            $("#AsignarSeleccionados").attr("disabled", true);
-        }
-        //Habilita el boton RECHAZAR si hay seleccionados
-        if (n.length > 0) {
-            $("#RechazarSeleccionados").removeClass("disabled");
-        } else {
-            $("#RechazarSeleccionados").addClass("disabled");
-        }
-        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonEPA).length <= 1 && jQuery.unique(nSonIMPO).length <= 1 ) {
-            $("#AsignarSeleccionadosValid").html("");
-            $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
-            $("#AsignarSeleccionadosValid").removeClass('field-validation-error');
-        } else {
-            let mensajeError = ArmarMensajeError(jQuery.unique(nSonEPA).length <= 1, jQuery.unique(nMaterialesId).length <= 1, jQuery.unique(nSonIMPO).length <= 1);
-            $("#AsignarSeleccionadosValid").html(mensajeError);
-            $("#AsignarSeleccionadosValid").addClass('field-validation-error');
-            $("#AsignarSeleccionadosValid").removeClass('field-validation-valid');
-        }
+        $("#RechazarSeleccionados").addClass("disabled");
+    }
+
+    let separarSustentables = $("#separarAlmacenSustentable").val() == "true";
+
+    //Habilita el boton ASIGNNAR si hay diferentes materiales o diferentes tipos de soja
+    if ((separarSustentables && jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonSustentables).length > 1)
+        || jQuery.unique(nMaterialesId).length > 1
+        || jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonEPA).length > 1
+        || jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonIMPO).length > 1
+        || jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonEUDR).length > 1
+        || jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonEPAyEUDR).length > 1
+    ) {
+        $("#AsignarSeleccionados").attr("disabled", true);
+        let mensajeError = ArmarMensajeError(
+            jQuery.unique(nSonEPA).length <= 1,
+            jQuery.unique(nMaterialesId).length <= 1,
+            jQuery.unique(nSonIMPO).length <= 1,
+            jQuery.unique(nSonEUDR).length <= 1,
+            jQuery.unique(nSonEPAyEUDR).length <= 1);
+        $("#AsignarSeleccionadosValid").html(mensajeError);
+        $("#AsignarSeleccionadosValid").addClass('field-validation-error');
+        $("#AsignarSeleccionadosValid").removeClass('field-validation-valid');
+    } else {
+        $("#AsignarSeleccionados").attr("disabled", false);
+        $("#AsignarSeleccionadosValid").html("");
+        $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
+        $("#AsignarSeleccionadosValid").removeClass('field-validation-error');
     }
 };
 
 
-function ArmarMensajeError(sojaEPAFlag, materialFlag, sojaIMPOFlag)
+function ArmarMensajeError(sojaEPAFlag, materialFlag, sojaIMPOFlag, sojaEUDRFlag, sojaEPAyEUDRFlag)
 {
     let mensajeError = !materialFlag? $("#gridContainer").data().errorMaterial : $("#gridContainer").data().errorSustentable
 
-    if(!sojaEPAFlag && materialFlag){
+    if (!sojaEPAFlag && materialFlag)
        mensajeError = $("#gridContainer").data().errorSojaEpa;
-    }
 
-    if(!sojaIMPOFlag && materialFlag){
+    if (!sojaIMPOFlag && materialFlag)
         mensajeError = $("#gridContainer").data().errorSojaImpo;
-     }
+
+    if (!sojaEUDRFlag && materialFlag)
+        mensajeError = $("#gridContainer").data().errorSojaEudr;
+
+    if (!sojaEPAyEUDRFlag && materialFlag)
+        mensajeError = $("#gridContainer").data().errorSojaEpaYEudr;
 
     return mensajeError;
 }

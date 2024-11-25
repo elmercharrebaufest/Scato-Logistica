@@ -1,13 +1,9 @@
-﻿using Molinos.Scato.Dominio.Consultas;
-using Molinos.Scato.Dominio.Dto;
+﻿using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
@@ -54,7 +50,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 LocalidadCodigoAfip = estab.Localidad != null ? estab.Localidad.CodigoAfip : string.Empty,
                                 ProvinciaId = estab.Provincia != null ? estab.Provincia.Id : 0,
                                 Provincia = estab.Provincia != null ? estab.Provincia.Descripcion : string.Empty,
-                                ProvinciaCodigoAfip = estab.Provincia != null ? estab.Provincia.CodigoAfip : 0
+                                ProvinciaCodigoAfip = estab.Provincia != null ? estab.Provincia.CodigoAfip : 0,
+                                EstablecimientoAnulado = estab.Anulado,
                             }                               
                            
                 ).ToList();

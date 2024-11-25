@@ -62,7 +62,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         BalanzaBruto = isnull( rbbruto.Nombre , ''),
                         BalanzaTara = isnull( rbtara.Nombre , ''),
                         Rechazado = case when r.Rechazado= 1 then 'Si' else 'No' end,
-                        CentroDestino =isnull( CentroDestino.CodigoSAP , isnull(oplantasc.CodigoSAP , hyc.CodigoSAP)),
+                        CentroDestino = isnull( CentroDestino.CodigoSAP , isnull(oplantasc.CodigoSAP , hyc.CodigoSAP)),
                         Corredor = isnull(cpprov.Descripcion,''),
                         CuitCorredor = replace( isnull(cpprov.Cuil, ''),'-',''),
                         TitularCP = isnull (cptit.Descripcion ,isnull( odescp.Descripcion,'')),
@@ -77,29 +77,29 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                              ELSE  replace( cprtte.Cuil,'-','') END,
 
                         Destinatario = isnull( cpdest.Descripcion , hyp.Descripcion),
-                        CuitDestinatario =replace( isnull(cpdest.Cuil , hyp.Cuil),'-',''),
+                        CuitDestinatario = replace( isnull(cpdest.Cuil , hyp.Cuil),'-',''),
                         Cliente = isnull( cpcli.Descripcion , isnull(ofasc.Descripcion ,isnull( ointc.Descripcion , isnull(ofasonc.Descripcion , isnull(ocontc.Descripcion ,odescfasonc.Descripcion))))),
-                        CuitCliente =replace( isnull(cpcli.Cuit , isnull(ofasc.Cuit ,isnull( ointc.Cuit ,isnull( ofasonc.Cuit ,isnull( ocontc.Cuit , odescfasonc.Cuit))))),'-',''),
+                        CuitCliente = replace( isnull(cpcli.Cuit , isnull(ofasc.Cuit ,isnull( ointc.Cuit ,isnull( ofasonc.Cuit ,isnull( ocontc.Cuit , odescfasonc.Cuit))))),'-',''),
                         Entregador = cpe.DescripcionCorta,
                         Variedad = cp.Variedad,
                         KmARecorrer = isnull(ltrim(cp.KmRecorrer),''),
                         TarifaPorTonelada = isnull(ltrim( cp.TarifaTonelada),''),
                         CTG = cp.CTG,
 	                    Camara = isnull(cpcc.CodigoSAP,''),
-	                    NumeroDeLote =  isnull(cpcl.NumeroDeLote,''),
+	                    NumeroDeLote = isnull(cpcl.NumeroDeLote,''),
                         ValorDevueltoPorAfipArriboCTG = isnull(cpb.CodigoDeBaja, ''),
 	                    ValorDevueltoPorAfipDefinitivoCTG = isnull(cpb.CodigoDeBajaDefinitivo,''),
                         NumeroOrdenDeCargaSAP = ofas.NumeroOrden,
-                        RemitoDeProveedores =isnull( odescfason.NumeroRemito , rem.DocLegalRemito),
+                        RemitoDeProveedores = isnull( odescfason.NumeroRemito , rem.DocLegalRemito),
                         NombreEstablecimiento = e.NombreDeEstablecimiento,
                         CodigoEstablecimiento = e.CodigoDeEstablecimiento,
                         Cosecha = cp.Cosecha,
                         Usuario = r.PesoBrutoUsuario,
-                        ModalidadBruto =case when  r.PesoBrutoModalidad is null then '' when r.PesoBrutoModalidad= 0 then 'Manual' else 'Automatica' end,
-                        ModalidadTara = case when  r.PesoTaraModalidad is null then '' when r.PesoTaraModalidad= 0 then 'Manual' else 'Automatica' end,
+                        ModalidadBruto = case when r.PesoBrutoModalidad is null then '' when r.PesoBrutoModalidad = 0 then 'Manual' else 'Automatica' end,
+                        ModalidadTara = case when r.PesoTaraModalidad is null then '' when r.PesoTaraModalidad = 0 then 'Manual' else 'Automatica' end,
                         CPEDG = case when cpdg.Sucursal is null or cpdg.NroOrden is null then '' else cpdg.Sucursal + cpdg.NroOrden end,
-						CTGDG = case when cpdg.NroCTG is null then '' else cpdg.NroCTG end
-
+						CTGDG = case when cpdg.NroCTG is null then '' else cpdg.NroCTG end,
+                        TipoVariedad = tv.Descripcion
                     from
 	                    Recorrido r
 	                    inner join TipoDocumentoIngreso rti on rti.Id = r.TipoDocumentoIngreso
@@ -154,14 +154,15 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 	                    left join Lote cpcl on cpcl.Id = cpc.Lote_Id
 	                    left join Transportista t on r.Transportista_Id = t.Id
 	                    left join CaracteristicasAnalizadas rca on rca.recorrido_id = r.id
-	                    left join  Almacen ra on ra.Id = r.almacen_id
+	                    left join Almacen ra on ra.Id = r.almacen_id
 	                    left join Balanza rbbruto on rbbruto.id = r.BalanzaBruto_Id
 	                    left join Balanza rbtara on rbtara.id = r.BalanzaTara_Id
                         left join Cliente ofasonCliR on ofasonCliR.Id = ofason.Remitente_Id
                         left join Cliente ofasonCliC on ofasonCliC.Id = ofason.Comisionista_Id
                         left join CartaPorteDerivadoGranario cpdg on r.Id = cpdg.Recorrido_Id
+                        left join TipoVariedad tv on tv.Id = r.TipoVariedad_Id
                     where
-	                    r.Terminado=1
+	                    r.Terminado = 1
 	                    and r.Centro_Id IN (" + String.Join(",", centros) + ")"
 
                         + (materiales.Count > 0 ? ("and r.Material_Id not IN (" + String.Join(",", materiales) + ")") : "")

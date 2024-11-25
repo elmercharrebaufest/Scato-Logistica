@@ -11,13 +11,12 @@
     var humedimetro = (HumedimetroDto)ViewBag.Humedimetro;
     var rangosDelMaterialHtml = (string)ViewBag.RangosDeRedondeo;
     var nirs = (NirsDto)ViewBag.Nirs;
-    var material = ViewBag.Material;
-    var materialId = ViewBag.MaterialId;
-    var esSojaSustentable = (bool)ViewBag.EsSojaSustentable;
-    var esSojaEPA = (bool)ViewBag.EsSojaEPA;
-    var trigoEspecial = (bool)ViewBag.TrigoEspecial;
-    var label = esSojaEPA ? "label-azul" : esSojaSustentable ? "label-success" : trigoEspecial ? "label-yellow" : "label-default";
-    var tituloTipoMaterial = esSojaEPA ? Textos.Soja_EPA : esSojaSustentable ? Textos.Sustentable : trigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty;
+    var material = (string)ViewBag.Material;
+    var materialId = (int)ViewBag.MaterialId;
+    var esTrigoEspecial = (bool)ViewBag.TrigoEspecial;
+    var variedad = (string)ViewBag.Variedad;
+    var colorFondoVariedad = (string)ViewBag.ColorFondoVariedad;
+    var colorTextoVariedad = (string)ViewBag.ColorTextoVariedad;
 }
 
 @section scripts
@@ -93,15 +92,6 @@
         width: 100%;
         margin-bottom: 5px;
     }
-
-    .label-azul {
-        background-color: #FC4D75;
-        color: white;
-    }
-    .label-azul-impo {
-        background-color: #00D9D9;
-        color: white;
-    }
 </style>
 
 @Html.Hidden("patenteOriginal", patenteOriginal, new { @class = "patenteOriginal" })
@@ -123,9 +113,25 @@
 }
 <div class="container-fluid text-center">
     <div class="titSecciones pull-left" style="display:inline-block;">@Textos.Calado_Titulo</div>
-    <span class="label @(label) text-center">
-        <h4 style="margin-top: 0; margin-bottom: 0" id=Material data-materialId=@ViewBag.MaterialId>@ViewBag.Material @(tituloTipoMaterial)</h4>
-    </span>
+    @if (!string.IsNullOrEmpty(variedad))
+    {
+        <div class="label text-center" style="color: @colorTextoVariedad; background-color: @colorFondoVariedad">
+            <h4 style="margin-top: 0; margin-bottom: 0" id="Material" data-materialId=@materialId>@material @variedad</h4>
+        </div>
+    }
+    else if (esTrigoEspecial)
+    {
+        <div class="label text-center label-yellow">
+            <h4 style="margin-top: 0; margin-bottom: 0" id="Material" data-materialId=@materialId>@material @Textos.CartaPorte_TrigoEspecial</h4>
+        </div>
+    }
+    else 
+    {
+        <div class="label text-center label-default">
+            <h4 style="margin-top: 0; margin-bottom: 0" id="Material" data-materialId=@materialId>@material</h4>
+        </div>
+    }
+
     @if ((bool)ViewBag.Rechazado)
     {
         <span class="label label-important pull-right">

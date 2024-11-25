@@ -103,6 +103,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string ModalidadPesadaTara { get; set; }
         public string CPEDG { get; set; }
         public string CTGDG { get; set; }
+        public string TipoVariedad { get; set; }
 
         public static void CargarValores(ListadoDePesadasDto actual, ListadoDePesadasDto otro)
         {

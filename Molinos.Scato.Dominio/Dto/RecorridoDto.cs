@@ -151,5 +151,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "PuntodeCarga")]
         public PuntoDeCargaDto PuntoDeCarga { get; set; }
+        public string TipoVariedadDescripcion { get; set; }
+        public string TipoVariedadCodigo { get; set; }
     }
 }

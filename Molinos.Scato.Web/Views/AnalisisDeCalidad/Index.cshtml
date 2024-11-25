@@ -18,7 +18,10 @@
     var workflowInstancia = (Guid)ViewBag.WorkflowInstancia;
     var agenteCompras = (string)ViewBag.AgenteCompras;
     var caracteristicasMensajes = ((IList<AnalisisPorCaracteristicaDto>)ViewBag.CaracteristicasMensajes);
-    
+    var esTrigoEspecial = (bool)ViewBag.TrigoEspecial;
+    var variedad = (string)ViewBag.Variedad;
+    var colorFondoVariedad = (string)ViewBag.ColorFondoVariedad;
+    var colorTextoVariedad = (string)ViewBag.ColorTextoVariedad;
 }
 @section scripts
 {
@@ -49,9 +52,25 @@
 
 <div class="container-fluid text-center">
     <div class="titSecciones pull-left" style="display:inline-block;">@Textos.CargaDeAnalisisDeCalidad_Titulo</div>
-    <span class="label @((bool)ViewBag.EsSojaSustentable ? "label-success" : (bool)ViewBag.TrigoEspecial ? "label-yellow" : "label-default")  text-center">
-        <h4 style="margin-top: 0; margin-bottom: 0">@material @((bool)ViewBag.EsSojaSustentable ? Textos.Sustentable : (bool)ViewBag.TrigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty)</h4>
-    </span>
+
+    @if (!string.IsNullOrEmpty(variedad))
+    {
+        <div class="label text-center" style="color: @colorTextoVariedad; background-color: @colorFondoVariedad">
+            <h4 style="margin-top: 0; margin-bottom: 0">@material @variedad</h4>
+        </div>
+    }
+    else if (esTrigoEspecial)
+    {
+        <div class="label text-center label-yellow">
+            <h4 style="margin-top: 0; margin-bottom: 0">@material @Textos.CartaPorte_TrigoEspecial</h4>
+        </div>
+    }
+    else
+    {
+        <div class="label text-center label-default">
+            <h4 style="margin-top: 0; margin-bottom: 0">@material</h4>
+        </div>
+    }
 
     @if ((bool)ViewBag.CupoEsFabrica)
     {

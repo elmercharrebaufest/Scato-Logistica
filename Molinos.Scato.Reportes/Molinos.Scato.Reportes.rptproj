@@ -124,6 +124,7 @@
     <Report Include="ReporteCpOtrosPuertosSap.rdl" />
     <Report Include="ReporteCupo.rdl" />
     <Report Include="ReporteInactividadCalado.rdl" />
+    <Report Include="ReporteTemplateVisec.rdl" />
     <Report Include="Resumen General por Bodega.rdl" />
     <Report Include="Stock Detallado de Bines.rdl" />
   </ItemGroup>

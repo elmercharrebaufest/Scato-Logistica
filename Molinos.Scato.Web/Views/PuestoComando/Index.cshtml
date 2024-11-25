@@ -268,7 +268,15 @@
             </div>
         </div>
     }
-    <div id="gridContainer" style="clear:both;" data-error-material="@Textos.Error_DiferentesMateriales" data-error-sustentable="@Textos.Error_DiferentesTipos" data-error-soja-epa="@Textos.Error_NoSojaEPA" data-error-soja-impo="@Textos.Error_NoSojaIMPO" data-grid-url="@Url.Action("Index", "PuestoComando")">
+    <div id="gridContainer" 
+         style="clear:both;" 
+         data-error-material="@Textos.Error_DiferentesMateriales" 
+         data-error-sustentable="@Textos.Error_DiferentesTipos" 
+         data-error-soja-epa="@string.Format(Textos.PuestoComando_Error_DiferenteVariedadSeleccionada, "EPA")"
+         data-error-soja-impo="@string.Format(Textos.PuestoComando_Error_DiferenteVariedadSeleccionada, "IMPO")" 
+         data-error-soja-eudr="@string.Format(Textos.PuestoComando_Error_DiferenteVariedadSeleccionada, "EUDR")"
+         data-error-soja-epa-y-eudr="@string.Format(Textos.PuestoComando_Error_DiferenteVariedadSeleccionada, "EPA/EUDR")"
+         data-grid-url="@Url.Action("Index", "PuestoComando")">
     </div>
     <div id="mensajeRechazar"> </div>
 </div>

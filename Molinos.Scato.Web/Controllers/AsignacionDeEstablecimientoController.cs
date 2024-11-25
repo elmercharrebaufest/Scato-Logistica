@@ -115,7 +115,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var model = servicio.ObtenerAsignacionDeEstablecimiento(instanceId);
             var establecimientos = new List<SelectListItem>();
-            establecimientos.AddRange(model.Establecimientos.Select(establecimiento => new SelectListItem { Selected = false, Text = establecimiento.NombreDeEstablecimiento, Value = establecimiento.Id.ToString(CultureInfo.InvariantCulture) }));
+            establecimientos.AddRange(model.Establecimientos.Select(establecimiento => new SelectListItem { Selected = false, Text = (!string.IsNullOrEmpty(establecimiento.CodigoRENSPA) ? establecimiento.NombreDeEstablecimiento + " / " + establecimiento.CodigoRENSPA : establecimiento.NombreDeEstablecimiento), Value = establecimiento.Id.ToString(CultureInfo.InvariantCulture) }));
             establecimientos = establecimientos.OrderBy(x => x.Text).ToList();
             establecimientos.Insert(0, new SelectListItem { Selected = false, Text = Textos.Default_Establecimiento, Value = "-1" });
             ViewBag.Establecimientos = establecimientos;

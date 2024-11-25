@@ -8037,8 +8037,8 @@ namespace Molinos.Scato.Test.Servicios
                     FechaDesde = DateTime.Parse("2020-09-23 00:00:00.000"),
                     FechaHasta = DateTime.Parse("2021-01-22 00:00:00.000"),
                     StockDeclarado = (decimal)5000.00,
-                    StockReservado = (decimal)0.00
-
+                    StockReservado = (decimal)0.00,
+                    EstablecimientoAnulado = false,
                 }});
                 
 

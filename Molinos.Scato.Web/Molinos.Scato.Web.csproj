@@ -15,7 +15,7 @@
     <AssemblyName>Molinos.Scato.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>
     </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>
@@ -34,8 +34,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>false</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -733,6 +732,7 @@
     <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Models\ResumenDeRecepcionModel.cs" />
     <Compile Include="Models\FiltroRecorridoModel.cs" />
+    <Compile Include="Models\TemplateViewModel.cs" />
     <Compile Include="Models\ValidarContratoModel.cs" />
     <Compile Include="Models\IngresoDeLoteModel.cs" />
     <Compile Include="Models\MicromuestraModel.cs" />
@@ -1132,6 +1132,7 @@
     <Content Include="Styles\area\enEsperaHB4\index.css" />
     <Content Include="Styles\area\pesada\pesada.css" />
     <Content Include="Styles\area\shared\dialogModal.css" />
+    <Content Include="Styles\area\shared\inputs.css" />
     <Content Include="Styles\area\shared\intercomunicador.css" />
     <Content Include="VICSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
@@ -1211,6 +1212,10 @@
     <Content Include="Scripts\usuario.CrearModificar.js" />
     <Content Include="Scripts\vagon.js" />
     <Content Include="AVVWHSCATAPP00.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GSLOSCATOAPQ01.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2472,6 +2477,7 @@
     <Content Include="Views\Comercial\_CrearModificar.cshtml" />
     <Content Include="Views\Comercial\Modificar.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Reportes\TemplateVisec.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

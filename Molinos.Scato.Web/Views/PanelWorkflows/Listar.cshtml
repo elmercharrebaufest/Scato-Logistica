@@ -38,7 +38,11 @@
     }
     if (Model.Columnas.Contains("ProximaEtapa"))
     {
-        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion) ?? item.ProximaAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Rechazado ? " <strong style='color: #b94a48;' >" + Textos.Rechazos + "</strong>" : string.Empty) + (item.Sustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty))));
+        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion) 
+            ?? item.ProximaAccion 
+                + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) 
+                + (item.Rechazado ? " <strong style='color: #b94a48;' >" + Textos.Rechazos + "</strong>" : string.Empty) 
+                + (item.EsSustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty))));
     }
     if (Model.Columnas.Contains("MaterialId"))
     {

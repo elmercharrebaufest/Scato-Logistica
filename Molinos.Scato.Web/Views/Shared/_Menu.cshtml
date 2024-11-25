@@ -941,6 +941,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.ReporteInactividadCalado, "Index", "Reportes", new { nombreReporte = "ReporteInactividadCalado" }, null)</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteTemplateVisec))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteTemplateVisec, "TemplateVisec", "Reportes")</li>
+                                }
                             </ul>
                         </li>
                         <li class="dropdown-submenu">
@@ -1023,7 +1027,6 @@
                                 {
                                     <li>@Html.ActionLink(Textos.ListadodeRechazos, "Index", "Reportes", new { nombreReporte = "Listado de Rechazos" }, null)</li>
                                 }
-
                                 @if (PermisosHelper.Is(PermisosScato.ReporteResumenDeRecepcion))
                                 {
                                     <li>@Html.ActionLink(Textos.ResumenDeRecepcion_Titulo, "Index", "ResumenDeRecepcion")</li>

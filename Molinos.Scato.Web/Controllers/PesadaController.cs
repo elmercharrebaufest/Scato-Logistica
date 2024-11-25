@@ -233,14 +233,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Calles =
                 servicio.ListarCalles(datosUsuario.CentroId)
                         .ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
-            var almacenes = recorrido.Material != null
-                                ? servicio.ListarAlmacenesPorMaterialYCentro(recorrido.Centro.Id, recorrido.Material.Id, recorrido.EsSustentable)
-                                : servicio.ListarAlmacenesPorCentroYesSustentable(recorrido.Centro.Id, recorrido.EsSustentable);
-
-            almacenes = recorrido.Establecimiento != null && recorrido.Establecimiento.EsSojaEPA ?
-                                    servicio.ListarAlmacenesPorMaterialYCentroEPA(datosUsuario.CentroId, recorrido.Material.Id)
-                                    : almacenes;
-
+            var almacenes = servicio.ListarAlmacenesPorMaterial(recorrido.Centro.Id, recorrido.Material.Id); 
             ViewBag.Almacenes = almacenes.ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture),
                                                        f => f.DescripcionCorta);
             ViewBag.DocumentoIngreso = recorrido.TipoDocumentoIngreso;

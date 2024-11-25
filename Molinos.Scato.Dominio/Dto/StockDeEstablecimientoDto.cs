@@ -45,6 +45,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Provincia { get; set; }
         public int? ProvinciaCodigoAfip { get; set; }
         public int? ProvinciaId { get; set; }
+        public bool EstablecimientoAnulado { get; set; }
 
         public StockDeEstablecimientoDto()
         {

@@ -2898,7 +2898,7 @@ namespace Molinos.Scato.Servicios
         TipoVariedadDto[] ObtenerVariedadPorTipoMaterial(int idMaterial);
 
         [OperationContract]
-        int? ObtenerVariedadIdPorMaterial(int materialId, string titularCP = null, bool esEpa = false, bool esSustentable = false);
+        int? ObtenerVariedadIdPorMaterial(int materialId, string titularCP = null, bool esEpa = false, bool esSustentable = false, bool esEUDR = false);
 
         [OperationContract]
         IList<AutomatismoGranoDto> ListarAutomatismoGrano();
@@ -3024,7 +3024,7 @@ namespace Molinos.Scato.Servicios
         IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoLlamadosActivos();
 
         [OperationContract]
-        IList<AlmacenDto> ListarAlmacenesPorMateriaVariedadIds(List<int> tipoVariedadesIds, int materialId);
+        IList<AlmacenDto> ListarAlmacenesPorMateriaVariedadIds(int centroId, List<int> tipoVariedadesIds, int materialId);
         
         [OperationContract]
         RecorridoDto ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero);

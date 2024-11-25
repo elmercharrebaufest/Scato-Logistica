@@ -178,6 +178,8 @@ function Camion(item, calle) {
     self.ColorTexto = item.ColorTexto;
     self.EsSojaEPA = item.EsSojaEPA;
     self.EsSojaIMPO = item.EsSojaIMPO;
+    self.EsSojaEUDR = item.EsSojaEUDR;
+    self.EsSojaEPAyEUDR = item.EsSojaEPAyEUDR;
     self.Calle = calle;
     self.TiempoEnCola = null;
     self.TiempoEnColaEnMinutos = 0;
@@ -270,7 +272,7 @@ function EstadoDeCallesViewModel() {
         });
         return count;
     };
-    self.sumarCamionesSoja = function (contarEPA, contarIMPO) {
+    self.sumarCamionesSoja = function () {
         let count = 0;
         self.dummy();
         ko.utils.arrayForEach(self.Calles(), function (calle) {
@@ -278,7 +280,7 @@ function EstadoDeCallesViewModel() {
             if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
                 let camionesPorCalle = calle.Posiciones();
                 $.each(camionesPorCalle, function (key, camion) {
-                    if (camion.EsSojaEPA === contarEPA && camion.EsSojaIMPO === contarIMPO) {
+                    if (camion.EsSojaEPA === false && camion.EsSojaIMPO === false && camion.EsSojaEUDR === false && camion.EsSojaEPAyEUDR === false) {
                         count++;
                     }
                 })
@@ -287,24 +289,7 @@ function EstadoDeCallesViewModel() {
         return count;
     };
 
-    self.sumarCamionesSojaEPA = function (contarEPA) {
-        let count = 0;
-        self.dummy();
-        ko.utils.arrayForEach(self.Calles(), function (calle) {
-            let calleId = calle.TipoCalle == 7 ? 1 : calle.TipoCalle;
-            if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
-                let camionesPorCalle = calle.Posiciones();
-                $.each(camionesPorCalle, function (key, camion) {
-                    if (camion.EsSojaEPA === contarEPA) {
-                        count++;
-                    }
-                })
-            }
-        });
-        return count;
-    };
-
-    self.sumarCamionesSojaIMPO = function (contarIMPO) {
+    self.sumarCamionesSojaIMPO = function () {
         let count = 0;
         self.dummy();
         ko.utils.arrayForEach(self.Calles(), function (calle) {
@@ -313,7 +298,61 @@ function EstadoDeCallesViewModel() {
                 
                 let camionesPorCalle = calle.Posiciones();
                 $.each(camionesPorCalle, function (key, camion) {
-                    if (camion.EsSojaIMPO == contarIMPO) {
+                    if (camion.EsSojaIMPO === true) {
+                        count++;
+                    }
+                })
+            }
+        });
+        return count;
+    };
+
+    self.sumarCamionesSojaEPA = function () {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            let calleId = calle.TipoCalle == 7 ? 1 : calle.TipoCalle;
+            if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
+
+                let camionesPorCalle = calle.Posiciones();
+                $.each(camionesPorCalle, function (key, camion) {
+                    if (camion.EsSojaEPA === true) {
+                        count++;
+                    }
+                })
+            }
+        });
+        return count;
+    };
+
+    self.sumarCamionesSojaEUDR = function () {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            let calleId = calle.TipoCalle == 7 ? 1 : calle.TipoCalle;
+            if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
+
+                let camionesPorCalle = calle.Posiciones();
+                $.each(camionesPorCalle, function (key, camion) {
+                    if (camion.EsSojaEUDR === true) {
+                        count++;
+                    }
+                })
+            }
+        });
+        return count;
+    };
+
+    self.sumarCamionesSojaEPAyEUDR = function () {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            let calleId = calle.TipoCalle == 7 ? 1 : calle.TipoCalle;
+            if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
+
+                let camionesPorCalle = calle.Posiciones();
+                $.each(camionesPorCalle, function (key, camion) {
+                    if (camion.EsSojaEPAyEUDR === true) {
                         count++;
                     }
                 })
@@ -325,7 +364,7 @@ function EstadoDeCallesViewModel() {
     self.Recalcular = function () {
         self.dummy.notifySubscribers();
     };
-    self.CantidadSoja = ko.computed(function () { return self.sumarCamionesSoja(false , false); });
+    self.CantidadSoja = ko.computed(function () { return self.sumarCamionesSoja(); });
     self.CantidadMaiz = ko.computed(function () { return self.sumarCamiones(386); });
     self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(13); });
     self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
@@ -335,8 +374,10 @@ function EstadoDeCallesViewModel() {
     self.CantidadAceiteSoja = ko.computed(function () { return self.sumarCamiones(63734); });
     self.CantidadAceiteGirasol = ko.computed(function () { return self.sumarCamiones(63691); });
     self.Biodiesel = ko.computed(function () { return self.sumarCamiones(63736) + self.sumarCamiones(81252) + self.sumarCamiones(81243) + self.sumarCamiones(81252) + self.sumarCamiones(123262); });
-    self.CantidadSojaEPA = ko.computed(function () { return self.sumarCamionesSojaEPA(true); });
-    self.CantidadSojaIMPO = ko.computed(function () { return self.sumarCamionesSojaIMPO(true); });
+    self.CantidadSojaEPA = ko.computed(function () { return self.sumarCamionesSojaEPA(); });
+    self.CantidadSojaIMPO = ko.computed(function () { return self.sumarCamionesSojaIMPO(); });
+    self.CantidadSojaEUDR = ko.computed(function () { return self.sumarCamionesSojaEUDR(); });
+    self.CantidadSojaEPAyEUDR = ko.computed(function () { return self.sumarCamionesSojaEPAyEUDR(); });
 
     self.LlenarCamionesLlamados = function (listaLlamadosJsonString) {
 

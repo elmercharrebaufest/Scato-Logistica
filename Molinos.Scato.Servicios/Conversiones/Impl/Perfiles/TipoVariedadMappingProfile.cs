@@ -8,7 +8,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
     {
         public override string ProfileName
         {
-            get { return "VariedadMaterialMappingProfile"; }
+            get { return "TipoVariedadMappingProfile"; }
         }
 
         protected override void Configure()
