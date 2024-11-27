@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.10.35004.147</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-10-10T13:41:55.8285541Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-11-27T12:49:39.8499140Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -579,13 +579,13 @@ left join (
   Workflow AS w WITH (NOLOCK) ON r.Workflow_Id = w.Id JOIN
   Almacen AS a WITH (NOLOCK) ON a.Id = r.Almacen_Id JOIN
   Material AS m WITH (NOLOCK) ON m.Id = r.material_id right join
-  AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion or (ar.Almacen = TRIM('EPA' FROM a.Descripcion) and a.Descripcion like '%EPA')
+  AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion 
+	or (ar.Almacen = TRIM('EPA' FROM a.Descripcion) and a.Descripcion like '%EPA')
+	or (ar.Almacen = TRIM('EPA/EUDR' FROM a.Descripcion) and a.Descripcion like '%EPA/EUDR')
+	or (ar.Almacen = TRIM('EUDR' FROM a.Descripcion) and a.Descripcion like '%EUDR')
   WHERE    w.TipoDeWorkflow = 0 AND r.Centro_Id = @CentroId AND r.Material_Id IN (4) AND terminado = 1 AND Rechazado = 0 AND r.PesoTaraFecha IS NOT NULL AND
   r.PesoTaraFecha &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' AND r.PesoTaraFecha &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
   GROUP BY  m.descripcion,ar.Descripcion) as Datos on datos.DescargaSoja = m.Descripcion
-
-
-
 order by orden</CommandText>
       </Query>
       <Fields>
