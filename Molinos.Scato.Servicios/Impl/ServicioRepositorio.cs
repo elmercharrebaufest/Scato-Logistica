@@ -7321,7 +7321,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool EsRecorridoSustentable(Guid instanceId)
         {
-            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null && !f.Establecimiento.EPA);
+            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.TipoVariedad != null && f.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.Sustentable);
         }
 
         public bool ValidaStockEPA(Guid instanceId)
