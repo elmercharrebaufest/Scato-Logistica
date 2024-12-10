@@ -2,23 +2,26 @@
 @using Molinos.Scato.WebMobile.ViewModel
 @using Molinos.Scato.Dominio.Recursos
 
-<div class="modal fade" id="modalModificarPreBalanza" tabindex="-1" role="dialog" aria-labelledby="modalModificarPreBalanzaLabel">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+<div class="modal fade" id="modalModificarPreBalanza" tabindex="-1" aria-labelledby="modalModificarPreBalanzaLabel" aria-hidden="true">
+    <!-- Removed role="dialog" and aria-hidden is added for better accessibility. Bootstrap 5 no longer requires the role attribute here. -->
+    
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <!-- Removed role="document" as it's no longer required in Bootstrap 5. -->
 
         @using (Ajax.BeginForm("ModificarConfiguracionCallePB", null, new AjaxOptions { OnSuccess = "modificarCallePBSuccess" }, new { @class = "container" }))
         {
             <div class="modal-content">
                 @Html.HiddenFor(model => model.Id)
+
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalModificarPreBalanzaLabel">Modificar Calle Pre-Balanza</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- Updated close button: Replaced old `close` class with `btn-close`, and removed the inner &times; as it is now handled by Bootstrap 5. Also changed data-dismiss to data-bs-dismiss. -->
                 </div>
 
                 <div class="modal-body">
                     <div class="container">
-                        <div class="form-group row">
+                        <div class="mb-3 row">
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.Descripcion)
                                 @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
@@ -34,7 +37,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Textos.Cancelar</button>
+                    <!-- Changed data-dismiss to data-bs-dismiss for Bootstrap 5 compatibility. -->
                     <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
                 </div>
             </div>

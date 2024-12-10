@@ -1275,6 +1275,7 @@
     <Compile Include="Enums\TipoDeProteina.cs" />
     <Compile Include="Enums\TipoDestino.cs" />
     <Compile Include="Enums\EstadoWorkflow.cs" />
+    <Compile Include="Filtros\AtLeastOneItemIntAttribute.cs" />
     <Compile Include="Filtros\LoguearEntidad.cs" />
     <Compile Include="Filtros\FechaAntiguaAttribute.cs" />
     <Compile Include="Helpers\CantidadPrecaladoCircularHelper.cs" />

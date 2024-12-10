@@ -9,7 +9,6 @@
 <script type="text/javascript" src="@Url.Script("~/scripts/graficoDePlanta.js")"></script>
 <script type="text/javascript">
 
-
     var obtenerDatos = "@Url.Action("GenerarGraficoDePlanta")"
     var modificar = "@Url.Action("Modificar")"
 
@@ -47,31 +46,28 @@
 </style>
 <br>
 <div id="graficoDePlanta" class="col border rounded panel-padding">
-        <div class="row">
-            <div class="col h5 mt-auto text-center" style="padding-top:3px;">
-                @Textos.GraficoDePlanta_CamionesPorActividad
-            </div>
-        </div>        
+    <div class="row">
+        <div class="col h5 mt-auto text-center" style="padding-top:3px;">
+            @Textos.GraficoDePlanta_CamionesPorActividad
+        </div>
+    </div>        
         
-        <div class="row">
-            <div class="col-12 borde-grafico">
-                <div style="font-size:9px; color: black; cursor:pointer; " class="control col" data-bind="text: deshabilitar, click: MostrarTodoChecked" id="checkTodos" type="checkbox" checked="checked"></div>
-                    <div data-bind="foreach: actividades" class="row" style="margin-left:3%">
-                        <div class="col-2">
-                            <div class="row">
-                                <div class="col-md-1 iconoColor" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-bind="attr: { 'style': BackgroundStyle, 'data-content':NombreActividadDesc }, click: Actualizate">
-                                    <label data-bind="text: CantidadCamiones()" style="text-align:center; margin-left:-2px; color:white; font-size:12px;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-weight:bolder"></label>
-                                </div>
-                                <div class="mostrar-lista col-md-7 d-none d-sm-block overflow-ellipsis p" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-bind="css : {'cambiarColor' : MostrarColor}, text: NombreActividadDesc, click: Actualizate, attr:{ 'data-content':NombreActividadDesc }" style="font-size:10px; color: black;  cursor: pointer;padding-left:5%; margin-right:7px;margin-top:4px;height:21px">
-                                </div>
+    <div class="row">
+        <div class="col-12 borde-grafico">
+            <div style="font-size:9px; color: black; cursor:pointer; " class="control col" data-bind="text: deshabilitar, click: MostrarTodoChecked" id="checkTodos" type="checkbox" checked="checked"></div>
+                <div data-bind="foreach: actividades" class="row" style="margin-left:3%">
+                    <div class="col-2">
+                        <div class="row">
+                            <div class="col-md-1 iconoColor" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover" data-bind="attr: { 'style': BackgroundStyle, 'data-bs-content':NombreActividadDesc }, click: Actualizate">
+                                <label data-bind="text: CantidadCamiones()" style="text-align:center; margin-left:-2px; color:white; font-size:12px;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-weight:bolder"></label>
                             </div>
-
+                            <div class="mostrar-lista col-md-7 d-none d-sm-block overflow-ellipsis p" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover" data-bind="css : {'cambiarColor' : MostrarColor}, text: NombreActividadDesc, click: Actualizate, attr:{ 'data-bs-content':NombreActividadDesc }" style="font-size:10px; color: black;  cursor: pointer;padding-left:5%; margin-right:7px;margin-top:4px;height:21px">
+                            </div>
                         </div>
                     </div>
-                    <canvas id="myChart">
-                    </canvas>
                 </div>
+                <div class="col-12"><canvas id="myChart" /></div>
             </div>
-
+        </div>
 </div>
 

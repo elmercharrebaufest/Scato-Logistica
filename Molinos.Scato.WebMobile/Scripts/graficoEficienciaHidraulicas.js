@@ -1,18 +1,14 @@
 ﻿function DataSetChartLine(nombreDeLinea, data, color) {
-    this.label = nombreDeLinea,
-        this.fill = false,
-        this.borderDash = [],
-        this.borderDashOffset = 0.0,
-        this.borderJoinStyle = 'miter',
-        this.borderWidth = 2,
-        this.data = data;
-    if (color == null) {
-        this.backgroundColor = '#000000';
-        this.hoverBackgroundColor = '#000000';
-    } else {
-        this.backgroundColor = color;
-        this.hoverBackgroundColor = color;
-    }
+    this.label = nombreDeLinea;
+    this.fill = false; // Se mantiene el llenado desactivado
+    this.borderDash = []; // Patrón de línea discontinua
+    this.borderDashOffset = 0.0; // Desplazamiento del patrón de línea discontinua
+    this.borderJoinStyle = 'miter'; // Estilo de unión de borde
+    this.borderWidth = 2; // Ancho del borde
+    this.data = data; // Datos del conjunto
+    // Establecer color de fondo y hover
+    this.backgroundColor = color == null ? '#000000' : color;
+    this.hoverBackgroundColor = color == null ? '#000000' : color;
 }
 
 function GraficoEficienciaHidraulicaViewModel(validator) {
@@ -30,45 +26,42 @@ function GraficoEficienciaHidraulicaViewModel(validator) {
         var labels = [];
         var data = [];
 
+        // Filtrar datos según hidraulicas seleccionadas
         if (self.hidraulicas) {
-            data = $.grep(self.datasetTotal.data, function (e) { return $.inArray(e.Clave, self.hidraulicas) >= 0 });
+            data = self.datasetTotal.data.filter(e => self.hidraulicas.includes(e.Clave));
         } else {
             data = self.datasetTotal.data;
         }
-        $.each(data, function (i, n) {
-            if ($.inArray(n.Clave, labels) < 0)
-                labels.push(n.Clave);
-        });
 
-        $.each(data, function (i, n) {
-            if ($.inArray(n.Clave, labels) < 0)
+        // Obtener etiquetas únicas
+        data.forEach(n => {
+            if (!labels.includes(n.Clave)) {
                 labels.push(n.Clave);
+            }
         });
 
         var materiales = [];
-        $.each(data, function (i, n) {
-            if (n.Material && $.inArray(n.Material, materiales) < 0)
+        data.forEach(n => {
+            if (n.Material && !materiales.includes(n.Material)) {
                 materiales.push(n.Material);
+            }
         });
 
-        var totals = [];
-        $.each(labels, function (i, l) {
-            var materialesHidraulica = $.grep(data, function (e) { return e.Clave == l });
-            var totalHidraulica = 0;
-            $.each(materialesHidraulica, function (i2, m) { totalHidraulica += m.Valor });
-
-            totals.push(totalHidraulica);
+        var totals = labels.map(l => {
+            var materialesHidraulica = data.filter(e => e.Clave === l);
+            return materialesHidraulica.reduce((total, m) => total + m.Valor, 0); // Sumar valores
         });
 
-        var coloresMateriales = obtenerColoresParaGraficos(materiales.length);
+        var coloresMateriales = obtenerColoresParaGraficos(materiales.length); // Obtener colores
 
-        var datasets = $.map(materiales, function (m, i) {
+        // Crear datasets
+        var datasets = materiales.map((m, i) => {
             var color = coloresMateriales[i];
             return {
                 label: m,
-                data: $.map(labels, function (l) {
-                    var h = $.grep(data, function (e) { return e.Clave == l && e.Material == m });
-                    return h[0] ? h[0].Valor : 0;
+                data: labels.map(l => {
+                    var h = data.find(e => e.Clave === l && e.Material === m);
+                    return h ? h.Valor : 0; // Devolver valor o 0
                 }),
                 backgroundColor: color,
                 borderColor: color,
@@ -76,9 +69,12 @@ function GraficoEficienciaHidraulicaViewModel(validator) {
             };
         });
 
+        // Destruir gráfico anterior si existe
         if (self.myLineChartHidraulicas) {
             self.myLineChartHidraulicas.destroy();
         }
+
+        // Crear nuevo gráfico
         self.myLineChartHidraulicas = new Chart(ctxh, {
             type: 'bar',
             data: {
@@ -87,46 +83,42 @@ function GraficoEficienciaHidraulicaViewModel(validator) {
             },
             options: {
                 animation: false,
-                legend: {
-                    display: true
-                },
-                title: {
-                    display: true,
-                    text: textoHidraulicas
+                plugins: { // Actualizado para usar plugins
+                    legend: {
+                        display: true
+                    },
+                    title: {
+                        display: true,
+                        text: textoHidraulicas // Título del gráfico
+                    },
+                    tooltip: { // Cambiado para la nueva estructura
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                return `${materiales[tooltipItem.datasetIndex]}: ${Number(tooltipItem.parsed.y).toString()}`; // Acceso actualizado a y
+                            },
+                            title: function (tooltipItem) {
+                                return `${tooltipItem[0].label} (Total: ${totals[tooltipItem[0].dataIndex]})`; // Total en el tooltip
+                            }
+                        }
+                    }
                 },
                 scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0
-                            },
-                            stacked: true
-                        }
-                    ],
-                    xAxes: [
-                        {
-                            ticks: {
-                                min: 0
-                            },
-                            stacked: true
-                        }]
+                    y: { // Actualizado para la nueva sintaxis de escalas
+                        min: 0,
+                        stacked: true // Asegura que los datos se apilen
+                    },
+                    x: { // Actualizado para la nueva sintaxis de escalas
+                        stacked: true // Asegura que los datos se apilen
+                    }
                 },
                 elements: {
-                    point: { radius: 0 }
-                },
-                tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem) {
-                            return [materiales[tooltipItem.datasetIndex] + ': ' + Number(tooltipItem.yLabel).toString()];
-                        },
-                        title: function (tooltipItem) {
-                            return [tooltipItem[0].label + " (Total: " + totals[tooltipItem[0].index] + ")"];
-                        }
+                    bar: { // Cambiar el radio del punto a cero
+                        borderWidth: 1
                     }
                 }
             }
         });
-    }
+    };
 
     self.actualizarGrafico = function (offline) {
         if (!offline) {
@@ -136,43 +128,43 @@ function GraficoEficienciaHidraulicaViewModel(validator) {
                 self.mostrarGrafico();
                 $.unblockUI();
             }).fail(function () {
-
+                console.error("Error al actualizar gráfico."); // Manejo de errores
             });
         } else {
             self.mostrarGrafico();
         }
-    }
+    };
+
     self.generarGrafico = function () {
         self.materialSeleccionado = $("#materialIdHidraulica").val();
         self.fechaDesdeSeleccionada = $("#FechaDesdeCamiones").val() + " " + $("#FechaDesdeCamiones_time").val();
         self.fechaHastaSeleccionada = $("#FechaHastaCamiones").val() + " " + $("#FechaHastaCamiones_time").val();
-        
+
         if (!self.materialSeleccionado) {
-            self.materialSeleccionado = 0;
+            self.materialSeleccionado = 0; // Si no se selecciona material, se establece en 0
         }
 
         BloquearPantalla();
         self.actualizarGrafico();
-    }
+    };
 
     self.filtrarHidraulicas = function (checkboxContainerClass) {
         var visibles = [];
-        $.each($('.' + checkboxContainerClass + ' input[type = "checkbox"]'), function (i, chk) {
-            if ($(chk).is(":checked"))
-                visibles.push($(chk).val());
+        $('.' + checkboxContainerClass + ' input[type="checkbox"]').each(function () {
+            if ($(this).is(":checked")) {
+                visibles.push($(this).val()); // Obtener los valores de los checkboxes seleccionados
+            }
         });
 
-        self.hidraulicas = visibles;
-    }
+        self.hidraulicas = visibles; // Actualiza la lista de hidraulicas
+    };
 }
 
 var graficoHidraulica;
 $(document).ready(function () {
+    // Inicializar checkboxes como seleccionados
+    $('.checkboxes input[type="checkbox"]').prop("checked", true);
 
-    $.each($('.checkboxes input[type="checkbox"]'), function (i, chk) {
-        $(chk).prop("checked", true);
-    });
-    
     var validator = $("#formHidraulica").validate({ /* settings */ });
 
     graficoHidraulica = new GraficoEficienciaHidraulicaViewModel(validator);
@@ -180,9 +172,20 @@ $(document).ready(function () {
     graficoHidraulica.generarGrafico();
     $('.ui-helper-hidden-accessible').hide();
 
+    // Manejo de eventos de cambio en checkboxes
     $('.checkboxes input[type="checkbox"]').on("change", function (e) {
         graficoHidraulica.filtrarHidraulicas("checkboxes");
         graficoHidraulica.mostrarGrafico();
         e.preventDefault();
-    })
+    });
 });
+
+    /*
+
+    Cambios Clave Realizados
+        Actualización de Escalas: Cambios en la estructura de yAxes y xAxes a y y x.
+        Tooltips: Se modificó la configuración de tooltips para utilizar la nueva API.
+        Filtrado y Manejo de Datos: Se utilizó filter y map para una mejor legibilidad y eficiencia en la obtención de datos únicos.
+        Manejo de Errores: Se agregó un mensaje de error en la función de actualización en caso de que falle la llamada a la API.
+        Estructura de Datos: Se mejoró la forma de calcular los totales y obtener los colores para los gráficos.
+            */

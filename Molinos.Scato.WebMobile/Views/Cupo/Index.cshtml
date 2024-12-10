@@ -19,9 +19,19 @@
     }
 </style>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popover();
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select all elements with the 'data-bs-toggle="popover"' attribute
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 
+        // Initialize popovers for each selected element
+        popoverTriggerList.forEach(function (popoverTriggerEl) {
+            new bootstrap.Popover(popoverTriggerEl, {
+                trigger: popoverTriggerEl.getAttribute('data-bs-trigger') || 'hover',  // Default trigger is hover
+                placement: popoverTriggerEl.getAttribute('data-bs-placement') || 'top', // Default placement is top
+                content: popoverTriggerEl.getAttribute('data-bs-content'), // Content of the popover
+                html: popoverTriggerEl.hasAttribute('data-bs-html') ? true : false // Enable HTML if data-bs-html is present
+            });
+        });
     });
 </script>
 
@@ -30,7 +40,7 @@
 </div>
 
 <div class="row mx-1 mt-2 justify-content-center" id="graficodeplantahead">
-    <div class="col-12 col-sm panel-heading panel-darkblue m-2" style="cursor:pointer" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.Cupeados">
+    <div class="col-12 col-sm panel-heading panel-darkblue m-2" style="cursor:pointer" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover" data-bs-content="@Textos.Cupeados">
         <div class="text-center">@Textos.Cupos_Del_Día</div>
         <br />
         <div class="d-flex justify-content-between">
@@ -45,7 +55,7 @@
             </div>
         }
     </div>
-    <div class="col-12 col-sm panel-heading panel-flatblue m-2" style="cursor:pointer" data-toggle="popover" data-html="true" data-placement="right" data-trigger="hover" data-content="@Textos.Descargados">
+    <div class="col-12 col-sm panel-heading panel-flatblue m-2" style="cursor:pointer" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-trigger="hover" data-bs-content="@Textos.Descargados">
         <div class="text-center">@Textos.Cupos_Etapa_Tara_Cuadro</div>
         <div class="row flex-nowrap">
             <div class="offset-5 col">
@@ -82,7 +92,7 @@
         }
 
     </div>
-    <div class="col-12 panel-heading panel-paleblue m-2" style="cursor:pointer" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-content="@Textos.Arribados">
+    <div class="col-12 panel-heading panel-paleblue m-2" style="cursor:pointer" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="top" data-bs-trigger="hover" data-bs-content="@Textos.Arribados">
         <div class="text-center">@Textos.CuposDelDía_En_SAP</div>
         <div class="row">
             <div class="col offset-3">
@@ -138,7 +148,7 @@
     </div>
 </div>
 <div class="row mx-1" id="graficodeplantahead">
-    <div class="col panel-heading panel-lightblue m-2" style="cursor:pointer" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.CumplimientoDia">
+    <div class="col panel-heading panel-lightblue m-2" style="cursor:pointer" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover" data-bs-content="@Textos.CumplimientoDia">
         <div class="text-center">@Textos.Cupos_Cumplidos</div>
         <br />
         <div class="d-flex justify-content-between">
@@ -153,7 +163,7 @@
             </div>
         }
     </div>
-    <div class="col-sm-4 col-xs-12 panel-padding padding-large panel-margin panel-heading panel-miniblue" style="cursor:pointer" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="hover" data-content="@Textos.Pendientes">
+    <div class="col-sm-4 col-xs-12 panel-padding padding-large panel-margin panel-heading panel-miniblue" style="cursor:pointer" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover" data-bs-content="@Textos.Pendientes">
         <div class="row d-flex justify-content-between ">
             <div class="titulo-header">
                 @Textos.Cupos_PendientesValidacion
@@ -180,7 +190,7 @@
             </div>
         </div>
     </div>
-    <div class="col panel-heading panel-superminiblue m-2" style="cursor:pointer" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.Excedente">
+    <div class="col panel-heading panel-superminiblue m-2" style="cursor:pointer" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover" data-bs-content="@Textos.Excedente">
         <div class="text-center">@Textos.Cupos_ExcedentesdelDía</div>
         <br />
         <div class="d-flex justify-content-between">

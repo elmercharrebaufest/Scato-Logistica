@@ -34,7 +34,6 @@
                 $.each(variedades, function (indice, variedad) {
                     $("#cboxVariedades").append("<option value='" + variedad.Value + "'>" + variedad.Text + "</option>");
                 });
-                $("#cboxVariedades").multiselect('rebuild');
             }
         });
 

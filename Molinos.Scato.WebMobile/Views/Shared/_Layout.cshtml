@@ -114,14 +114,15 @@
 
     <div class="container-fluid">
         <div id="alertaError" data-mensaje="@Textos.Error_Generico"
-            class="alert alert-error fade-message hide-message centro-pantalla alerta-box">
-            <a class="close" data-hide="alert">×</a>
+             class="alert alert-dismissible alert-danger fade-message hide-message centro-pantalla alerta-box">
+            <!-- Updated to alert-danger -->
             <span></span>
+            <button type="button" class="btn-close" aria-label="Close" data-hide="alert"></button> <!-- Updated close button -->
         </div>
         <div id="alertaAdvertencia" data-mensaje="@Textos.Error_Generico"
-            class="alert alert-warning fade-message hide-message centro-pantalla alerta-box">
-            <a class="close" data-hide="alert">×</a>
+             class="alert alert-dismissible alert-warning fade-message hide-message centro-pantalla alerta-box">
             <span></span>
+            <button type="button" class="btn-close" aria-label="Close" data-hide="alert"></button> <!-- Updated close button -->
         </div>
         <div id="alertaExitosa" class="alert alert-success fade-message hide-message centro-pantalla alerta-box">
             <span>@Textos.Exito_Generico</span>
@@ -134,38 +135,38 @@
         </div>
 
         @* <div class="alert alert-warning hide-message" id="alertaFija" role="alert">
-            <i class="icon-warning-sign"></i>
-            <span id="alertaFija-span">@mensajeAplicacion</span>
-        </div> *@
+                <i class="icon-warning-sign"></i>
+                <span id="alertaFija-span">@mensajeAplicacion</span>
+            </div> *@
 
         @RenderBody()
     </div>
-    <!--Modals Start-->
-    <div class="modal fade" id="InfoModal" tabindex="-1" role="dialog" aria-labelledby="InfoModalLabel"
-        aria-hidden="true">
+
+    <!-- Modals Start -->
+    <div class="modal fade" id="InfoModal" tabindex="-1" role="dialog" aria-labelledby="InfoModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="InfoModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- Updated close button -->
                 </div>
                 <div class="modal-body-info">
                     ...
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> <!-- Updated dismiss button -->
+                    <button type="button" class="btn btn-primary">Save changes</button> <!-- Updated button text -->
                 </div>
             </div>
         </div>
     </div>
+
     <div style="display: none;" class="spinner">
         <div class="spinner-border text-success" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="visually-hidden">Loading...</span> <!-- Updated for accessibility -->
         </div>
     </div>
+
 </body>
 
 </html>

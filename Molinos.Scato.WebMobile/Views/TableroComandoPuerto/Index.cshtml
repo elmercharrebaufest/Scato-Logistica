@@ -32,25 +32,34 @@
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs flex-column flex-sm-row">
+                <!-- Panel Tab (Active) -->
                 <li class="nav-item">
                     @Html.ActionLink(Textos.Panel, "Index", "TableroComandoPuerto", null, new { @class = "nav-link active" })
                 </li>
+
+                <!-- Configurations Tab -->
                 <li class="nav-item">
                     @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoPuerto", null, new { @class = "nav-link" })
                 </li>
-                <li class="nav-item ml-auto">
+
+                <!-- Automatismo Switch -->
+                <li class="nav-item ms-auto">
                     <label class="switch">
                         <input id="automatismoGeneral" type="checkbox" @(Model.EstadoGeneralAutomatismoNoGrano ? "checked='checked'" : "")>
                         <span class="slider round"></span>
                     </label>
-                    <span class="mr-2">Automatismo General</span>
+                    <span class="me-2">Automatismo General</span>
                 </li>
             </ul>
 
+            <!-- Tab Content -->
             <div class="tab-content overflow-auto">
                 <div class="col-12">
-                    <button class="btn m-2 float-right rounded-bottom btn-success" onclick="ModalCrear()">Nuevo Automatismo</button>
+                    <!-- Button with float-right (Bootstrap 5 uses float-end) -->
+                    <button class="btn m-2 float-end rounded-bottom btn-success" onclick="ModalCrear()">Nuevo Automatismo</button>
                 </div>
+
+                <!-- Grid Container -->
                 <div id="gridContainer" class="tab-pane fade show active">
                     @Html.Partial("_Listar")
                 </div>
@@ -59,22 +68,23 @@
     </div>
 </div>
 
-<div id="detalle" />
+<!-- Detail Div -->
+<div id="detalle"></div>
 
-<div id="partialModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+<!-- Modal for creating or editing -->
+<div id="partialModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body"></div>
         </div>
     </div>
 </div>
 
+<!-- Confirmation Dialog -->
 <dialog id="modalConfirmarBorrar" class="dialogModal">
     <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>
     <input type="hidden" id="automatismoIdABorrar" />
@@ -86,6 +96,7 @@
         <button type="button" id="btnConfirmarBorrar" class="btn btn-success" onclick="EliminarAutomatismoNoGrano()">Aceptar</button>
     </div>
 </dialog>
+
 
 <style>
     .nav-item a,

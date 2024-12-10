@@ -2,98 +2,113 @@
 @using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.WebMobile.Helpers
 @model List<EstadoMaterialDto>
-    <div class="row mt-2 mx-1 justify-content-center" id="graficodeplantahead">
-        <div class="col panel-heading col-12 col-sm-5 col-lg bg-molinos m-2">
-            <div class="row">
-                <i class="fa fa-industry icon-size fa-3x m-1" aria-hidden="true"></i>
-                <div class="col m-auto">
+<div class="row mt-2 mx-1 justify-content-center text-white" id="graficodeplantahead">    <!-- Changed col classes to remove redundant col-12 and simplified responsive behavior -->
+    <div class="col-sm-5 col-lg bg-molinos m-2 p-3">   <!-- Changed from: col panel-heading col-12 col-sm-5 col-lg -->
+        <div class="row align-items-center">    <!-- Added align-items-center for vertical alignment -->
+            <i class="fa fa-industry fa-3x me-2" aria-hidden="true"></i> <!-- Changed m-1 to me-2 (right margin) -->
+            <div class="col text-center text-sm-start">                <!-- Added text alignment classes for responsiveness -->
+                <h7 class="fw-bold text-uppercase">                    <!-- Título estilo -->
                     @Textos.GraficoDePlanta_CamionesEnCircuito
-                </div>
+                </h7>
             </div>
-            @foreach (var material in Model)
-            {
-                <div class="d-flex justify-content-between">
-                    <div>@material.Material</div>
-                    <div>@material.CamionesEnPlanta</div>
-                    <div>@material.VagonesEnPlanta</div>
-                </div>
-            }
         </div>
-        <div class="col panel-heading col-12 col-sm-6 col-lg bg-molinos-t1 m-2">
-            <div class="row">
-                <i class="fa fa-dolly icon-size fa-3x m-1" aria-hidden="true"></i>
-                <div class="col m-auto">
-                    @Textos.GraficoDePlanta_CamionesDescargados
-                </div>
+        @foreach (var material in Model)
+        {
+            <div class="d-flex justify-content-between">
+                <div>@material.Material</div>
+                <div>@material.CamionesEnPlanta</div>
+                <div>@material.VagonesEnPlanta</div>
             </div>
-            @foreach (var material in Model)
-            {
-                <div class="d-flex mx-1 justify-content-between">
-                    <div class="col-6 p-0">@material.Material</div>
-                    <div class="col p-0">@material.CamionesEnElDia</div>
-                    <div class="col p-0">@material.VagonesEnElDia</div>
-                    <div class="col p-0">@material.Peso.ToStringAbreviado()</div>
-                </div>
-            }
-        </div>
-        <div class="col panel-heading col-12 col-sm col-lg bg-molinos-t2 m-2">
-            <div class="row">
-                <i class="fa fa-truck  icon-size fa-3x m-1" aria-hidden="true"></i>
-                <div class="col m-auto">
-                    @(ViewBag.MostrarIngresos?Textos.GraficoDePlanta_TotalEnElDia : Textos.CamionesEgreso)
-                </div>
-            </div>
-            @foreach (var material in Model)
-            {
-                <div class="row mx-1 justify-content-between">
-                    <div>@material.Material</div>
-                    <div>@material.TotalIngresosEnElDia</div>
-                    <div>@material.TotalIngresosVagonesEnElDia</div>
-                </div>
-            }
-        </div>
-        <div class="col panel-heading col-12 col-sm col-lg bg-molinos-t3 m-2">
-            <a class="link-white" href="@Url.Action("Index","CamionesRechazados")">
-                <div class="row">
-                    <i class="fa fa-ban icon-siz fa-3x m-1" aria-hidden="true"></i>
-                    <div class="col m-auto">
-                        @Textos.GraficoDePlanta_CamionesRechazados
-                    </div>
-                </div>
-                @foreach (var material in Model)
-                {
-                    <div class="row mx-1 justify-content-between">
-                        <div>@material.Material</div>
-                        <div>@material.Rechazados</div>
-                        <div>@material.VagonesRechazados</div>
-                    </div>
-                }
-            </a>
-        </div>
-        <div class="col panel-heading col-12  col-sm col-lg bg-molinos-t4 m-2">
-            <a class="link-white" href="@Url.Action("Index","Cupo")">
-                <div class="row">
-                    <i class="fa fa-file-alt icon-size fa-3x m-1" aria-hidden="true"></i>
-                    <div class="col m-auto">
-                        @Textos.Cupos
-                    </div>
-                </div>
-                <div class="row mx-1 justify-content-between">
-                    <div>@Textos.Cupos_Del_Día</div>
-                    <div>@(@ViewBag.CupeadosMenu == null ? 0 : @ViewBag.CupeadosMenu)</div>
-                </div>
-                <div class="row mx-1 justify-content-between">
-                    <div>@Textos.CuposDelDía_En_SAP</div>
-                    <div>@(@ViewBag.ArribadosMenu == null ? 0 : @ViewBag.ArribadosMenu)</div>
-                </div>
-                <div class="row mx-1 justify-content-between">
-                    <div>@Textos.Cupos_Etapa_Tara </div>
-                    <div>@(@ViewBag.DescargadosMenu == null ? 0 : @ViewBag.DescargadosMenu)</div>
-                </div>
-                <div class="row mx-1 justify-content-between">
-                    <div>Cumplimiento</div>
-                    <div>@(@ViewBag.CumplimientoMenu == null ? 0 : @ViewBag.CumplimientoMenu) %</div>
-                </div>
-            </a>
-        </div>
+        }
     </div>
+
+    <div class="col-sm-6 col-lg bg-molinos-t1 m-2 p-3">        <!-- Simplified col classes -->
+        <div class="row align-items-center">            <!-- Added align-items-center -->
+            <i class="fa fa-dolly fa-3x me-2" aria-hidden="true"></i> <!-- Changed m-1 to me-2 -->
+            <div class="col text-center text-sm-start">                <!-- Added text alignment for small screens -->
+                <h7 class="fw-bold text-uppercase">                    <!-- Título estilo -->
+                    @Textos.GraficoDePlanta_CamionesDescargados
+                </h7>
+            </div>
+        </div>
+        @foreach (var material in Model)
+        {
+            <div class="d-flex justify-content-between">
+                <div class="col-6 p-0">@material.Material</div>
+                <div class="col p-0">@material.CamionesEnElDia</div>
+                <div class="col p-0">@material.VagonesEnElDia</div>
+                <div class="col p-0">@material.Peso.ToStringAbreviado()</div>
+            </div>
+        }
+    </div>
+
+    <div class="col-sm col-lg bg-molinos-t2 m-2 p-3">        <!-- Simplified col classes -->
+        <div class="row align-items-center">            <!-- Added align-items-center -->
+            <i class="fa fa-truck fa-3x me-2" aria-hidden="true"></i> <!-- Changed m-1 to me-2 -->
+            <div class="col text-center text-sm-start">                <!-- Added text alignment for small screens -->
+                <h7 class="fw-bold text-uppercase">                    <!-- Título estilo -->
+                    @(ViewBag.MostrarIngresos ? Textos.GraficoDePlanta_TotalEnElDia : Textos.CamionesEgreso)
+                    @Textos.GraficoDePlanta_CamionesDescargados
+                </h7>
+            </div>
+        </div>
+        @foreach (var material in Model)
+        {
+            <div class="row justify-content-between mx-1">                <!-- Used justify-content-between for spacing -->
+                <div class="col-6 p-0">@material.Material</div>
+                <div class="col p-0">@material.TotalIngresosEnElDia</div>
+                <div class="col p-0">@material.TotalIngresosVagonesEnElDia</div>
+            </div>
+        }
+    </div>
+
+    <div class="col-sm col-lg bg-molinos-t3 m-2 p-3">        <!-- Simplified col classes -->
+        <a class="link-white" href="@Url.Action("Index","CamionesRechazados")">
+            <div class="row align-items-center">                <!-- Added align-items-center -->
+                <i class="fa fa-ban fa-3x me-2" aria-hidden="true"></i> <!-- Changed m-1 to me-2 -->
+                <div class="col text-center text-sm-start">                    <!-- Added text alignment for small screens -->
+                    <h7 class="fw-bold text-uppercase">                        <!-- Título estilo -->
+                        @Textos.GraficoDePlanta_CamionesRechazados
+                    </h7>
+                </div>
+            </div>
+            @foreach (var material in Model)
+            {
+                <div class="row justify-content-between mx-1">                    <!-- Used justify-content-between for spacing -->
+                    <div class="col p-0">@material.Material</div>
+                    <div class="col p-0">@material.Rechazados</div>
+                    <div class="col p-0">@material.VagonesRechazados</div>
+                </div>
+            }
+        </a>
+    </div>
+
+    <div class="col-sm col-lg bg-molinos-t4 m-2 p-3">        <!-- Simplified col classes -->
+        <a class="link-white" href="@Url.Action("Index","Cupo")">
+            <div class="row align-items-center">                <!-- Added align-items-center -->
+                <i class="fa fa-file-alt fa-3x me-2" aria-hidden="true"></i> <!-- Changed m-1 to me-2 -->
+                <div class="col text-center text-sm-start">                    <!-- Added text alignment for small screens -->
+                    <h7 class="fw-bold text-uppercase">                        <!-- Título estilo -->
+                        @Textos.Cupos
+                    </h7>
+                </div>
+            </div>
+            <div class="row justify-content-between mx-1">                <!-- Used justify-content-between for spacing -->
+                <div class="col p-0">@Textos.Cupos_Del_Día</div>
+                <div class="col p-0">@(@ViewBag.CupeadosMenu == null ? 0 : @ViewBag.CupeadosMenu)</div>
+            </div>
+            <div class="row justify-content-between mx-1">                <!-- Used justify-content-between for spacing -->
+                <div class="col p-0">@Textos.CuposDelDía_En_SAP</div>
+                <div class="col p-0">@(@ViewBag.ArribadosMenu == null ? 0 : @ViewBag.ArribadosMenu)</div>
+            </div>
+            <div class="row justify-content-between mx-1">                <!-- Used justify-content-between for spacing -->
+                <div class="col p-0">@Textos.Cupos_Etapa_Tara</div>
+                <div class="col p-0">@(@ViewBag.DescargadosMenu == null ? 0 : @ViewBag.DescargadosMenu)</div>
+            </div>
+            <div class="row justify-content-between mx-1">                <!-- Used justify-content-between for spacing -->
+                <div class="col p-0">Cumplimiento</div>
+                <div class="col p-0">@(@ViewBag.CumplimientoMenu == null ? 0 : @ViewBag.CumplimientoMenu) %</div>
+            </div>
+        </a>
+    </div>
+</div>

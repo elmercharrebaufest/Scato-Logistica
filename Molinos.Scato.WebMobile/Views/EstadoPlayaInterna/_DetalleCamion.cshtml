@@ -9,9 +9,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Información del Vehiculo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- Updated close button -->
             </div>
             <div class="modal-body" id="dialogo-confirmar-body">
                 <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
@@ -68,7 +66,7 @@
                         <div id="div-cartaporte" class="control-group col-4">
                             @Html.LabelFor(model => model.FechaIngreso, new { @class = "control-label" })
                             <div class="controls">
-                                @{var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy HH:mm");}
+                                @{ var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy HH:mm"); }
                                 @Html.DisplayFor(model => fecha, new { @class = "input-large" })
                             </div>
                         </div>
@@ -110,7 +108,7 @@
                 </fieldset>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> <!-- Updated dismiss button -->
             </div>
         </div>
     </div>
@@ -118,10 +116,11 @@
 
 @Html.HiddenFor(model => model.InstanciaWorflow)
 @Html.HiddenFor(model => model.RecorridoId)
+
 <dialog id="modalConfirmarCargaDescarga" class="dialogCargaDescarga">
     <h4 class="dialogCargaDescarga__titulo">@Textos.Confirmacion</h4>
     <p class="dialogCargaDescarga__descripcion">
-        ¿Está seguro que desea confirmar la carga/descarga ?
+        ¿Está seguro que desea confirmar la carga/descarga?
     </p>
     <div class="dialogCargaDescarga__botones">
         <button id="btnConfirmarCargaDescarga" class="btn btn-warning" onclick="ConfirmarCargaDescarga()">Confirmar</button>

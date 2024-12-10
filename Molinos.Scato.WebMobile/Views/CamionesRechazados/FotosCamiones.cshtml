@@ -14,49 +14,66 @@
         $("#InfoModal").modal();
     });
 </script>
-<div class="modal-dialog  modal-lg" role="document">
+<div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header justify-content-center">
+            <!-- Custom spans for displaying Patente, NumeroDocumentoIngreso, and Material (unchanged) -->
             <span class="rounded bg-molinos text-light mx-1 p-1">@Model.Patente</span>
             <span class="rounded bg-molinos-t1 text-light mx-1 p-1">@Model.NumeroDocumentoIngreso</span>
             <span class="rounded bg-molinos-t2 text-light mx-1 p-1">@Model.Material</span>
         </div>
-        <div class="modal-body-info">
+        <div class="modal-body">
+            <!-- Modal body updated to Bootstrap 5's default 'modal-body' class, which is already used in Bootstrap 4 but ensured for consistency -->
             @if (Model.Fotos.Count > 0)
             {
-                <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
+                <!-- Bootstrap 5: Updated carousel to use Bootstrap 5 attributes for carousels -->
+                <div id="thumbnail-preview-indicators" class="carousel slide" data-bs-ride="carousel">
+                    <!-- data-bs-ride: Bootstrap 5 replaces 'data-ride' with 'data-bs-ride' for proper functioning -->
+                    
                     <ol class="carousel-indicators">
-
+                        <!-- Bootstrap 5: Updated data-slide-to to data-bs-slide-to -->
                         @for (var index = 0; index < Model.Fotos.Count; index++)
                         {
-                            <li class="@(index == 0 ? "active" : "")" data-slide-to="@index" data-target="#thumbnail-preview-indicators">
+                            <li class="@(index == 0 ? "active" : "")" data-bs-slide-to="@index" data-bs-target="#thumbnail-preview-indicators">
+                                <!-- data-bs-slide-to and data-bs-target: Updated to Bootstrap 5 format from Bootstrap 4's 'data-slide-to' and 'data-target' -->
+                                
                                 <div class="thumbnail">
-                                    <img class="img-responsive" alt="Cargar Imagen" src="@String.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(Model.Fotos[index].FotoChica))" />
+                                    <!-- img-fluid replaces img-responsive for Bootstrap 5 image responsiveness -->
+                                    <img class="img-fluid" alt="Cargar Imagen" src="@String.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(Model.Fotos[index].FotoChica))" />
                                 </div>
                             </li>
                         }
                     </ol>
                     <div class="carousel-inner">
+                        <!-- Carousel items remain the same in Bootstrap 5 -->
                         @for (var index = 0; index < Model.Fotos.Count; index++)
                         {
                             <div class="carousel-item @(index == 0 ? "active" : "")">
-                                <h5 class="text-center my-0 alert alert-info">@Model.Patente | @Model.Fotos[0].Actividad @Model.Fotos[0].Fecha</h5>
+                                <h5 class="text-center my-0 alert alert-info">
+                                    <!-- Display activity and date in the image captions (unchanged logic) -->
+                                    @Model.Patente | @Model.Fotos[0].Actividad @Model.Fotos[0].Fecha
+                                </h5>
                                 <img class="d-block w-100" alt="Cargar Imagen" src="@String.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(Model.Fotos[index].Foto))" />
+                                <!-- d-block w-100 ensures the image takes full width inside the carousel -->
                             </div>
                         }
                     </div>
                 </div>
-
             }
             else
             {
-                <div class="h4 alert alert-warning text-center my-0"><i class="fa fa-camera-retro fa-5x"></i></div>
+                <!-- Default alert messages when there are no photos (unchanged logic) -->
+                <div class="h4 alert alert-warning text-center my-0">
+                    <i class="fa fa-camera-retro fa-5x"></i>
+                </div>
                 <div class="h4 alert alert-warning text-center my-0">@Textos.NoHayFotos</div>
             }
         </div>
         <div class="modal-footer">
-
-            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+            <!-- Bootstrap 5: Updated 'data-dismiss' to 'data-bs-dismiss' for closing the modal -->
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+            <!-- data-bs-dismiss: Bootstrap 5 now requires the 'bs' prefix for modal-related attributes -->
         </div>
     </div>
 </div>
+

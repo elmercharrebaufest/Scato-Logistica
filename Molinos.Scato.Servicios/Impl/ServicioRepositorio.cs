@@ -9553,6 +9553,7 @@ namespace Molinos.Scato.Servicios.Impl
                                     : item.EsSojaIMPO == true ? Constantes.ValoresPorDefecto.ColorTextoSojaIMPO
                                     : (item.MaterialColorTexto ?? item.CargaCupoColorTexto),
                     EsDemorado = item.TipoCalle == TipoCalle.NoGranos && item.EsDemorado,
+                    RecorridoId = item.IdRecorrido
                 };
 
                 resultado.Add(callePorRecorrido);
@@ -11148,7 +11149,61 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ObtenerProyeccion<CargaDeCupo, string>(x => x.Id == id, x => x.Patente);
         }
 
+        public bool ValidarCuitNestleOrdenCargaInterna(int idRecorrido)
+        {
+            bool EsCuitNesle = false;
+
+            if (repositorio.Existe<OrdenCargaInterna>(x => x.Recorrido.Id == idRecorrido && x.Destino.Cuit.Equals(Constantes.CuitCliente.Nestle)))
+            {
+                EsCuitNesle = true;
+                return EsCuitNesle;
+            }
+
+            return EsCuitNesle;
+        }
+
+        public bool ValidarCuitNestleOrdenCargaFas(int idRecorrido)
+        {
+            bool EsCuitNesle = false;
+
+            if (repositorio.Existe<OrdenCargaFas>(x => x.Recorrido.Id == idRecorrido && x.Cliente.Cuit.Equals(Constantes.CuitCliente.Nestle)))
+            {
+                EsCuitNesle = true;
+                return EsCuitNesle;
+            }
+
+            return EsCuitNesle;
+        }
+
+        public bool ValidarCuitNestle(int idRecorrido)
+        {
+            bool EsCuitNesle = false;
+
+            var recorrido = ObtenerRecorrido(idRecorrido);           
+
+            switch (recorrido?.Workflow?.Codigo)
+            {
+                case Constantes.WorkFlow.workflowFason:
+                case Constantes.WorkFlow.workflowFasonSinFlete:
+
+                    if (repositorio.Existe<OrdenCargaInternaFason>(x => x.Recorrido.Id == idRecorrido && x.Cliente.Cuit.Equals(Constantes.CuitCliente.Nestle)))
+                    {
+                        EsCuitNesle = true;
+                        return EsCuitNesle;
+                    }
+                    break;
+
+                case Constantes.WorkFlow.workflowVentaFas:
+                case Constantes.WorkFlow.workflowExportacionFCA:
+                    if (repositorio.Existe<OrdenCargaFas>(x => x.Recorrido.Id == idRecorrido && x.Cliente.Cuit.Equals(Constantes.CuitCliente.Nestle)))
+                    {
+                        EsCuitNesle = true;
+                        return EsCuitNesle;
+                    }
+                    break;
+            }            
+
+            return EsCuitNesle;
+        }
     }
-
-
 }

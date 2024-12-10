@@ -36,7 +36,7 @@ EficienciaCaladoVM.prototype = {
                                 }
                             },
                             error: function (error) {
-                            },
+                    },
                         }).always(function () {
                         });
                     },
@@ -51,14 +51,14 @@ EficienciaCaladoVM.prototype = {
                                 self.vm.mainModule.methods.dibujarGraficoEficiencia(data[1].Calles, data[1].Porcentajes, self.vm.mainModule.methods.obtenerColoresBarras(data[1].Porcentajes), self.vm.mainModule.selectors.graficoPorTurno, self.vm.mainModule.selectors.barChartPorTurno);
                             },
                             error: function (error) {
-                            },
+                    },
                         }).always(function () {
                         });
                     },
 
-                    dibujarGraficoEficiencia: function (calles, porcentajes, colores, canvas, barChart) {
-                        if (barChart) {
-                            barChart.destroy();
+                    dibujarGraficoEficiencia: function (calles, porcentajes, colores, canvas, barChartRef) {
+                        if (barChartRef) {
+                            barChartRef.destroy(); // Destruir el gráfico existente
                         }
                         let limite = 100;
                         $.each(porcentajes, function (index, value) {
@@ -67,7 +67,7 @@ EficienciaCaladoVM.prototype = {
                             }
                         });
                         var ctxh = canvas;
-                        barChart = new Chart(ctxh, {
+                        let newChart = new Chart(ctxh, { // Crear nuevo gráfico
                             type: 'bar',
                             data: {
                                 labels: calles,
@@ -84,27 +84,30 @@ EficienciaCaladoVM.prototype = {
                             options: {
                                 maintainAspectRatio: false,
                                 animation: false,
-                                legend: {
-                                    display: false
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
                                 },
                                 scales: {
-                                    yAxes: [
-                                        {
-                                            ticks: {
-                                                min: 0,
-                                                max: limite
-                                            }
-                                        }
-                                    ],
-                                    xAxes: [
-                                        {
-                                            ticks: {
-                                                beginAtZero: true
-                                            }
-                                        }]
-                                },
+                                    y: {
+                                        beginAtZero: true,
+                                        min: 0,
+                                        max: limite
+                                    },
+                                    x: {
+                                        beginAtZero: true
+                                    }
+                                }
                             }
                         });
+
+                        // Actualizar la referencia del gráfico
+                        if (canvas.attr('id') === self.generalIds.graficoEficienciaPorHora) {
+                            self.vm.mainModule.selectors.barChartPorHora = newChart;
+                        } else if (canvas.attr('id') === self.generalIds.graficoEficienciaPorTurno) {
+                            self.vm.mainModule.selectors.barChartPorTurno = newChart;
+                        }
                     },
 
                     obtenerColoresBarras: function (porcentajes) {

@@ -14,7 +14,7 @@
 
 function ValidarObjeto(formulario, elemento) {
     formulario.validate().element(elemento);
-    var controlGroup = elemento.closest("div.form-group");
+    var controlGroup = elemento.closest("div.mb-3");
     if (controlGroup.find('span.field-validation-error').length == 0)
         controlGroup.removeClass('error');
     else

@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Enums;
+﻿using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using System;
 
 namespace Molinos.Scato.Dominio.Dto
@@ -27,6 +28,7 @@ namespace Molinos.Scato.Dominio.Dto
         public DateTime? FechaEgreso { get; set; }
         public bool EsSojaEUDR { get; set; }
         public bool EsSojaEPAyEUDR { get; set; }
+        public bool EsCuitNestle { get; set; }
     }
 
     public class CallePorRecorridoListadoCamionesDto
@@ -60,5 +62,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsDemorado { get; set; }
         public bool EsSojaEUDR { get; set; }
         public bool EsSojaEPAyEUDR { get; set; }
+        public int? IdRecorrido { get; set; }
     }
 }

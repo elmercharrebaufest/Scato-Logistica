@@ -53,5 +53,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsSojaIMPO { get; set; }
         public bool EsSojaEUDR { get; set; }
         public bool EsSojaEPAyEUDR { get; set; }
+        public bool EsCuitNestle { get; set; }
     }
 }

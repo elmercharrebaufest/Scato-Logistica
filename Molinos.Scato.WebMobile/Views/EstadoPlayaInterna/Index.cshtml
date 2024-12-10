@@ -24,17 +24,17 @@
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" id="tabPlayaInternaGranos">
-        <a class="nav-link tabPanelEstadoPlayaInterna active" id="playaInterna-tab" data-calle="playaInterna" data-toggle="tab" href="#playaInterna" role="tab" aria-controls="playaInterna" aria-selected="false">Granos</a>
+        <a class="nav-link tabPanelEstadoPlayaInterna active" id="playaInterna-tab" data-calle="playaInterna" data-bs-toggle="tab" href="#playaInterna" role="tab" aria-controls="playaInterna" aria-selected="true">Granos</a> <!-- Updated data-toggle to data-bs-toggle and aria-selected to true -->
     </li>
     <li class="nav-item" id="tabPlayaInternaNoGranos">
-        <a class="nav-link tabPanelEstadoPlayaInterna" id="plantaNoGranos-tab" data-calle="plantaNoGranos" data-toggle="tab" href="#plantaNoGranos" role="tab" aria-controls="plantaNoGranos" aria-selected="false">No Granos</a>
+        <a class="nav-link tabPanelEstadoPlayaInterna" id="plantaNoGranos-tab" data-calle="plantaNoGranos" data-bs-toggle="tab" href="#plantaNoGranos" role="tab" aria-controls="plantaNoGranos" aria-selected="false">No Granos</a> <!-- Updated data-toggle to data-bs-toggle -->
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="playaInterna" role="tabpanel" aria-labelledby="playaInterna-tab">
         @Html.Partial("_CallesGranos", Model)
     </div>
-    <div class="tab-pane fade show" id="plantaNoGranos" role="tabpanel" aria-labelledby="plantaNoGranos-tab">
+    <div class="tab-pane fade" id="plantaNoGranos" role="tabpanel" aria-labelledby="plantaNoGranos-tab">
         @Html.Partial("_CallesNoGranos", Model)
     </div>
 </div>

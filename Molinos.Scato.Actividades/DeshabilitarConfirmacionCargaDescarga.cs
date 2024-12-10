@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Activities;
-using System.Configuration;
-using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
 
 namespace Molinos.Scato.Actividades
@@ -19,14 +15,10 @@ namespace Molinos.Scato.Actividades
             try
             {
                 var recorridoId = repositorio.ObtenerRecorridoIdPorGuid(context.WorkflowInstanceId);
-                var confirmacion = new ConfirmacionCargaDescargaDto()
-                {
-                    RecorridoId = recorridoId,
-                    PendienteConfirmacion = false
-                };
                 servicio.Ejecutar(new ActualizarConfirmacionCargaDescarga
                 {
-                    Dto = confirmacion
+                    DeshabilitarConfirmacion = true,
+                    RecorridoId = recorridoId
                 });
             }
             catch (Exception)

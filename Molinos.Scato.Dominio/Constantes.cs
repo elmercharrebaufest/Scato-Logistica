@@ -261,6 +261,8 @@
             public const string workflowFason = "SLO.EgresoClienteFason";
             public const string workflowFasonSinFlete = "SLO.EgresoClienteFasonSinFlete";
             public const string workflowMaterialNoProductivo = "SLO.EgresoMaterialNoProductivo";
+            public const string workflowVentaFas = "SLO.EgresoPorVentasFAS";
+            public const string workflowExportacionFCA = "1029-EgresoPorExportacionFCA";
         }
 
         public struct Excepciones
@@ -268,5 +270,9 @@
             public const string SecuenciaMultiplesElementos = "La secuencia contiene más de un elemento";
         }
 
+        public struct CuitCliente
+        {
+            public const string Nestle = "30-54676404-0";
+        }
     }
 }

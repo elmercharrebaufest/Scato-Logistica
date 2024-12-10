@@ -6,49 +6,40 @@
 @using (Ajax.BeginForm("ModificarPuntoDeCarga", null, new AjaxOptions { OnSuccess = "refreshPuntoDeCarga" }, new { @class = "container" }))
 {
     @Html.HiddenFor(model => model.Id)
-    <div class="row">
+    <div class="row mb-3">
         <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Descripcion)
-                    <div class="controls">
-                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Descripcion)
-                    </div>
-                </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Descripcion)
+                @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Descripcion)
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-3">
         <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Camiones)
-                    <div class="controls">
-                        @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control", type = "number", min = "0", step = "1" })
-                        @Html.ValidationMessageFor(model => model.Camiones)
-                    </div>
-                </div>
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Camiones)
+                @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control", type = "number", min = "0", step = "1" })
+                @Html.ValidationMessageFor(model => model.Camiones)
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-3">
         <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.CheckBoxFor(model => model.ConviveEnAlmacen)
-                    @Html.LabelFor(model => model.ConviveEnAlmacen)
-                </div>
+            <div class="mb-3 form-check">
+                @Html.CheckBoxFor(model => model.ConviveEnAlmacen, new { @class = "form-check-input" })
+                @Html.LabelFor(model => model.ConviveEnAlmacen, new { @class = "form-check-label" })
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Textos.Cancelar</button>
         <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
     </div>
+
 }
 
 @Scripts.Render("~/bundles/jqueryval")

@@ -483,6 +483,7 @@ function CargarDomicilios() {
     }
 }
 
+//TODO Refactorizar 1029-EgresoPorExportacionFCA por constante
 function ValidarDerivadoGranario() {
     let url = window.location.search;
     let urlParams = new URLSearchParams(url);

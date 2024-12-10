@@ -25,7 +25,6 @@ const FILES_TO_CACHE = [
     
     //'./scripts/knockout-2.2.1.js',
     //'./scripts/Chart.js',
-    //'./Scripts/Chart.bundle.js',
     //'./Scripts/chartjs-plugin-annotation.min.js',
     //'./scripts/autocompletar.js',
     //'./Scripts/jquery-3.3.1.js',

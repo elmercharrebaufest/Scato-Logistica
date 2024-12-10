@@ -4,90 +4,95 @@
 @using System.Web.Optimization
 
 <div id="links"
-     data-url-buscar-caracteristicaDeCalidadPorId="@Url.Action("BuscarCaracteristicaDeCalidadPorId","Consultas") "></div>
-<div class="modal fade" id="modalAutomatismo" tabindex="-1" role="dialog" aria-labelledby="modalAutomatismoLabel">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+     data-url-buscar-caracteristicaDeCalidadPorId="@Url.Action("BuscarCaracteristicaDeCalidadPorId","Consultas") ">
+</div>
+
+<div class="modal fade" id="modalAutomatismo" tabindex="-1" aria-labelledby="modalAutomatismoLabel" aria-hidden="true">
+    <!-- Bootstrap 5: aria-hidden added for accessibility improvements -->
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <!-- Removed role="document" as it's no longer required in Bootstrap 5 -->
         @using (Ajax.BeginForm("Crear", null, new AjaxOptions { OnSuccess = "guardarSuccess" }, new { @class = "container" }))
         {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalAutomatismoLabel">Crear Automatismo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <!-- Bootstrap 5: Updated the close button with correct classes -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- Bootstrap 5: Changed "data-dismiss" to "data-bs-dismiss" -->
                 </div>
 
                 <div class="modal-body">
-                    <div class="form-group row mt-4">
+                    <div class="row mt-4">
                         <div class="col-md-6">
                             @Html.LabelFor(m => m.AutomatismoGrano.MaterialId)
-                            @Html.DropDownListFor(m => m.AutomatismoGrano.MaterialId, Model.Materiales, new { @class = "form-control", id = "cboxMateriales", data_url = @Url.Action("ListarVariedades", "TableroComandoLogistica") })
+                            @Html.DropDownListFor(m => m.AutomatismoGrano.MaterialId, Model.Materiales, new { @class = "form-select", id = "cboxMateriales", data_url = @Url.Action("ListarVariedades", "TableroComandoLogistica") })
                             @Html.ValidationMessageFor(m => m.AutomatismoGrano.MaterialId)
                         </div>
                         <div class="col-md-6">
                             @Html.LabelFor(m => m.AutomatismoGrano.TipoVariedades)
-                            @Html.DropDownListFor(m => m.AutomatismoGrano.TipoVariedades, Model.Variedades, new { @class = "form-control multiselect", id = "cboxVariedades", multiple = "multiple" })
+                            @Html.DropDownListFor(m => m.AutomatismoGrano.TipoVariedades, Model.Variedades, new { @class = "form-select", id = "cboxVariedades", multiple = "multiple", placeholder = "(selecciona variedad)" })
                             @Html.ValidationMessageFor(m => m.AutomatismoGrano.TipoVariedades)
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         @Html.CheckBoxFor(m => m.AutomatismoGrano.CamionEscalable, new { @class = "esEscalableCheck" })
                         @Html.LabelFor(m => m.AutomatismoGrano.CamionEscalable)
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.CamionEscalable)
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         @Html.LabelFor(m => m.AutomatismoGrano.CallePreBalanzaId)
-                        @Html.DropDownListFor(m => m.AutomatismoGrano.CallePreBalanzaId, Model.CallesPreBalanza, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CallePreBalanzaId, Model.CallesPreBalanza, new { @class = "form-select" })
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.CallePreBalanzaId)
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         @Html.CheckBoxFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
                         @Html.LabelFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
                     </div>
 
-                    <div id="divCalidad" style="display:none" class="form-group">
+                    <div id="divCalidad" style="display:none" class=" mb-3">
                         @Html.LabelFor(m => m.AutomatismoGrano.CalidadId)
-                        @Html.DropDownListFor(m => m.AutomatismoGrano.CalidadId, Model.Calidades, new { @class = "form-control", data_val_required = "El campo 'Calidad' es requerido." })
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CalidadId, Model.Calidades, new { @class = "form-select", data_val_required = "El campo 'Calidad' es requerido." })
                         @Html.HiddenFor(model => model.CaracteristicaDeCalidadId)
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.CalidadId)
 
-                        <div class="form-group row mt-4">
+                        <div class="mb-3 row mt-4">
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Minimo)
-                                @Html.TextBoxFor(m => m.AutomatismoGrano.Minimo, new { @class = "form-control", Type = "Number", data_val_required = "El campo 'Minimo' es requerido." })
+                                @Html.TextBoxFor(m => m.AutomatismoGrano.Minimo, new { @class = "form-control", type = "Number", data_val_required = "El campo 'Minimo' es requerido." })
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Minimo)
                             </div>
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Maximo)
-                                @Html.TextBoxFor(m => m.AutomatismoGrano.Maximo, new { @class = "form-control", Type = "Number", data_val_required = "El campo 'Maximo' es requerido." })
+                                @Html.TextBoxFor(m => m.AutomatismoGrano.Maximo, new { @class = "form-control", type = "Number", data_val_required = "El campo 'Maximo' es requerido." })
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Maximo)
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         @Html.LabelFor(m => m.AutomatismoGrano.CallePreHidraulicaId)
-                        @Html.DropDownListFor(m => m.AutomatismoGrano.CallePreHidraulicaId, Model.CallesHidraulica, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CallePreHidraulicaId, Model.CallesHidraulica, new { @class = "form-select" })
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.CallePreHidraulicaId)
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         @Html.LabelFor(m => m.AutomatismoGrano.Hidraulicas)
-                        @Html.DropDownListFor(m => m.AutomatismoGrano.Hidraulicas, Model.Hidraulicas, new { @class = "form-control multiselect", multiple = "multiple" })
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.Hidraulicas, Model.Hidraulicas, new { @class = "form-select", multiple = "multiple" })
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.Hidraulicas)
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         @Html.LabelFor(m => m.AutomatismoGrano.AlmacenId)
-                        @Html.DropDownListFor(m => m.AutomatismoGrano.AlmacenId, Model.Almacenes, new { @class = "form-control", id = "cboxAlmacenes" })
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.AlmacenId, Model.Almacenes, new { @class = "form-select", id = "cboxAlmacenes" })
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.AlmacenId)
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+                    <!-- Bootstrap 5: Updated data-dismiss to data-bs-dismiss -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Textos.Cancelar</button>
                     <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
                 </div>
             </div>

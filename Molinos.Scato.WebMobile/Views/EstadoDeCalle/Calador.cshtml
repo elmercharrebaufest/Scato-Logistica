@@ -9,7 +9,8 @@
 
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item ml-auto">
+    <li class="nav-item ms-auto">
+        <!-- ml-auto (Bootstrap 4) replaced by ms-auto (Bootstrap 5) for margin start -->
         <div class="nav-link nav-material bg-soja">Soja</div>
     </li>
     <li class="nav-item tagmaterial">
@@ -22,10 +23,13 @@
         <div class="nav-link nav-material bg-warning text-white">Girasol</div>
     </li>
 </ul>
+
 <div class="content">
     <div class="container-fluid">
-
-        <div class="row row-card-no-pd" data-bind="foreach: CallesFiltradas('@((int)TipoCalle.Calado)')">
+        <!-- Ensure layout and responsiveness by keeping 'container-fluid' -->
+        
+        <div class="row g-3" data-bind="foreach: CallesFiltradas('@((int)TipoCalle.Calado)')">
+            <!-- Added g-3 (Bootstrap 5) to add gutters between columns -->
             <div class="col-md-6">
                 <div class="sinbordetb row">
                     <div class="col sinbordetb">
@@ -38,25 +42,29 @@
                                         {
                                             <label class="switch">
                                                 <input type="checkbox" data-bind="checked: Automatica(), click: LLamadoAutomatico@*, enable: MaterialId() && MaterialId() != '0'*@">
-                                                <span data-id="a" class="slider round "></span>
+                                                <span data-id="a" class="slider round"></span>
                                             </label>
                                         }
                                     </h4>
-
                                 </p>
                                 <div class="row justify-content-md-center">
                                     @if (PermisosHelper.Is(PermisosScato.CambioDeMaterialEnFilas))
                                     {
                                         <div class="col-12" data-bind="foreach: $root.MaterialesGranos()">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" data-bind="attr: { id: $parent.Id + '-' + MaterialId, name: 'rcc'+$parent.Id, value: MaterialId}, checked: $parent.MaterialId,enable: !$parent.Automatica(), click: $parent.CambiarModo">
+                                                <!-- Form inputs and labels updated for Bootstrap 5 -->
+                                                <input class="form-check-input" type="radio" data-bind="attr: { id: $parent.Id + '-' + MaterialId, name: 'rcc'+$parent.Id, value: MaterialId}, checked: $parent.MaterialId, enable: !$parent.Automatica(), click: $parent.CambiarModo">
                                                 <label class="form-check-label" data-bind="text: MaterialDesc, attr: { for: $parent.Id + '-' + MaterialId }"></label>
                                             </div>
                                         </div>
                                     }
                                     <div class="col-md-6">
-                                        <button type="button" style="width: 100%" class="btn btn-warning btn-sm calle" disabled data-bind="visible: Automatica()"><strong>LLamado automático</strong></button>
-                                        <button type="button" style="width: 100%" class="btn btn-success btn-sm calle" data-bind="click: LLamarSiguienteCalle, enable: MaterialId() && MaterialId() != '0', visible: !Automatica()"><strong>LLamar siguiente fila</strong></button>
+                                        <button type="button" style="width: 100%" class="btn btn-warning btn-sm calle" disabled data-bind="visible: Automatica()">
+                                            <strong>LLamado automático</strong>
+                                        </button>
+                                        <button type="button" style="width: 100%" class="btn btn-success btn-sm calle" data-bind="click: LLamarSiguienteCalle, enable: MaterialId() && MaterialId() != '0', visible: !Automatica()">
+                                            <strong>LLamar siguiente fila</strong>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -65,7 +73,9 @@
                 </div>
             </div>
         </div>
-        <div class="row row-card-no-pd" data-bind="foreach: $root.MaterialesGranos()">
+
+        <!-- Following a similar structure for the next set of rows -->
+        <div class="row g-3" data-bind="foreach: $root.MaterialesGranos()">
             <div class="col-md-12">
                 <div class="sinbordetb row">
                     <div class="col sinbordetb">
@@ -78,12 +88,12 @@
                                 </p>
                                 <div class="row card-filas">
                                     <div class="col" data-bind="foreach: $root.CallesLLamadas('@((int)TipoCalle.PreCalado)', '@((int)TipoCalle.ReCalado)', '@((int)TipoCalle.Circular)', MaterialId)">
-                                        <div class="text-white card-camion" data-bind="css: { 'bg-soja': MaterialId() == 4,
-                                                                                                                            'bg-maiz': MaterialId() == 386,
-                                                                                                                            'bg-naranja': MaterialId() == 13,
-                                                                                                                            'bg-warning': MaterialId() == 5,
-                                                                                                                            'bg-vacio' : MaterialId() == null
-                                                                                                                             }">
+                                        <div class="text-white card-camion" data-bind="css: { 
+                                            'bg-soja': MaterialId() == 4,
+                                            'bg-maiz': MaterialId() == 386,
+                                            'bg-naranja': MaterialId() == 13,
+                                            'bg-warning': MaterialId() == 5,
+                                            'bg-vacio' : MaterialId() == null }">
                                             <div class="card-header text-center" style="padding: 0px; height: 18px;">
                                                 <strong data-bind="text: (TipoCalle == @((int)TipoCalle.Circular) ? '&copy; ' : '') + Nombre +' (' + CamionesEnCalle() + ')'"></strong>
                                             </div>
@@ -99,25 +109,31 @@
     </div>
 </div>
 
-
+<!-- Modal section (updated) -->
 <div id="cambioEstadoModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body form-horizontal">
-
-                <div class="control-group">
-                    @Html.Label("Motivo", new { @class = "control-label" })
+                <div class="mb-3">
+                    <!-- Bootstrap 5: Updated to new 'mb-3' class for spacing -->
+                    @Html.Label("Motivo", new { @class = "form-label" })
+                    <!-- Updated from 'control-label' to 'form-label' for Bootstrap 5 -->
                     <div class="controls">
+                        <!-- TextArea updated with Bootstrap 5 form-control styling -->
                         @Html.TextArea("Motivo", new { id = "motivo", @class = "form-control", style = "width:350px;" })
                     </div>
                 </div>
-
-                <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
+                <span id="error-largo" class="text-danger" style="display:none;">
+                    @string.Format(Textos.Error_LargoMensaje, "Motivo", "10")
+                </span>
+                <!-- Text-danger for Bootstrap 5 text styling -->
             </div>
 
             <div class="modal-footer">
+                <!-- Buttons updated for Bootstrap 5 modal -->
                 <button id="dialogo-confirmar-cambio-modo" class="btn btn-success" name="submitAction">Confirmar</button>
-                <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">Cancelar</button>
+                <button id="dialogo-confirmar-cancelar" data-bs-dismiss="modal" class="btn btn-warning">Cancelar</button>
+                <!-- 'data-dismiss' updated to 'data-bs-dismiss' for Bootstrap 5 modal closing -->
             </div>
         </div>
     </div>

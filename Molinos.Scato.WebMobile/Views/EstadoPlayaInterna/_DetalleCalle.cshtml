@@ -9,7 +9,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Información de Calle</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <!-- Changed data-dismiss to data-bs-dismiss for Bootstrap 5 compliance -->
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -18,7 +19,6 @@
                     <legend class="reset-this redo-legend">Información</legend>
                     <div class="row">
                         <div class="control-group col-8">
-
                             @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
                             <div id="div-descripcion" class="controls">
                                 @Html.DisplayFor(model => model.Descripcion, new { @class = "input-medium" })
@@ -93,7 +93,6 @@
                         }
                         @if (!Model.Hidraulica.IsEmpty())
                         {
-
                             <div id="div-hidraulica" class="control-group col-3">
                                 @Html.LabelFor(model => model.Hidraulica, new { @class = "control-label" })
                                 <div class="controls">
@@ -106,7 +105,7 @@
                 </fieldset>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

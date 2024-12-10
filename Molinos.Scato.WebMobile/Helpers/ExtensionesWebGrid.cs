@@ -204,27 +204,41 @@ namespace Molinos.Scato.WebMobile.Helpers
 
         public static WebGridColumn ColumnaSeleccionarDocumento(this WebGrid grid, HtmlHelper html, string controller, string style = "", bool useAjax = true, bool filtrarPorTarjeta = false, bool soloLectura = false)
         {
-            return grid.Column("Seleccionar", "Ver", f => html.Raw(
-                
-                ((soloLectura || (!soloLectura && f.EsModificable)) ?
-                html.BotonLink(Textos.Seleccionar, "Seleccionar", controller, new { f.id, filtrarPorTarjeta, soloLectura }, style + ((useAjax) ? " ajax-editar-link" : string.Empty), "icon-play", true).ToHtmlString()
-                : "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.Error_NoModificacion + "\" >" + Textos.Error_NoModificable + "</span>"
-                )
-                ),
-                                                        "editar-borrar-columna", false);
+            return 
+                grid.Column(
+                    "Seleccionar", 
+                    "Ver", 
+                    f => html.Raw(
+                        (soloLectura || (!soloLectura && f.EsModificable)) ?
+                            html.BotonLink(Textos.Seleccionar, 
+                                           "Seleccionar", 
+                                           controller, 
+                                           new { f.id, filtrarPorTarjeta, soloLectura }, 
+                                           style + ((useAjax) ? " ajax-editar-link" : string.Empty), 
+                                           "icon-play", 
+                                           true).ToHtmlString()
+                            : "<span class=\"label label-important\" data-bs-toggle=\"tooltip\" title=\"" + Textos.Error_NoModificacion + "\" >" + Textos.Error_NoModificable + "</span>"
+                        ),
+                    "editar-borrar-columna", 
+                    false);
         }
 
         public static WebGridColumn ColumnaEliminarDocumento(this WebGrid grid, HtmlHelper html, string controller, string style = "", bool pideMotivo = false)
         {
-            return grid.Column("Eliminar", "", f => html.Raw(
-                f.EsEliminable && f.Terminado && PermisosHelper.Is(PermisosScato.BorrarDocumentosTerminados) ?
-                html.BotonLink(Textos.Eliminar, "EliminarTerminado", controller, new { f.id }, style + (pideMotivo ? "ajax-borrar-con-motivo-link" : " ajax-borrar-link"), "icon-trash", true).ToHtmlString()
-                : f.EsEliminable && !f.Terminado && PermisosHelper.Is(PermisosScato.BorrarDocumentosNoTerminados) ?
-                html.BotonLink(Textos.Eliminar, "EliminarNoTerminado", controller, new { f.id }, style + (pideMotivo ? "ajax-borrar-con-motivo-link" : " ajax-borrar-link"), "icon-trash", true).ToHtmlString()
-                : !f.EsEliminable ? "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.Error_NoEliminar + "\" >" + Textos.Error_NoEliminable + "</span>"
-                : "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.Permiso_Insuficiente + "\" >" + Textos.Error_NoEliminable + "</span>"
-                ),
-                                                        "editar-borrar-columna", false);
+            return 
+                grid.Column(
+                    "Eliminar", 
+                    "", 
+                    f => html.Raw(
+                        f.EsEliminable && f.Terminado && PermisosHelper.Is(PermisosScato.BorrarDocumentosTerminados) ?
+                        html.BotonLink(Textos.Eliminar, "EliminarTerminado", controller, new { f.id }, style + (pideMotivo ? "ajax-borrar-con-motivo-link" : " ajax-borrar-link"), "icon-trash", true).ToHtmlString()
+                        : f.EsEliminable && !f.Terminado && PermisosHelper.Is(PermisosScato.BorrarDocumentosNoTerminados) ?
+                        html.BotonLink(Textos.Eliminar, "EliminarNoTerminado", controller, new { f.id }, style + (pideMotivo ? "ajax-borrar-con-motivo-link" : " ajax-borrar-link"), "icon-trash", true).ToHtmlString()
+                        : !f.EsEliminable ? "<span class=\"label label-important\" data-bs-toggle=\"tooltip\" title=\"" + Textos.Error_NoEliminar + "\" >" + Textos.Error_NoEliminable + "</span>"
+                        : "<span class=\"label label-important\" data-bs-toggle=\"tooltip\" title=\"" + Textos.Permiso_Insuficiente + "\" >" + Textos.Error_NoEliminable + "</span>"
+                        ),
+                    "editar-borrar-columna", 
+                    false);
         }
 
         public static WebGridColumn ColumnaEliminar(this WebGrid grid, HtmlHelper html, string controller, string style = "", bool pideMotivo = false)

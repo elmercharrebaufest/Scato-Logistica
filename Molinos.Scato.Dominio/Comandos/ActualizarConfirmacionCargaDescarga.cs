@@ -1,9 +1,9 @@
-﻿using Molinos.Scato.Dominio.Dto;
-
-namespace Molinos.Scato.Dominio.Comandos
+﻿namespace Molinos.Scato.Dominio.Comandos
 {
     public class ActualizarConfirmacionCargaDescarga : Comando
     {
-        public ConfirmacionCargaDescargaDto Dto { get; set; }
+        public bool Confirmar { get; set; }
+        public bool DeshabilitarConfirmacion { get; set; }
+        public int RecorridoId { get; set; }
     }
 }

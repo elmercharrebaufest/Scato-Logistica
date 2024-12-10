@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
@@ -21,7 +17,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ActualizarConfirmacionCargaDescarga comando)
         {
             var resultado = new Resultado();
-            Validar(resultado, comando.Dto.RecorridoId);
+            Validar(resultado, comando.RecorridoId);
             if (resultado.HayErrores)
                 return resultado;
 
@@ -40,12 +36,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void ModificarEntidad(ActualizarConfirmacionCargaDescarga comando)
         {
-            var confirmacion = Repositorio.Obtener<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == comando.Dto.RecorridoId);
-            confirmacion.FechaConfirmacion = comando.Dto.FechaConfirmacion;
-            if(!confirmacion.Confirmado)
-                confirmacion.Confirmado = comando.Dto.Confirmado;
-            confirmacion.PendienteConfirmacion = comando.Dto.PendienteConfirmacion;
-            confirmacion.NombreUsuario = comando.Dto.NombreUsuario;
+            var confirmacion = Repositorio.Obtener<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == comando.RecorridoId);
+            if(comando.DeshabilitarConfirmacion)
+            {
+                confirmacion.PendienteConfirmacion = false;
+                return;
+            }
+
+            if(comando.Confirmar)
+            {
+                confirmacion.PendienteConfirmacion = false;
+                confirmacion.Confirmado = true;
+                confirmacion.FechaConfirmacion = DateTime.Now;
+                confirmacion.NombreUsuario = comando.Usuario;
+            }
         }
 
         public void Validar(Resultado resultado, int recorridoId)
@@ -53,6 +57,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (!Repositorio.Existe<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == recorridoId))
             {
                 resultado.Error("confirmacion", "No existe un recorrido para confirmar la carga/descarga");
+                return;
+            }
+
+            if (Repositorio.Existe<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == recorridoId && !x.PendienteConfirmacion))
+            {
+                resultado.Error("confirmacion", "El recorrido no tiene una confirmación de carga/descarga pendiente");
+                return;
             }
         }
     }

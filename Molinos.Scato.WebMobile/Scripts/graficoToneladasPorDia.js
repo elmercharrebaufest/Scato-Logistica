@@ -1,166 +1,169 @@
-﻿function DataSetChartLine(nombreDeLinea, data, color) {
+﻿// Definición de DataSetChartLine para crear conjuntos de datos
+function DataSetChartLine(nombreDeLinea, data, color) {
     this.label = nombreDeLinea,
-        this.fill = false,
-        this.borderDash = [],
-        this.borderDashOffset = 0.0,
-        this.borderJoinStyle = 'miter',
-        this.borderWidth = 2,
-        this.data = data;
+        this.fill = false,  // Se mantiene en false para líneas
+        this.borderDash = [], // La configuración de estilo de línea se mantiene vacía
+        this.borderDashOffset = 0.0, // Sin desplazamiento
+        this.borderJoinStyle = 'miter', // Estilo de unión de bordes
+        this.borderWidth = 2, // Ancho del borde
+        this.data = data; // Los datos que se le pasan
     if (color === null) {
-        this.backgroundColor = '#000000';
-        this.hoverBackgroundColor = '#000000';
+        this.backgroundColor = '#000000'; // Color de fondo por defecto
+        this.hoverBackgroundColor = '#000000'; // Color de fondo al pasar el mouse
     } else {
-        this.backgroundColor = color;
-        this.hoverBackgroundColor = color;
+        this.backgroundColor = color; // Color de fondo especificado
+        this.hoverBackgroundColor = color; // Color de fondo al pasar el mouse
     }
 }
 
+// Vista del gráfico de toneladas por día
 function GraficoToneladasPorDiaViewModel() {
-    // Inicializo observers
-    var self = this;
-    var intervalo = 60;
-    var multiplicador = 1000;
+    var self = this; // Mantenemos el contexto del objeto
+    var graficoIniciado = false;
+
+    // Inicialización de variables
     self.datasetTotal = new DataSetChartLine("", [], null);
     self.fechaSeleccionada = null;
     self.materialSeleccionado = null;
     self.myLineChartHidraulicas = null;
     self.hidraulicas = null;
-    var graficoIniciado = false;
 
+    // Función para mostrar el gráfico
     self.mostrarGrafico = function () {
         var ctxh = $("#myChartToneladasPorDia");
         var labels = [];
         var data = [];
 
+        // Filtramos los datos de las hidráulicas
         if (self.hidraulicas) {
             data = $.grep(self.datasetTotal.data, function (e) { return $.inArray(e.Clave, self.hidraulicas) >= 0 });
         } else {
             data = self.datasetTotal.data;
         }
+
+        // Obtener etiquetas únicas
         $.each(data, function (i, n) {
             if ($.inArray(n.Clave, labels) < 0)
                 labels.push(n.Clave);
         });
 
-        $.each(data, function (i, n) {
-            if ($.inArray(n.Clave, labels) < 0)
-                labels.push(n.Clave);
-        });
-
+        // Obtener materiales únicos
         var materiales = [];
         $.each(data, function (i, n) {
             if (n.Material && $.inArray(n.Material, materiales) < 0)
                 materiales.push(n.Material);
         });
 
+        // Calcular totales por material
         var totals = [];
         $.each(labels, function (i, l) {
             var materialesHidraulica = $.grep(data, function (e) { return e.Clave == l });
             var totalHidraulica = 0;
             $.each(materialesHidraulica, function (i2, m) { totalHidraulica += m.Toneladas });
-
             totals.push(totalHidraulica);
         });
 
+        // Obtener colores para los gráficos
         var coloresMateriales = obtenerColoresParaGraficos(materiales.length);
 
+        // Configuración de los datasets
         var datasets = $.map(materiales, function (m, i) {
             var color = coloresMateriales[i];
             return {
                 label: m,
                 data: $.map(labels, function (l) {
                     var h = $.grep(data, function (e) { return e.Clave == l && e.Material == m });
-                    return h[0] ? h[0].Toneladas : 0;
+                    return h[0] ? h[0].Toneladas : 0; // Si no hay datos, devuelve 0
                 }),
-                backgroundColor: color,
-                borderColor: color,
-                borderWidth: 1
+                backgroundColor: color, // Color de fondo
+                borderColor: color, // Color del borde
+                borderWidth: 1 // Ancho del borde
             };
         });
 
+        // Destruir gráfico anterior si existe
         if (self.myLineChartHidraulicas) {
             self.myLineChartHidraulicas.destroy();
         }
 
+        // Crear nuevo gráfico
         self.myLineChartHidraulicas = new Chart(ctxh, {
-            type: 'bar',
+            type: 'bar', // Tipo de gráfico
             data: {
-                labels: labels,
-                datasets: datasets
+                labels: labels, // Etiquetas del eje x
+                datasets: datasets // Conjuntos de datos
             },
             options: {
-                animation: false,
-                legend: {
-                    display: true
-                },
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0
+                animation: false, // Desactivar animación
+                plugins: {
+                    legend: {
+                        display: true // Mostrar leyenda
+                    },
+                    tooltip: { // Configuración de tooltip
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                return [materiales[tooltipItem.datasetIndex] + ': ' + Number(tooltipItem.raw).toString()]; // Mostrar material y toneladas
                             },
-                            stacked: true
-                        }
-                    ],
-                    xAxes: [
-                        {
-                            ticks: {
-                                min: 0
-                            },
-                            stacked: true
-                        }]
-                },
-                title: {
-                    display: true,
-                    text: textoToneladasPorDia
-                },
-                elements: {
-                    point: { radius: 0 }
-                },
-                tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem) {
-                            return [materiales[tooltipItem.datasetIndex] + ': ' + Number(tooltipItem.yLabel).toString()];
-                        },
-                        title: function (tooltipItem) {
-                            return [tooltipItem[0].label + " (Total: " + totals[tooltipItem[0].index] + ")"];
+                            title: function (tooltipItem) {
+                                return [tooltipItem[0].label + " (Total: " + totals[tooltipItem[0].dataIndex] + ")"]; // Título del tooltip
+                            }
                         }
                     }
-                }
+                },
+                scales: {
+                    y: {
+                        min: 0, // Valor mínimo del eje y
+                        stacked: true // Ejes apilados
+                    },
+                    x: {
+                        stacked: true // Ejes apilados
+                    }
+                },
+                elements: {
+                    point: { radius: 0 } // Ocultar puntos
+                },
+                // Título del gráfico
+                responsive: true, // Gráfico responsivo
+                maintainAspectRatio: false // Mantener proporción de aspecto
             }
         });
     }
 
+    // Función para actualizar el gráfico
     self.actualizarGrafico = function (funcionRecursiva, offline) {
         graficoIniciado = true;
         if (!offline) {
             $.getJSON(urlGenerarToneladasPorDias, { MaterialId: self.materialSeleccionado, FechaHoraDesde: self.fechaDesdeSeleccionada, FechaHoraHasta: self.fechaHastaSeleccionada }, function (data) {
                 self.datasetTotal.data = data.CamionesPorHidraulicaMaterial;
             }).done(function () {
-                self.mostrarGrafico();
+                self.mostrarGrafico(); // Mostrar gráfico después de la carga de datos
             }).fail(function () {
-
+                // Manejar error de carga
             });
         } else {
-            self.mostrarGrafico();
+            self.mostrarGrafico(); // Mostrar gráfico si está en offline
         }
     }
+
+    // Función recursiva para actualizar el gráfico
     function actualizarGraficoRecursivo() {
         self.actualizarGrafico(actualizarGraficoRecursivo);
     }
 
+    // Generar gráfico de toneladas por día
     self.generarGraficoToneldasPorDia = function () {
         self.materialSeleccionado = $("#materialIdToneladasPorDia").val();
         self.fechaDesdeSeleccionada = $("#FechaDesdeToneladas").val() + " " + $("#FechaDesdeToneladas_time").val();
         self.fechaHastaSeleccionada = $("#FechaHastaToneladas").val() + " " + $("#FechaHastaToneladas_time").val();
 
         if (!graficoIniciado) {
-            actualizarGraficoRecursivo();
+            actualizarGraficoRecursivo(); // Iniciar gráfico
         } else {
-            self.actualizarGrafico();
+            self.actualizarGrafico(); // Actualizar gráfico existente
         }
     }
 
+    // Filtrar hidráulicas seleccionadas
     self.filtrarHidraulicas = function (checkboxContainerClass) {
         var visibles = [];
         $.each($('.' + checkboxContainerClass + ' input[type = "checkbox"]'), function (i, chk) {
@@ -168,25 +171,26 @@ function GraficoToneladasPorDiaViewModel() {
                 visibles.push($(chk).val());
         });
 
-        self.hidraulicas = visibles;
+        self.hidraulicas = visibles; // Almacenar hidráulicas seleccionadas
     }
 }
 
+// Inicialización del gráfico al cargar el documento
 var graficoToneladasPorDia;
 $(document).ready(function () {
     $.each($('.checkboxesToneladas input[type="checkbox"]'), function (i, chk) {
-        $(chk).prop("checked", true);
+        $(chk).prop("checked", true); // Marcar todas las casillas
     });
 
-    //DefinirAutocompletar('#materialDescripcionToneladasPorDia', '#materialIdToneladasPorDia', $('#links').data().urlBuscarMateriales, $('#links').data().urlBuscarMaterial, null, null);
     graficoToneladasPorDia = new GraficoToneladasPorDiaViewModel();
     ko.applyBindings(graficoToneladasPorDia, document.getElementById("graficoToneladasPorDia"));
     graficoToneladasPorDia.filtrarHidraulicas("checkboxesToneladas");
     graficoToneladasPorDia.generarGraficoToneldasPorDia();
 
+    // Manejar cambios en las casillas de verificación
     $('.checkboxesToneladas input[type="checkbox"]').on("change", function (e) {
         graficoToneladasPorDia.filtrarHidraulicas("checkboxesToneladas");
         graficoToneladasPorDia.mostrarGrafico();
-        e.preventDefault();
+        e.preventDefault(); // Prevenir comportamiento por defecto
     });
 });

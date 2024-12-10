@@ -210,6 +210,7 @@ function Camion(item, calle) {
     self.Color = item.MaterialId == 63734 ? "bg-AceiteSj" : item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId == 81223 ? "bg-harina" : item.MaterialId == 63750 ? "bg-pellet" : item.MaterialId == 63736 ? "bg-Biodiesel" : item.MaterialId == 81252 ? "bg-Biodiesel" : item.MaterialId == 81243 ? "bg-Biodiesel" : item.MaterialId == 123262 ? "bg-Biodiesel" : item.MaterialId == 63691 ? "bg-AceiteG" : item.MaterialId == 172798 ? "bg-AceiteG" : item.MaterialId > 0 ? "bg-dark" : 'bg-vacio';
     self.Escalable = item.Escalable ? "fas fa-truck" : "";
     self.EsDemorado = item.EsDemorado ? "fas fa-hourglass-half" : "";
+    self.EsCuitNestle = item.EsCuitNestle ? "fas fa-solid fa-dove" : "";
 }
 
 function EstadoDeCallesViewModel() {
@@ -480,7 +481,6 @@ var recargar = function () {
 
 $(document).ready(function () {
     ko.applyBindings(new EstadoDeCallesViewModel());
-    //$("#result").html("<div id='alert-reasignacioncallepostcalado' class='alert alert-success alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>'Password Changed'</div>");
 });
 
 function abrirModal() {

@@ -49,9 +49,8 @@
             {
                 <div class="modal-header">
                     <h5 class="modal-title">Información del Vehiculo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <!-- Changed class from 'close' to 'btn-close' for Bootstrap 5 compliance -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="dialogo-confirmar-body">
                     <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
@@ -92,7 +91,6 @@
                             </div>
                         </div>
                         <hr />
-
                         <div class="row">
                             <div class="control-group col-4">
                                 @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
@@ -139,7 +137,6 @@
                         </div>
                     </fieldset>
                 </div>
-
             }
             else
             {
@@ -147,16 +144,14 @@
                     @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleMoverRechazado) && Model.Rechazado && Model.TipoCalle
                    == Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
                     {
-
                         <h5 class="modal-title">Confirmar Mover a Rechazado</h5>
                     }
                     else
                     {
                         <h5 class="modal-title">Información del Vehiculo</h5>
                     }
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <!-- Changed class from 'close' to 'btn-close' for Bootstrap 5 compliance -->
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="dialogo-confirmar-body">
 
@@ -199,7 +194,6 @@
                                         @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
                                     </div>
                                 </div>
-
                             </div>
                         </fieldset>
 
@@ -223,13 +217,13 @@
                         <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
                             <legend class="reset-this redo-legend">Información</legend>
                             <div class="row">
-                                <div class="control-group col-3">
+                                <div class="control-group col-4">
                                     @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
                                     <div id="div-patente" class="controls">
                                         @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
                                     </div>
                                 </div>
-                                <div id="div-nomchofer" class="control-group col-5">
+                                <div id="div-nomchofer" class="control-group col-4">
                                     @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
                                     <div class="controls">
                                         @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
@@ -250,13 +244,12 @@
                                         @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
                                     </div>
                                 </div>
-                                <div id="div-nomchofer" class="control-group col-6">
+                                <div id="div-nomchofer" class="control-group col-4">
                                     @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
                                     <div class="controls">
                                         @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
                                     </div>
                                 </div>
-
                             </div>
                         </fieldset>
                     }
@@ -265,14 +258,16 @@
                 @Html.HiddenFor(model => model.CalleId)
             }
             <div class="modal-footer d-flex justify-content-around">
-                @if (Model.CalleNoGrano && Model.Etapa == Constantes.EtapaWorkflow.Visteo){
+                @if (Model.CalleNoGrano && Model.Etapa == Constantes.EtapaWorkflow.Visteo)
+                {
                     <div class="centered">
                         @Textos.VehiculoEnCondiciones_Pregunta:
                         <button id="btn-noGranos-confirm" onclick="modalConfirmarVisteo.showModal()" class="btn btn-primary rechazar">@Textos.Si</button>
                         <button id="btn-noGranos-no" onclick="rechazo()" class="btn btn-outline-dark rechazar-boton no-rechazar">@Textos.No</button>
                     </div>
                 }
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <!-- Changed data-dismiss to data-bs-dismiss for Bootstrap 5 compliance -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -286,7 +281,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Confirmación Reasignación de Calle</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <!-- Changed data-dismiss to data-bs-dismiss for Bootstrap 5 compliance -->
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -295,18 +291,19 @@
             </div>
 
             <div class="modal-footer">
-                <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction"
-                    value="">Confirmar</button>
-                <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">Cancelar</button>
+                <button id="dialogo-confirmar-confirmar" type="submit" class="btn" name="submitAction" value="">Confirmar</button>
+                <!-- Changed data-dismiss to data-bs-dismiss for Bootstrap 5 compliance -->
+                <button id="dialogo-confirmar-cancelar" data-bs-dismiss="modal" class="btn btn-warning">Cancelar</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Using <dialog> is fine, but ensure it works with your project needs -->
 <dialog id="modalConfirmarVisteo">
     <h4>@Textos.Confirmacion</h4>
     <p>
-        ¿Está seguro de que el vehiculo está en condiciones?
+        ¿Está seguro de que el vehículo está en condiciones?
     </p>
     <div>
         <button type="button" id="btn-noGranos-confirm" onclick="enCondiciones(true)" class="btn btn-warning">Confirmar</button>

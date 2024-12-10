@@ -11,7 +11,7 @@
 </div>
 
 
-<div class="row  justify-content-center mx-1" id="CamionesRechazados">
+<div class="row justify-content-center mx-1" id="CamionesRechazados">
     <ul>
         @foreach (var item in items)
         {
@@ -24,21 +24,24 @@
                                 <i class="fa fa-truck fa-5x"></i>
                             </button>
                         }
-                        <div class="row mx-2">
-                            <div class="row ml-2">
+                        <div class="row ms-2">
+                            <div class="ms-2">
                                 @if (!String.IsNullOrEmpty(@item.Patente))
                                 {
                                     <span class="bg-molinos font-weight-bold rounded text-light m-1 p-1">@item.Patente</span>
                                 }
                                 @if (!String.IsNullOrEmpty(@item.NumeroDocumentoDeIngreso))
                                 {
-                                    <span class="bg-molinos-t1 font-weight-bold rounded text-light m-1 p-1">@item.NumeroDocumentoDeIngreso</span>}
+                                    <span class="bg-molinos-t1 font-weight-bold rounded text-light m-1 p-1">@item.NumeroDocumentoDeIngreso</span>
+                                }
                                 @if (!String.IsNullOrEmpty(@item.NumeroDeTarjeta))
                                 {
-                                    <span class="bg-molinos-t2 font-weight-bold rounded text-light m-1 p-1">@item.NumeroDeTarjeta</span>}
+                                    <span class="bg-molinos-t2 font-weight-bold rounded text-light m-1 p-1">@item.NumeroDeTarjeta</span>
+                                }
                                 @if (!String.IsNullOrEmpty(@item.Material))
                                 {
-                                    <span class="bg-molinos-t3 font-weight-bold rounded text-light m-1 p-1">@item.Material</span>}
+                                    <span class="bg-molinos-t3 font-weight-bold rounded text-light m-1 p-1">@item.Material</span>
+                                }
                                 @if (!String.IsNullOrEmpty(@item.RechazoAccion))
                                 {
                                     <span class="bg-molinos-t4 font-weight-bold rounded text-light m-1 p-1">@item.RechazoAccion</span>
@@ -49,32 +52,31 @@
                                 }
                                 @if (item.TipoDocumentoDeIngreso == Molinos.Scato.Dominio.Enums.TipoDocumentoIngreso.CartaPorte)
                                 {
-                                    <span class="d-sm-block d-none btn btn-sm btn-outline-info m-1">
+                                    <span class="btn btn-sm btn-outline-info m-1">
                                         <i class="fa fa-download" aria-hidden="true"></i>
                                         <a class="link-normal" href="@Url.Action("DocumentoOrigen", "CamionesRechazados", new { Id = item.Id})"> Carta de Porte</a>
-
                                     </span>
                                 }
                             </div>
                             <div class="d-sm-block d-none col-12">
                                 <div class="row my-1" style="font-size: 12px">
-                                    <div class="col-sm-6 ">
+                                    <div class="col-sm-6">
                                         <strong>Inicio: </strong>@String.Format("{0:g}", @item.FechaCreacion)
                                     </div>
-                                    <div class="col-sm-6 ">
+                                    <div class="col-sm-6">
                                         <strong>Calado: </strong>@String.Format("{0:g}", @item.FechaCalado)
                                     </div>
                                 </div>
                                 <div class="row my-1" style="font-size: 12px">
-                                    <div class="col-sm-6 col ">
+                                    <div class="col-sm-6 col">
                                         <strong>Transportista: </strong>@item.Transportista
                                     </div>
-                                    <div class="col-sm-6 ">
+                                    <div class="col-sm-6">
                                         <strong>Entregador: </strong>@item.TieneEntregador
                                     </div>
                                 </div>
                                 <div class="row my-1" style="font-size: 12px">
-                                    <div class="col-sm-6 col ">
+                                    <div class="col-sm-6 col">
                                         <strong>Proveedor: </strong>@item.Proveedor
                                     </div>
                                     <div class="col-sm-12 top-margin">
@@ -82,28 +84,27 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="d-sm-none col-12">
                         <div class="row my-1" style="font-size: 12px">
-                            <div class="col-sm-6 ">
+                            <div class="col-sm-6">
                                 <strong>Inicio: </strong>@String.Format("{0:g}", @item.FechaCreacion)
                             </div>
-                            <div class="col-sm-6 ">
+                            <div class="col-sm-6">
                                 <strong>Calado: </strong>@String.Format("{0:g}", @item.FechaCalado)
                             </div>
                         </div>
                         <div class="row my-1" style="font-size: 12px">
-                            <div class="col-sm-6 col ">
+                            <div class="col-sm-6 col">
                                 <strong>Transportista: </strong>@item.Transportista
                             </div>
-                            <div class="col-sm-6 ">
+                            <div class="col-sm-6">
                                 <strong>Entregador: </strong>@item.TieneEntregador
                             </div>
                         </div>
                         <div class="row my-1" style="font-size: 12px">
-                            <div class="col-sm-6 col ">
+                            <div class="col-sm-6 col">
                                 <strong>Proveedor: </strong>@item.Proveedor
                             </div>
                             <div class="col-sm-12 top-margin">
@@ -116,16 +117,16 @@
                         <span class="d-sm-none col-12 btn btn-sm btn-outline-info">
                             <i class="fa fa-download" aria-hidden="true"></i>
                             <a class="link-normal" href="@Url.Action("DocumentoOrigen", "CamionesRechazados", new { Id = item.Id})"> Carta de Porte</a>
-
                         </span>
                     }
                 </div>
             </div>
         }
     </ul>
-    <Script>
-        function SpinnerTrigger(){
+    <script>
+        function SpinnerTrigger() {
             $('.spinner').show();
         }
-    </Script>
+    </script>
 </div>
+

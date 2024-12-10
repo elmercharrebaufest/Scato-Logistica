@@ -5,25 +5,24 @@
 }
 
 <div class="container">
-    <div class="menu__contenedor">
-        <div class="menu__boton menu__boton--tableroComandoLogistica">
-            @Html.ActionLink(Textos.TableroLogisticaAutomatismo_Titulo, "Index", "TableroComandoLogistica", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
+    <div class="menu__contenedor row">
+        <div class="menu__boton menu__boton--tableroComandoLogistica col-12 col-md-4 mb-3">
+            @Html.ActionLink(Textos.TableroLogisticaAutomatismo_Titulo, "Index", "TableroComandoLogistica", null, new { @class = "card btn btn-success w-100 menu__link", @style = "padding: 1rem;" })
         </div>
-        <div class="menu__boton menu__boton--tableroComandoPuerto">
-            @Html.ActionLink(Textos.TableroPuertoAutomatismo_Titulo, "Index", "TableroComandoPuerto", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
+        <div class="menu__boton menu__boton--tableroComandoPuerto col-12 col-md-4 mb-3">
+            @Html.ActionLink(Textos.TableroPuertoAutomatismo_Titulo, "Index", "TableroComandoPuerto", null, new { @class = "card btn btn-success w-100 menu__link", @style = "padding: 1rem;" })
         </div>
-        <div class="menu__boton">
-            @Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
+        <div class="menu__boton col-12 col-md-4 mb-3">
+            @Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta", null, new { @class = "card btn btn-success w-100 menu__link", @style = "padding: 1rem;" })
         </div>
-        <div class="menu__boton">
-            @Html.ActionLink(Textos.GestionDePlayaInterna_Titulo, "Index", "EstadoPlayaInterna", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
+        <div class="menu__boton col-12 col-md-4 mb-3">
+            @Html.ActionLink(Textos.GestionDePlayaInterna_Titulo, "Index", "EstadoPlayaInterna", null, new { @class = "card btn btn-success w-100 menu__link", @style = "padding: 1rem;" })
         </div>
-        <div class="menu__boton">
-            @Html.ActionLink(Textos.GestionDePlayaExterna_Titulo, "Index", "EstadoDeCalle", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
+        <div class="menu__boton col-12 col-md-4 mb-3">
+            @Html.ActionLink(Textos.GestionDePlayaExterna_Titulo, "Index", "EstadoDeCalle", null, new { @class = "card btn btn-success w-100 menu__link", @style = "padding: 1rem;" })
         </div>
-        <div class="menu__boton">
-            @Html.ActionLink(Textos.TituloVolcadoras, "Index", "EstadoVolcadoras", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
+        <div class="menu__boton col-12 col-md-4 mb-3">
+            @Html.ActionLink(Textos.TituloVolcadoras, "Index", "EstadoVolcadoras", null, new { @class = "card btn btn-success w-100 menu__link", @style = "padding: 1rem;" })
         </div>
     </div>
-
 </div>

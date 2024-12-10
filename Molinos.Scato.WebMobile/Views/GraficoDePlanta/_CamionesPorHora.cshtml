@@ -19,27 +19,49 @@
 <br />
 <div id="graficocamioneshora" class="col border rounded panel-padding">
     <form id="formHora">
-        <div class="form-row">
-            <div class="col-12 col-sm h5 mt-auto  text-center">
+        <div class="row align-items-center">
+            <!-- Title Section -->
+            <!-- Bootstrap 5: Replaced 'form-row' with 'row' for proper form layout -->
+            <!-- Added 'align-items-center' to vertically center form elements -->
+            <!-- Title -->
+            <div class="col-12 col-sm text-center text-sm-start h5">
+                <!-- Title: Centered on smaller screens, left-aligned on larger screens -->
                 @Textos.CamionesPorHora
             </div>
-            <div class="col-12 col-sm m-auto">
-                @Html.TextBoxFor(model => model.MaterialDescripcion, new { @class = "form-control", @id = "materialDescripcionHora" })
+
+            <!-- Material Description Input -->
+            <div class="col-12 col-sm">
+                <!-- Input: Added Bootstrap 5 form-control and 'border border-success' for green borders -->
+                @Html.TextBoxFor(model => model.MaterialDescripcion, new { @class = "form-control border border-success", @id = "materialDescripcionHora" })
+                <!-- Validation message (no changes) -->
                 @Html.ValidationMessageFor(model => model.MaterialDescripcion)
+                <!-- Hidden input (no changes) -->
                 @Html.HiddenFor(model => model.MaterialId, new { @id = "materialIdHora" })
             </div>
-            <div class="col-12 col-sm m-auto">
-                @Html.LabelFor(model => model.FechaVieja, new { @class = "sr-only" })
+
+            <!-- Date Input -->
+            <div class="col-12 col-sm">
+                <!-- Label: Replaced 'sr-only' with 'visually-hidden' for Bootstrap 5 screen reader accessibility -->
+                @Html.LabelFor(model => model.FechaVieja, new { @class = "visually-hidden" })
+                <!-- Input Group (no changes) -->
                 <div class="input-group date ancho-maximo">
                     @Html.EditorFor(model => model.FechaVieja, Model != null ? Model.FechaVieja.FormattedFixed() : string.Empty)
                 </div>
+                <!-- Validation message (no changes) -->
                 @Html.ValidationMessageFor(model => model.FechaVieja)
             </div>
-            <div class="col-12 col-sm m-auto">
-                <button class="btn btn-outline-success w-100" data-bind="click: generarGraficoHora">@Textos.Generar</button>
+
+            <!-- Submit Button -->
+            <div class="col-12 col-sm">
+                <!-- Button: Added 'w-100' to make the button full width within its column -->
+                <!-- The button uses 'btn btn-outline-success' to match the green border styling -->
+                <button class="btn btn-outline-success w-100" data-bind="click: generarGraficoHora">
+                    @Textos.Generar
+                </button>
             </div>
         </div>
     </form>
+
     <div class="row" id="partialContainerHora">
         @Html.Partial("_GraficoCamionesPorHora", Model)
     </div>

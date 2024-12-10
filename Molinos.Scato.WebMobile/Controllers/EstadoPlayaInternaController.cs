@@ -102,17 +102,11 @@ namespace Molinos.Scato.WebMobile.Controllers
             try
             {
                 var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
-                var confirmacion = new ConfirmacionCargaDescargaDto()
-                {
-                    RecorridoId = recorridoId,
-                    FechaConfirmacion = DateTime.Now,
-                    Confirmado = true,
-                    PendienteConfirmacion = false,
-                    NombreUsuario = usuario.Value
-                };
                 var resultado = servicioComandos.Ejecutar(new ActualizarConfirmacionCargaDescarga
                 {
-                    Dto = confirmacion
+                    Confirmar = true,
+                    RecorridoId = recorridoId,
+                    Usuario = usuario.Value
                 });
 
                 if (!resultado.HayErrores)
@@ -333,6 +327,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                         EsSojaIMPO = camion.EsSojaIMPO,
                         EsSojaEUDR = camion.EsSojaEUDR,
                         EsSojaEPAyEUDR = camion.EsSojaEPAyEUDR,
+                        EsCuitNestle = servicio.ValidarCuitNestle(camion.RecorridoId?? 0)
                     };
                     callePlanta.Camiones.Add(camionPlanta);
                 }

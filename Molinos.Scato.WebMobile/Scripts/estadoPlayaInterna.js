@@ -137,9 +137,12 @@ function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso, patenteBuscada) {
 }
 
 function obtenerClaseIcono(rechazado, calidad) {
+ 
     let icon = rechazado ? "fas fa-times-circle" : (calidad == 2 ? "fas fa-tint" : calidad == 3 ? "fas fa-vial" : calidad == 1 ? "fas fa-clipboard-check" : "");
     return icon;
 }
+
+
 
 function actualizarCalles(tipo) {
     let calles;
@@ -310,6 +313,10 @@ function LiberarFilePrebalanza(e) {
             $.unblockUI();
         }
     });
+}
+
+function obtenerClaseNestle(EsCuitNestle) {
+    return EsCuitNestle ? "fas fa-solid fa-dove" : "";
 }
 
 $("#body").on("click",".abrirModal", function (e) {

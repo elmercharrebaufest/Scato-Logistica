@@ -1,24 +1,18 @@
 ﻿function DataSetChartLine2(nombreActividad, historicoCamiones, color, historicoCantidadCamiones, rango) {
-    this.label = nombreActividad,
-        this.fill = false,
-        this.lineTension = 0.1,
-        //this.backgroundColor = "rgba(75,192,192,0.4)",
-        //this.borderColor = "rgba(75,192,192,1)",
-        this.borderCapStyle = 'butt',
-        this.borderDash = [],
-        this.borderDashOffset = 0.0,
-        this.borderJoinStyle = 'miter',
-        //this.pointBorderColor = "rgba(75,192,192,1)",
-        //this.pointBackgroundColor = "#fff",
-        this.pointBorderWidth = 1,
-        this.pointHoverRadius = 5,
-        //this.pointHoverBackgroundColor = "rgba(75,192,192,1)",
-        //this.pointHoverBorderColor = "rgba(220,220,220,1)",
-        this.pointHoverBorderWidth = 2,
-        this.pointRadius = 1,
-        this.pointHitRadius = 10,
-        this.spanGaps = false,
-        this.data = historicoCamiones;
+    this.label = nombreActividad;
+    this.fill = false;
+    this.tension = 0.1; // Changed from lineTension to tension
+    this.borderCapStyle = 'butt';
+    this.borderDash = [];
+    this.borderDashOffset = 0.0;
+    this.borderJoinStyle = 'miter';
+    this.pointBorderWidth = 1;
+    this.pointHoverRadius = 5;
+    this.pointHoverBorderWidth = 2;
+    this.pointRadius = 1;
+    this.pointHitRadius = 10;
+    this.spanGaps = false;
+    this.data = historicoCamiones;
     this.historicoCantidadCamiones = historicoCantidadCamiones;
     this.rango = rango;
 
@@ -27,7 +21,6 @@
     } else {
         this.borderColor = color;
     }
-
 }
 
 function Actividad(data, datasetsLineChart) {
@@ -61,11 +54,11 @@ function Actividad(data, datasetsLineChart) {
 
     this.Actualizate = function () {
         this.Mostrar(!this.Mostrar());
-        this.MostrarColor(!this.MostrarColor());  
+        this.MostrarColor(!this.MostrarColor());
         m2.ActualizarDataSets(this, m2.datasetsLineChart);
         return true;
     };
-    
+
     this.AbrirModal = function () {
         m2.nombreSeleccionado(this.NombreActividad());
         $('#modal').modal('show');
@@ -78,7 +71,7 @@ function Actividad(data, datasetsLineChart) {
         }
 
     }
-    
+
     this.Actualizar = function (data, intervalo, encolarValor) {
         this.CantidadCamionesNoDemorados(data.CantidadCamionesNoDemorados);
         this.CantidadCamionesDemorados(data.CantidadCamionesDemorados);
@@ -114,7 +107,7 @@ function Actividad(data, datasetsLineChart) {
 
         this.DataSet.borderColor = data.Color;
 
-       // this.Rango(data.Rango);
+        // this.Rango(data.Rango);
     }
 }
 
@@ -130,7 +123,6 @@ function GraficoDePlantaViewModel() {
     self.datasetsLineChart = [];
     self.datasetsLineChart.push(new DataSetChartLine2("", [100], '#fff'));
     var myLineChart = null;
-
 
     self.CancelarModal = function () {
         for (var j = 0; j < self.actividades().length; j++) {
@@ -164,14 +156,14 @@ function GraficoDePlantaViewModel() {
 
             },
             success: function (variant) {
-              
+
                 $('#modal').modal('hide');
                 //self.actualizarGrafico(null);
             },
             error: function (ex) {
                 if (ex.status == 200) {
                     $('#modal').modal('hide');
-                }              
+                }
             }
         });
     }
@@ -243,11 +235,30 @@ function GraficoDePlantaViewModel() {
                         datasets: self.datasetsLineChart
                     },
                     options: {
-                        tooltips: {
-                            callbacks: {
-                                label: function (tooltipItem) {
-                                    if (tooltipItem.datasetIndex > 0) {
-                                        return self.datasetsLineChart[tooltipItem.datasetIndex].label.replace(/([a-z])([A-Z])/g, '$1 $2') + " " + self.datasetsLineChart[tooltipItem.datasetIndex].historicoCantidadCamiones[tooltipItem.index] + "/" + self.datasetsLineChart[tooltipItem.datasetIndex].rango;
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        if (tooltipItem.datasetIndex > 0) {
+                                            return self.datasetsLineChart[tooltipItem.datasetIndex].label.replace(/([a-z])([A-Z])/g, '$1 $2') + " " + self.datasetsLineChart[tooltipItem.datasetIndex].historicoCantidadCamiones[tooltipItem.dataIndex] + "/" + self.datasetsLineChart[tooltipItem.datasetIndex].rango;
+                                        }
+                                    }
+                                }
+                            },
+                            annotation: {
+                                annotations: {
+                                    box1: {
+                                        type: 'box',
+                                        xMin: 0,
+                                        xMax: 90,
+                                        yMin: 100,
+                                        yMax: 100,
+                                        backgroundColor: 'rgba(255, 0, 0, 0.3)',
+                                        borderColor: 'rgba(255, 0, 0, 0.3)',
+                                        borderWidth: 1,
+                                        dblClick: function (e) {
+
+                                        }
                                     }
                                 }
                             }
@@ -261,54 +272,22 @@ function GraficoDePlantaViewModel() {
                             display: false,
                         },
                         scales: {
-                            yAxes: [{
-                                id: 'y-1',
+                            y: {
+                                min: 0,
                                 ticks: {
-                                    min: 0,
                                     callback: function (value, index, values) {
-                                        return value+"%";
+                                        return value + "%";
                                     }
-                                },
-                               
-                            }],
-                            xAxes: [
-                                {
-                                    id: 'x-1',
-                                    ticks: {
-                                        min: 0
-
-                                    }
-                                }]
-                        },
-                        //elements: {
-                        //    point: { radius: 0 }
-                        //}
-                        annotation: {
-
-                            drawTime: 'afterDraw',
-                            events: ['dblclick'],
-                            annotations: [{
-                                type: 'box',
-                                xScaleID: 'x-1',
-                                yScaleID: 'y-1',
-                                xMin: 0,
-                                xMax: 90,
-                                yMin: 100,
-                                yMax: 100,
-                                backgroundColor: 'rgba(255, 0, 0, 0.3)',
-                                borderColor: 'rgba(255, 0, 0, 0.3)',
-                                borderWidth: 1,
-                                onDblclick: function (e) {
-                                    
                                 }
-                            }]
-
+                            },
+                            x: {
+                                min: 0
+                            }
                         }
-                    },
-
+                    }
                 });
             }
-            
+
             InicializarPopover();
             if (funcionRecursiva != null) {
                 setTimeout(funcionRecursiva, segundos * multiplicador);
@@ -319,9 +298,9 @@ function GraficoDePlantaViewModel() {
     };
     function DefinirAlturaMaximaY(chartAlturaY) {
         if (chartAlturaY != null) {
-            chartAlturaY.options.annotation.annotations[0].yMax = chartAlturaY.scales['y-1']._endValue;
+            chartAlturaY.options.plugins.annotation.annotations.box1.yMax = chartAlturaY.scales.y._endValue;
         }
-       
+
     };
     function actualizarGraficoRecursivo() {
         self.actualizarGrafico(actualizarGraficoRecursivo);
@@ -359,17 +338,14 @@ function GraficoDePlantaViewModel() {
 
 }
 
-
 var m2;
 $(document).ready(function () {
-
 
     $('#modal').modal({
         backdrop: 'static', keyboard: false
     });
 
-    $("#modal").modal('hide');    
-    //$('[data-toggle="popover"]').popover();  
+    $("#modal").modal('hide');
     m2 = new GraficoDePlantaViewModel();
     ko.applyBindings(m2, document.getElementById("graficoDePlanta"));
 
@@ -389,10 +365,8 @@ $(document).ready(function () {
         if ($('.dialogo-editar form').valid())
             $(".dialogo-editar-guardar").attr("disabled", true);
     });
-   
-    //$("#popover").popover({ content: "aaaa" });
 });
-   
+
 function editarRepuestaFormularioGrafico(respuesta) {
     if (respuesta == window.ajaxEditSuccess) {
         $('#dialogo-editar').modal('hide');
@@ -412,32 +386,15 @@ function editarRepuestaFormularioGrafico(respuesta) {
         'margin-top': function () {
             return -($(this).height() / 2.6);
         }
-
     });
     attachDataPickers();
 }
 
-//function cargarDialogoEditarGrafico(data) {
-//    $('#dialogo-editar-body').html(data);
-//    $("#dialogo-editar-guardar").attr("disabled", false);
-//    $('#dialogo-editar-title').html($('#dialogo-editar-body form').data().dialogoTitulo);
-//    $('#dialogo-editar-body form').attr('data-ajax-success', 'editarRepuestaFormularioGrafico');
-//    if ($('#dialogo-editar-body form').data().dialogoExtraclass) {
-//        $('#dialogo-editar').addClass($('#dialogo-editar-body form').data().dialogoExtraclass);
-//    }
-//}
-
 function InicializarPopover() {
     var contenido;
-    $('[data-toggle="popover"]').mouseover(function () {
-//        contenido = this.innerText;
-        $('[data-toggle="popover"]').popover({
+    $('[data-bs-toggle="popover"]').mouseover(function () {
+        $('[data-bs-toggle="popover"]').popover({
             html: true,
-  //          content: function () {
-  //              return contenido;
-  //          }
         });
     });
-   
 }
-

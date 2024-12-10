@@ -27,37 +27,48 @@
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs flex-column flex-sm-row">
+                <!-- Panel Tab -->
                 <li class="nav-item">
                     @Html.ActionLink(Textos.Panel, "Index", "TableroComandoPuerto", null, new { @class = "nav-link" })
                 </li>
-                <li class="nav-item active">
+
+                <!-- Configurations Tab (Active) -->
+                <li class="nav-item">
                     @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoPuerto", null, new { @class = "nav-link active" })
                 </li>
-                <li class="nav-item ml-auto">
+
+                <!-- Automatismo Switch -->
+                <li class="nav-item ms-auto">
                     <label class="switch">
                         <input id="automatismoGeneral" type="checkbox" @(Model.EstadoGeneralAutomatismoNoGrano ? "checked='checked'" : "")>
                         <span class="slider round"></span>
                     </label>
-                    <span class="mr-2">Automatismo General</span>
+                    <span class="me-2">Automatismo General</span>
                 </li>
             </ul>
 
+            <!-- Tab Content -->
             <div class="tab-content overflow-auto">
                 <div id="panel" class="tab-pane fade show active">
                     <div class="container" style="max-width:1400px">
                         <div class="row mt-2">
+                            <!-- Calle No Granos -->
                             <div class="col-sm-12 col-md-4 flex-fill">
                                 <h4 class="text-center">Calle No Granos</h4>
                                 <div id="gridCallePlanta" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                     @Html.Partial("_ListarCallePlanta")
                                 </div>
                             </div>
+
+                            <!-- Puntos de Carga -->
                             <div class="col-sm-12 col-md-4 flex-fill">
                                 <h4 class="text-center">Puntos de Carga</h4>
                                 <div id="gridPuntoDeCarga" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                     @Html.Partial("_ListarPuntoDeCarga")
                                 </div>
                             </div>
+
+                            <!-- Almacén -->
                             <div class="col-sm-12 col-md-4 flex-fill">
                                 <h4 class="text-center">Almacén</h4>
                                 <div id="gridAlmacen" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
@@ -72,20 +83,19 @@
     </div>
 </div>
 
-<div id="partialModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+<!-- Modal for creating or editing -->
+<div id="partialModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-            </div>
+            <div class="modal-body"></div>
         </div>
     </div>
 </div>
+
 
 <style>
     .nav-item a,

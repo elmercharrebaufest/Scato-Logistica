@@ -3049,7 +3049,15 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         string ObtenerNuevoNumeroDeOrdenFason(); 
+        
+        [OperationContract]
+        bool ValidarCuitNestleOrdenCargaInterna(int idRecorrido);     
+        
+        [OperationContract]
+        bool ValidarCuitNestleOrdenCargaFas(int idRecorrido);
 
+        [OperationContract]
+        bool ValidarCuitNestle(int idRecorrido);
     }
 
 }

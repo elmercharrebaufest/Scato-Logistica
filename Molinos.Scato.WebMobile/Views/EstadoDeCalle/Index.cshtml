@@ -39,38 +39,38 @@
     @foreach (var tipo in Enum.GetValues(typeof(TipoCalle)).Cast<TipoCalle>().Where(x => pestanias.Contains(x)))
     {
         <li class="nav-item" data-bind="click: Recalcular">
-            <a class="nav-link @(tipo == TipoCalle.PreCalado ? "active" : "" )" id="@tipo-tab" data-calle="@((int)tipo)" data-toggle="tab" href="#@tipo" role="tab" aria-controls="@tipo" aria-selected="false">@tipo.DisplayEnum()</a>
+            <a class="nav-link @(tipo == TipoCalle.PreCalado ? "active" : "" )" id="@tipo-tab" data-calle="@((int)tipo)" data-bs-toggle="tab" href="#@tipo" role="tab" aria-controls="@tipo" aria-selected="@(tipo == TipoCalle.PreCalado ? "true" : "false")">@tipo.DisplayEnum()</a> <!-- Updated data-toggle to data-bs-toggle -->
         </li>
     }
     @if (PermisosHelper.Is(PermisosScato.EstadoDeCallePlayero))
     {
         <li class="nav-item">
-            <a class="nav-link" id="Playero-tab" data-calle="Playero" data-toggle="tab" href="#Playero" role="tab" aria-controls="Playero" aria-selected="false">Playero</a>
+            <a class="nav-link" id="Playero-tab" data-calle="Playero" data-bs-toggle="tab" href="#Playero" role="tab" aria-controls="Playero" aria-selected="false">Playero</a> <!-- Updated data-toggle to data-bs-toggle -->
         </li>
     }
     @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleCalador))
     {
         <li class="nav-item">
-            <a class="nav-link" id="Calador-tab" data-calle="Calador" data-toggle="tab" href="#Calador" role="tab" aria-controls="Calador" aria-selected="false">Calador</a>
+            <a class="nav-link" id="Calador-tab" data-calle="Calador" data-bs-toggle="tab" href="#Calador" role="tab" aria-controls="Calador" aria-selected="false">Calador</a> <!-- Updated data-toggle to data-bs-toggle -->
         </li>
     }
 </ul>
 <div class="tab-content" id="myTabContent">
     @foreach (var tipo in Enum.GetValues(typeof(TipoCalle)).Cast<TipoCalle>().Where(x => pestanias.Contains(x)))
     {
-        <div class="tab-pane fade show @(tipo == TipoCalle.PreCalado ? "active" : "" )" id="@tipo" role="tabpanel" aria-labelledby="@tipo-tab">
+        <div class="tab-pane fade @(tipo == TipoCalle.PreCalado ? "show active" : "" )" id="@tipo" role="tabpanel" aria-labelledby="@tipo-tab">
             @Html.Partial("Calles", tipo)
         </div>
     }
     @if (PermisosHelper.Is(PermisosScato.EstadoDeCallePlayero))
     {
-        <div class="tab-pane fade show" id="Playero" role="tabpanel" aria-labelledby="Playero-tab">
+        <div class="tab-pane fade" id="Playero" role="tabpanel" aria-labelledby="Playero-tab">
             @Html.Partial("Playero")
         </div>
     }
     @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleCalador))
     {
-        <div class="tab-pane fade show" id="Calador" role="tabpanel" aria-labelledby="Calador-tab">
+        <div class="tab-pane fade" id="Calador" role="tabpanel" aria-labelledby="Calador-tab">
             @Html.Partial("Calador")
         </div>
     }

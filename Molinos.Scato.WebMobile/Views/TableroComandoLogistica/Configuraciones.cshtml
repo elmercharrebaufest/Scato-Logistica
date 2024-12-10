@@ -41,69 +41,80 @@
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs flex-column flex-sm-row">
+                <!-- Panel Tab Link -->
                 <li class="nav-item">
                     @Html.ActionLink(Textos.Panel, "Index", "TableroComandoLogistica", null, new { @class = "nav-link" })
                 </li>
-                <li class="nav-item active">
+
+                <!-- Configurations Tab Link (active) -->
+                <li class="nav-item">
                     @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoLogistica", null, new { @class = "nav-link active" })
                 </li>
 
-                <li class="nav-item ml-md-auto ml-3 mt-md-1">
+                <!-- Right-aligned switches -->
+                <li class="nav-item ms-auto mt-1">
                     <div class="d-flex flex-column align-items-start flex-md-row">
+                        <!-- Switch for PreBalanza Automation -->
                         @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))
                         {
                             <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
                                 <label class="switch">
-                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso )) ? @Html.Raw("") : @Html.Raw("<div id='deshabilitado'>"))
                                     <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "")
                                            @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso)) ? @Html.Raw("") : @Html.Raw("disabled"))>
                                     <span class="slider round"></span>
-                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("</div>"))
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso )) ? @Html.Raw("") : @Html.Raw("</div>"))
                                 </label>
-                                <span class="ml-2 mr-md-4 mt-1">Automatismo Llamado Pre Balanza</span>
+                                <span class="ms-2 me-md-4 mt-1">Automatismo Llamado Pre Balanza</span>
                             </div>
                         }
+
+                        <!-- Switch for General Automation -->
                         @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
                         {
                             <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
                                 <label class="switch">
-                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica )) ? @Html.Raw("") : @Html.Raw("<div id='deshabilitado'>"))
                                     <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "")
                                            @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ? @Html.Raw("") : @Html.Raw("disabled"))>
                                     <span class="slider round"></span>
-                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("</div>"))
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica )) ? @Html.Raw("") : @Html.Raw("</div>"))
                                 </label>
-                                <span class="ml-2 mr-md-2 mt-1">@Textos.AutomatismoLLamadoVolcable</span>
+                                <span class="ms-2 me-md-2 mt-1">@Textos.AutomatismoLLamadoVolcable</span>
                             </div>
                         }
                     </div>
                 </li>
             </ul>
 
+            <!-- Tab Content -->
             <div class="tab-content overflow-auto">
                 <div id="panel" class="tab-pane fade show active">
-                    <div class="container" style="max-width:1400px">
+                    <div class="container" style="max-width: 1400px;">
                         <div class="row mt-2">
+                            <!-- Listado Calles Pre Balanza -->
                             @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))
                             {
                                 <div class="col-sm-12 col-md-4 flex-fill" id="listado-calle-pre-balanza">
-
                                     <h4 class="text-center">Calles Pre Balanza</h4>
                                     <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                         @Html.Partial("_ListarCallePreBalanza")
                                     </div>
                                 </div>
                             }
+
+                            <!-- Listado Calles Pre Hidráulica -->
                             @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
                             {
                                 <div class="col-sm-12 col-md-4 flex-fill" id="listado-calle-pre-hidraulica">
-
                                     <h4 class="text-center">Calles Pre Hidráulica</h4>
                                     <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                         @Html.Partial("_ListarCallePreHidraulica")
                                     </div>
                                 </div>
                             }
+
+                            <!-- Listado Hidráulica -->
                             @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
                             {
                                 <div class="col-sm-12 col-md-4 flex-fill" id="listado-hidraulicas">
@@ -120,6 +131,7 @@
         </div>
     </div>
 </div>
+
 
 <div id="DetalleAutomatismo"></div>
 

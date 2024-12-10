@@ -86,6 +86,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         [HttpPost]
         public ActionResult Crear(AutomatismoGranosViewModel model)
         {
+            
             var respuesta = new RespuestaEstandarDto();
             try
             {
@@ -97,6 +98,16 @@ namespace Molinos.Scato.WebMobile.Controllers
                     else
                         respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", resultadoAutomatismo.Errores.Values), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     ModelState.AgregarErrores(resultadoAutomatismo);
+                } 
+                else
+                {
+                    // If the model is not valid, return a JSON response with the error messages
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", errors), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 }
             }
             catch (Exception ex)
@@ -127,6 +138,9 @@ namespace Molinos.Scato.WebMobile.Controllers
             var respuesta = new RespuestaEstandarDto();
             try
             {
+                // Quito TipoVariedades de la verificacion de modelo, ya que no es necesario
+                ModelState.RemoveValidation<AutomatismoGranosViewModel, List<int>>(obj => obj.AutomatismoGrano.TipoVariedades);
+
                 if (ModelState.IsValid)
                 {
                     var resultadoAutomatismo = servicioComandos.Ejecutar(new ModificarAutomatismoGranos { Dto = model.AutomatismoGrano });
@@ -135,6 +149,16 @@ namespace Molinos.Scato.WebMobile.Controllers
                     else
                         respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", resultadoAutomatismo.Errores.Values), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     ModelState.AgregarErrores(resultadoAutomatismo);
+                }
+                else
+                {
+                    // If the model is not valid, return a JSON response with the error messages
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", errors), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 }
             }
             catch (Exception ex)

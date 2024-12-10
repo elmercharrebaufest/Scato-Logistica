@@ -482,6 +482,7 @@ namespace Molinos.Scato.Web.Controllers
             return View(model);
         }
 
+        //TODO Refactorizar 1029-EgresoPorExportacionFCA por constante
         private ResultadoFas ObtenerDatos(string numero, DatosUsuario datosUsuario, OrdenCargaFasDto orden)
         {
             log.Info("Empieza el método FAS");

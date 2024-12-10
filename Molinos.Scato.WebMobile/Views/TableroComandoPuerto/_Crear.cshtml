@@ -8,49 +8,42 @@
 @using (Ajax.BeginForm("Crear", null, new AjaxOptions { OnSuccess = "refreshAutomatismo" }, new { @class = "container" }))
 {
     <div class="row">
-        <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlantaId)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, "(Calle Planta)", new { @class = "form-control", @id = "ddlCallePlanta", @onchange = "dllCallePlantaOnChange()" })
-                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlantaId)
-                </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlantaId)
+                @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, "(Calle Planta)", new { @class = "form-control", @id = "ddlCallePlanta", @onchange = "dllCallePlantaOnChange()" })
+                @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlantaId)
             </div>
         </div>
-        <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlayaInternaId)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlayaInternaId, Model.CallesPlayaInterna, "(Calle Playa Interna)", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlayaInternaId)
-                </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlayaInternaId)
+                @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlayaInternaId, Model.CallesPlayaInterna, "(Calle Playa Interna)", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlayaInternaId)
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.PuntoDeCargaId)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, "(Punto de Carga)", new { @class = "form-control", @id = "ddlPuntosDeCarga" })
-                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCargaId)
-                </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                @Html.LabelFor(m => m.AutomatismoNoGrano.PuntoDeCargaId)
+                @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, "(Punto de Carga)", new { @class = "form-control", @id = "ddlPuntosDeCarga" })
+                @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCargaId)
             </div>
         </div>
-        <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.AlmacenId)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenId, Model.Almacenes, "(Almacén)", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.AlmacenId)
-                </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                @Html.LabelFor(m => m.AutomatismoNoGrano.AlmacenId)
+                @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenId, Model.Almacenes, "(Almacén)", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.AlmacenId)
             </div>
         </div>
     </div>
 
+
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Textos.Cancelar</button>
         <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
     </div>
 }

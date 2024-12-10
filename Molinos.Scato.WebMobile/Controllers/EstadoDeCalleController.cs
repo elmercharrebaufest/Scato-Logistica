@@ -77,6 +77,17 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
+            camiones.ForEach(camion =>
+            {
+                if(camion.TipoCalle == TipoCalle.NoGranos)
+                {
+                    camion.EsCuitNestle = servicio.ValidarCuitNestle(camion.RecorridoId ?? 0 );
+                }
+            });
+
+           
+
+
             var tiposCalleValidas = new List<TipoCalle>() {
                 TipoCalle.PreCalado,
                 TipoCalle.Circular,

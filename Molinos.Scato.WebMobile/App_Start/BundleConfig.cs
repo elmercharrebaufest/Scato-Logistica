@@ -12,14 +12,17 @@ namespace Molinos.Scato.WebMobile.App_Start
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*",
                         "~/Scripts/jquery.blockUI.js",
-                        "~/Scripts/jquery-ui-{version}.js",
-                        "~/Scripts/modernizr-*",
+                        "~/Scripts/jquery-ui-1-13.3.js",
+                        "~/Scripts/modernizr-{version}.js",
                         "~/Scripts/knockout-{version}.js",
                         "~/Scripts/knockout-fast-foreach.min.js",
                         "~/scripts/scatoWebcommon.validate.js",
-                        "~/Scripts/json2.min.js"
+                        "~/Scripts/json2.min.js",
+                        "~/Scripts/choices.min.js",
+                        "~/Scripts/choices.loader.js"
                         ));
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+
+            bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                        "~/Scripts/moment-with-locales*",
                        "~/Scripts/umd/popper.min.js",
                        "~/Scripts/bootstrap-datetimepicker.js",
@@ -33,7 +36,8 @@ namespace Molinos.Scato.WebMobile.App_Start
                     "~/Content/bootstrap.css",
                     "~/Content/bootstrap-datetimepicker.css",
                     "~/Content/fontawesome-all.min.css",
-                    "~/Content/bootstrap-toggle.min.css"
+                    "~/Content/bootstrap-toggle.min.css",
+                    "~/Content/choices.min.css"
                     ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

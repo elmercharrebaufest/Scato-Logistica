@@ -1,29 +1,24 @@
 ﻿function DataSetChartLine(nombreDeLinea, data, color) {
-    this.label = nombreDeLinea,
-        this.fill = false,
-        this.lineTension = 0.1,
-        this.backgroundColor = "rgba(75,192,192,0.4)",
-        this.borderColor = "rgba(75,192,192,1)",
-        this.borderCapStyle = 'butt',
-        this.borderDash = [],
-        this.borderDashOffset = 0.0,
-        this.borderJoinStyle = 'miter',
-        this.pointBorderColor = "rgba(75,192,192,1)",
-        //this.pointBackgroundColor = "#fff",
-        this.pointBorderWidth = 1,
-        this.pointHoverRadius = 5,
-        this.pointHoverBackgroundColor = "rgba(75,192,192,1)",
-        this.pointHoverBorderColor = "rgba(220,220,220,1)",
-        this.pointHoverBorderWidth = 2,
-        this.pointRadius = 1,
-        this.pointHitRadius = 10,
-        this.spanGaps = false,
-        this.data = data;
-    if (color === null) {
-        this.borderColor = '#000000';
-    } else {
-        this.borderColor = color;
-    }
+    this.label = nombreDeLinea;
+    this.fill = false; // Se mantiene el llenado desactivado
+    this.lineTension = 0.1; // Tensión de la línea
+    this.backgroundColor = "rgba(75,192,192,0.4)"; // Color de fondo
+    this.borderColor = color === null ? '#000000' : color; // Cambiado el color del borde según el parámetro color
+    this.borderCapStyle = 'butt'; // Estilo de la capucha del borde
+    this.borderDash = []; // Patrón de línea discontinua
+    this.borderDashOffset = 0.0; // Desplazamiento del patrón de línea discontinua
+    this.borderJoinStyle = 'miter'; // Estilo de unión de borde
+    this.pointBorderColor = "rgba(75,192,192,1)"; // Color del borde del punto
+    // this.pointBackgroundColor = "#fff", // Color de fondo del punto
+    this.pointBorderWidth = 1; // Ancho del borde del punto
+    this.pointHoverRadius = 5; // Radio del punto al pasar el mouse
+    this.pointHoverBackgroundColor = "rgba(75,192,192,1)"; // Color de fondo al pasar el mouse
+    this.pointHoverBorderColor = "rgba(220,220,220,1)"; // Color del borde al pasar el mouse
+    this.pointHoverBorderWidth = 2; // Ancho del borde al pasar el mouse
+    this.pointRadius = 1; // Radio del punto
+    this.pointHitRadius = 10; // Radio del punto al hacer clic
+    this.spanGaps = false; // Si se deben conectar los puntos de datos nulos
+    this.data = data; // Datos del conjunto
 }
 
 var colores = ["#ff0000", "#8500ff", "#0400ff", "#1bff00", "#ccff00", "#ff0081", "#ff5e00", "#00ffff", "#000000", "#40bf96"];
@@ -35,105 +30,74 @@ function GraficoToneladasPorRangoDeDiasViewModel() {
     var multiplicador = 1000;
     self.fechaSeleccionada = null;
     self.materialSeleccionado = null;
-    var myLineChartHoras = null;
+    var myLineChartHoras = null; // Inicializa el gráfico como null
     var graficoIniciado = false;
 
     self.actualizarGrafico = function (funcionRecursiva) {
-
         graficoIniciado = true;
         $.getJSON(urlGenerarToneladasPorRangoDeDia, { MaterialId: self.materialSeleccionado, FechaDesde: self.fechaDesde, FechaHasta: self.fechaHasta }, function (data) {
             datosToneladas = data.Toneladas;
         }).done(function () {
             var ctxh = $("#myChartToneladas");
-            var labels = $.map(datosToneladas, function (n) {
-                return n.Fecha;
-            }).filter(function (elem, index, self) {
-                return index === self.indexOf(elem);
-            });
+            var labels = [...new Set(datosToneladas.map(n => n.Fecha))]; // Usando Set para obtener etiquetas únicas
 
-            var codigoUnico = datosToneladas.map(function (item) {
-                return item.Codigo;
-            }).filter(function (elem, index, self) {
-                return index === self.indexOf(elem);
-            }).filter(function (codigo) {
-                return codigo !== null;
-            });
+            var codigoUnico = [...new Set(datosToneladas.map(item => item.Codigo))].filter(codigo => codigo !== null); // Obteniendo códigos únicos
 
             var dataSets = [];
             if (codigoUnico.length !== 0) {
-
                 codigoUnico.forEach(function (cod, index) {
-                    var dataSet = [];
-                    labels.forEach(function (fecha) {
-                        if (datosToneladas.some(function (e) { return e.Codigo === cod && e.Fecha === fecha; })) {
-                            dataSet.push(datosToneladas.filter(function (e) { return e.Codigo === cod && e.Fecha === fecha; })[0].Toneladas);
-                        } else {
-                            dataSet.push(0);
-                        }
+                    var dataSet = labels.map(fecha => {
+                        var matchingData = datosToneladas.find(e => e.Codigo === cod && e.Fecha === fecha);
+                        return matchingData ? matchingData.Toneladas : 0; // Si hay coincidencia, obtiene las toneladas, de lo contrario, 0
                     });
                     dataSets.push(new DataSetChartLine(cod, dataSet, colores[index]));
                 });
-
             } else {
-                codigoUnico.push("Sin Datos");
-                var dataSet = [];
-                labels.forEach(function (it) {
-                    dataSet.push(0);
-                });
+                // Si no hay datos, crea un conjunto de datos de "Sin Datos"
+                var dataSet = new Array(labels.length).fill(0);
                 dataSets.push(new DataSetChartLine("Sin Datos", dataSet, '#9be334'));
             }
 
-
-            if (myLineChartHoras !== null) {
-                myLineChartHoras.destroy();
+            if (myLineChartHoras) {
+                myLineChartHoras.destroy(); // Destruye el gráfico anterior
             }
 
-            myLineChartHoras = null;
-            if (myLineChartHoras !== null) {
-                myLineChartHoras.update();
-            } else {
-                myLineChartHoras = new Chart(ctxh, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: dataSets
-                    },
-                    options: {
-                        animation: false,
-                        legend: {
-                            display: true
-                        },
-                        scales: {
-                            yAxes: [
-                                {
-                                    ticks: {
-
-                                    }
-                                }
-                            ],
-                            xAxes: [
-                                {
-                                    ticks: {
-                                        min: 0
-                                    }
-                                }]
-                        },
-                        tooltips: {
+            myLineChartHoras = new Chart(ctxh, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: dataSets
+                },
+                options: {
+                    animation: false,
+                    plugins: { // Cambiado de `tooltips` a `plugins.tooltip` en ChartJS 4
+                        tooltip: {
                             callbacks: {
                                 label: function (tooltipItem) {
-                                    console.log(tooltipItem);
-                                    return codigoUnico[tooltipItem.datasetIndex] + ": " + tooltipItem.yLabel + " Tn.";
+                                    return codigoUnico[tooltipItem.datasetIndex] + ": " + tooltipItem.formattedValue + " Tn."; // Cambiado y simplificado el acceso a valores de tooltip
                                 }
                             }
                         }
+                    },
+                    scales: {
+                        y: { // Actualizado para la nueva sintaxis de escalas
+                            beginAtZero: true // Asegura que el eje Y comience en 0
+                        },
+                        x: { // Actualizado para la nueva sintaxis de escalas
+                            ticks: {
+                                min: 0 // Ajustes mínimos para el eje X
+                            }
+                        }
                     }
-                });
-            }
-            //if (funcionRecursiva !== null) {
-            //    setTimeout(funcionRecursiva, intervalo * multiplicador);
-            //}
-            }).fail(function () {
-            
+                }
+            });
+
+            // Re-implementación opcional para actualizar recursivamente
+            // if (funcionRecursiva !== null) {
+            //     setTimeout(funcionRecursiva, intervalo * multiplicador);
+            // }
+        }).fail(function () {
+            console.error("Error al obtener datos."); // Manejo de errores en la llamada a la API
         });
     };
 

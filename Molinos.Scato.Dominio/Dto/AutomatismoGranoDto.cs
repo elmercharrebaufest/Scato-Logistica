@@ -1,4 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Recursos;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -53,10 +54,12 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "Hidraulica")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
+        [AtLeastOneItemInt("Debe seleccionar al menos una hidraulica")]
         public List<int> Hidraulicas { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Variedad")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
+        [AtLeastOneItemInt("Debe seleccionar al menos una variedad")]
         public List<int> TipoVariedades { get; set; }
 
         public string MaterialDescripcion { get; set; }

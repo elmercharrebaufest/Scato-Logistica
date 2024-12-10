@@ -19,14 +19,17 @@
 }
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item ml-auto ">
-        <div class="input-sm">
+    <!-- Updated margin class from 'ml-auto' to 'ms-auto' -->
+    <li class="nav-item ms-auto">
+        <div class="input-group input-group-sm"> <!-- Changed 'input-sm' to Bootstrap 5's 'input-group-sm' class -->
             <input data-bind="value: PatenteBuscada, valueUpdate: 'afterkeydown'" class="form-control" type="text" placeholder="Buscar Patente" aria-label="Buscar Patente" oninput="this.value = this.value.toUpperCase()">
         </div>
     </li>
+
     @if (Model == TipoCalle.NoGranos)
     {
         <li class="nav-item">
+            <!-- No changes needed for this part -->
             <div class="nav-link nav-material bg-harina">Harina(<strong data-bind="text: CantidadHarina"></strong>)</div>
         </li>
         <li class="nav-item tagmaterial">
@@ -45,6 +48,7 @@
             <div class="nav-link nav-material bg-Biodiesel text-white">Biodiesel(<strong data-bind="text: Biodiesel"></strong>)</div>
         </li>
     }
+
     @if (Model != TipoCalle.NoGranos)
     {
         <li class="nav-item">
@@ -59,8 +63,8 @@
         <li class="nav-item tagmaterial">
             <div class="nav-link nav-material bg-PelletG text-white">Girasol(<strong data-bind="text: CantidadGirasol"></strong>)</div>
         </li>
-
     }
+
     @if (Model == TipoCalle.PostCalado)
     {
         <li class="nav-item tagmaterial" data-bind="visible: CantidadSojaEPA() > 0">
@@ -77,6 +81,7 @@
         </li>
     }
 </ul>
+
 <div class="content">
     <div class="container-fluid" style="display: flex;">
         <div class="row callesfiltradas" data-bind="foreach: CallesFiltradas('@((int)Model)', '@((int)calle2)', '@((int)calle3)'),css: { 'centrarCalles': CallesFiltradas('@((int)Model)', '@((int)calle2)', '@((int)calle3)').length <= 5 }">
@@ -89,7 +94,7 @@
                                     <div class="col">
                                         @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleLlamar))
                                         {
-                                            <button type="button" style="width: 100%" class="btn btn-success btn-sm calle" data-bind="visible: !Bloqueada() && !Deshabilitada() && TipoCalle != 5 && TipoCalle != 6,enable: !Bloqueada() && CamionesEnCalle() > 0, attr:{'data-target': '#m' + Id} " data-toggle="modal"><strong>LLamar</strong>(<strong data-bind="text: TiempoEnCola"></strong>)</button>
+                                            <button type="button" style="width: 100%" class="btn btn-success btn-sm calle" data-bind="visible: !Bloqueada() && !Deshabilitada() && TipoCalle != 5 && TipoCalle != 6, enable: !Bloqueada() && CamionesEnCalle() > 0, attr:{'data-bs-target': '#m' + Id}" data-bs-toggle="modal"><strong>LLamar</strong>(<strong data-bind="text: TiempoEnCola"></strong>)</button>
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleCancelar))
                                         {
@@ -102,10 +107,9 @@
                                 <p class="fw-bold mb-0 cart-title sinbordetb" data-bind="class: Color">
                                     @*<i data-bind="attr: {'class': Icon}"></i>*@
                                     <strong data-bind="text: (TipoCalle == @((int)TipoCalle.Circular) ? '&copy; ' : '') + Nombre"></strong>
-                                    <small style="float: right;position:absolute" data-bind="text: CamionesEnCalle()+'/'+CantidadDeCamiones">
-                                    </small>
+                                    <small style="float: right;position:absolute" data-bind="text: CamionesEnCalle()+'/'+CantidadDeCamiones"></small>
                                 </p>
-                                <div class="row borde-grafico" data-bind="css: { 'bg-success': Bloqueada() && TipoCalle != @((int)TipoCalle.Circular) , 'bg-primary':  Bloqueada() && TipoCalle == @((int)TipoCalle.Circular) }">
+                                <div class="row borde-grafico" data-bind="css: { 'bg-success': Bloqueada() && TipoCalle != @((int)TipoCalle.Circular), 'bg-primary':  Bloqueada() && TipoCalle == @((int)TipoCalle.Circular) }">
                                     <div class="col" data-bind="foreach: Posiciones">
                                         <div class="card" style="max-width: 100%; padding-top:4px; padding-bottom:4px;" data-bind="css: { 'parpadeo' : AsignadoEnPuestoComando }, style: { 'background-color': ColorFondo, 'color': ColorTexto }">
                                             <div class="card-header text-center" style="padding: 0px 5px; height: 18px; display: flex; justify-content: space-between; align-items: center;">
@@ -113,6 +117,7 @@
                                                     <i data-bind="attr: {'class': Escalable}" style="margin-right: 2px;"></i>
                                                     <i data-bind="attr: {'class': Icon}" style="margin-right: 2px;"></i>
                                                     <i data-bind="attr: {'class': EsDemorado}" style="margin-right: 2px;"></i>
+                                                    <i data-bind="attr: {'class': EsCuitNestle}"></i>
                                                 </div>
                                                 <strong data-bind="text: Patente, click: abrirModal" style="width: 100%;"></strong>
                                             </div>
@@ -129,34 +134,33 @@
                     </div>
                 </div>
             </div>
+
             <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-bind="attr: { id: 'm'+Id}">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Confirmar llamado</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         @if (Model == TipoCalle.PreCalado)
                         {
                         <div class="modal-body">
-                            <div class="control-group">
-                                <label class="control-label">Calle Calado</label>
-                                <div class="controls">
-                                        <select class="selec-calle">
-                                            @foreach (var item in ViewBag.CallesCalado)
-                                            { 
-                                                <option value="@item.Id">@item.Nombre</option>
-                                            }
-                                        </select>
+                            <div class="mb-3">
+                                <label class="form-label">Calle Calado</label>
+                                <div>
+                                    <select class="form-select selec-calle">
+                                        @foreach (var item in ViewBag.CallesCalado)
+                                        { 
+                                            <option value="@item.Id">@item.Nombre</option>
+                                        }
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         }
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" data-bind="click: LLamarManual" data-dismiss="modal">LLamar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" data-bind="click: LLamarManual" data-bs-dismiss="modal">LLamar</button>
                         </div>
                     </div>
                 </div>

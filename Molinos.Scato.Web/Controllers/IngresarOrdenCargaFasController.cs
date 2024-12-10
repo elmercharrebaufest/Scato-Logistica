@@ -593,6 +593,7 @@ namespace Molinos.Scato.Web.Controllers
             return orden;
         }
 
+        //TODO Refactorizar 1029-EgresoPorExportacionFCA por constante
         private void Validar(OrdenCargaFasDto orden, string workflowId)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);

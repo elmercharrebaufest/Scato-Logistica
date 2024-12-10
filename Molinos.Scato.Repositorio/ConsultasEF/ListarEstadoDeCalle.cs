@@ -1,6 +1,8 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -50,7 +52,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   EsDemorado = x.Recorrido != null && x.Recorrido.VehiculoDemorado,
                                   EsSojaEUDR = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EUDR,
                                   EsSojaIMPO = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.Importacion,
-                                  EsSojaEPAyEUDR = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR
+                                  EsSojaEPAyEUDR = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR,
+                                  IdRecorrido = x.Recorrido != null ? x.Recorrido.Id : (int?)null,
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();
