@@ -41,7 +41,7 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso, 
             let callesNuevas = reordernarCalles(tiposCallesNuevasPlanta, tipoCalleEnUso, self.PatenteBuscada());
             self.Calles(callesNuevas);
         }
-    }, 4000)
+    }, 20000)
 
     self.sumarCamiones = function (materialId) {
         let count = 0;
