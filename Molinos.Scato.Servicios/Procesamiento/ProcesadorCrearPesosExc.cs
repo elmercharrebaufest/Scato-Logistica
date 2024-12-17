@@ -1,5 +1,4 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;

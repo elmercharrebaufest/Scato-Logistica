@@ -6,6 +6,7 @@ using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Servicios;
 using System;
 using System.Activities;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Molinos.Scato.Actividades.Internas
@@ -33,10 +34,8 @@ namespace Molinos.Scato.Actividades.Internas
             if ((recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaBruto && tipoPesada == Dominio.Enums.TipoPesada.Bruto) ||
                 (recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaTara && tipoPesada == Dominio.Enums.TipoPesada.Tara))
             {
-
                 try
-                {
-                
+                {                
                     pesaje = (ResultadoPesaje)servComando.Ejecutar(new ObtenerPesada() { Recorrido = recorrido });
                     if (pesaje.HayErrores)
                     {
@@ -46,9 +45,15 @@ namespace Molinos.Scato.Actividades.Internas
                     }
                     else
                     {
+                        var wokflowsIdConContingenciaConfig = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.PesadaBruto, Constantes.ConfiguracionGeneral.ContingenciaPesosExcedidos.CodigosWorkflows);
+                        var workflowsIdConContingencia = wokflowsIdConContingenciaConfig != null && !string.IsNullOrEmpty(wokflowsIdConContingenciaConfig.Valor) 
+                            ? wokflowsIdConContingenciaConfig.Valor.Split(';').Select(x => int.Parse(x))
+                            : new List<int>();
+                        var recorridoDto = repositorio.ObtenerRecorridoPorGuid(context.WorkflowInstanceId);
                         if(recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaBruto 
                             && tipoPesada == Dominio.Enums.TipoPesada.Bruto
-                            && recorrido.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
+                            && recorrido.TipoDeWorkflow == TipoDeWorkflow.Ingreso
+                            && workflowsIdConContingencia.Any(x => x == recorridoDto.Workflow.Id))
                         {
                             ContigenciaDePesosExcedidos(repositorio, servComando, pesaje, recorrido);
                         }
@@ -103,7 +108,6 @@ namespace Molinos.Scato.Actividades.Internas
                         PesoNetoOrigen = recorrido.PesoOrigenNeto.ToString()
                     
                     };
-                    
                 
                     servicio.Notificar(new NotificacionDto
                     {
@@ -119,6 +123,7 @@ namespace Molinos.Scato.Actividades.Internas
                     recorrido.Comentario = e.Message;
                     servComando.Ejecutar(new CrearControlRecorrido { Dto = recorrido });
                 }
+
                 try
                 {
                     servComando.Ejecutar(new ModificarBalanzaEstaEnCero
@@ -132,7 +137,6 @@ namespace Molinos.Scato.Actividades.Internas
                     recorrido.Comentario = e.Message;
                     servComando.Ejecutar(new CrearControlRecorrido { Dto = recorrido });
                 }
-
             }
             else
             {

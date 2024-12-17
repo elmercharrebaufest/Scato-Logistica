@@ -83,6 +83,12 @@
                 public const string TableroComandoLogistica = "TableroComandoLogistica";
                 public const string TableroComandoPuerto = "TableroComandoPuerto";
                 public const string IngresarOrdenCargaInternaFason = "IngresarOrdenCargaInternaFason";
+                public const string PesadaBruto = "PesadaBruto";
+            }
+
+            public struct ContingenciaPesosExcedidos
+            {
+                public const string CodigosWorkflows = "CodigosWorkflowParaContingenciaPesosExcedidos";
             }
 
             public struct EficienciaCalado
