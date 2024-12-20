@@ -44,27 +44,6 @@ namespace Molinos.Scato.Web.Controllers
             ListQuery(filtro, pagina, ordenarPor, dirOrden);
             return View();
         }
-        public void LanzarValidador(string codigo, int id)
-        {
-            servicioComandos.Ejecutar(new ValidarConsistenciaBalanzadas { Balanza = codigo, CodigoDispositivo = codigo, Hasta = id });
-        }
-
-        [AllowAnonymous]
-        public ActionResult LanzarValidadorLotePerdido()
-        {
-            var balanzas = servicio.ListarBalanzasPuerto();
-            foreach (BalanzaPuertoDto balanza in balanzas.Where(x => !x.Administrativa))
-            {
-                var ultimoRegistroBalanzaPuerto = servicio.ObtenerMayorRegistro(balanza.CodigoBalanza);
-                if (ultimoRegistroBalanzaPuerto != null)
-                {
-                    servicioComandos.Ejecutar(new ValidarBalanzadasOrquestador { CodigoBalanza = balanza.CodigoBalanza });
-                    servicioComandos.Ejecutar(new ValidarConsistenciaBalanzadas { Balanza = balanza.CodigoDispositivo, CodigoDispositivo = balanza.CodigoDispositivo, Hasta = ultimoRegistroBalanzaPuerto.Id });
-                }
-            }
-            return Content("OK");
-        }
-
 
         [AjaxOnly]
         [ActionName("Index")]
@@ -135,11 +114,11 @@ namespace Molinos.Scato.Web.Controllers
             if (balanzadasFaltantes.Count != 0)
             {
                 carga.Error = 5;
-                carga.ErrorMensaje = Textos.OperacionesPuerto_BalanzadasFaltantes + " "+ string.Join(",", balanzadasFaltantes);
+                carga.ErrorMensaje = Textos.OperacionesPuerto_BalanzadasFaltantes + " " + string.Join(",", balanzadasFaltantes);
             }
 
         }
-        
+
         public ActionResult Modificar(CargaFiltroDto filtro, int pagina = 1, string ordenarPor = "Id", DirOrden dirOrden = DirOrden.Asc)
         {
             ListQueryBalanzadas(filtro, pagina, ordenarPor, dirOrden);
@@ -257,5 +236,11 @@ namespace Molinos.Scato.Web.Controllers
             return Json(todoEnviado, JsonRequestBehavior.AllowGet);
         }
 
+        [AllowAnonymous]
+        public ActionResult RestaurarBalanzadasPerdidas(string numeroBalanza, int desde, int hasta)
+        {
+            servicioComandos.Ejecutar(new RestaurarBalanzadasPerdidas { NumeroBalanza = numeroBalanza, Desde = desde, Hasta = hasta });
+            return Content("OK");
+        }
     }
 }

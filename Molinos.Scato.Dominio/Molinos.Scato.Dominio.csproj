@@ -158,6 +158,7 @@
     <Compile Include="Comandos\ModificarExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\ActualizarCamionDemorado.cs" />
     <Compile Include="Comandos\ModificarVariedadPorMaterial.cs" />
+    <Compile Include="Comandos\RestaurarBalanzadasPerdidas.cs" />
     <Compile Include="Comandos\ResultadoCartaPorteElectronicaDummy.cs" />
     <Compile Include="Comandos\ResultadoConsultaDomiciliosDG.cs" />
     <Compile Include="Comandos\ResultadoConsultaPlantasDG.cs" />
@@ -356,9 +357,6 @@
     <Compile Include="Comandos\ResultadoValidarBalanzadasOrquestador.cs" />
     <Compile Include="Comandos\ResultadoValidarConsistenciaBalanzadas.cs" />
     <Compile Include="Comandos\RetransmitirTransmisionASap.cs" />
-    <Compile Include="Comandos\ValidarBalanzadasOrquestador.cs" />
-    <Compile Include="Comandos\ValidarConsistenciaBalanzadas.cs" />
-    <Compile Include="Comandos\CrearLecturaBalanzada.cs" />
     <Compile Include="Comandos\CrearMuestraDeNirs.cs" />
     <Compile Include="Comandos\CrearNirsModificarModalidad.cs" />
     <Compile Include="Comandos\CrearNirs.cs" />

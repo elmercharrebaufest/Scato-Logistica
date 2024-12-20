@@ -365,12 +365,21 @@
     <Compile Include="Conversiones\Impl\Perfiles\ImpIdentificacionMuestraAuditoriaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VinedoTercerosMappingProfile.cs" />
     <Compile Include="ErrorRespons.cs" />
+    <Compile Include="Estrategias\DTO\BalanzadaRecibidaDTO.cs" />
+    <Compile Include="Estrategias\Implementacion\BalanzadaContext.cs" />
+    <Compile Include="Estrategias\Implementacion\BalanzadaErrorStrategy.cs" />
+    <Compile Include="Estrategias\Implementacion\BalanzadaFinStrategy.cs" />
+    <Compile Include="Estrategias\Implementacion\BalanzadaInicioStrategy.cs" />
+    <Compile Include="Estrategias\Implementacion\BalanzadaStrategy.cs" />
+    <Compile Include="Estrategias\Interface\IBalanzadaContext.cs" />
+    <Compile Include="Estrategias\Interface\IBalanzadaStrategy.cs" />
     <Compile Include="IAdministradorDeCalles.cs" />
     <Compile Include="IExternalServiceException.cs" />
     <Compile Include="IFirmware.cs" />
     <Compile Include="Impl\AdministradorDeCalles.cs" />
     <Compile Include="CrearException.cs" />
     <Compile Include="IFirmwareFactory.cs" />
+    <Compile Include="Impl\Balanzada\ServicioCarga.cs" />
     <Compile Include="Impl\ExternalServiceException.cs" />
     <Compile Include="Impl\RestClientFactory.cs" />
     <Compile Include="Impl\ServicioEstadoPuesto.cs" />
@@ -378,6 +387,7 @@
     <Compile Include="Impl\ServicioLlamadoAutomatico.cs" />
     <Compile Include="Impl\ServicioOperaciones.cs" />
     <Compile Include="InnerException.cs" />
+    <Compile Include="Interfaces\Balanzada\IServicioCarga.cs" />
     <Compile Include="IRestClientFactory.cs" />
     <Compile Include="IServicioEstadoPuesto.cs" />
     <Compile Include="IServicioCircular.cs" />
@@ -628,6 +638,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlControlProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarCamionDemorado.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarVariedadPorMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorRestaurarBalanzadasPerdidas.cs" />
     <Compile Include="Procesamiento\ProcesadorSetearProgresoCargaDeCupo.cs" />
     <Compile Include="Procesamiento\ProcesadorAutomatizacionEtapas.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpe.cs" />
@@ -794,9 +805,6 @@
     <Compile Include="Procesamiento\ProcesadorModificarBalanzaPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorObtenerDatosEstacionMeteorologica.cs" />
     <Compile Include="Procesamiento\ProcesadorRetransmitirTransmisionASap.cs" />
-    <Compile Include="Procesamiento\ProcesadorValidarBalanzadasOrquestador.cs" />
-    <Compile Include="Procesamiento\ProcesadorValidarConsistenciaBalanzadas.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearLecturaBalanzada.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearMuestraDeNirs.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearNirsModificarModalidad.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearNirs.cs" />

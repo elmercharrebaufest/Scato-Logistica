@@ -543,8 +543,6 @@
     <Compile Include="Procesamiento\ProcesadorPagarMercadoPagoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcaladoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorRetransmitirTransmisionASapTest.cs" />
-    <Compile Include="Procesamiento\ProcesadorValidarConsistenciaBalanzadasTest.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearLecturaBalanzadaTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarCargaDeCupoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarZE7550TransmisionASapTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupoTest.cs" />

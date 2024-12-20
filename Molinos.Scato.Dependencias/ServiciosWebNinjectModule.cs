@@ -15,6 +15,7 @@ using Ninject.Modules;
 using System.Data.Entity;
 using System.Net.Http;
 using System.ServiceModel;
+using Molinos.Scato.Servicios.Estrategias;
 
 namespace Molinos.Scato.Dependencias
 {
@@ -57,7 +58,12 @@ namespace Molinos.Scato.Dependencias
             this.BindChannelFactory<IServicioImpresion>("ServicioImpresion");
             this.BindChannelFactory<CpePortType>("CpeEndPoint");
 
-
+            Bind<IBalanzadaContext>().To<BalanzadaContext>().InTransientScope();
+            Bind<IBalanzadaStrategy>().To<BalanzadaStrategy>().InTransientScope();
+            Bind<IBalanzadaStrategy>().To<BalanzadaInicioStrategy>().InTransientScope();
+            Bind<IBalanzadaStrategy>().To<BalanzadaErrorStrategy>().InTransientScope();
+            Bind<IBalanzadaStrategy>().To<BalanzadaFinStrategy>().InTransientScope();
+            Bind<IServicioCarga, ServicioCarga>().To<ServicioCarga>().InScope(ctx => OperationContext.Current);
         }
     }
 }

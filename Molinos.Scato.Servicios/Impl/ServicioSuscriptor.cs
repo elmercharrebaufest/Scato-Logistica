@@ -16,6 +16,8 @@ using System.Threading;
 
 
 using static Molinos.Scato.Dominio.Constantes;
+using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Servicios.Estrategias;
 
 namespace Molinos.Scato.Servicios.Impl
 {
@@ -28,6 +30,7 @@ namespace Molinos.Scato.Servicios.Impl
         private readonly IServicioEstadoPuesto estadoPuesto;
         private readonly IServicioOrquestador servicioOrquestador;
         private readonly IConfiguracionProvider configuracion;
+        private readonly IBalanzadaContext balanzada;
         private static int entradaActivadaCount;
         private static int entradaDesactivadaCount;
         private static int balanzadaRecibidaCount;
@@ -40,7 +43,8 @@ namespace Molinos.Scato.Servicios.Impl
 
         public ServicioSuscriptor(IServicioComandos servicioComandos, ILogger log
             , IServicioRepositorio repositorio, IServicioEstadoPuesto estadoPuesto
-            , IServicioOrquestador servicioOrquestador, IConfiguracionProvider configuracion)
+            , IServicioOrquestador servicioOrquestador, IConfiguracionProvider configuracion
+            , IBalanzadaContext balanzada)
         {
             this.servicioComandos = servicioComandos;
             this.log = log;
@@ -48,6 +52,7 @@ namespace Molinos.Scato.Servicios.Impl
             this.estadoPuesto = estadoPuesto;
             this.servicioOrquestador = servicioOrquestador;
             this.configuracion = configuracion;
+            this.balanzada = balanzada;
 
             if (!countIsRunning)
             {
@@ -125,10 +130,8 @@ namespace Molinos.Scato.Servicios.Impl
 
                     case "BalanzadaRecibida":
                         balanzadaRecibidaCount++;
-                        if (notificacion.Datos["tipoBalanzada"] == "fin")
-                        {
-                            servicioComandos.Ejecutar(new ValidarConsistenciaBalanzadas { Balanza = notificacion.CodigoDispositivo, CodigoDispositivo = notificacion.CodigoDispositivo, Hasta = Int32.Parse(notificacion.Datos["id"]) });
-                        }
+                        var balanzadaStrategy = balanzada.GetStrategy(notificacion.Datos["tipoBalanzada"]);
+                        balanzadaStrategy.RegistrarBalanzada(notificacion.Datos);
                         break;
 
                     case "CambioEstadoSensor":
@@ -205,13 +208,13 @@ namespace Molinos.Scato.Servicios.Impl
                         }
                         break;
                 }
+                log.Debug($"Notificacion {notificacion.CodigoEvento} procesada con exito");
             }
             catch (Exception e)
             {
                 log.Error(e, "No se pudo procesar la notificacion");
-                throw;
+                throw e;
             }
-            log.Debug($"Notificacion {notificacion.CodigoEvento} procesada con exito");
         }
 
         private void EnviarMail(string cuerpo, Resultado resultadoApertura, NotificacionEvento notificacion)
