@@ -20,12 +20,14 @@ namespace Molinos.Scato.Servicios.Impl
     {
         private readonly IRepositorio _repositorio;
         private readonly IServicioOrquestador _orquestador;
+        private readonly IServicioComandos _servicioComandos;
         protected ILogger Log { get; private set; }
 
-        public ServicioCarga(IRepositorio repositorio, IServicioOrquestador orquestador, ILogger log)
+        public ServicioCarga(IRepositorio repositorio, IServicioOrquestador orquestador, IServicioComandos servicioComandos, ILogger log)
         {
-            this._repositorio = repositorio;
-            this._orquestador = orquestador;
+            _repositorio = repositorio;
+            _orquestador = orquestador;
+            _servicioComandos = servicioComandos;
             Log = log;
         }
 
@@ -235,6 +237,12 @@ namespace Molinos.Scato.Servicios.Impl
                         var cargaHasta = cargaFin ?? _repositorio.EjecutarComando(new ObtenerSiguienteCargaInicio(balanzada.IdOffset, balanzada.NumeroBalanza));
                         var hasta = cargaHasta?.Id ?? -1; // Si no hay un hasta, el -1 indica que se actualiza hasta la ultima balanzada.
                         var balanzadasModificadas = _repositorio.EjecutarComando(new AsignarBalanzadas(balanzada.IdOffset, balanzada.NumeroBalanza, hasta));
+
+
+                        foreach (var balanzadasModificada in balanzadasModificadas)
+                        {
+                            EnviarASap(balanzadasModificada.EnviadoASap, balanzadasModificada.CargaInicial, balanzadasModificada.Id, balanzadasModificada.NumeroBalanza);
+                        }
                     }
                 }
             }
@@ -265,6 +273,8 @@ namespace Molinos.Scato.Servicios.Impl
                 var balanzadaEntity = ConstruirBalanzada(balanzada, inicio);
                 _repositorio.Agregar(balanzadaEntity);
                 _repositorio.GuardarCambios();
+
+                EnviarASap(balanzadaEntity.EnviadoASap, balanzadaEntity.CargaInicial, balanzadaEntity.Id, balanzadaEntity.NumeroBalanza);
             }
             catch (Exception e)
             {
@@ -330,14 +340,62 @@ namespace Molinos.Scato.Servicios.Impl
             return resultado;
         }
 
+        public void RestaurarBalanzadasPerdidas(string numeroBalanza, int desde, int hasta)
+        {
+            var balanza = _repositorio.Obtener<BalanzaPuerto>(q => q.CodigoBalanza == numeroBalanza);
+            var balanzadaRecibida = new BalanzadaRecibidaDTO
+            {
+                NumeroBalanza = numeroBalanza,
+                CodigoDispositivo = balanza.CodigoDispositivo,
+                OffsetBalanza = balanza.OffSetPlc,
+                IntentosValidacion = balanza.IntentosValidacion,
+                IdOffset = hasta + 1,
+                UltimaValidacion = desde
+            };
+
+            ValidarCrearCargaPendiente(balanzadaRecibida);
+        }
+
         // Un inicio falso es aquel inicio cuyo registro anterior es un error41 o cuyo registros anteriores sean todos errores comenzando con un error41.
         // Ej1: error41 inicio. Ej2: error41 error error error inicio
-        private bool EsInicioFalso(BalanzadaRecibidaDTO balanzada, int? idEspecifico = null)
+        // Tambien es inicio falso cuando llega despues de un error44 y la carga anterior no finalizó
+        private bool EsInicioFalso(BalanzadaRecibidaDTO balanzada)
+        {
+            var errorAnterior = ObtenerParada(balanzada);
+            if (errorAnterior == null)
+            {
+                return false;
+            }
+
+            if (errorAnterior.Tipo == TipoBalanzada.Error41)
+            {
+                return true;
+            }
+            // Para Error44 Parada de emergencia
+            else
+            {
+                var registro = _repositorio.ObtenerMayor<RegistroBalanzaPuerto, int>(x => 
+                    x.Id < errorAnterior.Id && 
+                    (x.Tipo == TipoBalanzada.Inicio || x.Tipo == TipoBalanzada.Fin) && 
+                    x.NumeroBalanza == errorAnterior.NumeroBalanza, x => x.Id);
+                return registro.Tipo == TipoBalanzada.Inicio;
+            }
+        }
+
+        private RegistroBalanzaPuerto ObtenerParada(BalanzadaRecibidaDTO balanzada, int? idEspecifico = null)
         {
             var id = idEspecifico ?? balanzada.IdOffset;
             var registroAnterior = _repositorio.Obtener<RegistroBalanzaPuerto>(x => x.Id == id - 1 && x.NumeroBalanza == balanzada.NumeroBalanza);
 
-            return registroAnterior != null && (registroAnterior.Tipo == TipoBalanzada.Error41 || (registroAnterior.Tipo == TipoBalanzada.Error && EsInicioFalso(balanzada, registroAnterior.Id)));
+            if (registroAnterior.Tipo == TipoBalanzada.Error41 || registroAnterior.Tipo == TipoBalanzada.Error44)
+            {
+                return registroAnterior;
+            }
+            if (registroAnterior.Tipo == TipoBalanzada.Error)
+            {
+                return ObtenerParada(balanzada, registroAnterior.Id);
+            }
+            return null;
         }
 
         private Carga ObtenerInicioActualizar(BalanzadaRecibidaDTO balanzada)
@@ -523,20 +581,12 @@ namespace Molinos.Scato.Servicios.Impl
             return null;
         }
 
-        public void RestaurarBalanzadasPerdidas(string numeroBalanza, int desde, int hasta)
+        private void EnviarASap(bool enviadoASap, Carga cargaInicial, int idBalanzada, string numeroBalanza)
         {
-            var balanza = _repositorio.Obtener<BalanzaPuerto>(q => q.CodigoBalanza == numeroBalanza);
-            var balanzadaRecibida = new BalanzadaRecibidaDTO
+            if (!enviadoASap && cargaInicial != null)
             {
-                NumeroBalanza = numeroBalanza,
-                CodigoDispositivo = balanza.CodigoDispositivo,
-                OffsetBalanza = balanza.OffSetPlc,
-                IntentosValidacion = balanza.IntentosValidacion,
-                IdOffset = hasta + 1,
-                UltimaValidacion = desde
-            };
-
-            ValidarCrearCargaPendiente(balanzadaRecibida);
+                _servicioComandos.Ejecutar(new EnviarLecturaBalanzadaTransmisionASap { Id = idBalanzada, NumeroBalanza = numeroBalanza });
+            }
         }
     }
 }

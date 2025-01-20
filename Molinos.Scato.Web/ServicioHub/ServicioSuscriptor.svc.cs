@@ -13,8 +13,6 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -366,7 +364,7 @@ namespace Molinos.Scato.Web.ServicioHub
                         if (resultadoConPatente != null)
                         {
                             var fotoRuta = string.Empty;
-                            if(!fotoTemporal)
+                            if (!fotoTemporal)
                             {
                                 fotoRuta = GuardarFotoLogALPR(resultadoConPatente.Imagen, fileName);
                             }
@@ -537,7 +535,7 @@ namespace Molinos.Scato.Web.ServicioHub
                     {
                         lecturaPuestoDeTrabajo.MensajeError = "Patente no reconocida";
                         var lecturas = servicio.ObtenerLogLecturasPorTarjeta(lecturaPuestoDeTrabajo.NumeroDeTarjeta);
-                        if (lecturas != null && lecturas.Count >= 1 && recorrido!=null)
+                        if (lecturas != null && lecturas.Count >= 1 && recorrido != null)
                         {
                             recorrido.PatentePrevia = lecturas.Where(x => string.IsNullOrEmpty(x.PatenteLeida)).FirstOrDefault()?.PatenteLeida;
                         }
@@ -874,6 +872,5 @@ namespace Molinos.Scato.Web.ServicioHub
             }
             return null;
         }
-
     }
 }
