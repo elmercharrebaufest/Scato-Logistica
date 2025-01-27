@@ -2898,7 +2898,7 @@ namespace Molinos.Scato.Servicios
         TipoVariedadDto[] ObtenerVariedadPorTipoMaterial(int idMaterial);
 
         [OperationContract]
-        int? ObtenerVariedadIdPorMaterial(int materialId, string titularCP = null, bool esEpa = false, bool esSustentable = false, bool esEUDR = false);
+        int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esSustentable = false, bool esEUDR = false);
 
         [OperationContract]
         IList<AutomatismoGranoDto> ListarAutomatismoGrano();

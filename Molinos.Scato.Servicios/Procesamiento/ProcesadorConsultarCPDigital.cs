@@ -550,6 +550,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (consultaMinima)
             {
                 var material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo);
+                var rtte = cartaPorte.CuitRemitenteComercialVentaPrimaria.HasValue ? ObtenerProveedor(cartaPorte.CuitRemitenteComercialVentaPrimaria.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true) : null;
                 var cp = new CartaPorteDto
                 {
                     NroOrden = cartaPorte.NroOrden,
@@ -568,7 +569,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
                             PatenteAcoplado = cartaPorte?.Dominio?.Split(',')?.Length > 1 ? cartaPorte?.Dominio?.Split(',')?.LastOrDefault() : string.Empty
                         }
-                    }
+                    },
+                    CodEstab = cartaPorte.PlantaOrigen.HasValue ? cartaPorte.PlantaOrigen.ToString() : string.Empty,
+                    RtteComercialCodigoSap = rtte?.CodigoSap,
                 };
                 return cp;
             }

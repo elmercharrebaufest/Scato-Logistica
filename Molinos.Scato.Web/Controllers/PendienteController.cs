@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Dto;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
@@ -41,7 +42,9 @@ namespace Molinos.Scato.Web.Controllers
             {
                 return RedirectToAction("Index", "IngresarCartaPorteRedespacho", new { workflow = ConfigurationManager.AppSettings["workflowRedespacho"], cargaDeCupoId = id });
             }
-            else if(cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapPuertoRosario)
+            else if(cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapPuertoRosario 
+                || cargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA
+                    && cargaDeCupo.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA)
             {
                 return RedirectToAction("Index", "IngresarCartaPorteRedespachoImportaciones", new { workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"], cargaDeCupoId = id });
             }

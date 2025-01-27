@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -70,7 +71,9 @@ namespace Molinos.Scato.Web.Controllers
 
             var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
             var codigoSapTitular = servicio.ObtenerProveedor(orden.TitularCartaPorteId).CodigoSap;
-            if (codigoSapTitular != codigoSapPuertoRosario)
+            if (codigoSapTitular != codigoSapPuertoRosario 
+                && !(codigoSapTitular == Constantes.ValoresPorDefecto.CodigoSapACA 
+                    && orden.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA))
             {
                 ModelState.AddModelError("", Textos.Error_CCPPRedespacho);
                 return false;

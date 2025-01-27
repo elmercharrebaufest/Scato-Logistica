@@ -18,6 +18,8 @@
             public const string ColorFondoSojaSustentable = "#006302";
             public const string ColorTextoSojaSustentable = "#FFFFFF";
             public const string CodigoSapTPR = "70809606";
+            public const string CodigoSapACA = "50012088";
+            public const string EstablecimientoACA = "21145";
         }
 
         public struct IntercomunicadorDireccion
@@ -269,6 +271,7 @@
             public const string workflowMaterialNoProductivo = "SLO.EgresoMaterialNoProductivo";
             public const string workflowVentaFas = "SLO.EgresoPorVentasFAS";
             public const string workflowExportacionFCA = "1029-EgresoPorExportacionFCA";
+            public const string workflowIngresoImportacion = "1029-IngresoPorImpoGranos";
         }
 
         public struct Excepciones

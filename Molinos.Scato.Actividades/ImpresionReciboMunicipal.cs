@@ -58,29 +58,37 @@ namespace Molinos.Scato.Actividades
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
                 if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
 
-
                 var datosRecorrido = repositorio.ObtenerRecorridoPorGuid(workflowId);
-                var configuracionMaterialPagoRealizado = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad, Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado);
-                var materialPagoRealizado = !string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor) ? configuracionMaterialPagoRealizado.Valor.Split(',').ToList() : new List<string>();
-
                 bool pagoRealizado = false;
                 var aplicaPago = true;
-                var material = datosRecorrido.Material;
 
-                if (materialPagoRealizado.Contains(material.CodigoSAP))
+                var cartaPorte = repositorio.ObtenerCartaDePortePorrecorrido(datosRecorrido.Id);
+                if (datosRecorrido.Workflow.Codigo == Constantes.WorkFlow.workflowIngresoImportacion
+                    && cartaPorte.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA
+                    && cartaPorte.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA)
                 {
-                    pagoRealizado = repositorio.ExistePagoRealizado(datosRecorrido.Patente);
-
-                    if (pagoRealizado)
-                    {
                         aplicaPago = false;
+                }
+                else
+                {
+                    var configuracionMaterialPagoRealizado = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad, Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado);
+                    var materialPagoRealizado = !string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor) ? configuracionMaterialPagoRealizado.Valor.Split(',').ToList() : new List<string>();
+                    var material = datosRecorrido.Material;
+                    if (materialPagoRealizado.Contains(material.CodigoSAP))
+                    {
+                        pagoRealizado = repositorio.ExistePagoRealizado(datosRecorrido.Patente);
+
+                        if (pagoRealizado)
+                        {
+                            aplicaPago = false;
+                        }
                     }
                 }
 
-                string numPuestoDeTrabajo = string.Empty;
-                string numDeTicket = string.Empty;
                 var ticketNumber = "Tasa abonada dentro del día";
 
+                string numPuestoDeTrabajo = string.Empty;
+                string numDeTicket = string.Empty;
                 var recorrido = repositorio.ObtenerRecorridoImpresionReciboMunicipal(workflowId);
                 if (aplicaPago)
                 {
@@ -90,7 +98,6 @@ namespace Molinos.Scato.Actividades
                     numDeTicket = (recorrido.PagoConMercadoPago && pagoRealizado == false) ? string.Concat(numDeTicket, " MP") : numDeTicket;
                     ticketNumber = $"{numPuestoDeTrabajo}-{numDeTicket}";
                 }
-                
 
                 var dto = new ImpReciboMunicipalDto
                 {

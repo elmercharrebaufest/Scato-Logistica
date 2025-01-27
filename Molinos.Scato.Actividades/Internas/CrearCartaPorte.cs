@@ -54,8 +54,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var srvRepositorio = context.GetExtension<IServicioRepositorio>();
-                var titularCartaPorteCodigoSap = srvRepositorio.ObtenerProveedor(orden.TitularCartaPorteId)?.CodigoSap;
-                var tipoMaterialPorVariedad = srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, titularCartaPorteCodigoSap);
+                var tipoMaterialPorVariedad = srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, orden.TitularCartaPorteCodigoSap, orden.CodEstab);
                 var resultadoCartaPorte = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte
                 {
                     Orden = orden,

@@ -4,7 +4,6 @@ using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
@@ -17,7 +16,6 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using NPOI.POIFS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -163,7 +161,7 @@ namespace Molinos.Scato.Web.Controllers
                         var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
 
-                        if (PermitirAsignarCalleGrano(model.TitularCartaPorteCodigoSap))
+                        if (PermitirAsignarCalleGrano(model.TitularCartaPorteCodigoSap, model.CodEstab))
                             AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente , model.TitularCartaPorteCodigoSap);
                         
                         log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
@@ -392,16 +390,21 @@ namespace Molinos.Scato.Web.Controllers
             return View("Form", model);
         }
 
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false, bool? FleteMOA = null)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular, bool circuitoNoGranos = false, bool? FleteMOA = null, string establecimiento = null, string rtteComercial = null)
         {
             try
             {
                 var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
                 var resultado = servicioComandos.Ejecutar(new CrearCallePorRecorrido
                 {
-                    TipoCalle = FleteMOA != null ? TipoCalle.NoGranos :
-                    (circuitoNoGranos ? TipoCalle.NoGranos :
-                    (titular.Equals(codigoSapPuertoRosario) ? TipoCalle.PostCalado : TipoCalle.PreCalado)),
+                    TipoCalle = FleteMOA != null ? TipoCalle.NoGranos 
+                    : circuitoNoGranos ? TipoCalle.NoGranos 
+                    : !string.IsNullOrEmpty(titular) 
+                        && (titular == codigoSapPuertoRosario 
+                            || (titular == Constantes.ValoresPorDefecto.CodigoSapACA 
+                                && !string.IsNullOrEmpty(establecimiento) && establecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA))
+                        ? TipoCalle.PostCalado 
+                    : TipoCalle.PreCalado,
                     CargaDeCupoId = cargaDeCupoId,
                     TurnoActivo = turnoActivo,
                     CentroId = centroId
@@ -1350,7 +1353,7 @@ private List<object> ObtenerMaterialesResiduosOperaciones(List<OrdenResiduosDto>
         private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64)
         {
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
-            var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo.TitularCartaPorteCodigoSap, cargaDeCupo.RtteComercialCodigoSap);
+            var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo.TitularCartaPorteCodigoSap, cargaDeCupo.RtteComercialCodigoSap, cargaDeCupo.CodEstab);
             var tipoComercialId = ObtenerTipoComercialSegunWorkflow(workflow);
 
             if (cargaDeCupo == null || string.IsNullOrEmpty(workflow))
@@ -1828,16 +1831,17 @@ private List<object> ObtenerMaterialesResiduosOperaciones(List<OrdenResiduosDto>
             return esValido;
         }
 
-        private bool PermitirAsignarCalleGrano(string codigoSapTitularCartaPorte)
+        private bool PermitirAsignarCalleGrano(string codigoSapTitularCartaPorte, string codigoEstablecimiento)
         {
             var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
-            return codigoSapTitularCartaPorte != codigoSapPuertoRosario;
+            return codigoSapTitularCartaPorte != codigoSapPuertoRosario 
+                && !(codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA 
+                    && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA);
         }
 
-        private string ObtenerWorkflowSegunTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial)
+        private string ObtenerWorkflowSegunTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento)
         {
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
-            var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
             var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
 
             var workflow = string.Empty;
@@ -1852,7 +1856,9 @@ private List<object> ObtenerMaterialesResiduosOperaciones(List<OrdenResiduosDto>
             {
                 workflow = ConfigurationManager.AppSettings["workflowRedespacho"];
             }
-            else if (codigoSapTitularCartaPorte == codigoSapPuertoRosario)
+            else if (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapTPR 
+                || (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA 
+                    && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA))
             {
                 workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
             }

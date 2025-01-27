@@ -69,7 +69,6 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         CuitTitularCP = replace( isnull(cptit.Cuil ,isnull( odescp.Cuil,'')),'-',''),
                         Intermediario =isnull(cpint.Descripcion,''),
                         CuitIntermediario = replace(cpint.Cuil,'-',''),
-
                         RemitenteComercial = CASE WHEN ofason.Id IS NOT NULL THEN ISNULL(ofasonCliR.Descripcion , ofasonCliC.Descripcion)
                                              ELSE cprtte.Descripcion END,
 
@@ -80,6 +79,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         CuitDestinatario = replace( isnull(cpdest.Cuil , hyp.Cuil),'-',''),
                         Cliente = isnull( cpcli.Descripcion , isnull(ofasc.Descripcion ,isnull( ointc.Descripcion , isnull(ofasonc.Descripcion , isnull(ocontc.Descripcion ,odescfasonc.Descripcion))))),
                         CuitCliente = replace( isnull(cpcli.Cuit , isnull(ofasc.Cuit ,isnull( ointc.Cuit ,isnull( ofasonc.Cuit ,isnull( ocontc.Cuit , odescfasonc.Cuit))))),'-',''),
+                        IntermediarioFlete = isnull(cpintf.Descripcion,''),
+                        CuitIntermediarioFlete = replace(cpintf.Cuil,'-',''),
                         Entregador = cpe.DescripcionCorta,
                         Variedad = cp.Variedad,
                         KmARecorrer = isnull(ltrim(cp.KmRecorrer),''),
@@ -142,6 +143,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 	                    left join Proveedor cpprov on cpprov.id = cp.Corredor_Id
 	                    left join Proveedor cptit on cptit.id = cp.TitularCartaPorte_Id
 	                    left join Proveedor cpint on cpint.id = cp.Intermediario_Id
+	                    left join Proveedor cpintf on cpintf.id = cp.IntermediarioFlete_Id
 	                    left join Proveedor cprtte on cprtte.id = cp.RtteComercial_Id
 	                    left join Proveedor cpdest on cpdest.id = cp.Destinatario_Id
 	                    left join Cliente cpcli on cpcli.id = cp.ClienteDestino_Id

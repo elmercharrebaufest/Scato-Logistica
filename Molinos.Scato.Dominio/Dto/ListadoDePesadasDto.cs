@@ -37,6 +37,8 @@ namespace Molinos.Scato.Dominio.Dto
         public string CuitDestinatario { get; set; }
         public string Cliente { get; set; }
         public string CuitCliente { get; set; }
+        public string IntermediarioFlete { get; set; }
+        public string CuitIntermediarioFlete { get; set; }
         public string Transportista { get; set; }
         public string CuitTransportista { get; set; }
         public string Chofer { get; set; }
@@ -56,7 +58,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string KmARecorrer { get; set; }
         public string TarifaPorTonelada { get; set; }
         public string CpOrigen { get; set; }
-
         public string RemitoDeProveedores
         {
             get { return remitoDeProveedores; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Globalization;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -54,7 +55,15 @@ namespace Molinos.Scato.Actividades
             {
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
                 if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
+
                 var recorrido = repositorio.ObtenerRecorridoImpresionReciboMunicipal(workflowId);
+                var cartaPorte = repositorio.ObtenerCartaDePortePorrecorrido(recorrido.RecorridoId);
+                if (cartaPorte.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA 
+                    && cartaPorte.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA)
+                {
+                    throw new Exception("No aplica impresión");
+                }
+
                 var dto = new ImpReciboMunicipalImportacionDto
                 {
                     Impresora = documento.ImpresoraDireccion ?? "",

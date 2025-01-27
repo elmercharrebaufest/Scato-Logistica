@@ -10692,11 +10692,14 @@ namespace Molinos.Scato.Servicios.Impl
             return infoCalle;
         }
 
-        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, bool esEpa = false, bool esSustentable = false, bool esEUDR = false)
+        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esSustentable = false, bool esEUDR = false)
         {
             var variedadesPorMaterial = repositorio.Listar<TipoVariedadPorMaterial>(x => x.MaterialId == materialId).Select(x => x.TipoVariedad);
 
-            if (!string.IsNullOrEmpty(codigoSAPtitularCP) && codigoSAPtitularCP.Equals(Constantes.ValoresPorDefecto.CodigoSapTPR))
+            if (!string.IsNullOrEmpty(codigoSAPtitularCP) 
+                && (codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapTPR 
+                    || (codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapACA 
+                        && !string.IsNullOrEmpty(codigoEstablecimiento) && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA)))
                 return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Importacion)).Select(x => x.Id).FirstOrDefault();
 
             if (esEpa && esEUDR)

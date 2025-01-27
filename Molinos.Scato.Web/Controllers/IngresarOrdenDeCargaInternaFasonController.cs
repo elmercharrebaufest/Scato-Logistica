@@ -325,49 +325,52 @@ namespace Molinos.Scato.Web.Controllers
         public JsonResult ObtenerOrdenDeCargaOperacionesPorPatente(string patente, string workflow, DatosUsuario datosUsuario)
         {
             var response = new RespuestaEstandarDto<List<OrdenDeCargaDto>>();
-            bool fleteMoa = workflow == "SLO.EgresoClienteFason";
             
             try
             {
-                var restResponse = OrdenesFiltradas(ObtenerRespuestaOrdenDeCargaOperaciones(patente));
+                var ordenes = this.OrdenesFiltradas(this.ObtenerRespuestaOrdenDeCargaOperaciones(patente));
                 
-                if (restResponse != null)
+                if (ordenes != null)
                 {
-                    foreach (var item in restResponse)
+                    foreach (var orden in ordenes)
                     {
-                        var material = servicio.ObtenerMaterialPorCodigoSap(item.CodigoProducto);
-                        item.MaterialId = material?.Id.ToString() ?? "";
-                        var choferCuil = ConvertirCuil(item.CUILChofer);
+                        var material = servicio.ObtenerMaterialPorCodigoSap(orden.CodigoProducto);
+                        orden.MaterialId = material?.Id.ToString() ?? "";
+                        
+                        //Crear chofer si no existe
+                        var choferCuil = ConvertirCuil(orden.CUILChofer);
                         var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
                         
                         if (chofer == null)
                         {
-
-                            var choferNuevo = new ChoferDto
-                            {
-                                Nombre = item.NombreChofer,
-                                Apellido = item.ApellidoChofer,
-                                TipoDocumentoIdentidadId = 1,
-                                Cuil = choferCuil,
-                                NumeroDeDocumento = ObtenerDocumentoDesdeCuil(item.CUILChofer)
-                            };
-
-                            var resultChofer = SetearChofer(choferNuevo);
+                            var resultChofer = 
+                                SetearChofer(
+                                    new ChoferDto
+                                    {
+                                        Nombre = orden.ChoferNombre,
+                                        Apellido = orden.ChoferApellido,
+                                        TipoDocumentoIdentidadId = 1,
+                                        Cuil = choferCuil,
+                                        NumeroDeDocumento = ObtenerDocumentoDesdeCuil(orden.CUILChofer)
+                                    });
 
                             if (!resultChofer)
                             {
-                                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se pudo ingresar el chofer " + item.NombreChofer + " " + item.ApellidoChofer + " del numero de orden: " + item.Id, TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                                response.Mensajes.Add(
+                                    new MensajeEstandarDto
+                                    {
+                                        Mensaje = $"No se pudo ingresar el chofer {orden.ChoferApellido} {orden.ChoferNombre} del número de orden: {orden.Id}",
+                                        TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning 
+                                    });
                                 break;
-
                             }
                         }
-
                     }
 
-                    if (restResponse.Count == 0)
+                    if (ordenes.Count == 0)
                         response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se encontró ninguna Orden de Carga Fason con la patente ingresada", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
                     else
-                        response.Data = restResponse;
+                        response.Data = ordenes;
                 }
                 else
                 {
@@ -422,11 +425,10 @@ namespace Molinos.Scato.Web.Controllers
                 var destino = servicio.ObtenerClientePorCuit(DestinoCUIT);
 
                 var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
+                
                 var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
                 var ordenes = resp.Where(x => x.Id == Convert.ToInt32(ordenId)).ToList();
                 var orden = ajustarOrdenFormatoRequerido(ordenes.FirstOrDefault());
-
-
                 var choferCuil = ConvertirCuil(orden.CUILChofer);
                 var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
 
@@ -435,7 +437,6 @@ namespace Molinos.Scato.Web.Controllers
 
                 var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
                 orden.KmARecorrer = orden.KmARecorrer != null ? orden.KmARecorrer : string.Empty;
-
 
                 var resultadoEscalables = servicioComandos.Ejecutar(GenerarConsultaEscalables(patente, acoplado, datosUsuario.NombreUsuario)) as ResultadoEscalables;
 
@@ -522,9 +523,7 @@ namespace Molinos.Scato.Web.Controllers
                 };
 
                 return Json(data, JsonRequestBehavior.AllowGet);
-            }
-
-           
+            }           
         }
 
         private void ComprobarClienteUnico(string cuitCliente)
@@ -600,17 +599,7 @@ namespace Molinos.Scato.Web.Controllers
 
         private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente)
         {
-            try
-            {
-                IEnumerable<OrdenDeCargaDto> data = servicioOperaciones.ObtenerOrdenesDeCarga(patente);
-                return data.ToList();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-            
+            return this.servicioOperaciones.ObtenerOrdenesDeCarga(patente).ToList();
         }
 
         private string DefinirDestinatario(OrdenDeCargaDto orden)
