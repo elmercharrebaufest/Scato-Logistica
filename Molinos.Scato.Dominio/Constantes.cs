@@ -68,6 +68,7 @@
         public struct TipoDocumentoChofer
         {
             public const string Cuit = "CUI";
+            public const string Dni = "DNI";
         }
 
         public struct ConfiguracionGeneral
@@ -86,6 +87,7 @@
                 public const string TableroComandoPuerto = "TableroComandoPuerto";
                 public const string IngresarOrdenCargaInternaFason = "IngresarOrdenCargaInternaFason";
                 public const string PesadaBruto = "PesadaBruto";
+                public const string CargaDeCupo = "CargaDeCupo";
             }
 
             public struct ContingenciaPesosExcedidos
@@ -150,6 +152,11 @@
             {
                 public const string CNRTDummy = "CNRTDummy";
                 public const string VehiculoDummy = "VehiculoDummy";
+            }
+
+            public struct CargaDeCupo
+            {
+                public const string MaterialExcepcionFastPass = "MaterialExcepcionFastPass";
             }
         }
 

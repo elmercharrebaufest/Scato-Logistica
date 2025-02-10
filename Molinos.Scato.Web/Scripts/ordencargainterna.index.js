@@ -2,6 +2,7 @@
     //Foco en primer elemento
     $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
     $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
+    var webUrl = window.location;
 
     //Máscaras
     $(".patente-internacional").mask("?*******", { placeholder: "" });
@@ -191,7 +192,8 @@
         $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
     });
 
-    if ($('#DestinoId').length > 0 || $('#ClienteId').length > 0) {
+    // Solo ejecutar la carga inicial si NO estamos en el contexto de Fasón
+       if (($('#DestinoId').length > 0 || $('#ClienteId').length > 0) && ($('#WorkflowDescripcion').val().search('Fasón') === -1 || (typeof webUrl === 'string' && !webUrl.includes('CamionDemorado')) )) {
         CargarPlantas();
         CargarDomicilios();
         cargarMaterial();

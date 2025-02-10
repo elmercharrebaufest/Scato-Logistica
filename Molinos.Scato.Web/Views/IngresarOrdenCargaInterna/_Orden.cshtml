@@ -11,22 +11,12 @@
     var kmdropdown = new List<SelectListItem>();
     var tiposVehiculo = (IEnumerable<SelectListItem>)ViewBag.TiposVehiculo;
     string WorkflowDescripcion = ViewBag.WorkflowDescripcion.ToString();
-    var vehiculo = Model != null ? (int)Model.TipoVehiculo : 0;
     var plantasDG = new List<SelectListItem>();
     var domiciliosDG = new List<SelectListItem>();
     var listaMaterialesDerivadoGranario = (List<int>)ViewBag.MaterialesDerivadoGranario;
     var emptySelectListItem = new List<SelectListItem>();
 }
 
-@if (Model != null)
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#TipoVehiculo').val(@vehiculo);
-        })
-
-    </script>
-}
 <div id="links"
      data-url-obtener-proveedores-sap="@Url.Action("ObtenerProveedoresSap", "Consultas")"
      data-url-buscar-proveedor="@Url.Action("BuscarProveedor", "Consultas")"
@@ -60,8 +50,6 @@
 @Html.HiddenFor(model => model.RecorridoId)
 @Html.HiddenFor(model => model.Rechazado)
 @Html.HiddenFor(model => model.Demorado)
-@* @Html.HiddenFor(model => model.OrdenDomicilioDestino)
-    @Html.HiddenFor(model => model.TipoDomicilioDestino) *@
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
 @Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
 @Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)
@@ -71,7 +59,6 @@
 @Html.Hidden("AlmacenSeleccionado", Model.Almacen_Id)
 
 <input data-val="true" id="OrdenDomicilioDestino" name="OrdenDomicilioDestino" type="hidden" value="@Model.OrdenDomicilioDestino" />
-
 <input data-val="true" id="TipoDomicilioDestino" name="TipoDomicilioDestino" type="hidden" value="@Model.TipoDomicilioDestino" />
 
 <div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido" />
@@ -96,7 +83,14 @@
             <div class="control paddingRight">
                 @Html.LabelFor(model => model.FechaEmision, new { @class = "control-label small", style = "margin-left:15%" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.FechaEmision, new { @Value = Model != null ? Model.FechaEmision.FormattedFixed() : string.Empty, @class = "" })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.TextBoxFor(model => model.FechaEmision, new { @readonly = "readonly", @Value = Model.FechaEmision.FormattedFixed() })
+                    } 
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.FechaEmision, new { @Value = Model != null ? Model.FechaEmision.FormattedFixed() : string.Empty, @class = "" })
+                    }
                     @Html.ValidationMessageFor(model => model.FechaEmision)
                 </div>
             </div>
@@ -116,50 +110,85 @@
             <div class="control">
                 @Html.LabelFor(model => model.PatenteCamion, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
+                    @if (!string.IsNullOrEmpty(Model.PatenteCamion))
+                    {
+                        @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
+                    }
                     @Html.ValidationMessageFor(model => model.PatenteCamion)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.Id_operaciones, new { @class = "control-label small margin10" })
                 <div class="">
-                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones) || Model.RecorridoId > 0)
                     {
                         @Html.TextBoxFor(model => model.Id_operaciones, new { @class = "control", @readonly = "readonly" })
-                        @Html.ValidationMessageFor(model => model.Id_operaciones)
                     }
                     else
                     {
                         @Html.DropDownListFor(model => model.Id_operaciones, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()", data_selected_value = Model.Id_operaciones })
-                        @Html.ValidationMessageFor(model => model.Id_operaciones)
                     }
+                    @Html.ValidationMessageFor(model => model.Id_operaciones)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new { @class = "control ", autocomplete = "off" })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones) && (ViewData.ModelState["TipoVehiculo"] == null || ViewData.ModelState["TipoVehiculo"].Errors.Count == 0) || Model.RecorridoId > 0)
+                    {
+                        @Html.TextBoxFor(model => model.TipoVehiculoNombre, new { @class = "control", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.TipoVehiculo)
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new { @class = "control ", autocomplete = "off" })
+                    }
                     @Html.ValidationMessageFor(model => model.TipoVehiculo)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.PatenteAcoplado, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
+                    }
                     @Html.ValidationMessageFor(model => model.PatenteAcoplado)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.TipoComercialId, new { @class = "control-label small margin10" })
                 <div class="" id="tiposComerciales" data-alta-rapida='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.TiposComercialesTransportista).Select(x => x)))'>
-                    @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control " })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control ", @style = "background: #f0f0f0; cursor: not-allowed; pointer-events: none;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control " })
+                    }
                     @Html.ValidationMessageFor(model => model.TipoComercialId)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.Transportista, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.Transportista, new { @class = "control  autocompletado-obligatorio", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Transportista) })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.TextBoxFor(model => model.Transportista, new { @class = "control", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.Transportista, new { @class = "control  autocompletado-obligatorio", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Transportista) })
+                    }
                     @Html.ValidationMessageFor(model => model.Transportista)
                     @Html.HiddenFor(model => model.TransportistaId)
                     @Html.HiddenFor(model => model.EsTransportista)
@@ -168,43 +197,85 @@
             <div class="control">
                 @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control " })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control ", @style = "background: #f0f0f0; cursor: not-allowed; pointer-events: none;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control " })
+                    }
                     @Html.ValidationMessageFor(model => model.MaterialId)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.Destino, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.Destino, new { @class = "control  autocompletado-obligatorio" })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.TextBoxFor(model => model.Destino, new { @class = "control", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.Destino, new { @class = "control  autocompletado-obligatorio" })
+                    }
                     @Html.ValidationMessageFor(model => model.Destino)
                     @Html.HiddenFor(model => model.DestinoId)
                 </div>
             </div>
-            <div class="control">
+            <div class="control hidden">
                 @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "Localidad" })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "Localidad", @style = "background: #f0f0f0; cursor: not-allowed; pointer-events: none;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "Localidad" })
+                    }
                     @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)")
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, new { @class = "control", @style = "background: #f0f0f0; cursor: not-allowed; pointer-events: none;"  })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)")
+                    }
                     @Html.ValidationMessageFor(model => model.PlantaDGDestino)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.TipoYOrdenDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.TipoYOrdenDestino, domiciliosDG, "(domicilio)")
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.DropDownListFor(model => model.TipoYOrdenDestino, domiciliosDG, new { @class = "control", @style = "background: #f0f0f0; cursor: not-allowed; pointer-events: none;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.TipoYOrdenDestino, domiciliosDG, "(domicilio)")
+                    }
                     @Html.ValidationMessageFor(model => model.TipoYOrdenDestino)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.PagadorFlete, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control" })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control" })
+                    }
                     @Html.ValidationMessageFor(model => model.PagadorFlete)
                     @Html.HiddenFor(model => model.PagadorFleteId)
                 </div>
@@ -223,9 +294,15 @@
                     <div class="control paddingRight">
                         @Html.LabelFor(model => model.Chofer.Cuil, new { @class = "control-label small margin10" })
                         <div class="">
-                            @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control  cuilValido", data_error_cuil_invalido = string.Format(Textos.CuitInvalido), data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Cuil" }) })
-                            @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control " })
-
+                            @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                            {
+                                @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control cuilValido", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control  cuilValido", data_error_cuil_invalido = string.Format(Textos.CuitInvalido), data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Cuil" }) })
+                                @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control " })
+                            }
                             @Html.ValidationMessageFor(model => model.Chofer.Cuil)
                         </div>
                     </div>
@@ -238,14 +315,28 @@
                     <div class="control paddingRight">
                         @Html.LabelFor(model => model.Chofer.Nombre, new { @class = "control-label small margin10" })
                         <div class="">
-                            @Html.TextBoxFor(model => model.Chofer.Nombre, new { @class = "control  autocompletado-obligatorio", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Nombre" }) })
+                            @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                            {
+                                @Html.TextBoxFor(model => model.Chofer.Nombre, new { @class = "control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Chofer.Nombre, new { @class = "control  autocompletado-obligatorio", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Nombre" }) })
+                            }
                             @Html.ValidationMessageFor(model => model.Chofer.Nombre)
                         </div>
                     </div>
                     <div class="control paddingRight">
                         @Html.LabelFor(model => model.Chofer.Apellido, new { @class = "control-label small margin10" })
                         <div class="">
-                            @Html.TextBoxFor(model => model.Chofer.Apellido, new { @class = "control  autocompletado-obligatorio", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Apellido" }) })
+                            @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                            {
+                                @Html.TextBoxFor(model => model.Chofer.Apellido, new { @class = "control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Chofer.Apellido, new { @class = "control  autocompletado-obligatorio", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Apellido" }) })
+                            }
                             @Html.ValidationMessageFor(model => model.Chofer.Apellido)
                         </div>
                     </div>
@@ -263,10 +354,17 @@
                             @Html.ValidationMessageFor(model => model.Chofer.NumeroDeDocumento)
                         </div>
                     </div>
-                    <div class="control">
+                    <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                         @Html.LabelFor(model => model.KmARecorrer, new { @class = "control-label small", style = "margin-left:9%" })
                         <div class="">
-                            @Html.TextBoxFor(model => model.KmARecorrer, new { @class = "control", style = "margin-left:-0.5%" })
+                            @if (!string.IsNullOrEmpty(Model.KmARecorrer))
+                            {
+                                @Html.TextBoxFor(model => model.KmARecorrer, new { @class = "control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.KmARecorrer, new { @class = "control", style = "margin-left:-0.5%" })
+                            }
                             @Html.ValidationMessageFor(model => model.KmARecorrer)
                         </div>
                     </div>
@@ -281,14 +379,28 @@
             <div class="control">
                 @Html.LabelFor(model => model.Almacen_Id, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.Almacen_Id, almacenes, "Almacenes", new { @class = "control " })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones) && (ViewData.ModelState["Almacen_Id"] == null || ViewData.ModelState["Almacen_Id"].Errors.Count == 0))
+                    {
+                        @Html.DropDownListFor(model => model.Almacen_Id, almacenes, "Almacenes", new { @class = "control ", @style = "background: #f0f0f0; cursor: not-allowed; pointer-events: none;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.Almacen_Id, almacenes, "Almacenes", new { @class = "control " })
+                    }
                     @Html.ValidationMessageFor(model => model.Almacen_Id)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.Calle_Id, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.Calle_Id, calles, "Calle", new { @class = "control " })
+                    @if (!string.IsNullOrEmpty(Model.Id_operaciones))
+                    {
+                        @Html.DropDownListFor(model => model.Calle_Id, calles, "Calle", new { @class = "control", @style = "background: #f0f0f0; cursor: not-allowed; pointer-events: none;" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.Calle_Id, calles, "Calle", new { @class = "control " })
+                    }
                     @Html.ValidationMessageFor(model => model.Calle_Id)
                 </div>
             </div>

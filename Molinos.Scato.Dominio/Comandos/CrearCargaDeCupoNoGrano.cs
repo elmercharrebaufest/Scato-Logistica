@@ -1,11 +1,18 @@
 ﻿using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Filtros;
-
 namespace Molinos.Scato.Dominio.Comandos
 {
-    [LoguearEntidad]
     public class CrearCargaDeCupoNoGrano : Comando
     {
         public CargaDeCupoDto Dto { get; set; }
+        public int? OrdenOperacionesId { get; set; } 
+    }
+
+    public class ResultadoCrearCargaDeCupo : ResultadoCrear
+    {
+        public bool FastPassValido { get; set; }
+        public int FastPassWorkflowDefinicionId { get; set; }
+        public OrdenCargaInternaDto OrdenCargaInterna { get; set; }
+        public OrdenCargaInternaFasonDto OrdenCargaInternaFason { get; set; }
+        public ControlRecorridoDto ControlRecorrido { get; set; }
     }
 }

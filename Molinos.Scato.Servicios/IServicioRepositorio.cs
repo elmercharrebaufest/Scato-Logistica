@@ -2169,6 +2169,9 @@ namespace Molinos.Scato.Servicios
         OtroRecorridoDelChoferDto ObtenerOtroRecorridoDelChofer(int choferId);
 
         [OperationContract]
+        OtroRecorridoDelChoferDto ObtenerOtroRecorridoDelChoferDemorado(int choferId, Guid wfInstancia);
+
+        [OperationContract]
         bool CupoConsumido(string cupoParamatro, int centroId);
 
         [OperationContract]
@@ -3031,8 +3034,11 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ExisteOrdenCargaFason(string ordenExterno);
-		
-		[OperationContract]
+
+        [OperationContract]
+        bool ExisteOrdenCargarFasonDemorado(string ordenExterno, InstanciaWorkflowDto worflowIntancia = null);
+
+        [OperationContract]
         int ContarClientes(string nCuit);
 
         [OperationContract]

@@ -58,9 +58,9 @@ namespace Molinos.Scato.Dominio.Dto
         public string ClienteProvincia { get; set; }
         public string ClienteLocalidad { get; set; }
         public string ClienteCodigoSap { get; set; }
-        
+
         public string ClienteCuit { get; set; }
-        
+
         public ChoferDto Chofer { get; set; }
 
         public int RecorridoId { get; set; }
@@ -78,8 +78,6 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public TipoVehiculo TipoVehiculo { get; set; }
-
-        public int TipoVehiculoLectura {  get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_DerivadoGranarioHabilitado")]
         public bool DerivadoGranarioHabilitado { get; set; }
@@ -115,7 +113,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_IntermediarioFlete")]
         public string IntermediarioFlete { get; set; }
-        
+
         public int? TipoDomicilioDestino { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_TipoYOrdenDestino")]
@@ -126,11 +124,10 @@ namespace Molinos.Scato.Dominio.Dto
         public int? DestinatarioId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_NumeroOperaciones")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string NumeroOrdenExterno { get; set; }
-		public string DestinoMercaderia { get; set; }
+        public string DestinoMercaderia { get; set; }
 
-       
+
         public string Observaciones { get; set; }
     }
 }

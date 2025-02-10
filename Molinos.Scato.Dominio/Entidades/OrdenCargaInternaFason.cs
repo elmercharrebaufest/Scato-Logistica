@@ -7,23 +7,15 @@ namespace Molinos.Scato.Dominio.Entidades
     {
         [Key]
         public virtual int Id { get; set; }
-        [Required]
         public virtual string NumeroOrden { get; set; }
-        [Required]
         public virtual DateTime FechaEmision { get; set; }
-        [Required]
         public virtual string PatenteCamion { get; set; }
         public virtual string PatenteAcoplado { get; set; }
         public virtual Transportista Transportista { get; set; }
-        [Required]
         public virtual TipoComercial TipoComercial { get; set; }
-        [Required]
         public virtual Material Material { get; set; }
-        [Required]
         public virtual Cliente Cliente { get; set; }
-        [Required]
         public virtual Chofer Chofer { get; set; }
-        [Required]
         public virtual Recorrido Recorrido { get; set; }
         public virtual Localidad LocalidadDestino { get; set; }
         public virtual string KmRecorrer { get; set; }

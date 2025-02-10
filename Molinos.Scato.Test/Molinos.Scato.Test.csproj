@@ -55,6 +55,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.6.3\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Activities.Extensions">
       <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.6.9\lib\Net45\Microsoft.Activities.Extensions.dll</HintPath>
     </Reference>
@@ -90,6 +93,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -527,6 +533,7 @@
     <Compile Include="Controllers\TransportistaControllerTest.cs" />
     <Compile Include="Controllers\UsuarioControllerTest.cs" />
     <Compile Include="Controllers\VerificacionCamionRechazadoControllerTest.cs" />
+    <Compile Include="Helpers\ValidacionCrearOrdenInternaFasonTests.cs" />
     <Compile Include="Helpers\ZPLConveterTest.cs" />
     <Compile Include="Helpers\ExtensionesHtmlTest.cs" />
     <Compile Include="Helpers\ExtensionesReflectionTest.cs" />
@@ -908,6 +915,7 @@
     <Compile Include="Procesamiento\ProcesadorRechazarCamionTest.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarValorCaladoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorSuscribirEventosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarOrdenCargaInternaFasonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\AnalisisDeCalidad\Reference.cs">
       <AutoGen>True</AutoGen>

@@ -6,17 +6,24 @@
 }
 <input id="ErrorAfip" type="hidden" name="ErrorAfip" value="@(ViewBag.ErrorAfip != null ? ViewBag.ErrorAfip.ToString() : string.Empty)" />
 <script type="text/javascript">
+    const textoVariasOrdenes = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Textos.OrdenesFasonOperApiVarias))';
+    const patenteNoEncontrada = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Textos.PatenteNoEncontradaApiOpera))';
+    let hayError = '@Html.Raw(ViewBag.HasErrors)';
+    let noCargar = true;
     $(document).ready(function () {
         if ($("#ErrorAfip").val() != '') {
             MostrarAlertaError($("#ErrorAfip").val());
             $(".btnValidacionCTG").removeAttr("disabled");
         }
 
-        $('#FechaEmision').attr("readonly", "readonly");
-        $('#MaterialId').attr("readonly", "readonly");
+        var motivoDeDemora = '@ViewBag.MotivoDeDemora';
+        if (motivoDeDemora && motivoDeDemora !== '') {
+            MostrarAlertaAdvertencia("Motivo Demora: " + motivoDeDemora);
+        }
+
         $("#FechaEmision").datepicker("destroy");
         $("#Id").val('@Model.Id');
-        let materialDropdown = document.getElementsById('MaterialId');
+        let materialDropdown = document.getElementById('MaterialId');
         materialDropdown.addEventListener('mousedown', e => e.preventDefault());
     })
 </script>
@@ -25,11 +32,6 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
     <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
-    <script type="text/javascript">
-        noCargar = true;
-    </script>
-    <script src="@Url.Script("~/Scripts/ordencargainterna.index.js")" type="text/javascript"></script>
-    <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
 }
 <link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
 <div class="container-fluid">
@@ -47,7 +49,7 @@
     @Html.Partial("~/Views/IngresarOrdenCargaInternaFason/_Orden.cshtml")
 
     <div class="control-group paddingRight cajaButtons">
-        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaInterna.showModal()" disabled>@Textos.Rechazar</button>
+        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaInterna.showModal()">@Textos.Rechazar</button>
         <button class="btn btn-primary" type="submit">@Textos.Aceptar</button>
         @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
     </div>
@@ -59,15 +61,15 @@
         <p>¿Está seguro que desea rechazar el camión?</p>
         <div class="dialogModal__group">
             <label for="MotivoRechazo">@Textos.Motivo:</label>
-            @Html.TextArea("MotivoRechazo", new { id = "motivoRechazo", @class = "form-control", style = "width:350px;" })
+            @Html.TextArea("MotivoRechazo", new { id = "MotivoRechazoTexto", @class = "form-control", style = "width:350px;" })
         </div>
         <div class="row">
-            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "requeridoRechazo", style = "display:none; color:red; margin-left:18%" })
-            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_LargoMensaje, Textos.Motivo, "10"), new { @id = "largoMensajeRechazo", style = "display:none; color:red;margin-left:18%" })
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "error-rechazo-requerido", style = "display:none; color:red; margin-left:18%" })
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_LargoMensaje, Textos.Motivo, "10"), new { @id = "error-rechazo-largo", style = "display:none; color:red;margin-left:18%" })
         </div>
     </div>
     <div class="dialogModal__botones">
-        <button class="btn btn-warning" type="button" id="btnRechazarOrdenCargaInternaFason">Confirmar</button>
+        <button class="btn btn-warning" type="button" id="dialogo-rechazar-fason-confirmar">Confirmar</button>
         <button class="btn" type="button" onclick="modalRechazarOrdenCargaInterna.close()">Cerrar</button>
     </div>
 </dialog>

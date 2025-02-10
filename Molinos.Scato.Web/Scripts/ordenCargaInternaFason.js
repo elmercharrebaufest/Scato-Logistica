@@ -1,22 +1,177 @@
-
 $(document).ready(function () {
+    $("#TipoVehiculo").css({ 'pointer-events': 'none', 'background-color': '#f0f0f0', 'color': '#666' });
+    $("#Chofer_Cuil").prop("disabled", true);
+    $("#KmARecorrer").prop('readonly', true);
+    $("#Chofer_TipoDocumentoIdentidadId").prop('disabled', true);
+    var esCamionDemorado = window.location.pathname.toLowerCase().includes("CamionDemorado".toLowerCase());
+    var esModificarDocumento = window.location.pathname.toLowerCase().includes("ModificarDocumentoDeIngreso".toLowerCase());
+
+    // Manejar click en Rechazar
+    $("#dialogo-rechazar-fason-confirmar").click(function () {
+        let valido = true;
+        let motivo = $("#MotivoRechazoTexto").val();
+
+        $("#error-rechazo-requerido").hide();
+        $("#error-rechazo-largo").hide();
+
+        if (motivo == '') {
+            valido = false;
+            $("#error-rechazo-requerido").show();
+        } else if (motivo.length < 10) {
+            valido = false;
+            $("#error-rechazo-largo").show();
+        }
+
+        if (valido) {
+            $("#Rechazado").val("True");
+            $("#Demorado").val("False");
+            $("#MotivoRechazo").val(motivo);
+            //lleno campos requeridos
+            if ($("#ClienteId").val() == "" || $("#ClienteId").val() == "0") $("#ClienteId").val(99999);
+            if ($("#TransportistaId").val() == "" || $("#TransportistaId").val() == "0") $("#TransportistaId").val(99999);
+            if ($("#TipoVehiculo").val() == "" || $("#TipoVehiculo").val() == null) $("#TipoVehiculo").val(0);
+            if ($('#tiposComerciales').val() == "") $("#tiposComerciales").val(0);
+            if ($("#NumeroOrden").val() == "") $("#NumeroOrden").val(0);
+            if ($("#Chofer_Cuil").val() == "") $("#Chofer_Cuil").val("99-99999999-9");
+            if ($("#Chofer_Cuil[type = 'hidden']").val() == "") $("#Chofer_Cuil[type = 'hidden']").val("99-99999999-9");
+            if ($("#Chofer_NumeroDeDocumento").val() == "") $("#Chofer_NumeroDeDocumento").val("99999999");
+            if ($("#Chofer_Nombre").val() == "") $("#Chofer_Nombre").val("a");
+            if ($("#Chofer_Apellido").val() == "") $("#Chofer_Apellido").val("a");
+            if ($("#NumeroOrdenExterno").val() == "") $("#NumeroOrdenExterno").val("99999");
+            if ($("#Cliente").val() == "" || $("#Cliente").val() == "0") $("#Cliente").val("a");
+
+            modalRechazarOrdenCargaInterna.close();
+            $("#ordenCargaInternaFason-form").submit();
+        }
+    });
+
+    $('#MaterialDemorado').on('change', function () {
+        // Obtiene el valor seleccionado del select
+        const valorSeleccionado = $(this).val();
+        $('#MaterialDemorado').val(valorSeleccionado);
+    });
+
+    // Manejar click en Demorar 
+    $("#dialogo-demorar-fason-confirmar").click(function () {
+        const regex1 = /^[A-Z]{3}\d{3}$/;  // Formato ABC123
+        const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Formato AB123CD
+        let valido = true;
+        let material = $("#MaterialDemorado").val();
+        let motivo = $("#MotivoDemoraTexto").val();
+        var patente = $("#PatenteCamion").val().toUpperCase();
+        
+        $("#error-demorado-patenteFormato").hide();
+        $("#error-demorado-requerido").hide();
+        $("#error-demorado-largo").hide();
+        $("#error-material").hide();
+               
+
+        if (!motivo || motivo.trim() === '') {
+            valido = false;
+            $("#error-demorado-requerido").show();
+        } else if (motivo.length < 10) {
+            valido = false;
+            $("#error-demorado-largo").show();
+        }
+
+        if (!material) {
+            valido = false;
+            $("#error-material").show();
+        }
+
+        if (patente && !regex1.test(patente) && !regex2.test(patente)) {
+            valido = false;
+            $("#error-demorado-patenteFormato").show();
+        }
+
+        if (valido) {
+            $("#Demorado").val("True");
+            $("#Rechazado").val("False");
+            $("#MotivoDemora").val(motivo);
+            $('input[type="hidden"][name="MaterialId"]').val(material);
+            $('#dialogo-demorar-fason').modal('hide');
+            //lleno campos requeridos
+            if ($("#ClienteId").val() == "" || $("#ClienteId").val() == "0") $("#ClienteId").val(99999);
+            if ($("#TransportistaId").val() == "" || $("#TransportistaId").val() == "0") $("#TransportistaId").val(99999);
+            if ($("#TipoVehiculoLectura").val() == "" || $("#TipoVehiculoLectura").val() == null) $("#TipoVehiculoLectura").val(0);
+            if ($("#TipoVehiculo").val() == "" || $("#TipoVehiculo").val() == null) $("#TipoVehiculo").val(0);
+            if ($('#tiposComerciales').val() == "") $("#tiposComerciales").val(0);
+            if ($("#NumeroOrden").val() == "") $("#NumeroOrden").val(0);
+            if ($("#Chofer_Cuil").val() == "") $("#Chofer_Cuil").val("99-99999999-9");
+            if ($("#Chofer_Cuil[type = 'hidden']").val() == "") $("#Chofer_Cuil[type = 'hidden']").val("99-99999999-9");
+            if ($("#Chofer_NumeroDeDocumento").val() == "") $("#Chofer_NumeroDeDocumento").val("99999999");
+            if ($("#Chofer_Nombre").val() == "") $("#Chofer_Nombre").val("a");
+            if ($("#Chofer_Apellido").val() == "") $("#Chofer_Apellido").val("a");
+            if ($("#NumeroOrdenExterno").val() == "") $("#NumeroOrdenExterno").val("99999");
+            if ($("#Cliente").val() == "" || $("#Cliente").val() == "0") $("#Cliente").val("a");
+
+            $("#ordenCargaInternaFason-form").submit();
+        }
+    });
+
     $('#LocalidadDestinoId').removeAttr('data-val');
     $('#LocalidadDestinoId').removeAttr('data-val-number');
     $('#LocalidadDestinoId').removeAttr('data-val-required');
 
-    if ($("input[name='cargaCupoIdValue']").val() === "true") {
+    if (cargaCupoIdValue === "true" || (numeroOrderExterno !== "" || esCamionDemorado)) {
         $('.btn.btn-primary[type="submit"]').focus();
+
     } else {
         //Foco en primer elemento
         $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     }
 
-    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
-    if ((!kmaRecorrer && $("input[name='cargaCupoIdValue']").val() !== "true") || kmaRecorrer == '0') {
-        $('#KmARecorrer').removeAttr('readonly');
-    } else {
-        $('#KmARecorrer').attr('readonly', true);
+    ChecKilometros();
+    
+    // Cuando se abre el modal de demorar
+    $("#dialogo-demorar-fason").on("show", function () {
+        // Obtener el MaterialId del campo oculto
+        var materialId = $("#MaterialId").val();
+        if (materialId) {
+            // Preseleccionar el material en el dropdown
+            $("#Material").val(materialId);
+            $("#MaterialDemorado").prop("disabled", true);
+        } else {
+            $("#MaterialDemorado").prop("disabled", false);
+        }
+
+        if ($("#MotivoDemora").val() != "") {
+            $("#MotivoDemoraTexto").val($("#MotivoDemora").val());
+        }
+    });
+
+    $(".btnValidacionD[onclick*='dialogo-demorar-fason']").click(function (e) {
+        e.preventDefault();
+        var materialId = $("#MaterialId").val();
+        if (materialId) {
+            $("#Material").val(materialId);
+        }
+        $('#dialogo-demorar-fason').modal('show');
+    });
+
+    $.validator.addMethod("materialValido", function (value, element, params) {
+        return materialesPermitidos.includes(parseInt(value));
+    }, txtErrorMaterial);
+
+    // Asocia la regla personalizada al campo MaterialId
+    $("#MaterialId").rules("add", {
+        materialValido: true
+    });
+
+    // Opcional: Validar cada vez que se cambie el valor del campo
+    $("#MaterialId").change(function () {
+        $(this).valid();
+    });
+
+    if (esCamionDemorado == true) {
+        $("#PatenteCamion").prop("disabled", true);
     }
+
+    if (esModificarDocumento) {
+        CargarPlantas();
+        CargarDomicilios();
+    }
+
 })
 
 
@@ -25,15 +180,47 @@ var domicilioConcat = "";
 var $selectOption;
 
 
+function seleccionarMaterial(nuevoMaterialId) {
+    // Verificar si el nuevoMaterialId está en la lista de materialesPermitidos
+    var materialValido = materialesPermitidos.some(material => parseInt(material.Value) === nuevoMaterialId);
 
+    if (!materialValido) {
+        // Mostrar error
+        var campo = $("#MaterialId");
+        campo.addClass("input-validation-error");
+        var mensaje = txtErrorMaterial;
 
+        var mensajeElemento = campo.next("span.field-validation-valid");
+        mensajeElemento.text(mensaje).addClass("field-validation-error");
+        var selectCampo = $("select#MaterialId");
+        selectCampo.addClass("input-validation-error");
+
+        $("#MaterialId[type='hidden']").val("");
+
+    } else {
+        // Limpiar errores si el material es válido
+        var selectCampo = $("select#MaterialId");
+        selectCampo.removeClass("input-validation-error");
+        var campo = $("#MaterialId");
+        campo.removeClass("input-validation-error");
+        var mensajeElemento = campo.next("span.field-validation-valid");
+        mensajeElemento.text("").removeClass("field-validation-error");
+    }
+} 
 
 function obtenerOrdenDeCargaOperacionesPorPatente() {
-    const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
-    const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
+    if ($("#NumeroOrdenExterno").is('input')) return;
+    if ($("#PatenteCamion").val() === "") {
+        limpiarCamposOrdenDeCargaOperaciones();
+        return;
+    };
+    const regex1 = /^[A-Z]{3}\d{3}$/;  // Formato ABC123
+    const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Formato AB123CD
     let url = window.location.search;
     let urlParams = new URLSearchParams(url);
     let workflowId = urlParams.get("workflow");
+    let esCamionDemorado = window.location.pathname.toLowerCase().includes("CamionDemorado".toLowerCase());
+    workflowId = esCamionDemorado ? workflowCodigo : workflowId;
 
     var patente = $("#PatenteCamion").val().toUpperCase();
     $("#NumeroOrdenExterno").empty();
@@ -41,20 +228,20 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
         limpiarCamposOrdenDeCargaOperaciones();
     }
 
-    if (patente && (!regex1.test(patente) && !regex2.test(patente))) {
-        ValidarDerivadoGranario()
+    if (patente && !regex1.test(patente) && !regex2.test(patente)) {
+        ValidarDerivadoGranario();
         return;
     }
 
     let tipoComercial = $('#tiposComerciales').find('option').eq(1).val();
-    $('#tiposComerciales').find('select').val(tipoComercial)
-    $("#TipoComercialId[type='hidden']").val(tipoComercial)
+    $('#tiposComerciales').find('select').val(tipoComercial);
+    $("#TipoComercialId[type='hidden']").val(tipoComercial);
 
     BlockUI();
     $.ajax({
         url: $('#links').data().urlObtenerOrdenDeCargaOperacionesPorPatente,
         dataType: 'json',
-        data: { patente: patente, workflow: workflowId },
+        data: { patente: patente, workflow: workflowId, esDemorado: esCamionDemorado, ordenId: numeroOrderExterno },
         type: "GET",
         success: function (data) {
             manejarRespuestaExitosa(data);
@@ -68,13 +255,15 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
 }
 
 function manejarRespuestaExitosa(data) {
+    var selectedValue = '';
+
     if (!data || (!data.Data && !Array.isArray(data.Mensajes)) || (!Array.isArray(data.Data) && data.Mensajes.length === 0)) {
         mostrarInfoAlerta();
         return;
     }
 
     if (data.TieneAdvertencias) {
-        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
+        MostrarAlertaInfo(data.Mensajes[0].Mensaje);
     }
 
     if (!data.EsValido) {
@@ -85,6 +274,7 @@ function manejarRespuestaExitosa(data) {
     cachedOrdenDeCargaOperaciones = data.Data;
     $("#NumeroOrdenExterno").append($("<option></option>").attr("value", "").text("(Ninguno)"));
     var materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
+    seleccionarMaterial($("#MaterialId[type='hidden']").val());
 
     if (Array.isArray(data.Data)) {
         var nombreCliente = "";
@@ -97,15 +287,20 @@ function manejarRespuestaExitosa(data) {
 
             $("#NumeroOrdenExterno").append($("<option></option>").attr("value", value.Id).attr("title", nombreCliente).text(value.Id.toString().padStart(8, '0') + " | " + nombreCliente));
         });
-
-        var selectedValue = $("#NumeroOrdenExterno").data('selected-value');
+        if (numeroOrderExterno !== "") {
+            selectedValue =  numeroOrderExterno;
+        } else {
+            selectedValue = $("#NumeroOrdenExterno").data('selected-value');
+        }
+        
         if (data.Data.length === 1 && selectedValue !== undefined && selectedValue !== null) {
             $("#NumeroOrdenExterno").val(data.Data[0].Id);
             seleccionarOrdenDeCargaOperaciones();
         } else if (selectedValue) {
             $("#NumeroOrdenExterno").val(selectedValue);
+            seleccionarOrdenDeCargaOperaciones();
         } else if (data.Data.length > 1) {
-            MostrarAlertaAdvertencia(textoVariasOrdenes);
+            MostrarAlertaInfo(textoVariasOrdenes);
         }
     }
 
@@ -119,11 +314,12 @@ function mostrarInfoAlerta() {
 }
 
 
-function seleccionarOrdenDeCargaOperaciones() {
+function seleccionarOrdenDeCargaOperaciones(ordenOperaciones = "") {
     var ddlNumeroOrden = $("#NumeroOrdenExterno");
-    var selectedElement = obtenerElementoSeleccionado(ddlNumeroOrden.val());
+    var selectedElement = ordenOperaciones ? obtenerElementoSeleccionado(ordenOperaciones) : obtenerElementoSeleccionado(ddlNumeroOrden.val());
 
     if (!selectedElement) {
+        limpiarCamposOrdenDeCargaOperaciones();
         return;
     }
 
@@ -232,13 +428,13 @@ function rellenarCampos(data, selectedElement) {
     $("#LocalidadDescripcion").val(data.Data.Orden.LocalidadDescripcion);
     $('#DestinatarioId').val(data.Data.Orden.DestinatarioId);
     $('#PagadorFleteId').val(data.Data.Orden.PagadorFleteId);
+    $('#KmARecorrer').val(data.Data.Orden.KmARecorrer);
 
     //rellenar campos ocultos
     $("#Chofer_Cuil[type='hidden']").val(convertirCuil(selectedElement.CUILChofer));
     $("#PatenteAcoplado[type='hidden']").val(selectedElement.PatenteAcoplado);
     $("#MaterialId[type='hidden']").val(data.Data.MaterialId);
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
-    $("#KmARecorrer[type='hidden']").val(data.Data.Orden.KmARecorrer);
     $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
     $("#PlantaDGDestino[type='hidden']").val(data.Data.Orden.PlantaCodigo);
     $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
@@ -248,19 +444,19 @@ function rellenarCampos(data, selectedElement) {
     $("#RemitenteId[type='hidden']").val(data.Data.Orden.RemitenteComercialId)
 
     if (data.Data.TieneErrorCNRT) {
-
         $('#TipoVehiculo').css({ 'pointer-events': '', 'background-color': '', 'color': '' });
-    }
-    else {
-        $('#TipoVehiculo').css({ 'pointer-events': 'none', 'background-color': '#f0f0f0', 'color': '#666' });
-
-    }
-
-    var kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
-    if (!kmaRecorrer || kmaRecorrer == '0') {
-        $('#KmARecorrer').removeAttr('readonly');
+        $("#TipoVehiculo").val("");
     } else {
-        $('#KmARecorrer').attr('readonly', true);
+        $('#TipoVehiculo').css({ 'pointer-events': 'none', 'background-color': '#f0f0f0', 'color': '#666' });
+    }
+
+    seleccionarMaterial(data.Data.MaterialId);
+    $("#MaterialDemorado").val(data.Data.MaterialId);
+
+    ChecKilometros();
+
+    if (numeroOrderExterno !== "") {
+        $("#NumeroOrdenExterno").val(numeroOrderExterno);
     }
 
     ValidarDerivadoGranario();
@@ -277,10 +473,8 @@ function rellenarCampos(data, selectedElement) {
         }
     });
 
-
     setTimeout(function () {
         var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
-        $('#KmARecorrer').val(data.Data.Orden.KmARecorrer); 
         $('#PlantaDGDestino').val(data.Data.Orden.PlantaCodigo);
 
         if (existeDomicilio.length > 0) {
@@ -294,8 +488,10 @@ function rellenarCampos(data, selectedElement) {
 function ValidarDerivadoGranario() {
     let materialId = $("#MaterialId").val();
     let materialesDerivadoGranario = JSON.parse($("#ListaMaterialesDerivadoGranario").val())
-    if (materialesDerivadoGranario.includes(parseInt(materialId))) {
-        $('#DerivadoGranarioHabilitado').val('true')
+    let esDerivadoGranario = materialesDerivadoGranario.includes(parseInt(materialId));
+
+    if (esDerivadoGranario) {
+        $('#DerivadoGranarioHabilitado').val('true');
         $('.derivadoGranario').removeClass('hidden');
         $("label[for='Cliente']").text('Destino');
         $("#Cliente").val($("#DestinoGranario").val());
@@ -306,21 +502,24 @@ function ValidarDerivadoGranario() {
     } else {
         $("#Cliente").val($("#ClienteOriginal").val());
         $("#ClienteId").val($("#ClienteOriginalId").val());
-        $('#DerivadoGranarioHabilitado').val('false')
-        $('.derivadoGranario').addClass('hidden');
+        $("#DerivadoGranarioHabilitado").val("false");
+        $(".derivadoGranario").addClass('hidden');
         $("label[for='Cliente']").text('Cliente');
-        $('#PlantaDGDestino').val('');
-        $('#TipoYOrdenDestino').val('');
-        $('#PagadorFlete').val('');
-        $('#PagadorFleteId').val('');
-        $("#PlantaSeleccionada").val('')
+        $("#PlantaDGDestino").val("");
+        $("#TipoYOrdenDestino").val("");
+        $("#PagadorFlete").val("");
+        $("#PagadorFleteId").val("");
+        $("#PlantaSeleccionada").val("");
     }
 }
+
 function limpiarCamposOrdenDeCargaOperaciones() {
     $("#PatenteAcoplado").val(null);
     $("#NumeroOrdenExterno").val(null);
     $("#ClienteId").val(null);
     $("#Cliente").val(null);
+    $("#ClienteOriginal").val(null);
+    $("#ClienteOriginalId").val(null);
     $("#TransportistaId").val(null);
     $("#Transportista").val(null);
     $("#Chofer_Cuil").val(null);
@@ -328,12 +527,12 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $("#Chofer_Apellido").val(null);
     $("#Chofer_NumeroDeDocumento").val(null);
     $("#KmARecorrer").val(null);
-    $("#KmARecorrer[type='hidden']").val(null);
     $("#MaterialId").val(null);
     $("#TipoVehiculo").val(null);
     $("#Destinatario").val(null);
-    $("#TipoVehiculo").val(null);
     $("#Destinatario").val(null); /*DA*/
+    $("#DestinoGranario").val(null)
+    $("#DestinoGranarioId").val(null)
     $("#Remitente").val(null);
     $("#TipoComercialId").val(null);
     $("#IntermediarioFlete").val(null);
@@ -350,7 +549,11 @@ function limpiarCamposOrdenDeCargaOperaciones() {
     $('#DestinatarioId').val(null);
     $('#PagadorFleteId').val(null);
     $('#KmARecorrer').attr('readonly', true);
+    $("#MaterialDemorado").val(null);
+    $('input[style*="border-width: 1px 5px 1px 1px; border-style: solid; border-color: green; border-image: initial;"], select[style*="border-width: 1px 5px 1px 1px; border-style: solid; border-color: green; border-image: initial;"]').removeAttr('style');
+    ValidarDerivadoGranario();
 }
+
 
 function convertirCuil(cuil) {
     if (!cuil || cuil.length !== 11) {
@@ -420,6 +623,17 @@ function CargarDomicilios() {
                 }
             }
         );
+    }
+}
+
+function ChecKilometros() {
+    var kmaRecorrer = $("#KmARecorrer").val();
+    if (kmaRecorrer === '') kmaRecorrer = $("#KmARecorrer[type='hidden']").val();
+
+    if (!kmaRecorrer || kmaRecorrer == '0') {
+        $('#KmARecorrer').removeAttr('readonly');
+    } else {
+        $('#KmARecorrer').attr('readonly', true);
     }
 }
 

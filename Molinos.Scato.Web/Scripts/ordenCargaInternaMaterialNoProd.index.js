@@ -10,17 +10,23 @@ const obtenerProveedor = $('#links').data().urlBuscarProveedor;
 const obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
 
 document.addEventListener("DOMContentLoaded", function (event) {
-
-    if (patenteCamionInput.value.length > 0 && (soloLecturaInput == null || !soloLecturaInput.value)) {
-        ordenModel.patenteCamion = patenteCamionInput.value
-        obtenerOrdenDeCargaOperacionesPorPatente();
-    }
-    else if (soloLecturaInput !== null) {
-       
+    if (soloLecturaInput !== null && soloLecturaInput.value == "False") {
         ObtenerAlamacenesPorMaterial(+almacenSeleccionadoInput.value);
-        completarLocalidad();
+
+        let patenteCamion = document.getElementById("PatenteCamion").value;
+        let ordenOperaciones = document.getElementById("Id_operaciones").value;
+        if (patenteCamion !== "" && ordenOperaciones === "") {
+            servicioObtenerOrden(patenteCamion);
+        }
+        else if (patenteCamion !== "" && ordenOperaciones !== "") {
+            //seleccionarOrdenDeCargaOperaciones();
+        }
+        else
+        {
+            init();
+            completarLocalidad();
+        }
     }
-    init();
 });
 
 //Initial Options
@@ -90,13 +96,13 @@ const tipoDomicilioDestinoInput = document.getElementById("TipoDomicilioDestino"
 const ordenDomicilioDestinoInput = document.getElementById("OrdenDomicilioDestino");
 const pagadorFleteInput = document.getElementById("PagadorFlete");
 
-
-
 const ordenSelect = document.getElementById("Id_operaciones");
 const localidadSelect = document.getElementById("Localidad");
 const plantaSelect = document.getElementById("PlantaDGDestino");
 const domicilioSelect = document.getElementById("TipoYOrdenDestino");
 const almacenSelect = document.getElementById("Almacen_Id");
+const calleSelect = document.getElementById("Calle_Id");
+
 
 const [getKmARecorrer, setKmARecorrer] = useState(null);
 const [getDomicilio, setDomicilio] = useState(null);
@@ -277,9 +283,7 @@ function ObtenerAlamacenesPorMaterial(almacenId)
         .done(function (allData) {
             if (Array.isArray(allData) && allData.length > 0) {
                 const almacenesSelect = almacenInicial.concat(allData.map(almacen => ({ value: almacen.Id, text: almacen.Descripcion })))
-
                 llenarSelectAlmacen(almacenesSelect, almacenId);
-
             } else {
 
                 llenarSelectAlmacen(almacenInicial);
@@ -340,13 +344,13 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
 }
 
 
-function servicioObtenerOrden(patente, workflowId) {
+function servicioObtenerOrden(patente) {
 
     BlockUI();
     $.ajax({
         url: $('#links').data().urlObtenerOrdenDeCargaOperacionesPorPatente,
         dataType: 'json',
-        data: { patente: patente, workflow: workflowId },
+        data: { patente: patente },
         type: "GET",
         success: function (data) {
             manejarRespuestaExitosa(data);
@@ -388,7 +392,7 @@ function manejarRespuestaExitosa(data) {
     }
 
     if (data.Data === null && data.TieneAdvertencias && Array.isArray(data.Mensajes)) {
-        limpiarCamposOrdenDeCargaOperacionesMaterial()
+        limpiarCamposOrdenDeCargaOperacionesMaterial(false)
     }
     cachedOrdenDeCargaOperaciones = data.Data;
 
@@ -421,7 +425,7 @@ function manejarRespuestaExitosa(data) {
 function mostrarInfoAlerta() {
     $.unblockUI();
     MostrarAlertaAdvertencia(patenteNoEncontrada);
-    limpiarCamposOrdenDeCargaOperacionesMaterial()
+    limpiarCamposOrdenDeCargaOperacionesMaterial(false)
     
 }
 
@@ -431,31 +435,32 @@ function seleccionarOrdenDeCargaOperaciones() {
     var selectedElement = obtenerElementoSeleccionado(numeroOrdenValor);
 
     if (!selectedElement || numeroOrdenValor === '0') {
-        return;
+        limpiarCamposOrdenDeCargaOperacionesMaterial(true);
+    } else {
+        BlockUI();
+
+        $.ajax({
+            url: $('#links').data().urlObtenerOrdenDeCargaOperacionesSeleccionada,
+            dataType: 'json',
+            data: obtenerDatosAjax(selectedElement),
+            type: "GET",
+            success: (data) => manejarRespuestaAjaxSeleccion(data, selectedElement),
+            error: (xhr, status, error) => {
+                const err = xhr.responseText.match(/<h2>(.*?)<\/h2>/);
+                $.unblockUI()
+                MostrarAlertaError(err ? err[1] : `Error en la petición AJAX: ${status} - ${error}`);
+            
+            }
+        });
     }
 
-    BlockUI();
-
-    $.ajax({
-        url: $('#links').data().urlObtenerOrdenDeCargaOperacionesSeleccionada,
-        dataType: 'json',
-        data: obtenerDatosAjax(selectedElement),
-        type: "GET",
-        success: (data) => manejarRespuestaAjaxSeleccion(data, selectedElement),
-        error: (xhr, status, error) => {
-            const err = xhr.responseText.match(/<h2>(.*?)<\/h2>/);
-            $.unblockUI()
-            MostrarAlertaError(err ? err[1] : `Error en la petición AJAX: ${status} - ${error}`);
-            
-        }
-    });
 }
 
 function obtenerElementoSeleccionado(id) {
     return cachedOrdenDeCargaOperaciones.find(x => x.Id == id);
 }
 
-function limpiarCamposOrdenDeCargaOperacionesMaterial() {
+function limpiarCamposOrdenDeCargaOperacionesMaterial(esOrdenDefaultSeleccionada) {
     patenteAcopladoInput.value = null;
     transportistaIdInput.value = null;
     transportistaInput.value = null;
@@ -465,13 +470,17 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     choferNumDocumentoInput.value = null;
     kmARecorrerInput.value = null;
     materialIdInput.value = '';
-    tipoVehiculoInput.value = 0;
+    tipoVehiculoInput.value = '';
     tipoComercialInput.value = '';
-    localidadSeleccionadaInput.value = 0;
+    localidadSelect.value = '';
     destinoInput.value = null;
     choferTipoDocumentoInput.value = 1;
+    plantaSelect.value = '';
+    domicilioSelect.value = '';
     ordenDomicilioDestinoInput.value = null;
     pagadorFleteInput.value = null;
+    almacenSelect.value = '';
+    // Habilitar inputs con busqueda
     removeSuccesStyle(transportistaInput)
     removeSuccesStyle(chofer_CuilInput)
     removeSuccesStyle(choferNombreInput)
@@ -479,10 +488,23 @@ function limpiarCamposOrdenDeCargaOperacionesMaterial() {
     removeSuccesStyle(choferNumDocumentoInput)
     removeSuccesStyle(destinoInput)
     removeSuccesStyle(choferTipoDocumentoInput)
+    removeSuccesStyle(pagadorFleteInput)
+    // Habilitar dropdowns
     makeEditable(tipoVehiculoInput)
     makeEditable(localidadSelect)
+    makeEditable(tipoComercialInput)
+    makeEditable(materialIdInput)
+    makeEditable(plantaSelect)
+    makeEditable(domicilioSelect)
+    makeEditable(almacenSelect)
+    makeEditable(calleSelect)
+    // Habilitar inputs sin busqueda
     makeEditable(kmARecorrerInput)
-    init()
+    makeEditable(patenteAcopladoInput)
+
+    if (!esOrdenDefaultSeleccionada) {
+        init()
+    }
 }
 function reiniciarAlSeleccionarOrden() {
     patenteAcopladoInput.value = null;
@@ -494,9 +516,9 @@ function reiniciarAlSeleccionarOrden() {
     choferNumDocumentoInput.value = null;
     kmARecorrerInput.value = null;
     materialIdInput.value = '';
-    tipoVehiculoInput.value = 0;
+    tipoVehiculoInput.value = '';
     tipoComercialInput.value = '';
-    localidadSeleccionadaInput.value = 0;
+    localidadSeleccionadaInput.value = '';
     destinoInput.value = null;
     ordenDomicilioDestinoInput.value = null;
     choferTipoDocumentoInput.value = 1;
@@ -515,26 +537,6 @@ function reiniciarAlSeleccionarOrden() {
     llenarSelectPlanta(plantaInicial);
     llenarSelectDomicilio(domicilioInicial);
     llenarSelectAlmacen(almacenInicial);
-}
-
-function CargarDomicilios() {
-    let ordenDomicilioSeleccionado = ordenDomicilioDestinoInput;
-    let tipoDomicilioSeleccionado = tipoDomicilioDestinoInput;
-    let cliente = $("#DestinoId").val() != null ? $("#DestinoId").val() : $("#ClienteId").val();
-    if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
-        if (getTieneOrdenes()) {
-            let valueDomicilio = `${tipoDomicilioDestinoInput.value}-${ordenDomicilioDestinoInput.value}`
-            const domicilioSelect = domicilioInicial.concat({ value: valueDomicilio, text: getDomicilio() })
-            llenarSelectDomicilio(domicilioSelect);
-            $('#TipoYOrdenDestino').val(valueDomicilio)
-        }
-        else { 
-           obtenerDomiciliosPorCliente(cliente)
-        }
-    }
-    else {
-        llenarSelectDomicilio(domicilioInicial);
-    }
 }
 
 function FechaActualDatePicker() {
@@ -628,7 +630,6 @@ function rellenarCampos(data, selectedElement) {
     llenarSelectLocalidad(localidades)
     llenarInput(convertirCuil(data.Data.Orden.PagadorFlete), pagadorFleteInput, ordenModel.pagadorFlete)
 
-
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
     $("#PlantaSeleccionada[type='hidden']").val(data.Data.Orden.PlantaCodigo);
     $("#OrdenDomicilioDestino[type='hidden']").val(data.Data.Orden.DomicilioOrden);
@@ -643,6 +644,20 @@ function rellenarCampos(data, selectedElement) {
     if (!data.Data.TieneErrorCNRT) {
         makeReadonly(tipoVehiculoInput)
     }
+
+    makeReadonly(patenteAcopladoInput)
+    makeReadonly(tipoComercialInput)
+    makeReadonly(transportistaInput)
+    makeReadonly(materialIdInput)
+    makeReadonly(destinoInput)
+    makeReadonly(plantaSelect)
+    makeReadonly(domicilioSelect)
+    makeReadonly(pagadorFleteInput)
+    makeReadonly(almacenSelect)
+    makeReadonly(calleSelect)
+    makeReadonly(chofer_CuilInput)
+    makeReadonly(choferApellidoInput)
+    makeReadonly(choferNombreInput)
 
     seleccionarElemento(data.Data.Orden.AlmacenId, almacenSelect, ordenModel.selectedAlmacen)
 
@@ -785,12 +800,6 @@ function obtenerDomiciliosPorCliente(cliente) {
     );
 }
 
-var patenteCamion = $('#PatenteCamion').val();
-if (patenteCamion) {
-    obtenerOrdenDeCargaOperacionesPorPatente();
-}
-
-
 //Listerners 
 ordenSelect.addEventListener("change", function (event) {
     ordenModel.selectedOrden = event.target.value;  
@@ -801,12 +810,10 @@ localidadSelect.addEventListener("change", function (event) {
 });
 
 destinoInput.addEventListener("change", function (event) {
-   
     if (ordenSelect.length === 1 && ordenSelect[0].text === '(Ninguno)')
     {
         completarKmRecorrerYLocalidad()
     }
-    
 });
 
 tipoComercialInput.addEventListener("change", function (event) {

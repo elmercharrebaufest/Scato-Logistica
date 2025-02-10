@@ -33,7 +33,9 @@
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
     <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
       <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
       <AssemblyReference>Microsoft.CSharp</AssemblyReference>
       <AssemblyReference>Ninject</AssemblyReference>
       <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
@@ -78,7 +80,7 @@
     <local:PersistirPropiedadesCustom Calidad="{x:Null}" CentroId="{x:Null}" ChoferDNI="{x:Null}" ChoferNombre="{x:Null}" Procedencia="{x:Null}" Workflow="{x:Null}" DisplayName="PersistirPropiedadesCustom" sap2010:WorkflowViewState.IdRef="PersistirPropiedadesCustom_1">
       <local:PersistirPropiedadesCustom.Cuit>
         <InArgument x:TypeArguments="x:String">
-          <mca:CSharpValue x:TypeArguments="x:String">orden.Chofer.Cuil</mca:CSharpValue>
+          <mca:CSharpValue x:TypeArguments="x:String">orden.Chofer != null ? orden.Chofer.Cuil : ""</mca:CSharpValue>
         </InArgument>
       </local:PersistirPropiedadesCustom.Cuit>
       <local:PersistirPropiedadesCustom.MaterialId>
@@ -129,27 +131,27 @@
         </InArgument>
       </local:FinDeActividad.ControlRecorridoDto>
     </local:FinDeActividad>
-    <sads:DebugSymbol.Symbol>d2ZDOlxTY2F0b1xNb2xpbm9zIC0gU0NUMjAwXE1vbGlub3MuU2NhdG9cTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xSZWZyZXNjYXJPcmRlbkNhcmdhSW50ZXJuYUZhc29uLnhhbWwQQQOFAQ4CAQFCBU0tAgE2TgV8KAIBCH0FgwEcAgECSgtKUQIBPEULRWwCATd0C3RsAgExYAtgXAIBLHkLeWkCASdvC29uAgEiZQtlYAIBHWoLamkCARhWC1ZkAgETWwtbWgIBDlELUVoCAQmAAQuAAd0CAgED</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1hDOlxEZXZcTU9BXFNjYXRvTG9naXN0aWNhXE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcUmVmcmVzY2FyT3JkZW5DYXJnYUludGVybmFGYXNvbi54YW1sEEMDhwEOAgEBRAVPLQIBNlAFfigCAQh/BYUBHAIBAkwLTFECATxHC0dsAgE3dgt2bAIBMWILYlwCASx7C3tpAgEncQtxbgIBImcLZ2ACAR1sC2xpAgEYWAtYZAIBE10LXVoCAQ5TC1N2AgEJggELggHdAgIBAw==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="RefrescarOrdenCargaInternaFason_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="PersistirPropiedadesCustom_1" sap:VirtualizedContainerService.HintSize="200,22">
+      <sap2010:ViewStateData Id="RefrescarOrdenCargaInternaFason_1" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="PersistirPropiedadesCustom_1" sap:VirtualizedContainerService.HintSize="200,22.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="222,270">
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="222.4,272">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.RefrescarOrdenCargaInternaFason_1" sap:VirtualizedContainerService.HintSize="262,350" />
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.RefrescarOrdenCargaInternaFason_1" sap:VirtualizedContainerService.HintSize="262.4,352" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

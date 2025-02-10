@@ -10563,10 +10563,10 @@
   </data>
   <data name="NuevaOrdenFasonCreada" xml:space="preserve">
     <value>Se ha creado una nueva Orden de Fason con el No: {0}</value>
- </data>   
+  </data>
   <data name="DatoConLongitudIncorrecta" xml:space="preserve">
     <value>Algún cuit/cuil no cumple con el largo esperado según formato. Validar los datos ingresados en la carga inicial de la Orden</value>
-    </data>
+  </data>
   <data name="Establecimiento_SojaEUDR" xml:space="preserve">
     <value>Soja EUDR</value>
   </data>
@@ -10584,5 +10584,38 @@
   </data>
   <data name="PuestoComando_Error_DiferenteVariedadSeleccionada" xml:space="preserve">
     <value>Selecciona Recorridos con soja {0}</value>
+  </data>
+  <data name="ErrorLlenarCaomposEntidad" xml:space="preserve">
+    <value>Error al llenar datos de la entidad:</value>
+  </data>
+  <data name="PlantaNoValida" xml:space="preserve">
+    <value>La planta seleccionada no es válida.</value>
+  </data>
+  <data name="ClienteNoExiste" xml:space="preserve">
+    <value>No existe el cliente ingresado.</value>
+  </data>
+  <data name="DomicilioNoValido" xml:space="preserve">
+    <value>El Domicilio seleccionada no es válido.</value>
+  </data>
+  <data name="DatosOrdenInvalidos" xml:space="preserve">
+    <value>Los datos para para validar la orden son inválidos (Vacíos o Nulos).</value>
+  </data>
+  <data name="OrdenesFasonNoEncontradas" xml:space="preserve">
+    <value>No se encontraron Ordenes de Fason con la patente ingresada.</value>
+  </data>
+  <data name="AvanzoFastPass" xml:space="preserve">
+    <value>Avanzó por Fast Pass</value>
+  </data>
+  <data name="CategoriaEscalable_Nula" xml:space="preserve">
+    <value>No se obtuvo la categoría del vehículo desde el CNRT, deberá completar manualmente.</value>
+  </data>
+  <data name="CategoriaEscalable_NoValidada" xml:space="preserve">
+    <value>No pudimos conectarnos con CNRT para consultar el tipo de vehículo, deberá completarlo manualmente.</value>
+  </data>
+  <data name="MaterialNoPermitido" xml:space="preserve">
+    <value>No existe relación entre el material seleccionado y el Workflow</value>
+  </data>
+  <data name="Patente_FormatoError" xml:space="preserve">
+    <value>Patente No respeta el Formato ABC123 o AB123CD</value>
   </data>
 </root>

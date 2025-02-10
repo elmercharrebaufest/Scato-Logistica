@@ -16,5 +16,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public int CalleId { get; set; }
         [DataMember]
         public TipoCalidad Calidad { get; set; }
+        public string CalleNombre { get; set; }
     }
 }

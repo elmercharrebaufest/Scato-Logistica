@@ -97,7 +97,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     var vehiculos = new List<VehiculoDto> { new VehiculoDto { Patente = carga.Patente } };
                     carta.Patente = carga.Patente;
-                    carta.MaterialId = carga.MaterialId;
+                    carta.MaterialId = carga.MaterialId.GetValueOrDefault();
                     carta.Material = carga.MaterialDescripcion;
                     carta.VehiculoJson = vehiculos.ToJson();
                     carta.Cupo = carga.Cupo;

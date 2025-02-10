@@ -93,8 +93,16 @@ $(document).ready(function () {
 
     $("#Cupo").inputmask("MOL9999/99999999", { "placeholder": "MOL____/" + today });
 
-    $("#validation-fason-close").on("click", function () {
-        $("#validation-fason-error").addClass("hide");
+    $("#validation-error-close").on("click", function () {
+        $("#validation-error-alert").addClass("hide");
+        return false;
+    });
+    $("#validation-advertencia-close").on("click", function () {
+        $("#validation-advertencia-alert").addClass("hide");
+        return false;
+    });
+    $("#validation-informativo-close").on("click", function () {
+        $("#validation-informativo-alert").addClass("hide");
         return false;
     });
     $("#validation-patente-close").on("click", function () {
@@ -179,6 +187,9 @@ $(document).ready(function () {
             cargarCupoPorCTG();
         }
     });
+    
+    $('#MaterialId').change(ValidarMaterialNoGranoSeleccionado);
+
     $('#NumeroCartaPorte').on('keydown', function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -234,22 +245,9 @@ $(document).ready(function () {
         };
     });
 
-    $("#MaterialId").change(function () {
-        $("#MaterialId").val($("#MaterialId").val());
-        ajustarFleteMoa($("#MaterialId").val())
-    });
-
     $('#CTG').rules('remove', 'required');
     $('#CTG').removeAttr("minlength", "11");
     $('#CTG').removeAttr("maxlength", "12");
-
-    //$('#CTG').change(function () { 
-    //    if (ValidarCPE() && $('#cpe').is(':checked')) {
-    //        if (ValidarCtgCpe()) {
-    //            TomarFotoCP();
-    //        }
-    //    }
-    //});
 
     if ($('#cpe').is(':checked')) {
         ConfiguracionCPEActiva(false);
@@ -323,23 +321,6 @@ $(document).ready(function () {
 });
 
 var blockui = [];
-let dataFleteMoa = new Map();
-
-function llenarFleteMoa(data) {
-    if (Object.keys(dataFleteMoa).length >= 0) {
-        dataFleteMoa.clear();
-    }
-
-    data.forEach(item => {
-        dataFleteMoa.set(item.CodigoProducto, item.FleteMOA);
-    });
-}
-
-function ajustarFleteMoa(materialId = "") {
-    let valor = dataFleteMoa.get(materialId);
-    $('#FleteMOA').val(valor);
-    $('#matId').val(materialId);
-}
 
 function BlockCupos(msg) {
     if (blockui.length == 0) {
@@ -374,7 +355,6 @@ function cargarCupoPorCTG() {
     var numeroCartaPorte = $('#NumeroCartaPorte').val();
     BlockCupos($("#MensajeBuscandoCartaPorte").val());
     $.getJSON($("#links").data().urlObtenerCartaPorteCtg, { numeroCartaPorte: numeroCartaPorte }, function (data) {
-        console.log(data);
         $("#validation-ctg").html("");
         errorInhabilitacion = false;
         $("#validation-ctg-alert").addClass("hide");
@@ -400,22 +380,7 @@ function TomarFotoCP() {
         $.getJSON($("#links").data().urlObtenerPatente, {
             puestodetrabajoid: $("#PuestoDeTrabajoId").val(), codigoCamara: $("#CodigoCamaraCP").val(), directorio: $("#CodigoCamaraCPDir").val(), fotoPatente: false, numero: $('#Numero').val(), numeroCartaPorte: $('#NumeroCartaPorte').val()
         }, function (data) {
-
             SetearFotoCP(data.error, data.imagen, data.directorio);
-
-            //if (data.error === "") {
-            //    $('#ImagenCartaPorte').val(data.imagen);
-            //    $('#FotoRutaDestino').val(data.directorio);
-            //    $('#imagen-cp').load(function () {
-            //        UnblockCupos();
-            //    }).attr('src', data.imagen);
-            //    $('#imagen-cp').attr('alt', "Cargando...");
-            //} else {
-            //    $('#imagen-cp').attr('alt', "Error al obtener la imagen");
-            //    $('#imagen-cp').attr('src', '');
-            //    UnblockCupos();
-            //}
-            //$('.tomarFoto1').show();
         });
     }
 }
@@ -557,7 +522,6 @@ function DisabledControlers(status) {
     $('#checkvalidarPatente').trigger("change");
     $('#checkSinCupo').prop('checked', status);
     $('[name="SinCupo"]').val(status);
-    //$('#checkvalidarPatente').prop('disabled', status);
     $('#checkSinCupo').prop('disabled', status);
     $('#Cupo').prop('readonly', status);
     $('#Cupo').prop('readonly', status);
@@ -567,7 +531,6 @@ function DisabledControlers(status) {
 
 function DisableControlersCPE(status, clearinpunts) {
     $('#Patente').prop('readonly', true);
-    //$('#circuitoNoGranos').prop('disabled', status);
     $('#circuitoNoGranos').prop('checked', false);
     $('#NumeroCartaPorte').attr('disabled', status);
     $("#NumeroCartaPorte").val("");
@@ -641,7 +604,6 @@ function ConfiguracionCPEInactiva(clear) {
     $('#CTG').removeAttr("minlength", "11");
     $('#CTG').removeAttr("maxlength", "12");
     clearValidation();
-    //$("#imagen-cp").attr("src", $("#ImagenCartaPorte").val());
     $("#ImagenCartaPorte").val("");
     $('#imagen-cp').attr('src', '');
     $('#checkSinCupo').prop('checked', false);
@@ -650,7 +612,7 @@ function ConfiguracionCPEInactiva(clear) {
 }
 
 function ConfiguracionNoGranosActiva() {
-    crearOpcionesCaracteristicasDeCalidad(false);
+    LimpiarComboMateriales(true);
     $('#NumeroCartaPorte').attr('disabled', true);
     $('#CTG').attr('disabled', true);
     $('#checkSinCupo').attr('checked', true);
@@ -662,7 +624,6 @@ function ConfiguracionNoGranosActiva() {
     $("#Patente").val("");
     $('#CodEstab').val("");
     $('#RtteComercialCodigoSap').val("");
-    $('#MaterialId').prop('disabled', true);
     $('#Patente').focus();
     $('#cpe').prop('disabled', true);
     DisabledControlers(true);
@@ -671,7 +632,6 @@ function ConfiguracionNoGranosActiva() {
 
 function ConfiguracionNoGranosInactiva() {
     crearOpcionesCaracteristicasDeCalidad(true);
-    //$('#NumeroCartaPorte').attr('disabled', false);
     $('#CTG').attr('disabled', false);
     $('#checkSinCupo').attr('checked', false)
     $('[name="SinCupo"]').val(false);
@@ -679,9 +639,7 @@ function ConfiguracionNoGranosInactiva() {
     $("label[for*='Patente']").text("Patente AFIP");
     $('#Patente').prop('readonly', true);
     $("#Patente").val("");
-    $('#MaterialId').prop('disabled', false);
     $('#MaterialId').val("");
-    $('#matId').val("");
     $('#cpe').prop('disabled', false);
     DisabledControlers(false);
     clearValidation();
@@ -726,4 +684,33 @@ function validacionLongitudCupoAFIP(cupo) {
 
     }
     return resultado;
+}
+
+function SetearTipoCargaOrdenNoGranos() {
+    const selectedOption = $('#MaterialId').find('option:selected');
+    let tipoCarga = selectedOption.data('tipo-carga');
+    $("#TipoOrdenCargaNoGranos").val(tipoCarga);
+}
+
+function ValidarMaterialNoGranoSeleccionado() {
+    if (!$('#circuitoNoGranos').is(':checked')) {
+        return true;
+    }
+
+    SetearTipoCargaOrdenNoGranos();
+
+    const hayVariosMateriales = $("#HayVariosMateriales").val();
+    const materialId = $('#MaterialId').val();
+    const errorMessageContainer = $("[data-valmsg-for='MaterialId']");
+    if (hayVariosMateriales === 'true' && materialId === "") {
+        let errorMessage = $("<span>").text("Selecciona un Material");
+        errorMessageContainer.empty();
+        errorMessageContainer.append(errorMessage);
+        errorMessageContainer.addClass("field-validation-error").removeClass("field-validation-valid");
+        return false;
+    } else {
+        errorMessageContainer.empty();
+        errorMessageContainer.addClass("field-validation-valid").removeClass("field-validation-error");
+        return true;
+    }
 }

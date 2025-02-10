@@ -77,6 +77,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             resultado.DisponibilidadCalles = administradorDeCalles.ObtenerEspacioDisponibleEnCalle(entidadNueva.Calle.Id);
             resultado.CentroId = entidadNueva.Calle.CentroId;
             resultado.CalleId = entidadNueva.Calle.Id;
+            resultado.CalleNombre = entidadNueva.Calle.Nombre;
             resultado.Calidad = calidad;
             Log.Debug($"Espacio en calle {entidadNueva.Calle.Nombre}: {resultado.Disponibilidad}, {(resultado.DisponibilidadCalles ? "Hay" : "No hay")} espacio en calle");
             var materialDescripcion = entidadNueva.Calle.Material != null ? entidadNueva.Calle.Material.DescripcionCorta : "";
@@ -96,6 +97,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             resultado.DisponibilidadCalles = administradorDeCalles.ObtenerEspacioDisponibleEnCalle(entidad.Calle.Id);
             resultado.CentroId = entidad.Calle.CentroId;
             resultado.CalleId = entidad.Calle.Id;
+            resultado.CalleNombre = entidad.Calle.Nombre;
             resultado.Calidad = calidad;
             Log.Debug($"Espacio en calle {entidad.Calle.Nombre}: {resultado.Disponibilidad}, {(resultado.DisponibilidadCalles ? "Hay" : "No hay")} espacio en calle");
             var materialDescripcion = entidad.Calle.Material != null ? entidad.Calle.Material.DescripcionCorta : "";

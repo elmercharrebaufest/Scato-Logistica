@@ -1549,6 +1549,11 @@ BEGIN
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('PesadaBruto', 'CodigosWorkflowParaContingenciaPesosExcedidos', '225;226;233', NULL, GETDATE(), 'SCATO')
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'CargaDeCupo' AND  Nombre = 'MaterialExcepcionFastPass' AND  Centro_Id = 5) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('CargaDeCupo', 'MaterialExcepcionFastPass', '64194', 5, GETDATE(), 'SCATO')
+END
+
 --Equivalencias de Característica de Calidad
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
 BEGIN 

@@ -127,13 +127,13 @@
     $('#NumeroCartaPorte').focus();
     TomarFotoConPatente();
     $(document).on('change', '#Patente', validarEgresoVentaFas);
-
-    $("#validation-ventaFas-close").on("click", function () {
-        $("#validation-ventaFas-error").addClass("hide");
-        return false;
+    $("#formCargaDeCupo").submit(function(event) {
+        let materialValido = ValidarMaterialNoGranoSeleccionado();
+        if (!materialValido) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
     });
-    if ($("#matId").val() != $("#MaterialId").val())
-        $("#matId").val("");
 });
 var patenteNoReconocida = 'Patente no reconocida';
 
@@ -185,37 +185,32 @@ function RefrescarFotoPatente() {
 }
 
 function validarEgresoVentaFas() {
-    const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')
-    if (existePatenteYesNoGranos) {
-        ObtenerDatosFasonInsumos($('#Patente').val());
+    let checkNoGranosActivo = document.getElementById('circuitoNoGranos').checked;
+    const patente = document.getElementById('Patente').value.trim().toUpperCase();
+    if (checkNoGranosActivo && EsPatenteValida(patente)) {
+        ObtenerDatosFasonInsumos(patente);
     }
+}
 
+function EsPatenteValida(patente) {
+    const regex = /^[A-Z]{3}[0-9]{3}$|^[A-Z]{2}[0-9]{3}[A-Z]{2}$/;
+    return regex.test(patente);
 }
 
 
 function ObtenerDatosFasonInsumos(patente) {
-    $('#MaterialId').prop('disabled', true);
-    $('#FleteMOA').val("");
     BlockUI($("#MensajeBuscandoDatos").val());
 
     $.getJSON($("#links").data().urlObtenerOrdenesInsumos, { patente: patente }, function (data) {
-        if (typeof data.errorResponse === 'object') {
-            if (data.errorResponse.duplicado === true || data.errorResponse.duplicado === false) {
-                crearRespuestaErrorFason(data.errorResponse);
+        LimpiarComboMateriales(false);
+        if (data.HayErrores) {
+            if (data.Errores["ClienteDuplicado"]) {
+                MostrarErrorPopup(data.Errores["ClienteDuplicado"]);
+            } else {
+                MostrarErrorLabel(data.Errores["Error"]);
             }
-        }
-        if (data.sonVariosMateriales) {
-            llenarMateriales(data, false, false);
-        } else if (typeof data.ordenes === 'object' && data.ordenes.length > 0) {
-            llenarMateriales(data, true);
-
-        } else if (typeof data.ordenes === 'object' && data.ordenesInsumos.length > 0) {
-            llenarMateriales(data, true);
-
         } else {
-            quitarValidacionMaterial();
-            ObtenerDatosSap();
-
+            CompletarMaterialesPorOrdenNoGranos(data.Ordenes)
         }
     }).fail(function (xhr, status, error) {
         // Manejo de errores
@@ -224,96 +219,31 @@ function ObtenerDatosFasonInsumos(patente) {
     });
 }
 
-function crearRespuestaErrorFason(data) {
-    let message = "";
-    if (data.duplicado == false) {
-        message = data.error;
-    } else {
-        $("#dialogo-advertir-body").html("<strong>Fason. Existe mas de una entidad sap para el cuit ingresado. No se puede continuar con la carga</strong>");
-        $('#dialogo-advertir').css({
-            'top': '30%',
-            'margin-left': function () {
-                return -($(this).width() / 2);
-            },
-            'left': '50%',
-            'margin-top': function () {
-                return -($(this).height() / 2.6);
-            }
-        });
-        $("#dialogo-advertir").modal('show');
-        return false;
-    }
-
-    $("#validation-fason").html("<strong>" + "Fason. " + message + "</strong>");
-    $("#validation-fason-error").removeClass("hide");
+function MostrarErrorPopup(errorMessage) {
+    $("#dialogo-advertir-body").html(`<strong>${errorMessage}</strong>`);
+    $('#dialogo-advertir').css({
+        'top': '30%',
+        'margin-left': function () {
+            return -($(this).width() / 2);
+        },
+        'left': '50%',
+        'margin-top': function () {
+            return -($(this).height() / 2.6);
+        }
+    });
+    $("#dialogo-advertir").modal('show');
 }
 
-function limpiarComboMateriales() {
+function MostrarErrorLabel(errorMessage) {
+    $("#validation-error-message").html(`<strong>${errorMessage}</strong>`);
+    $("#validation-error-alert").removeClass("hide");
+}
+
+function LimpiarComboMateriales(valorPorDefecto) {
     $('#MaterialId').empty();
-    $('#MaterialId').append($('<option/>', {
-        value: "",
-        text: "(material)",
-        selected: true
-    }));
-}
-
-function llenarMateriales(data, comboDisable, preSeleccionable = true) {
-    $('#MaterialId').each(function () {
-        let value = ""
-        llenarFleteMoa(data.ordenes);
-        if (comboDisable && preSeleccionable) {
-            if (data.ordenes.length > 0) {
-                value = data.ordenes[0].CodigoProducto;
-            }
-            if (data.ordenesInsumos.length > 0) {
-                value = data.ordenesInsumos[0].CodigoProducto;
-            }
-        }
-
-        let combo = $(this);
-        combo.empty();
-        combo.append($('<option/>', {
-            value: "",
-            text: "(material)",
-            selected: true
-        }));
-
-        if (data.ordenes.length > 0) {
-            llenarMaterialesPorOrden(data.ordenes, combo);
-        }
-        if (data.ordenesInsumos.length > 0) {
-            llenarMaterialesPorOrden(data.ordenesInsumos, combo);
-        }
-
-        combo.val(value);
-        ajustarFleteMoa(value)
-    });
-
-    if (!comboDisable) {
-        $('#MaterialId').prop('disabled', false);
-        restaurarValidacionMaterial();
-        ajustarFleteMoa()
+    if (valorPorDefecto) {
+        $('#MaterialId').append('<option value="">(material)</option>');
     }
-
-
-}
-
-function ObtenerDatosSap() {
-    BlockUI($("#MensajeBuscandoDatos").val());
-    $.getJSON($("#Patente").data().numeroUrl, { numero: $('#Patente').val() }, function (data) {
-        if (data.datosSap && data.datosSap != -1 && $('#MaterialId')) {
-            if (data.datosSap.length == 1) {
-                $('#MaterialId').val(data.datosSap[0].MaterialId);
-                $('#matId').val(data.datosSap[0].MaterialId);
-            } else if (data.datosSap.length > 1) {
-                $("#validation-ventaFas").html("<strong>La patente tiene más de una orden creada, al aceptar el camion debe dirigirse a mesa FAS</strong>");
-                $("#validation-ventaFas-error").removeClass("hide");
-            }
-
-        }
-    }).complete(function () {
-        $.unblockUI();
-    });
 }
 
 function activarCPE() {
@@ -323,24 +253,16 @@ function activarCPE() {
     $('.check-cpe').hide()
 }
 
-function llenarMaterialesPorOrden(ordenes, combo) {
-    $.each(ordenes, function (index, data) {
-        combo.append($('<option/>', {
-            value: data.CodigoProducto,
-            text: data.DescripcionProducto,
-            //selected: data.Value == value
-        }));
+function CompletarMaterialesPorOrdenNoGranos(ordenesNoGranos) {
+    if (ordenesNoGranos.length > 1) {
+        $('#MaterialId').append('<option value="">(material)</option>');
+        $("#HayVariosMateriales").val("true");
+    } else {
+        $("#HayVariosMateriales").val("false");
+    }
+    $.each(ordenesNoGranos, function (index, orden) {
+        $("#MaterialId").append(`<option value=${orden.MaterialId} data-tipo-carga=${orden.TipoOrden}>${orden.MaterialDescripcion}</option>`);
     });
-}
 
-function restaurarValidacionMaterial() {
-    $("#MaterialId")
-        .attr("data-val", "true")
-        .attr("data-val-required", "El campo Material es obligatorio");
-}
-
-function quitarValidacionMaterial() {
-    $("#MaterialId")
-        .removeAttr("data-val")
-        .removeAttr("data-val-required");
+    ValidarMaterialNoGranoSeleccionado();
 }

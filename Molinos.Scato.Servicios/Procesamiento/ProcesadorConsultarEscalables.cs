@@ -43,7 +43,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             try
             {
                 _log.Debug("Ejecutando ProcesadorConsultarEscalables");
-                
 
                 ValidarConsultarEscalables(comando, resultado);
                 if (resultado.HayErrores)
@@ -51,22 +50,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-                 
-                    
-                    var response = _httpClient.GetAsync(URL +  FormatearParametrosConsulta(comando)).Result;
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var content = response.Content.ReadAsStringAsync().Result;
-                        var consulta = JsonConvert.DeserializeObject<ConsultaEscalablesDto>(content);
-                        resultado.Categoria = consulta.Data.MapeoCategoriaEscalado;
-                    }
-                    else
-                    {
-                        _log.Error($"No se pudo consultar el tipo de vehiculo para la patente {comando.Patente} {response.StatusCode} {response.ReasonPhrase}");
-                        resultado.Error("respuestaAfip", "No pudimos conectarnos con CNRT para consultar el tipo de vehículo, deberá completarlo manualmente.");
-                    }
-                
+                var response = _httpClient.GetAsync(URL + FormatearParametrosConsulta(comando)).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    var consulta = JsonConvert.DeserializeObject<ConsultaEscalablesDto>(content);
+                    resultado.Categoria = consulta.Data.MapeoCategoriaEscalado;
+                }
+                else
+                {
+                    _log.Error($"No se pudo consultar el tipo de vehiculo para la patente {comando.Patente} {response.StatusCode} {response.ReasonPhrase}");
+                    resultado.Error("respuestaAfip", Textos.CategoriaEscalable_NoValidada);
+                }
             }
             catch (Exception e)
             {

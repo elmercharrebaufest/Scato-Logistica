@@ -144,7 +144,7 @@ namespace Molinos.Scato.Web.Helpers
         public static WebGridColumn ColumnaEjecutar(this WebGrid grid, HtmlHelper html, string style = "")
         {
             var pendiente = PermisosScato.CamionesPendientesMesa.DisplayText();
-            return grid.Column("ejecutar", "", f => html.Raw(html.BotonLink(Textos.Ejecutar, ((string)f.ProximaAccion).Contains(pendiente) ? "EjecutarPendiente" : "Ejecutar", "ListaDeCamiones", new { Id = ((string)f.ProximaAccion).Contains(pendiente)? f.RecorridoId : f.id, proximaAccion = (string)f.ProximaAccion, fletemoa = (string)f.FleteMOA }, style + (f.Reingreso ? " rowReingresado" : "") + (f.Rechazado ? " rowRechazado " : "") + (f.LlegoEnHorario ? " rowPrioridadCircular " : ""), "icon-play", true).ToHtmlString()), "editar-borrar-columna", false);
+            return grid.Column("ejecutar", "", f => html.Raw(html.BotonLink(Textos.Ejecutar, ((string)f.ProximaAccion).Contains(pendiente) ? "EjecutarPendiente" : "Ejecutar", "ListaDeCamiones", new { Id = ((string)f.ProximaAccion).Contains(pendiente)? f.RecorridoId : f.id, proximaAccion = (string)f.ProximaAccion, fletemoa = (string)f.FleteMOA, tipoOrdenCargaNoGranos = f.TipoOrdenCargaNoGranos }, style + (f.Reingreso ? " rowReingresado" : "") + (f.Rechazado ? " rowRechazado " : "") + (f.LlegoEnHorario ? " rowPrioridadCircular " : ""), "icon-play", true).ToHtmlString()), "editar-borrar-columna", false);
         }
 
         public static WebGridColumn ColumnaModificar(this WebGrid grid, HtmlHelper html, string controller, string style = "")

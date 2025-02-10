@@ -34,7 +34,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(t => t.TieneFotoIngreso, f => f.MapFrom(r => r.Vehiculo != null && !string.IsNullOrEmpty(r.Vehiculo.CartaPorte.FotoRutaDestino)))
                 .ForMember(t => t.TipoWorkFlowEgreso, f => f.MapFrom(r => r.Workflow != null && r.Workflow.TipoDeWorkflow == TipoDeWorkflow.Egreso))
                 .ForMember(t => t.TipoVariedadDescripcion, f => f.MapFrom(r => r.TipoVariedad.Descripcion))
-                .ForMember(t => t.TipoVariedadCodigo, f => f.MapFrom(r => r.TipoVariedad.Codigo));
+                .ForMember(t => t.TipoVariedadCodigo, f => f.MapFrom(r => r.TipoVariedad.Codigo))
+                .ForMember(t => t.MotivoDemora, f => f.MapFrom(r => r.MotivoDemora));
             Mapper.CreateMap<RecorridoDto, Recorrido>();
 
             Mapper.CreateMap<Recorrido, DatosInstanciaWorkflowDto>()

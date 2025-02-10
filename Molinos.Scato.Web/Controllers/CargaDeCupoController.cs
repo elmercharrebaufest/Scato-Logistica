@@ -2,6 +2,7 @@
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Comandos.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using Molinos.Scato.Dominio.Enums;
@@ -39,12 +40,15 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IConfiguracionProvider configuracion;
         private readonly IFirmaProvider firma;
         private readonly IServicioActividadFactory<ICargarCartaPorteService> factory;
-        private readonly IServicioOperaciones servicioOperaciones;
+        private readonly IServicioActividadFactory<IIngresarOrdenCargaInternaService> factoryNoProductivo;
+        private readonly IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factoryFason;
 
         public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
             IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador,
             IConfiguracionProvider configuracion, IFirmaProvider firma,
-            IServicioActividadFactory<ICargarCartaPorteService> factory, IServicioOperaciones servicioOperaciones)
+            IServicioActividadFactory<ICargarCartaPorteService> factory, 
+            IServicioActividadFactory<IIngresarOrdenCargaInternaService> factoryNoProductivo,
+            IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factoryFason)
             : base(servicio)
         {
             this.servicioComandos = servicioComandos;
@@ -55,7 +59,8 @@ namespace Molinos.Scato.Web.Controllers
             this.firma = firma;
             this.factory = factory;
             this.configuracion = configuracion;
-            this.servicioOperaciones = servicioOperaciones;
+            this.factoryNoProductivo = factoryNoProductivo;
+            this.factoryFason = factoryFason;
         }
 
         [DatosUsuario]
@@ -72,22 +77,15 @@ namespace Molinos.Scato.Web.Controllers
             log.Debug("CartaDePorte {0}, Tarjeta {1}, Centro {2}, Patente {3}", model.NumeroCartaPorte, model.Numero, datosUsuario.CentroId, model.Patente);
             
             if (model.CircuitoNoGranos)
-            {
-                var ordenesInsumos = servicioOperaciones.ObtenerOrdenesResiduos(model.Patente)?.ToList() ?? new List<OrdenResiduosDto>();
-                if (ordenesInsumos.Count > 0)
-                {
-                    return RedirectToAction("IndexNoProductivo", model);
-                }
-
                 return RedirectToAction("IndexNoGranos", model);
-            }
+            
             model.ImagenCartaPorte = imagenCartaPorte.Replace("data:image/jpg;base64,", "");
             ViewBag.Materiales = servicio.ListarMaterialesPorWorkflow(225, datosUsuario.CentroId).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
             var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
             ViewBag.AvanzaAutomatico = centro.AvanzaCpe;
 
-            ModelState.Remove("MaterialId");
             ModelState.Remove("Especial");
+            ModelState.Remove(nameof(CargaDeCupoDto.HayVariosMateriales));
             if (model.CPE)
             {
                 ModelState.Remove("NumeroCartaPorte");
@@ -158,7 +156,7 @@ namespace Molinos.Scato.Web.Controllers
                     if (!model.NoAsignaCalleEnGaritaEntrada)
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
-                        var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
+                        var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId.GetValueOrDefault());
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
 
                         if (PermitirAsignarCalleGrano(model.TitularCartaPorteCodigoSap, model.CodEstab))
@@ -194,211 +192,60 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult IndexNoGranos(CargaDeCupoDto model, DatosUsuario datosUsuario)
         {
-            bool? fleteMOA = bool.TryParse(model.FleteMOA, out bool respValor) ? (bool?)respValor : null;
-
-            model.Patente = model.Patente.ToUpper();
-            ViewBag.Materiales = servicio.ListarMaterialGranoPorCentro(datosUsuario.CentroId, model.CircuitoNoGranos)
-                .ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
-            var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
-            ViewBag.AvanzaAutomatico = centro.AvanzaCpe;
             ModelState.Remove("NumeroCartaPorte");
             ModelState.Remove("CTG");
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-                log.Debug("Asignación de Cupo No Granos {0}, tarjeta {1}, centro {2}", model.Cupo, model.Numero, datosUsuario.CentroId);
-                if (servicio.EsTarjetaBloqueada(model.Numero, datosUsuario.CentroId))
-                {
-                    ModelState.AddModelError("", Textos.AsignacionTarjetaDeAcceso_TarjetaBloqueada);
-                    log.Debug("ERROR 2 de cupo {0}, tarjeta {1}, centro {2}, CP {3}", model.Cupo, model.Numero, datosUsuario.CentroId, model.NumeroCartaPorte);
-                    return View("Form", model);
-                }
-                if (!servicio.EsTarjetaEnRangoValido(model.Numero, datosUsuario.CentroId))
-                {
-                    ModelState.AddModelError("", Textos.AsignacionTarjetaDeAcceso_TarjetaSinRango);
-                    log.Debug("ERROR 3 de cupo {0}, tarjeta {1}, centro {2}, CP {3}", model.Cupo, model.Numero, datosUsuario.CentroId, model.NumeroCartaPorte);
-                    return View("Form", model);
-                }
-                var instanciaWorkflow = servicio.ObtenerRecorridoInstanceIdPorTarjetaDeAcceso(model.Numero, datosUsuario.CentroId);
-                if (workflows.VerificarExistenciaDeWorkflowPorGuid(instanciaWorkflow))
-                {
-                    ModelState.AddModelError("", Textos.ImpresionTarjetaDeAcceso_EnUso);
-                    log.Debug("ERROR 4 de cupo {0}, tarjeta {1}, centro {2}, CP {3}", model.Cupo, model.Numero, datosUsuario.CentroId, model.NumeroCartaPorte);
-                    return View("Form", model);
-                }
-
-                var validarTarjetaEnUsoPendienteSinRecorrido = ConfigurationManager.AppSettings["ValidarTarjetaEnUsoEtapaPendiente"];
-                if (!string.IsNullOrEmpty(validarTarjetaEnUsoPendienteSinRecorrido) && validarTarjetaEnUsoPendienteSinRecorrido == "1")
-                {
-                    var intanciaWorkflow = workflows.ObtenerWorkflowPendientePorNumeroTarjetaAcceso(model?.Numero, datosUsuario?.CentroId);
-                    if (!(intanciaWorkflow is null))
-                    {
-                        ModelState.AddModelError("", string.Format(Textos.TarjetaDeAcceso_EnUso_Pendiente, intanciaWorkflow.Patente));
-                        return View("Form", model);
-                    }
-                }
-           
-                model.Fecha = DateTime.Now;
-                model.CentroId = datosUsuario.CentroId;
-                model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
-                var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupoNoGrano { Dto = model }) as ResultadoCrear;
-
-                if (resultado.HayErrores)
-                {
-                    log.Debug("ERROR 5 de cupo {0}, tarjeta {1}, centro {2}, CP {3}: " + resultado.Errores.First().Value, model.Cupo, model.Numero, datosUsuario.CentroId, model.NumeroCartaPorte);
-                    foreach (var r in resultado.Errores)
-                    {
-                        ModelState.AddModelError("", r.Value);
-                    }
-                }
-                else
-                {
-                    var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
-                    if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId != 0)
-                    {
-                        log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
-                        var turnoActivo = InformarArribo(model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap , true, fleteMOA);
-                    }
-                    if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
-                    {
-                        MostrarPorCartel(datosUsuario.NombrePc, "Mesa FAS", datosUsuario.CentroId, model.Patente);
-                        ViewBag.EsCircuitoNoGranosSinMaterial = true;
-                    }
-                    if (model.ImprimeTarjetaDeAcceso)
-                    {
-                        ImprimirTarjetaDeAcceso(model, datosUsuario, resultado);
-                    }
-
-                    if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId != 0)
-                    {
-                        model.MaterialId = 0;
-                    }
-
-                    log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
-                    AperturaDeBarrera(codigoBarrera);
-                }
-
-                if (ModelState.IsValid)
-                {
-                    ModelState.Clear();
-                    ViewBag.MostrarAlertaExitosa = true;
-                    return View("Form");
-                }
+                SetearVista(datosUsuario);
+                return View("Form", model);
             }
-            return View("Form", model);
+
+            log.Debug("Asignación de Cupo No Granos {0}, tarjeta {1}, centro {2}", model.Cupo, model.Numero, datosUsuario.CentroId);
+            model.Fecha = DateTime.Now;
+            model.CentroId = datosUsuario.CentroId;
+            model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
+            var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupoNoGrano { Dto = model }) as ResultadoCrearCargaDeCupo;
+
+            if (resultado.HayErrores && resultado.Errores.ContainsKey("Error"))
+            {
+                ViewBag.MensajeError = resultado.Errores["Error"];
+                SetearVista(datosUsuario);
+                return View("Form", model);
+            }
+
+            if (!resultado.HayErrores && resultado.FastPassValido)
+                EjecutarFastPassNoGranos(resultado, model, datosUsuario);
+            
+            ViewBag.MensajeExitoso = resultado.Mensaje;
+            SetearVista(datosUsuario);
+            return View("Form");
         }
 
-        [DatosUsuario]
-        public ActionResult IndexNoProductivo(CargaDeCupoDto model, DatosUsuario datosUsuario)
+        private void EjecutarFastPassNoGranos(ResultadoCrearCargaDeCupo resultadoCrearCupoNoGrano, CargaDeCupoDto cargaDeCupo, DatosUsuario datosUsuario)
         {
-            bool? fleteMOA = bool.TryParse(model.FleteMOA, out bool respValor) ? (bool?)respValor : null;
-
-            model.Patente = model.Patente.ToUpper();
-            ViewBag.Materiales = servicio.ListarMaterialGranoPorCentro(datosUsuario.CentroId, model.CircuitoNoGranos)
-                .ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
-            var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
-            ViewBag.AvanzaAutomatico = centro.AvanzaCpe;
-            ModelState.Remove("NumeroCartaPorte");
-            ModelState.Remove("CTG");
-
-            if (ModelState.IsValid)
+            servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = true });
+            if (cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.Insumos)
             {
-                log.Debug("Asignación de Cupo No Granos {0}, tarjeta {1}, centro {2}", model.Cupo, model.Numero, datosUsuario.CentroId);
-                if (servicio.EsTarjetaBloqueada(model.Numero, datosUsuario.CentroId))
-                {
-                    ModelState.AddModelError("", Textos.AsignacionTarjetaDeAcceso_TarjetaBloqueada);
-                    log.Debug("ERROR 2 de cupo {0}, tarjeta {1}, centro {2}, CP {3}", model.Cupo, model.Numero, datosUsuario.CentroId, model.NumeroCartaPorte);
-                    return View("Form", model);
-                }
-                if (!servicio.EsTarjetaEnRangoValido(model.Numero, datosUsuario.CentroId))
-                {
-                    ModelState.AddModelError("", Textos.AsignacionTarjetaDeAcceso_TarjetaSinRango);
-                    log.Debug("ERROR 3 de cupo {0}, tarjeta {1}, centro {2}, CP {3}", model.Cupo, model.Numero, datosUsuario.CentroId, model.NumeroCartaPorte);
-                    return View("Form", model);
-                }
-                var instanciaWorkflow = servicio.ObtenerRecorridoInstanceIdPorTarjetaDeAcceso(model.Numero, datosUsuario.CentroId);
-                if (workflows.VerificarExistenciaDeWorkflowPorGuid(instanciaWorkflow))
-                {
-                    ModelState.AddModelError("", Textos.ImpresionTarjetaDeAcceso_EnUso);
-                    log.Debug("ERROR 4 de cupo {0}, tarjeta {1}, centro {2}, CP {3}", model.Cupo, model.Numero, datosUsuario.CentroId, model.NumeroCartaPorte);
-                    return View("Form", model);
-                }
-
-                var validarTarjetaEnUsoPendienteSinRecorrido = ConfigurationManager.AppSettings["ValidarTarjetaEnUsoEtapaPendiente"];
-                if (!string.IsNullOrEmpty(validarTarjetaEnUsoPendienteSinRecorrido) && validarTarjetaEnUsoPendienteSinRecorrido == "1")
-                {
-                    var intanciaWorkflow = workflows.ObtenerWorkflowPendientePorNumeroTarjetaAcceso(model?.Numero, datosUsuario?.CentroId);
-                    if (!(intanciaWorkflow is null))
-                    {
-                        ModelState.AddModelError("", string.Format(Textos.TarjetaDeAcceso_EnUso_Pendiente, intanciaWorkflow.Patente));
-                        return View("Form", model);
-                    }
-                }
-
-                model.Fecha = DateTime.Now;
-                model.CentroId = datosUsuario.CentroId;
-                model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
-                
-                var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupoNoGrano { Dto = model }) as ResultadoCrear;
-
-                if (resultado.HayErrores)
-                {
-                    log.Debug("ERROR 5 de cupo {0}, tarjeta {1}, centro {2}, CP {3}: " + resultado.Errores.First().Value, model.Cupo, model.Numero, datosUsuario.CentroId, model.NumeroCartaPorte);
-                    foreach (var r in resultado.Errores)
-                    {
-                        ModelState.AddModelError("", r.Value);
-                    }
-                }
-                else
-                {
-                    var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
-                    if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId != 0)
-                    {
-                        log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
-                        var turnoActivo = InformarArribo(model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap, true, fleteMOA);
-                    }
-                    if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
-                    {
-                        MostrarPorCartel(datosUsuario.NombrePc, "Mesa FAS", datosUsuario.CentroId, model.Patente);
-                        ViewBag.EsCircuitoNoGranosSinMaterial = true;
-                    }
-                    if (model.ImprimeTarjetaDeAcceso)
-                    {
-                        ImprimirTarjetaDeAcceso(model, datosUsuario, resultado);
-                    }
-
-                    if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId != 0)
-                    {
-                        model.MaterialId = 0;
-                    }
-
-                    log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
-                    AperturaDeBarrera(codigoBarrera);
-                }
-
-                if (ModelState.IsValid)
-                {
-                    ModelState.Clear();
-                    ViewBag.MostrarAlertaExitosa = true;
-                    return View("Form", model);
-
-                }
-
+                var servicioWf = factoryNoProductivo.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
+                servicioWf.IngresarOrdenCargaInterna(resultadoCrearCupoNoGrano.OrdenCargaInterna, datosUsuario.CentroId, Constantes.WorkFlow.workflowMaterialNoProductivo, resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, datosUsuario.NombreUsuario, resultadoCrearCupoNoGrano.ControlRecorrido);
+            } else
+            {
+                var workflow = cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.FasonConFlete ? Constantes.WorkFlow.workflowFason : Constantes.WorkFlow.workflowFasonSinFlete ;
+                var servicioWf = factoryFason.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
+                var resultadoActividad = servicioWf.IngresarOrdenCargaInternaFason(resultadoCrearCupoNoGrano.OrdenCargaInternaFason, datosUsuario.CentroId, workflow, resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, datosUsuario.NombreUsuario, resultadoCrearCupoNoGrano.ControlRecorrido) as ResultadoCrearWorkflow;
             }
-
-            return View("Form", model);
+            servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = false });
         }
 
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular, bool circuitoNoGranos = false, bool? FleteMOA = null, string establecimiento = null, string rtteComercial = null)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular, bool circuitoNoGranos = false, string establecimiento = null)
         {
             try
             {
                 var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
                 var resultado = servicioComandos.Ejecutar(new CrearCallePorRecorrido
                 {
-                    TipoCalle = FleteMOA != null ? TipoCalle.NoGranos 
-                    : circuitoNoGranos ? TipoCalle.NoGranos 
+                    TipoCalle = circuitoNoGranos ? TipoCalle.NoGranos 
                     : !string.IsNullOrEmpty(titular) 
                         && (titular == codigoSapPuertoRosario 
                             || (titular == Constantes.ValoresPorDefecto.CodigoSapACA 
@@ -409,6 +256,7 @@ namespace Molinos.Scato.Web.Controllers
                     TurnoActivo = turnoActivo,
                     CentroId = centroId
                 });
+
                 if (resultado.HayErrores)
                 {
                     ModelState.AddModelError("warning", resultado.Errores.Values.First());
@@ -432,6 +280,7 @@ namespace Molinos.Scato.Web.Controllers
                                 SePuedeDesactivar = true
                             });
                         }
+                        
                         log.Debug($"Fila asignada {fila} por el puestoId: {nombrePc}");
                         MostrarPorCartel(nombrePc, fila, centroId, patente);
                     }
@@ -687,36 +536,6 @@ namespace Molinos.Scato.Web.Controllers
             return Json(new { error = "No se pudo obtener la imagen" }, JsonRequestBehavior.AllowGet);
         }
 
-        private void ImprimirDeCartaPorte(CargaDeCupoDto model, ResultadoCrear resultado)
-        {
-            if (!ModelState.IsValid) return;
-            var codigo = "ImpresionCartaPorteMesa";
-            var documento = servicio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, model.CentroId, model.PuestoDeTrabajoId);
-            if (documento == null)
-            {
-                ModelState.AddModelError("Imp", String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo));
-                return;
-            }
-
-            var resultadoImpresion = servicioComandos.Ejecutar(new ImprimirCartaPorteMesa
-            {
-                Dto = new ImpCartaPorteUrenportDto
-                {
-                    Impresora = documento.ImpresoraDireccion ?? "",
-                    Codigo = codigo,
-                    FechaImpresion = DateTime.Now,
-                    WorkflowId = new Guid(),
-                    Patente = "",
-                    FotoRutaDestino = model.FotoRutaDestino,
-                }
-            });
-            if (resultadoImpresion.HayErrores)
-            {
-                servicioComandos.Ejecutar(new EliminarCargaDeCupo { Id = resultado.Id });
-                ModelState.AddModelError("Imp", Textos.ErrorImpresionCpMesa + resultadoImpresion.Errores.First().Value);
-            }
-        }
-
         private void ImprimirTarjetaDeAcceso(CargaDeCupoDto model, DatosUsuario datosUsuario, ResultadoCrear resultado)
         {
             if (!ModelState.IsValid) return;
@@ -898,56 +717,6 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerDatosDeSap(string numero, DatosUsuario datosUsuario)
-        {
-            var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
-            {
-                Centro = servicio.ObtenerCentro(datosUsuario.CentroId).CodigoSAP,
-                Patente = numero.ToUpper()
-            };
-            var datosRequest = new ConsultaOrdenDeCargaRequest
-            {
-                ConsultaOrdenDeCarga = consultaOrdenDeCarga
-            };
-
-            try
-            {
-                var respuestaConsultaOrdenCarga = servicioSap.ConsultaOrdenDeCarga(datosRequest);
-                var datosSap = new List<OrdenCargaFasDto>();
-
-                if (respuestaConsultaOrdenCarga.ConsultaOrdenDeCargaResponse.Salida.Any())
-                {
-                    var ordenCargaFas = respuestaConsultaOrdenCarga.ConsultaOrdenDeCargaResponse.Salida;
-                    int count = respuestaConsultaOrdenCarga.ConsultaOrdenDeCargaResponse.Salida.Count();
-
-                    for (int i = 0; i < count; i++)
-                    {
-                        var material = servicio.ObtenerMaterialPorCodigoSap(ordenCargaFas[i].MATNR.TrimStart(new[] { '0' }));
-
-                        if (material == null)
-                        {
-                            return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_MaterialInexistente, ordenCargaFas[i].MATNR) }, JsonRequestBehavior.AllowGet);
-                        }
-
-                        var itemSap = new OrdenCargaFasDto
-                        {
-                            MaterialId = material.Id,
-                            MaterialDesc = material.Descripcion,
-                        };
-                        datosSap.Add(itemSap);
-                    }
-                    return Json(new { datosSap }, JsonRequestBehavior.AllowGet);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { datosSap = -1, error = Textos.OrdenCargaFas_Error }, JsonRequestBehavior.AllowGet);
-            }
-
-            return Json(null, JsonRequestBehavior.AllowGet);
-        }
-
-        [DatosUsuario]
         public JsonResult ObtenerCPE(DatosUsuario datosUsuario, long numeroCtg, string tarjeta = "", bool esEpecial = false)
         {
             try
@@ -1044,284 +813,15 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [AjaxOnly]
-        public JsonResult ObtenerOrdenesFason(string patente)
+        [DatosUsuario]
+        public JsonResult ObtenerOrdenesFasonInsumos(string patente, DatosUsuario datosUsuario)
         {
-            try
+            var response = servicioComandos.Ejecutar(new ConsultarOrdenesNoGranosCargaDeCupo
             {
-                var ordenes = servicioOperaciones.ObtenerOrdenesDeCarga(patente)?.ToList() ?? new List<OrdenDeCargaDto>();
-
-                var ordenesFiltradas = FiltrarOrdenesExistentesOperaciones(ordenes);
-                var materiales = ObtenerMaterialesOperaciones(ordenesFiltradas);
-                var ordenAnterior = ObtenerOrdenAnteriorOperaciones(ordenesFiltradas, materiales.Count > 1);
-
-                ComprobarClienteUnico(ordenAnterior?.FirstOrDefault()?.CUITCliente ?? string.Empty);
-                
-                var response = CrearRespuestaOperaciones(ordenesFiltradas, materiales, ordenAnterior);
-
-                return Json(response, JsonRequestBehavior.AllowGet);
-            }
-            catch (InvalidOperationException ex)
-            {
-                var errorResponse = new
-                {
-                    success = false,
-                    errorResponse = new
-                    {
-                        error = ex.Message,
-                        duplicado = ex.Message == "La secuencia contiene más de un elemento"
-            }
-                };
-
-                return Json(errorResponse, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                var errorResponse = new
-                {
-                    success = false,
-                    errorResponse = new
-                    {
-                        error = ex.Message,
-                        duplicado = false
-                    }
-                };
-
-            //  Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                return Json(errorResponse, JsonRequestBehavior.AllowGet);
-            }
-
-        }
-
-        [AjaxOnly]
-        public JsonResult ObtenerOrdenesFasonInsumos(string patente)
-        {
-            try
-            {
-                var ordenesDeCarga = servicioOperaciones.ObtenerOrdenesDeCarga(patente)?.ToList() ?? new List<OrdenDeCargaDto>();
-                var ordenesInsumos = servicioOperaciones.ObtenerOrdenesResiduos(patente)?.ToList() ?? new List<OrdenResiduosDto>();
-
-                if (ordenesDeCarga.Count == 0 && ordenesInsumos.Count == 0)
-                {
-                    return Json(new { success = true, ordenesInsumos = new List<OrdenResiduosDto>(), ordenesCarga = new List<OrdenDeCargaDto>() }, JsonRequestBehavior.AllowGet);
-                }
-
-                var ordenesFiltradasInsumos = FiltrarOrdenesResiduosExistentesOperaciones(ordenesInsumos);
-                var ordenesFiltradasCarga = FiltrarOrdenesExistentesOperaciones(ordenesDeCarga);
-
-                var materialesCarga = ObtenerMaterialesOperaciones(ordenesFiltradasCarga);
-                var ordenAnteriorCarga = ObtenerOrdenAnteriorOperaciones(ordenesFiltradasCarga, materialesCarga.Count > 1);
-
-                var materialesInsumos = ObtenerMaterialesResiduosOperaciones(ordenesFiltradasInsumos);
-                var ordenAnteriorInsumos = ObtenerOrdenAnteriorResiduosOperaciones(ordenesFiltradasInsumos, materialesInsumos.Count > 1);
-
-                if (ordenAnteriorCarga.Count > 0)
-                {
-                    ComprobarClienteUnico(ordenAnteriorCarga[0].CUITCliente);
-                   
-                }
-
-                var response = CrearRespuestaOperacionesResiduos(ordenesFiltradasInsumos, ordenesFiltradasCarga , materialesInsumos, materialesCarga , ordenAnteriorInsumos , ordenAnteriorCarga);
-
-                return Json(response, JsonRequestBehavior.AllowGet);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Json(new
-                {
-                    success = false,
-                    errorResponse = new
-                    {
-                        error = ex.Message,
-                        duplicado = true
-                    }
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    success = false,
-                    errorResponse = new
-                    {
-                        error = ex.Message,
-                        duplicado = false
-                    }
-                }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        /// <summary>
-        /// El Objetivo de este metodo es generar una una excepcion si hay mas de un cliente con el mismo cuit
-        /// </summary>
-        /// <param name="cuitCliente"></param>
-        /// <returns></returns>
-        private void ComprobarClienteUnico(string cuitCliente)
-        {
-            try
-            {
-                var respuesta = servicio.ContarClientes(ConvertirCuil(cuitCliente));
-                if (respuesta > 1 ) throw new InvalidOperationException("La secuencia contiene más de un elemento");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        private string ConvertirCuil(string cuil)
-        {
-            if (String.IsNullOrEmpty(cuil))
-            {
-                return "";
-            }
-            string validador1 = cuil.Substring(0, 2);
-            string documento = cuil.Substring(2, 8);
-            string validador2 = cuil.Substring(10, 1);
-            return validador1 + "-" + documento + "-" + validador2;
-        }
-
-        private object CrearRespuestaOperaciones(List<OrdenDeCargaDto> ordenes, List<object> materiales, List<OrdenDeCargaDto> ordenAnterior)
-        {
-            if (ordenAnterior.Count != 0)
-            {
-                var material = servicio.ObtenerMaterialPorCodigoSap(ordenAnterior[0].CodigoProducto);
-                ordenAnterior[0].CodigoProducto = material.Id.ToString();
-            }
-
-            return new
-            {
-                success = true,
-                ordenes = ordenAnterior ?? ordenes,
-                sonVariasOrdenes = ordenes.Count > 1,
-                sonVariosMateriales = materiales.Count > 1,
-                materiales
-            };
-        }
-
-        private object CrearRespuestaOperacionesResiduos(List<OrdenResiduosDto> ordenesInsumos, List<OrdenDeCargaDto> ordenesCarga, List<object> materialesInsumos, List<object> materialesCarga, List<OrdenResiduosDto> ordenAnteriorInsumos , List<OrdenDeCargaDto> ordenAnteriorCarga)
-        {
-            if (ordenesInsumos.Count > 0)
-            {
-                var material = servicio.ObtenerMaterialPorCodigoSap(ordenAnteriorInsumos[0].CodigoProducto.ToString());
-                if (material != null)
-                {
-                    ordenAnteriorInsumos[0].CodigoProducto = material.Id;
-                }
-            }
-
-            if (ordenesCarga.Count > 0)
-            {
-                var material = servicio.ObtenerMaterialPorCodigoSap(ordenAnteriorCarga[0].CodigoProducto.ToString());
-                if (material != null)
-                {
-                    ordenAnteriorCarga[0].CodigoProducto = material.Id.ToString();
-                }
-            }
-
-            return new
-            {
-                success = true,
-                ordenes = ordenAnteriorCarga.Count > 0 ? ordenAnteriorCarga : ordenesCarga,
-                ordenesInsumos = ordenAnteriorInsumos.Count > 0 ? ordenAnteriorInsumos : ordenesInsumos,
-                sonVariasOrdenes = (ordenesInsumos.Count + ordenesCarga.Count) > 1,
-                sonVariosMateriales = ( materialesInsumos.Count + materialesCarga.Count ) > 1 ,   
-            };
-        }
-
-        private List<OrdenDeCargaDto> ObtenerOrdenAnteriorOperaciones(List<OrdenDeCargaDto> ordenes, bool sonVariosMateriales)
-        {
-            if (ordenes.Count > 1 && !sonVariosMateriales)
-            {
-                var ordenMasAntigua = ordenes.OrderBy(o => o.FechaCreacion).FirstOrDefault();
-                return ordenMasAntigua != null ? new List<OrdenDeCargaDto> { ordenMasAntigua } : new List<OrdenDeCargaDto>();
-            } 
-            else if (ordenes.Count >= 2 && sonVariosMateriales)
-            {
-                return ordenes.OrderBy(o => o.FechaCreacion).GroupBy(o => o.CodigoProducto).Select(g => g.First()).ToList();
-            }
-
-            return ordenes;
-        }
-
-        private List<OrdenResiduosDto> ObtenerOrdenAnteriorResiduosOperaciones(List<OrdenResiduosDto> ordenes, bool sonVariosMateriales)
-        {
-            if (ordenes.Count == 0)
-            {
-                return ordenes;
-            }
-
-            if (ordenes.Count > 1 && !sonVariosMateriales)
-            {
-                var ordenMasAntigua = ordenes.OrderBy(o => o.FechaCreacion).FirstOrDefault();
-                return new List<OrdenResiduosDto> { ordenMasAntigua };
-            }
-            else if (ordenes.Count >= 2 && sonVariosMateriales)
-            {
-                return ordenes
-                    .OrderBy(o => o.FechaCreacion)
-                    .GroupBy(o => o.CodigoProducto)
-                    .Select(g => g.First())
-                    .ToList();
-            }
-
-            return ordenes;
-        }
-
-        private List<object> ObtenerMaterialesOperaciones(List<OrdenDeCargaDto> ordenes) 
-        {
-            var listaMateriales = new List<object>();
-
-            foreach (var orden in ordenes.GroupBy(o => o.CodigoProducto))
-            {
-                var primerOrden = orden.First();
-                var material = servicio.ObtenerMaterialPorCodigoSap(primerOrden.CodigoProducto);
-
-                if (material != null)
-                {
-                    listaMateriales.Add(new
-                    {
-                        Value = material.Id, 
-                        Text = primerOrden.DescripcionProducto 
-                    });
-                }
-            }
-
-            return listaMateriales;
-        }    
-private List<object> ObtenerMaterialesResiduosOperaciones(List<OrdenResiduosDto> ordenes)
-        {
-            var listaMateriales = new List<object>();
-            var materialesCache = new Dictionary<int, MaterialDto>();
-
-            foreach (var orden in ordenes)
-            {
-                if (!materialesCache.ContainsKey(orden.CodigoProducto))
-                {
-                    var material = servicio.ObtenerMaterialPorId(orden.CodigoProducto);
-                    if (material != null)
-                    {
-                        materialesCache[orden.CodigoProducto] = material;
-                        listaMateriales.Add(new
-                        {
-                            Value = material.Id,
-                            Text = orden.DescripcionProducto
-                        });
-                    }
-                }
-            }
-
-            return listaMateriales;
-        }
-
-        private List<OrdenDeCargaDto> FiltrarOrdenesExistentesOperaciones(List<OrdenDeCargaDto> ordenes)
-        {
-            return ordenes.Where(orden => !servicio.ExisteOrdenCargaFason(orden.Id.ToString())).ToList();
-        }
-
-        private List<OrdenResiduosDto> FiltrarOrdenesResiduosExistentesOperaciones(List<OrdenResiduosDto> ordenes)
-        {
-            return ordenes.Where(orden => !servicio.ExisteOrdenCarga(orden.Id.ToString())).ToList();
+                Patente = patente,
+                CentroId = datosUsuario.CentroId,
+            }) as ResultadoConsultarOrdenesNoGranosCargaDeCupo;
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         private void AperturaDeBarrera(string codigo)
@@ -1615,69 +1115,6 @@ private List<object> ObtenerMaterialesResiduosOperaciones(List<OrdenResiduosDto>
             //}
 
             // return ValidarCupoEnSap(orden, usuario, esIngreso);
-        }
-
-        private bool ValidarCupoEnSap(CartaPorteDto orden, DatosUsuario datosUsuario, bool esIngreso)
-        {
-            try
-            {
-                var centroDelCupoId = esIngreso ? datosUsuario.CentroId : orden.DestinoId;
-                var codigosDeCentroSap = servicio.ObtenerCodigoDeCentroPorId(centroDelCupoId);
-                log.Debug("ValidarCupoEnSap cupo: {0}, centro: {1}", orden.Cupo, string.Join(",", codigosDeCentroSap));
-                var esEspecial = false;
-                var response = servicioSap.Z_SDMF_RFC_Z2100(new Z_SDMF_RFC_Z2100Request
-                {
-                    Z_SDMF_RFC_Z2100 = new Z_SDMF_RFC_Z2100()
-                    {
-                        IM_CENTRO = new ZMPES5210[] { new ZMPES5210 { CENTRO = codigosDeCentroSap[0] } },
-                        IM_CODIGO = new ZMPES5200[] { new ZMPES5200 { CODIGO = orden.Cupo } }
-                    }
-                });
-
-                var respuesta = response.Z_SDMF_RFC_Z2100Response.EX_CUPOS.FirstOrDefault();
-
-                if (respuesta != null && respuesta.MENSAJE == Textos.RespuestaSap_NoValido && codigosDeCentroSap.Length > 1)
-                {
-                    response = servicioSap.Z_SDMF_RFC_Z2100(new Z_SDMF_RFC_Z2100Request
-                    {
-                        Z_SDMF_RFC_Z2100 = new Z_SDMF_RFC_Z2100()
-                        {
-                            IM_CENTRO = new ZMPES5210[] { new ZMPES5210 { CENTRO = codigosDeCentroSap[1] } },
-                            IM_CODIGO = new ZMPES5200[] { new ZMPES5200 { CODIGO = orden.Cupo } }
-                        }
-                    });
-                    respuesta = response.Z_SDMF_RFC_Z2100Response.EX_CUPOS.FirstOrDefault();
-                    esEspecial = true;
-                }
-
-                if (respuesta != null && respuesta.MENSAJE != Textos.RespuestaSap_NoValido)
-                {
-                    log.Debug("ValidarCupoEnSap Respuesta {0}: {1}", orden.Cupo, respuesta.ToXml());
-                    var materialId = servicio.ObtenerMaterialIdPorCodigoSap(respuesta.MATERIAL.TrimStart(new[] { '0' }));
-                    if (materialId == 0)
-                    {
-                        ModelState.AddModelError("avanceCpe", string.Format(Textos.Material_CodigoSAPNoExiste, respuesta.MATERIAL));
-                        return false;
-                    }
-                    if (esEspecial)
-                    {
-                        ModelState.AddModelError("avanceCpe", "Cupo sustentable");
-                        return false;
-                    }
-                    return true;
-                }
-                log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", orden.Cupo);
-
-                ModelState.AddModelError("avanceCpe", $"ValidarCupoEnSap Respuesta {orden.Cupo} no encontrado");
-                return false;
-            }
-            catch (Exception e)
-            {
-                log.Error(e, "Error al validar cupo en SAP: ");
-
-                ModelState.AddModelError("avanceCpe", $"Error al validar cupo en SAP");
-                return false;
-            }
         }
 
         private string GuardarfotoMesaDigitalizacion(string fotoMesaDigitalizacion, CartaPorteDto orden, string directorio, DatosUsuario datosUsuario, DateTime fecha, string numCtg = null)

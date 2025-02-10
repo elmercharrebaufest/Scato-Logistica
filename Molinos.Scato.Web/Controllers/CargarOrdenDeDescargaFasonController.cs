@@ -48,7 +48,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var cupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
                 orden.PatenteCamion = cupo.Patente;
-                orden.MaterialId = cupo.MaterialId;
+                orden.MaterialId = cupo.MaterialId.GetValueOrDefault();
                 orden.Material = cupo.MaterialDescripcion;
             }
             return View(orden);

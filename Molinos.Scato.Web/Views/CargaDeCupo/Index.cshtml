@@ -2,8 +2,6 @@
 @using Molinos.Scato.Web.Helpers
 @model Molinos.Scato.Dominio.Dto.CargaDeCupoDto
 @{
-    /**/
-
     var puestoDeTrabajo = (string)ViewBag.PuestoDeTrabajo;
     ViewBag.Title = Textos.CargaDeCupo;
 }
@@ -21,7 +19,6 @@
      data-url-obtener-patente="@Url.Action("ObtenerFoto", "CargaDeCupo")"
      data-url-obtener-material="@Url.Action("ObtenerMaterial", "CargaDeCupo")"
      data-url-obtener-cpe="@Url.Action("ObtenerCPE", "CargaDeCupo")"
-     data-url-obtener-ordenes-fason="@Url.Action("ObtenerOrdenesFason", "CargaDeCupo")"
      data-url-obtener-ordenes-insumos="@Url.Action("ObtenerOrdenesFasonInsumos", "CargaDeCupo")"
 ></div>
 
@@ -35,37 +32,9 @@
 @Html.Hidden("CodigoCamaraCP", (string)ViewBag.CodigoCamaraCP)
 @Html.Hidden("CodigoCamaraCPDir", (string)ViewBag.CodigoCamaraCPDir)
 
-@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "formContainer" , OnFailure = "onFailure" }, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.CargaDeCupo }))
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "formContainer" , OnFailure = "onFailure" }, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.CargaDeCupo, id = "formCargaDeCupo" }))
 {
     <div id="formContainer">
         @Html.Partial("Form")
     </div>
 }
-
-@*<div id="barreraModal" class="modal hide fade"
-         data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
-
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                &times;
-            </button>
-            <h3>Indique motivo:</h3>
-        </div>
-
-        <div class="modal-body form-horizontal">
-            <div class="control-group">
-                @Html.Label("Motivo", new { @class = "control-label" })
-                <div class="controls">
-                    @Html.TextArea("Motivo", new { id = "motivo", @class = "form-control", style = "width:350px;" })
-                </div>
-            </div>
-
-            <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
-            <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
-        </div>
-
-        <div class="modal-footer">
-            <a href="javascript:void(0)" id="guardar" class="btn btn-primary">Aceptar</a>
-            <a data-dismiss="modal" aria-hidden="true" href="#" id="cancelar" class="btn close">Cancelar </a>
-        </div>
-    </div>*@

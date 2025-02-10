@@ -156,5 +156,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string FleteMOA { get; set; }
         public bool SojaEUDR { get; set; }
         public bool SojaEPAyEUDR { get; set; }
+        public TipoOrdenCargaNoGranos? TipoOrdenCargaNoGranos { get; set; }
     }
 }

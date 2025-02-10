@@ -16,6 +16,9 @@ using System.Data.Entity;
 using System.Net.Http;
 using System.ServiceModel;
 using Molinos.Scato.Servicios.Estrategias;
+using Molinos.Scato.Dominio.Validations;
+using Molinos.Scato.Dominio.Validations.Interfaces;
+using Molinos.Scato.Dominio.Dto;
 
 namespace Molinos.Scato.Dependencias
 {
@@ -45,6 +48,7 @@ namespace Molinos.Scato.Dependencias
             Bind<ICache, Cache>().To<Cache>().InSingletonScope();
             Bind<IServicioLlamadoAutomatico, ServicioLlamadoAutomatico>().To<ServicioLlamadoAutomatico>().InScope(ctx => OperationContext.Current);
             Bind<IServicioOperaciones, ServicioOperaciones>().To<ServicioOperaciones>();
+            Bind<IValidatorEntity<OrdenCargaInternaFasonDto>>().To<OrdenCargaInternaFasonValidator>();
             Bind<IExternalServiceException, ExternalServiceException>().To<ExternalServiceException>();
             Bind<IRestClientFactory, RestClientFactory>().To<RestClientFactory>().InSingletonScope();
 

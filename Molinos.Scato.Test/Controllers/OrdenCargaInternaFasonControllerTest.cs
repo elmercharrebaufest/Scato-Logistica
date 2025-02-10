@@ -119,7 +119,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.BuscarChoferes(It.Is<ChoferFiltro>(c => c.Cuil == dto.Chofer.Cuil))).Returns(new List<ChoferDto> { dto.Chofer });
             servRepositorioMock.Setup(s => s.ObtenerTipoComercial(It.IsAny<int>())).Returns(new TipoComercialDto { TransportistaEsProveedor = false });
 
-            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }) as RedirectToRouteResult;
+            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }, "0") as RedirectToRouteResult;
             Assert.NotNull(result);
             Assert.AreEqual("Index", result.RouteValues["action"]);
             servComandosMock.Verify(v => v.Ejecutar(It.IsAny<CrearChofer>()), Times.Never());
@@ -136,7 +136,7 @@ namespace Molinos.Scato.Test.Controllers
             servComandosMock.Setup(s => s.Ejecutar(It.Is<CrearChofer>(d => d.Dto == dto.Chofer))).Returns(new ResultadoCrear { Id = 1 });
             servRepositorioMock.Setup(s => s.ObtenerTipoComercial(It.IsAny<int>())).Returns(new TipoComercialDto { TransportistaEsProveedor = false });
 
-            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }) as RedirectToRouteResult;
+            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }, "0") as RedirectToRouteResult;
             servComandosMock.Verify(v => v.Ejecutar(It.IsAny<CrearChofer>()), Times.Exactly(1));
             Assert.NotNull(result);
             Assert.AreEqual("Index", result.RouteValues["action"]);
@@ -153,7 +153,7 @@ namespace Molinos.Scato.Test.Controllers
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ModificarChofer>())).Returns(new Resultado());
 
 
-            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }) as RedirectToRouteResult;
+            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }, "0") as RedirectToRouteResult;
             servComandosMock.Verify(v => v.Ejecutar(It.IsAny<CrearChofer>()), Times.Never());
             Assert.NotNull(result);
             Assert.AreEqual("Index", result.RouteValues["action"]);
@@ -170,7 +170,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.BuscarChoferes(It.Is<ChoferFiltro>(c => c.Cuil == dto.Chofer.Cuil))).Returns(new List<ChoferDto> { dto.Chofer });
             servRepositorioMock.Setup(s => s.ObtenerTipoComercial(It.IsAny<int>())).Returns(new TipoComercialDto { TransportistaEsProveedor = false });
 
-            var result = target.Index(workflow, dto, new DatosUsuario()) as RedirectToRouteResult;
+            var result = target.Index(workflow, dto, new DatosUsuario(), "0") as RedirectToRouteResult;
             Assert.NotNull(result);
             Assert.AreEqual("Index", result.RouteValues["action"]);
             Assert.AreEqual("ListaDeCamiones", result.RouteValues["controller"]);
@@ -185,7 +185,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.BuscarChoferes(It.Is<ChoferFiltro>(c => c.Cuil == dto.Chofer.Cuil))).Returns(new List<ChoferDto> { dto.Chofer });
             listaMock.Setup(s => s.ObtenerWorkflowPorPatente(It.IsAny<string>())).Returns(new InstanciaWorkflowDto());
 
-            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }) as RedirectToRouteResult;
+            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }, "0") as RedirectToRouteResult;
             Assert.NotNull(result);
             Assert.AreEqual("Index", result.RouteValues["action"]);
             Assert.AreEqual("ListaDeCamiones", result.RouteValues["controller"]);
@@ -207,7 +207,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(x => x.ListarPesoMaximoPorTipoVehiculoPorCentro(It.IsAny<int>())).Returns(pesosMax);
             servRepositorioMock.Setup(s => s.ObtenerOtroRecorridoDelChofer(It.IsAny<int>()))
                 .Returns(new OtroRecorridoDelChoferDto { NumeroDocumentoIngreso = "11", Patente = "OtroRe" });
-            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }) as ViewResult;
+            var result = target.Index(workflow, dto, new DatosUsuario { CentroId = 1 }, "0") as ViewResult;
             Assert.That(target.ModelState.First().Value.Errors.First().ErrorMessage, Is.EqualTo(string.Format(Textos.Error_ChoferYaEstaEnPlanta, dto.Chofer.NombreCompleto, dto.NumeroOrden, "OtroRe")));
         }
 

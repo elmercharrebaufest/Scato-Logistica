@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Dynamic;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Recursos;
@@ -81,16 +79,23 @@ namespace Molinos.Scato.Dominio.Dto
         public string MaterialUnidadMedida { get; set; }
 
         public string LocalidadDestinoDescripcion { get; set; }
+        
         [Display(ResourceType = typeof(Textos), Name = "AdministracionDistancia_KmARecorrer")]
-        [RegularExpression(@"^\d+$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
-        [StringLength(4, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public string KmARecorrer { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "AdministracionDistancia_Localidad")]
-        public int LocalidadDestinoId { get; set; }
+        public int? LocalidadDestinoId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public TipoVehiculo TipoVehiculo { get; set; }
+        public string TipoVehiculoNombre 
+        {
+            get
+            {
+                return Enum.GetName(typeof(TipoVehiculo), this.TipoVehiculo);
+            }
+        }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Almacen")]
         public int? Almacen_Id { get; set; }

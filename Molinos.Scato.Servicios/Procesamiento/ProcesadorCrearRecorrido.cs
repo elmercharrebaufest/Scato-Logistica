@@ -47,7 +47,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             WorkflowDefinicion = workflowDefinicion,
                             Vehiculo = recorridoViejo.Vehiculo,
                             TipoDocumentoIngresoRelacionado = recorridoViejo.TipoDocumentoIngreso,
-                            NumeroDocumentoIngresoRelacionado = recorridoViejo.NumeroDocumentoIngreso
+                            NumeroDocumentoIngresoRelacionado = recorridoViejo.NumeroDocumentoIngreso,
+                            MotivoDemora = recorridoViejo.MotivoDemora
                         };
                     Repositorio.Agregar(recorrido);
                     Log.Info("Se creó exitosamente el recorrido para el workflow {0}", comando.NombreWorkflow);

@@ -48,8 +48,8 @@
     @Html.Partial("_Orden")
 
     <div class="control-group paddingRight cajaButtons">
-        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaInterna.showModal()" disabled>@Textos.Rechazar</button>
-        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalDemorarOrdenCargaInterna.showModal()" disabled>@Textos.Demorar</button>
+        @*<button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaInterna.showModal()" disabled>@Textos.Rechazar</button>*@
+        @*<button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalDemorarOrdenCargaInterna.showModal()" disabled>@Textos.Demorar</button>*@
         <button class="btn btn-primary" id="btnAceptar" type="submit">@Textos.Aceptar</button>
         @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
     </div>

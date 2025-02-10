@@ -70,6 +70,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.6.3\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.23.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.23\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -746,6 +749,10 @@
     <Compile Include="Procesamiento\ProcesadorSincronizarResultadosCamara.cs" />
     <Compile Include="Procesamiento\ProcesadorCancelarSuscripcionDispositivos.cs" />
     <Compile Include="Procesamiento\ProcesadorSuscribirDispositivos.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarOrdenInsumos.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarOrdenesNoGranosCargaDeCupo.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarOrdenCargaInterna.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarOrdenCargaInternaFason.cs" />
     <Compile Include="Procesamiento\ProcesadorValidarStock.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarStock.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearDocumentoExterno.cs" />
@@ -1929,6 +1936,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Business\Interfaces\" />
     <Folder Include="Certificados\" />
   </ItemGroup>
   <ItemGroup>

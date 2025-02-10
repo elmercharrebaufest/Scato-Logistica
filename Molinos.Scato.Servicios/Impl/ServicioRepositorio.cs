@@ -8260,6 +8260,11 @@ namespace Molinos.Scato.Servicios.Impl
             return ObtenerPrimero<Recorrido, OtroRecorridoDelChoferDto>(x => x.Chofer.Id == choferId && !x.Terminado && x.TipoVehiculo != TipoVehiculo.Tren);
         }
 
+        public OtroRecorridoDelChoferDto ObtenerOtroRecorridoDelChoferDemorado(int choferId, Guid instanciaWorkflow)
+        {
+            return ObtenerPrimero<Recorrido, OtroRecorridoDelChoferDto>(x => x.Chofer.Id == choferId && !x.Terminado && x.InstanciaWorkflow != instanciaWorkflow && x.TipoVehiculo != TipoVehiculo.Tren);
+        }
+
         public bool CupoConsumido(string cupoParametro, int centroId)
         {
             return repositorio.Existe<CargaDeCupo>(x => x.Cupo == cupoParametro && !x.SinCupo && (!x.Recorrido.Rechazado || (x.Recorrido.Rechazado && !x.Recorrido.Terminado)) && x.Centro.Id == centroId);
@@ -11117,10 +11122,24 @@ namespace Molinos.Scato.Servicios.Impl
         public bool ExisteOrdenCargaFason(string ordenExterno)
         {
 
-            var ordenCarga = repositorio.Existe<OrdenCargaInternaFason>(x => x.NumeroOrdenExterno == ordenExterno &&
-                                                             (x.Recorrido == null || (!x.Recorrido.Rechazado && !x.Recorrido.Terminado)));
-                                       
-            return ordenCarga;
+            var ordenCarga = repositorio.ObtenerMayor<OrdenCargaInternaFason, int>(
+                                x => x.NumeroOrdenExterno == ordenExterno,
+                                f => f.Id);
+
+            return ordenCarga != null &&
+                   ordenCarga.Recorrido != null &&
+                   ordenCarga.Recorrido.Terminado == false;
+        }
+
+        public bool ExisteOrdenCargarFasonDemorado(string ordenExterno, InstanciaWorkflowDto wfInstancia)
+        {
+            var ordenCarga = repositorio.ObtenerMayor<OrdenCargaInternaFason, int>(
+                        x => x.NumeroOrdenExterno == ordenExterno && x.Recorrido.InstanciaWorkflow != wfInstancia.Id,
+                        f => f.Id);
+
+            return ordenCarga != null &&
+                   ordenCarga.Recorrido != null &&
+                   ordenCarga.Recorrido.Terminado == false;
         }
 
         public bool ExisteOrdenCarga(string ordenExterno)

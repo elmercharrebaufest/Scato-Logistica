@@ -1,10 +1,7 @@
-﻿using Molinos.Scato.Dominio.Recursos;
+﻿using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Recursos;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -18,9 +15,7 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Cupo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string Cupo { set; get; }
-
         public bool SinCupo { get; set; }
-
         public string RespuestaSap { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "RequierePuestoDeTrabajo")]
@@ -31,18 +26,11 @@ namespace Molinos.Scato.Dominio.Dto
         public bool ImprimeTarjetaDeAcceso { get; set; }
         public bool NoAsignaCalleEnGaritaEntrada { get; set; }
         public DateTime Fecha { get; set; }
-
         public int CentroId { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
-        public int MaterialId { get; set; }
-
+        public int? MaterialId { get; set; }
         public string ProveedorCuit { get; set; }
-
         public string ProveedorDescripcion { get; set; }
-
         public string FechaSap { get; set; }
-
         public string MaterialDescripcion { get; set; }
         public bool EstuvoPendiente { get; set; }
         public bool Especial { get; set; }
@@ -55,11 +43,16 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_PatenteAfip")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
-        public string Patente { get; set; }
+        [RegularExpression(@"^[A-Za-z]{3}\d{3}$|^[A-Za-z]{2}\d{3}[A-Za-z]{2}$", ErrorMessage = "Formato de patente inválido. Use AAA000 o AA000AA.")]
+        public string Patente
+        {
+            get => _patente;
+            set => _patente = value?.Trim().ToUpper();
+        }
 
+        private string _patente;
         public string ImagenCartaPorte { get; set; }
         public string ImagenCartaPorteSustentable { get; set; }
-
         public string FotoRutaDestino { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
@@ -77,5 +70,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string FotoRutaSustentable { get; set; }
         public bool IngresoAvanceCPEAutomatico { get; set; }
         public string FleteMOA { get; set; }
+        public TipoOrdenCargaNoGranos? TipoOrdenCargaNoGranos { get; set; }
+        public bool HayVariosMateriales { get; set; }
     }
 }

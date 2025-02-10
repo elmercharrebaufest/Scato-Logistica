@@ -153,5 +153,6 @@ namespace Molinos.Scato.Dominio.Dto
         public PuntoDeCargaDto PuntoDeCarga { get; set; }
         public string TipoVariedadDescripcion { get; set; }
         public string TipoVariedadCodigo { get; set; }
+        public string MotivoDemora { get; set; }
     }
 }

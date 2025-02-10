@@ -8122,5 +8122,83 @@ namespace Molinos.Scato.Test.Servicios
             var result = target.ExisteOrdenCargaFason(ordenExterno);
             Assert.IsTrue(result);
         }
+
+        [Test]
+        public void ExisteOrdenCargarFasonDemorado_ConOrdenRechazadaNoTerminada_RetornaFalse()
+        {
+            // Arrange
+            string numeroOrden = "75018";
+            var instanciaWorkflow = new InstanciaWorkflowDto
+            {
+                Id = new Guid("e661716d-384c-48a5-9d3a-53f5c8457330")
+            };
+
+            var recorrido = new Recorrido
+            {
+                NumeroDocumentoIngreso = "112625",
+                Rechazado = true,
+                Terminado = false,
+                VehiculoDemorado = true,
+                InstanciaWorkflow = new Guid("e661716d-384c-48a5-9d3a-53f5c8457330")
+            };
+
+            var ordenCarga = new OrdenCargaInternaFason
+            {
+                Id = 112625,
+                NumeroOrdenExterno = numeroOrden,
+                Recorrido = recorrido
+            };
+
+            repositorioMock
+                 .Setup(r => r.ObtenerMayor<OrdenCargaInternaFason, int>(
+                    It.Is<Expression<Func<OrdenCargaInternaFason, bool>>>(expr => true), // La condición se evaluará
+                    It.IsAny<Expression<Func<OrdenCargaInternaFason, int>>>()))
+                .Returns((OrdenCargaInternaFason)null); // Retorna null porque tienen la misma InstanciaWorkflow
+
+            // Act
+            var resultado = target.ExisteOrdenCargarFasonDemorado(numeroOrden, instanciaWorkflow);
+
+            // Assert
+            Assert.IsFalse(resultado);
+        }
+
+        [Test]
+        public void ExisteOrdenCargarFasonDemorado_ConOrdenRechazadaNoTerminadaDistinta_RetornaTrue()
+        {
+            // Arrange
+            string numeroOrden = "75018";
+            var instanciaWorkflow = new InstanciaWorkflowDto
+            {
+                Id = new Guid("e661716d-384c-48a5-9d3a-53f5c8457330")
+            };
+
+            var recorrido = new Recorrido
+            {
+                NumeroDocumentoIngreso = "112625",
+                Rechazado = true,
+                Terminado = false,
+                VehiculoDemorado = true,
+                InstanciaWorkflow = new Guid("e700906d-300c-48a5-9d3a-53f5c8457330")
+            };
+
+            var ordenCarga = new OrdenCargaInternaFason
+            {
+                Id = 112625,
+                NumeroOrdenExterno = numeroOrden,
+                Recorrido = recorrido
+            };
+
+            repositorioMock
+                 .Setup(r => r.ObtenerMayor<OrdenCargaInternaFason, int>(
+                    It.Is<Expression<Func<OrdenCargaInternaFason, bool>>>(expr => true),
+                    It.IsAny<Expression<Func<OrdenCargaInternaFason, int>>>()))
+                .Returns(ordenCarga); // Retorna la orden porque tienen diferente InstanciaWorkflow
+
+            // Act
+            var resultado = target.ExisteOrdenCargarFasonDemorado(numeroOrden, instanciaWorkflow);
+
+            // Assert
+            Assert.IsTrue(resultado);
+        }
     }
 }

@@ -138,19 +138,19 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo, string fleteMoa = "")
+        public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo, string fleteMoa = "", TipoOrdenCargaNoGranos? tipoOrdenCargaNoGranos = null)
         {
             string nameWorkflow = string.Empty;
-            if (bool.TryParse(fleteMoa, out bool esFleteNoa))
+            if (bool.TryParse(fleteMoa, out bool esFleteMoa))
             {
                 
-                     nameWorkflow = esFleteNoa
+                     nameWorkflow = esFleteMoa
                     ? Constantes.WorkFlow.workflowFason
                     : Constantes.WorkFlow.workflowFasonSinFlete;
 
                 return RedirectToAction("Index", Constantes.EtapaWorkflow.OrdenCargaInterna, new { workflow = nameWorkflow, cargaDeCupoId = id});
             }
-            if (ValidarExistenciaOrdenesInsumo(id))
+            if (tipoOrdenCargaNoGranos.HasValue && tipoOrdenCargaNoGranos.Value == TipoOrdenCargaNoGranos.Insumos)
             {
                 nameWorkflow = Constantes.WorkFlow.workflowMaterialNoProductivo;
                 return RedirectToAction("Index", Constantes.EtapaWorkflow.MaterialNoProductivo, new { workflow = nameWorkflow, cargaDeCupoId = id });

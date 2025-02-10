@@ -40,9 +40,10 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<IServicioNotificarUsuario> notificador;
         private Mock<IFirmaProvider> firma;
         private Mock<IServicioActividadFactory<ICargarCartaPorteService>> factory;
-        private Mock<IServicioOperaciones> operacionesMock;
+        private Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaService>> factoryNoProductivo;
         private Mock<HttpContextBase> httpContextMock;
         private Mock<HttpResponseBase> httpResponseMock;
+        private Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService>> factoryFason;
 
         [SetUp]
         public void SetUp()
@@ -53,9 +54,10 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock = new Mock<IServicioRepositorio>();
             servOrquestador = new Mock<IServicioOrquestador>();
             configuracion = new Mock<IConfiguracionProvider>();
-            operacionesMock = new Mock<IServicioOperaciones>();
             firma = new Mock<IFirmaProvider>();
             factory = new Mock<IServicioActividadFactory<ICargarCartaPorteService>>();
+            factoryNoProductivo = new Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaService>>();
+            factoryFason = new Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService>>();
             httpContextMock = new Mock<HttpContextBase>();
             httpResponseMock = new Mock<HttpResponseBase>();
             datos = new DatosUsuario
@@ -68,7 +70,8 @@ namespace Molinos.Scato.Test.Controllers
 
             target = new CargaDeCupoController(log, servRepositorioMock.Object, servComandoMock.Object,
                 listaMock.Object, servicioSap.Object, servOrquestador.Object, configuracion.Object,
-                firma.Object, factory.Object, operacionesMock.Object);
+                firma.Object, factory.Object, factoryNoProductivo.Object,
+                factoryFason.Object);
 
             cargaDeCupo = new CargaDeCupoDto
             {
@@ -199,8 +202,7 @@ namespace Molinos.Scato.Test.Controllers
             var material = new MaterialDto { Id = 1, CodigoSAP = "50866" };
 
             servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("50866")).Returns(material);
-            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
-            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            var result = target.ObtenerOrdenesFasonInsumos(patente, datos) as JsonResult;
             Assert.IsNotNull(result);
             dynamic data = result.Data;
             Assert.IsTrue(data.success);
@@ -215,9 +217,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             string patente = "ABC123";
             var ordenes = new List<OrdenDeCargaDto>();
-            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
-
-            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            var result = target.ObtenerOrdenesFasonInsumos(patente, datos) as JsonResult;
             Assert.IsNotNull(result);
             dynamic data = result.Data;
             Assert.IsTrue(data.success);
@@ -235,11 +235,8 @@ namespace Molinos.Scato.Test.Controllers
                 new OrdenDeCargaDto { Id = 1, CodigoProducto = "75891", DescripcionProducto = "Producto 1", FechaCreacion = DateTime.Now.ToString() }
             };
             var material = new MaterialDto { Id = 1, CodigoSAP = "75891" }; // material1
-
             servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75891")).Returns(material);
-            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
-
-            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            var result = target.ObtenerOrdenesFasonInsumos(patente, datos) as JsonResult;
             Assert.IsNotNull(result);
             dynamic data = result.Data;
             Assert.IsTrue(data.success);
@@ -261,9 +258,8 @@ namespace Molinos.Scato.Test.Controllers
             var material = new MaterialDto { Id = 1, CodigoSAP = "75520" }; // material1
 
             servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75520")).Returns(material);
-            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
 
-            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            var result = target.ObtenerOrdenesFasonInsumos(patente, datos) as JsonResult;
             Assert.IsNotNull(result);
             dynamic data = result.Data;
             Assert.IsTrue(data.success);
@@ -294,9 +290,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("75320")).Returns(material2);
             servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("73250")).Returns(material3);
 
-            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
-
-            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            var result = target.ObtenerOrdenesFasonInsumos(patente, datos) as JsonResult;
 
             Assert.IsNotNull(result);
             dynamic data = result.Data;
@@ -328,9 +322,8 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.ObtenerMaterialPorCodigoSap("73250")).Returns(material3);
 
             servRepositorioMock.Setup(x => x.ExisteOrdenCargaFason("4879")).Returns(true);
-            operacionesMock.Setup(s => s.ObtenerOrdenesDeCarga(patente)).Returns(ordenes);
            
-            var result = target.ObtenerOrdenesFason(patente) as JsonResult;
+            var result = target.ObtenerOrdenesFasonInsumos(patente, datos) as JsonResult;
 
             Assert.IsNotNull(result);
             dynamic data = result.Data;

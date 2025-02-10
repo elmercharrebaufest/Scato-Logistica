@@ -50,6 +50,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.6.3\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\NPOI.Excel.2.1.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -95,6 +98,8 @@
     <Compile Include="Comandos\ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarAsignacionAutomatismoGranoEnRecorrido .cs" />
     <Compile Include="Comandos\ConsultarEscalablesDummy.cs" />
+    <Compile Include="Comandos\Consultas\ConsultarOrdenInsumos.cs" />
+    <Compile Include="Comandos\Consultas\ConsultarOrdenesNoGranosCargaDeCupo.cs" />
     <Compile Include="Comandos\CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
@@ -168,6 +173,7 @@
     <Compile Include="Comandos\ResultadoMensajeCartelLedReordenado.cs" />
     <Compile Include="Comandos\ResultadoMensajeCartelLed.cs" />
     <Compile Include="Comandos\ResultadoPuestoComandoPuerto.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoOrdenFason.cs" />
     <Compile Include="Comandos\SetearProgresoCargaDeCupo.cs" />
     <Compile Include="Comandos\ActualizarEstadoPuerto.cs" />
     <Compile Include="Comandos\AutomatizacionEtapas.cs" />
@@ -286,6 +292,8 @@
     <Compile Include="Comandos\SincronizarResultadosCamara.cs" />
     <Compile Include="Comandos\CancelarSuscripcionDispositivos.cs" />
     <Compile Include="Comandos\SuscribirDispositivos.cs" />
+    <Compile Include="Comandos\Validaciones\ValidarOrdenCargaInterna.cs" />
+    <Compile Include="Comandos\ValidarOrdenCargaInternaFason.cs" />
     <Compile Include="Comandos\ValidarStock.cs" />
     <Compile Include="Comandos\ActualizarStock.cs" />
     <Compile Include="Comandos\ActualizarEstadoMaterial.cs" />
@@ -791,6 +799,7 @@
     <Compile Include="Dto\ConfirmacionCargaDescargaDto.cs" />
     <Compile Include="Dto\CartaPorteDerivadoGranarioDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenResiduosDto.cs" />
+    <Compile Include="Dto\OrdenNoGranosCargaDeCupoDto.cs" />
     <Compile Include="Dto\PuntoDeCargaDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaComplementarioDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaDto.cs" />
@@ -1251,6 +1260,7 @@
     <Compile Include="Enums\AccionColaImpresion.cs" />
     <Compile Include="Enums\RecursoWebAPI.cs" />
     <Compile Include="Enums\LlamadoAutomatico.cs" />
+    <Compile Include="Enums\TipoOrdenCargaNoGranos.cs" />
     <Compile Include="Enums\TipoPerfil.cs" />
     <Compile Include="Enums\EstadoHidraulica.cs" />
     <Compile Include="Enums\EstadosCPEFromAFIP.cs" />
@@ -1280,6 +1290,7 @@
     <Compile Include="Helpers\ExtensionesByte.cs" />
     <Compile Include="Helpers\FileData.cs" />
     <Compile Include="Helpers\ExtensionesImage.cs" />
+    <Compile Include="Helpers\FormatterHelper.cs" />
     <Compile Include="Helpers\FotoCamionHelper.cs" />
     <Compile Include="Helpers\LoggerHelper.cs" />
     <Compile Include="ITipeable.cs" />
@@ -1767,6 +1778,8 @@
     </Compile>
     <Compile Include="Seguridad\PermisosScato.cs" />
     <Compile Include="Entidades\SensorBarrera.cs" />
+    <Compile Include="Validations\Interfaces\IValidatorEntity.cs" />
+    <Compile Include="Validations\OrdenCargaInternaFasonValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Recursos\Textos.fr.resx">

@@ -58,7 +58,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                  NoGranos = x.Material== null || !x.Material.EsGrano,
                                  CPE = x.CPE,
                                  CTG = x.CTG,
-                                 FleteMOA = x.FleteMOA
+                                 FleteMOA = x.FleteMOA,
+                                 TipoOrdenCargaNoGranos = x.TipoOrdenCargaNoGranos,
                              }).OrderByDescending(x => x.FechaCreacion);
     
             if(cantidad > 0)
