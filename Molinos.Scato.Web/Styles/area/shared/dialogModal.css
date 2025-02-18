@@ -50,3 +50,95 @@
     gap: 10px;
 }
 
+.form-grande {
+    width: 500px; /* Ajusta el tamaño según necesites */
+    max-width: 1800px;
+}
+
+    .form-grande .control-group {
+        margin-bottom: 1px;
+        padding-left: 10px;
+    }
+
+    .form-grande .control-label {
+        float: none;
+        width: auto;
+        padding-top: 0;
+        text-align: left;
+    }
+
+    .form-grande .controls {
+        margin-left: 0;
+    }
+
+    .form-grande .control-list {
+        padding-top: 0;
+    }
+
+    .form-grande .form-actions {
+        padding: 0 10px;
+    }
+
+    .form-grande input,
+    .form-grande textarea,
+    .form-grande select,
+    .form-grande .help-inline,
+    .form-grande .uneditable-input,
+    .form-grande .input-prepend,
+    .form-grande .input-append {
+        display: inline-block;
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .form-grande .hide {
+        display: none;
+    }
+
+    .form-grande .control-group {
+        margin-bottom: 20px;
+    }
+
+    .form-grande .control-group:before,
+    .form-grande .control-group:after {
+        display: table;
+        line-height: 0;
+        content: "";
+    }
+
+    .form-grande .control-group:after {
+        clear: both;
+    }
+
+    .form-grande .control-label {
+        float: left;
+        width: 160px;
+        padding-top: 5px;
+        text-align: left;
+    }
+
+    .form-grande .controls {
+        margin-left: 180px;
+    }
+
+    .form-grande .controls:first-child {
+        padding-left: 180px;
+    }
+
+    .form-grande .help-block {
+        margin-bottom: 5px;
+    }
+
+    .form-grande input + .help-block,
+    .form-grande select + .help-block,
+    .form-grande textarea + .help-block,
+    .form-grande .uneditable-input + .help-block,
+    .form-grande .input-prepend + .help-block,
+    .form-grande .input-append + .help-block {
+        margin-top: 10px;
+    }
+
+    .form-grande .form-actions {
+        padding-left: 180px;
+    }
+

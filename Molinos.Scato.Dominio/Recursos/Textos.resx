@@ -10563,10 +10563,10 @@
   </data>
   <data name="NuevaOrdenFasonCreada" xml:space="preserve">
     <value>Se ha creado una nueva Orden de Fason con el No: {0}</value>
-  </data>
+ </data>
   <data name="DatoConLongitudIncorrecta" xml:space="preserve">
     <value>Algún cuit/cuil no cumple con el largo esperado según formato. Validar los datos ingresados en la carga inicial de la Orden</value>
-  </data>
+    </data>
   <data name="Establecimiento_SojaEUDR" xml:space="preserve">
     <value>Soja EUDR</value>
   </data>
@@ -10584,7 +10584,7 @@
   </data>
   <data name="PuestoComando_Error_DiferenteVariedadSeleccionada" xml:space="preserve">
     <value>Selecciona Recorridos con soja {0}</value>
-  </data>
+</data>
   <data name="ErrorLlenarCaomposEntidad" xml:space="preserve">
     <value>Error al llenar datos de la entidad:</value>
   </data>
@@ -10595,13 +10595,13 @@
     <value>No existe el cliente ingresado.</value>
   </data>
   <data name="DomicilioNoValido" xml:space="preserve">
-    <value>El Domicilio seleccionada no es válido.</value>
+    <value>El Domicilio seleccionado no es válido.</value>
   </data>
   <data name="DatosOrdenInvalidos" xml:space="preserve">
-    <value>Los datos para para validar la orden son inválidos (Vacíos o Nulos).</value>
+    <value>Los datos para validar la orden son inválidos (Vacíos o Nulos).</value>
   </data>
   <data name="OrdenesFasonNoEncontradas" xml:space="preserve">
-    <value>No se encontraron Ordenes de Fason con la patente ingresada.</value>
+    <value>No se encontraron órdenes de Fason con la patente ingresada.</value>
   </data>
   <data name="AvanzoFastPass" xml:space="preserve">
     <value>Avanzó por Fast Pass</value>
@@ -10617,5 +10617,80 @@
   </data>
   <data name="Patente_FormatoError" xml:space="preserve">
     <value>Patente No respeta el Formato ABC123 o AB123CD</value>
+  </data>
+  <data name="HuellaDigital_Tipo" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="HuellaDigital_Patente" xml:space="preserve">
+    <value>Patente</value>
+  </data>
+  <data name="HuellaDigital_Chofer" xml:space="preserve">
+    <value>Chofer</value>
+  </data>
+  <data name="HuellaDigital_Transportista" xml:space="preserve">
+    <value>Transportista</value>
+  </data>
+  <data name="HuellaDigital_PesoTara" xml:space="preserve">
+    <value>Peso Tara</value>
+  </data>
+  <data name="HuellaDigital_LugarPesaje" xml:space="preserve">
+    <value>Lugar de Pesaje</value>
+  </data>
+  <data name="HuellaDigital_FechaHoraPesaje" xml:space="preserve">
+    <value>Fecha y Hora de Pesaje</value>
+  </data>
+  <data name="HuellaDigital_Estado" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="HuellaDigitalNuevo" xml:space="preserve">
+    <value>Huella Digital</value>
+  </data>
+  <data name="HuellaDigital_Crear" xml:space="preserve">
+    <value>Nuevo registro</value>
+  </data>
+  <data name="HuellaDigital_Titulo" xml:space="preserve">
+    <value>Huella Digital</value>
+  </data>
+  <data name="NuevoRegistro_HuellaDigital" xml:space="preserve">
+    <value>Nuevo registro</value>
+  </data>
+  <data name="Abm_HuellaDigital" xml:space="preserve">
+    <value>Huella Digital</value>
+  </data>
+  <data name="AbmHuellaDigital" xml:space="preserve">
+    <value>ABM Huella Digital</value>
+  </data>
+  <data name="HuellaDigital_Balanza" xml:space="preserve">
+    <value>Balanza</value>
+  </data>
+  <data name="HuellaDigital_Observaciones" xml:space="preserve">
+    <value>Observaciones</value>
+  </data>
+  <data name="HuellaDigital_Usuario" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="Error_IdInstanciaInvalido" xml:space="preserve">
+    <value>IdInstancia Invalido</value>
+  </data>
+  <data name="Error_UsuarioInvalido" xml:space="preserve">
+    <value>Usuario Invalido</value>
+  </data>
+  <data name="Error_RecorridoNoEncontrado" xml:space="preserve">
+    <value>Recorrido no encontrado</value>
+  </data>
+  <data name="Error_HuellaDigitalNoEncontrada" xml:space="preserve">
+    <value>Huella Digital no encontrada</value>
+  </data>
+  <data name="Error_ModificarDestinoRecorrido" xml:space="preserve">
+    <value>Error modificar destino recorrido</value>
+  </data>
+  <data name="Error_ModificarPesoTara" xml:space="preserve">
+    <value>Error modificar peso tara</value>
+  </data>
+  <data name="HuellaDigital_Acoplado" xml:space="preserve">
+    <value>Acoplado</value>
+  </data>
+  <data name="CartaPorte_CupoSalida" xml:space="preserve">
+    <value>Cupo Salida</value>
   </data>
 </root>

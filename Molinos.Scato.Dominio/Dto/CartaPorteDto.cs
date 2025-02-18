@@ -548,5 +548,8 @@ namespace Molinos.Scato.Dominio.Dto
         public int? RepresentanteRecibidorId { get; set; }
         public string RepresentanteRecibidorCuil { get; set; }
         public string FotoRutaSustentable { get; set; }
+
+        public string CupoSalida { get; set; }
+        public AdicionalesCartaPorteByPassDto CartaPorteByPass { get; set; }
     }
 }

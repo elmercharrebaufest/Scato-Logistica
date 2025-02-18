@@ -73,6 +73,10 @@ namespace Molinos.Scato.Actividades.Internas
                 if (ordenDto != null)
                 {
                     ordenDto.VehiculoDemorado = orden.VehiculoDemorado;
+                    if(orden.CupoSalida != null)
+                    {
+                        ordenDto.CupoSalida = orden.CupoSalida;
+                    }
                     CartaPorte.Set(context, ordenDto);
                     FechaInicio.Set(context, DateTime.Now);
                     NumeroCartaPorte.Set(context, ordenDto.NroCartaPorte);

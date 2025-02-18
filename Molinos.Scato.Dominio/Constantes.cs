@@ -86,6 +86,7 @@
                 public const string TableroComandoLogistica = "TableroComandoLogistica";
                 public const string TableroComandoPuerto = "TableroComandoPuerto";
                 public const string IngresarOrdenCargaInternaFason = "IngresarOrdenCargaInternaFason";
+                public const string CrearCartaPorteByPass = "CrearCartaPorteByPass";
                 public const string PesadaBruto = "PesadaBruto";
                 public const string CargaDeCupo = "CargaDeCupo";
             }
@@ -152,6 +153,17 @@
             {
                 public const string CNRTDummy = "CNRTDummy";
                 public const string VehiculoDummy = "VehiculoDummy";
+            }
+
+            public struct CrearCartaPorteByPass
+            {
+                public const string Provincia = "Provincia";
+                public const string Localidad = "Localidad";
+                public const string Planta = "Planta";
+                public const string Centro = "Centro";
+                public const string WorkFlowEgreso = "WorkFlowEgreso";
+                public const string TipoComercialEgreso = "TipoComercialEgreso";
+
             }
 
             public struct CargaDeCupo

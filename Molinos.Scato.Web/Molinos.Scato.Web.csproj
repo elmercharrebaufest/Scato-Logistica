@@ -402,6 +402,7 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\CargarCartaPorteByPassController.cs" />
     <Compile Include="Controllers\ComercialController.cs" />
     <Compile Include="Controllers\BajaCTGDGController.cs" />
     <Compile Include="Controllers\AltaCTGDGController.cs" />
@@ -411,6 +412,7 @@
     <Compile Include="Controllers\EsperaConfirmacionController.cs" />
     <Compile Include="Controllers\ConfiguracionEficienciaCaladoController.cs" />
     <Compile Include="Controllers\ExcepcionAlControlProveedorController.cs" />
+    <Compile Include="Controllers\HuellaDigitalController.cs" />
     <Compile Include="Controllers\LoteInaseController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
@@ -673,6 +675,7 @@
     <Compile Include="Atributos\AiHandleErrorAttribute.cs" />
     <Compile Include="EXCEL\ExcelDetalleDeMovimientos.cs" />
     <Compile Include="EXCEL\ExcelEstablecimientos.cs" />
+    <Compile Include="EXCEL\ExcelHuellaDigital.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosPendientes.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosIngresos.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosEgresos.cs" />
@@ -890,13 +893,18 @@
     <Content Include="Scripts\asignarPuerto.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
     <Content Include="Scripts\barrera.js" />
+    <Content Include="Scripts\camion.bypass.js" />
     <Content Include="Scripts\cargaCorredores.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\camionDemorado.js" />
     <Content Include="Scripts\caladoRechazar.js" />
     <Content Include="Scripts\caladoEnPlanta.js" />
+    <Content Include="Scripts\cartaporte.bypass.cargar.js" />
+    <Content Include="Scripts\cartaporte.bypass.index.js" />
     <Content Include="Scripts\cartaporte.redespacho.mercaderia.index.js" />
     <Content Include="Scripts\excepcionAlControlProveedor.js" />
+    <Content Include="Scripts\huellaDigital.js" />
+    <Content Include="Scripts\listarHuellaDigital.js" />
     <Content Include="Scripts\notificacionAplicacion.js" />
     <Content Include="Scripts\devolucionDeReciboMunicipal.js" />
     <Content Include="Scripts\documentoExterno.js" />
@@ -2479,6 +2487,15 @@
     <Content Include="Views\Comercial\Modificar.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Reportes\TemplateVisec.cshtml" />
+    <Content Include="Views\HuellaDigital\_CrearModificar.cshtml" />
+    <Content Include="Views\HuellaDigital\Crear.cshtml" />
+    <Content Include="Views\HuellaDigital\Index.cshtml" />
+    <Content Include="Views\HuellaDigital\Listar.cshtml" />
+    <Content Include="Views\HuellaDigital\Modificar.cshtml" />
+    <Content Include="Views\CargarCartaPorteByPass\_Orden.cshtml" />
+    <Content Include="Views\CargarCartaPorteByPass\Camion.cshtml" />
+    <Content Include="Views\CargarCartaPorteByPass\Index.cshtml" />
+    <Content Include="Views\CargarCartaPorteByPass\Vagon.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

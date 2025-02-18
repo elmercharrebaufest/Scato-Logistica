@@ -1,0 +1,142 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CartaPorteDto
+@{
+    Layout = null;
+    var esIngreso = (bool)(ViewBag.EsIngreso ?? false);
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/camion.bypass.js")"></script>
+
+<style>
+    .field-validation-error {
+        color: #b94a48;
+        font-size: 10px;
+    }
+</style>
+@Html.HiddenFor(model => model.VehiculoJson, new {data_bind="value: ko.toJSON(camion)"})
+
+<div data-bind="foreach: camion">
+    <div id="DvPeso">
+        <fieldset class="grupo-carta-porte">@Textos.CartaPorte_PesoOrigen
+            <div class="row row-carta-porte">
+                <div class="span4 control-group control-group-no-bottom">
+                    <label class="control-label xsmall">@Textos.CartaPorte_PesoBrutoOrigen</label>
+                    <div class="controls-xsmall">
+                        <input type="text" class="control input-xsmall pesoBrutoRequerido pesoBrutoNumerico pesoNetoPositivo pesoNetoMaximoEjecutar pesoNetoMinimoEjecutar pesoBrutoMaximoEjecutar pesoBrutoMaximo" maxlength = 5 data-bind="value: PesoBrutoOrigen, event: { change: $root.actualizarPesoNeto.bind($root) }" 
+                               data-error-requerido ="@string.Format(Textos.Error_Requerido, new object[] { Textos.CartaPorte_PesoBrutoOrigen })"
+                               data-error-numerico="@string.Format(Textos.Error_SoloNumerico, new object[] { Textos.CartaPorte_PesoBrutoOrigen })" 
+                               data-error-pesobrutomaximo="@string.Format(Textos.Error_BrutoMaximo, new object[] { Textos.CartaPorte_PesoBrutoOrigen })"
+                               id="PesoBrutoOrigen" name="PesoBrutoOrigen"/>
+                        @Html.ValidationMessage("PesoBrutoOrigen")
+                    </div>
+                </div>
+                <div class="span4 control-group control-group-no-bottom">
+                    <label class="control-label xsmall">@Textos.CartaPorte_PesoTaraOrigen</label>
+                    <div class="controls-xsmall">
+                        <input type="text" class="control input-xsmall pesoTaraRequerido pesoTaraNumerico pesoNetoPositivo pesoNetoMaximoEjecutar pesoNetoMinimoEjecutar" maxlength = 5 data-bind="value: PesoTaraOrigen, event: { change: $root.actualizarPesoNeto.bind($root) }" 
+                            data-error-requerido ="@string.Format(Textos.Error_Requerido, new object[] { Textos.CartaPorte_PesoTaraOrigen })"
+                            data-error-numerico="@string.Format(Textos.Error_SoloNumerico, new object[] { Textos.CartaPorte_PesoTaraOrigen })" 
+                               id="PesoTaraOrigen" name="PesoTaraOrigen" />
+                        @Html.ValidationMessage("PesoTaraOrigen")
+                    </div>
+                </div>
+                <div class="span4 control-group control-group-no-bottom">
+                    <label class="control-label xsmall">@Textos.CartaPorte_PesoNetoOrigen</label>
+                    <div class="controls-xsmall">
+                        <input type="text" class="control input-xsmall pesoNetoMaximo pesoNetoMinimo" data-bind="value: PesoNetoOrigen" disabled
+                               data-error-positivo="@string.Format(Textos.Error_SoloPositivo, new object[] { Textos.CartaPorte_PesoNetoOrigen })"
+                               data-error-pesonetomaximo="@string.Format(Textos.Error_NetoMaximo, new object[] { Textos.CartaPorte_PesoNetoOrigen })"
+                               data-error-pesonetominimo="@string.Format(Textos.Error_NetoMinimo, new object[] { Textos.CartaPorte_PesoNetoOrigen })"
+                               id="PesoNetoOrigen" name="PesoNetoOrigen" />
+                        @Html.ValidationMessage("PesoNetoOrigen")
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div id="DvDatosTrans">
+        <fieldset class="grupo-carta-porte">
+            @Textos.CartaPorte_DatosTransporte
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.OrigenVehiculo, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.EnumDropDownListFor(model => model.OrigenVehiculo, new { @class = "control input-medium", autocomplete = "off", tabindex = "-1" })
+                        @Html.ValidationMessageFor(model => model.OrigenVehiculo)
+                    </div>
+                </div>
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom">
+                        <label class="control-label small">@Textos.CartaPorte_PatenteCamion</label>
+                        <div class="controls-small">
+                            <input type="text" class="control input-small patente-internacional PatenteRequerido uppercase" maxlength=7 data-bind="value: Patente" id="Patente" name="Patente"
+                                   data-error-requerido="@string.Format(Textos.Error_Requerido, new object[] { Textos.Camion_Patente })"
+                                   data-error-duplicada="@Textos.Pantenteduplicada" />
+                            @Html.ValidationMessage("Patente", new { @style = "width:48.93%" })
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom">
+                        <label class="control-label small">@Textos.CartaPorte_PatenteAcoplado</label>
+                        <div class="controls-small">
+                            <input type="text" class="control input-small patente-internacional uppercase" data-bind="value: PatenteAcoplado" id="PatenteAcoplado" name="PatenteAcoplado" />
+                            @Html.ValidationMessage("PatenteAcoplado", new { @style = "width:48.93%" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.KmRecorrer, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.TextBoxFor(model => model.KmRecorrer, new
+                       {
+                                @class = "control input-small KmRecorrerRequerido KmRecorrerNumerico",
+                                maxlength = 4,
+                                autocomplete = "off",
+                                data_error_requerido = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_KmRecorrer }),
+                                data_error_numerico = string.Format(Textos.Error_SoloNumerico, new object[] { Textos.CartaPorte_KmRecorrer })
+                       })
+                            @Html.ValidationMessageFor(model => model.KmRecorrer, null, new { @style = "width:48.93%" })
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom">
+                        <label class="control-label small">@Textos.CartaPorte_PatenteAcoplado2</label>
+                        <div class="controls-small">
+                            <input type="text" class="control input-small patente-internacional uppercase" data-bind="value: PatenteAcoplado2" id="PatenteAcoplado2" name="PatenteAcoplado2" />
+                            @Html.ValidationMessage("PatenteAcoplado2", new { @style = "width:48.93%" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.TarifaReferencia, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.TextBoxFor(model => model.TarifaReferencia, new
+                            {
+                                @class = "control input-small TarifaReferenciaNumerico TarifaReferenciaRequerido campoNumerico",
+                                autocomplete = "off",
+                                data_error_requerido = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_TarifaReferencia }),
+                                data_error_numerico = string.Format(Textos.Error_SoloNumerico, new object[] { Textos.CartaPorte_TarifaReferencia })
+                            })
+                            @Html.ValidationMessageFor(model => model.TarifaReferencia, null, new { @style = "width:48.93%" })
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.TarifaTonelada, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.TextBoxFor(model => model.TarifaTonelada, new
+                            {
+                                tabindex = "-1",
+                                @class = "control input-small TarifaToneladaRequerido TarifaToneladaNumerico campoNumerico",
+                                autocomplete = "off",
+                           data_error_requerido = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_TarifaTonelada }),
+                           data_error_numerico = string.Format(Textos.Error_SoloNumerico, new object[] { Textos.CartaPorte_TarifaTonelada }),
+                       })
+                            @Html.ValidationMessageFor(model => model.TarifaTonelada, null, new { @style = "width:48.93%" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+    </div>
+</div>

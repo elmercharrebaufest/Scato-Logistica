@@ -398,6 +398,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.Abm_Distancia_Clientes, "Index", "KmPorProveedor")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.AbmHuellaDigital))
+                                {
+                                    <li>@Html.ActionLink(Textos.Abm_HuellaDigital, "Index", "HuellaDigital")</li>
+                                }
                                 @if (PermisosHelper.Is(PermisosScato.AbmFirma))
                                 {
                                     <li>@Html.ActionLink(Textos.Empresa, "Index", "Firma")</li>
@@ -413,7 +417,7 @@
                                 @if (PermisosHelper.Is(PermisosScato.AbmComercial))
                                 {
                                     <li>@Html.ActionLink(Textos.Comercial_Titulo, "Index", "Comercial")</li>
-                                }                                
+                                }
                                 @if (PermisosHelper.Is(PermisosScato.AbmMotivo))
                                 {
                                     <li>@Html.ActionLink(Textos.Motivo_Titulo, "Index", "Motivo")</li>

@@ -26,7 +26,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var repositorio = context.GetExtension<IServicioRepositorio>();
-                
+                var ordenSalida = Orden.Get<CartaPorteDto>(context);
                 var centroId = CentroId.Get<int>(context);
                 var vehiculo = Vehiculo.Get<VehiculoDto>(context);
                 var workflowId = WorkflowId.Get<Guid>(context);

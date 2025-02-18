@@ -347,5 +347,20 @@ namespace Molinos.Scato.Web.Helpers
                                    
         }
 
+        public static WebGridColumn ColumnaEliminarModificarHuellaDigital(this WebGrid grid, HtmlHelper html, string controller, string style = "")
+        {
+            return grid.Column("EliminarModificar", "", f =>
+
+                    html.Raw((f.Tipo == (int)TipoHuellaDigital.Recorrido) ?
+                    "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.No_EditableLargo + "\" >" + Textos.No_Editable + "</span>":
+                    "<span>" +
+                    html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString() +
+                    
+                    "</span>"
+                    )
+                    , "editar-borrar-columna", false);
+
+        }
+
     }
 }

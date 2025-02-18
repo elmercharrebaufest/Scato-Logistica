@@ -17,6 +17,7 @@ using Molinos.Scato.Servicios.Helpers;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
+using Ninject.Infrastructure.Language;
 using System;
 using System.Collections.Generic;
 using System.Data.Objects;
@@ -3147,7 +3148,7 @@ namespace Molinos.Scato.Servicios.Impl
                         repositorio.ObtenerMayor<Recorrido, DateTime, CartaPorte>(
                             x =>
                             x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && x.NumeroDocumentoIngreso == numero &&
-                            x.Centro.Id != centroId && x.Workflow.TipoDeWorkflow != workflow.TipoDeWorkflow && !x.Rechazado &&
+                            x.Centro.Id != centroId && !x.Rechazado &&
                             x.Terminado, x => x.FechaInicio, x => x.Vehiculo.CartaPorte);
 
                     if (cp == null)
@@ -7742,6 +7743,17 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.Existe<MaterialPorWorkflow>(x => x.Material.Id == dato.Material && x.Workflow.Id == dato.Workflow && x.EnviaASapAlmacenPredeterminado);
         }
 
+        /// <summary>
+        /// Valida que sea un cupo genérico (MOL1111/11111111) o que exista en la base de datos en CargaDeCupo para un centro y código específico.
+        /// Si no existe cupo, entonces no es válido y se indicará que el cupo no existe en su mensaje de error.
+        /// Si existe cupo y tiene un recorrido asociado que no haya sido rechazado, entonces se lo considera como ya asignado 
+        /// y se indicará esto en su mensaje de error.
+        /// Si existe y tiene un recorrido asociado rechazado, se devolverá una instancia de CargaDeCupoDto, para ser reingresado. 
+        /// </summary>
+        /// <param name="cupo"></param>
+        /// <param name="centroId"></param>
+        /// <param name="numeroCartaPorte">Sin uso</param>
+        /// <returns>Un objeto ValidarCupoDto donde se indicará si el cupo es o no válido, con su mensaje de error y si ya fue asignado o debe ser reingresado.</returns>
         public ValidarCupoDto ValidarCupo(string cupo, int centroId, string numeroCartaPorte)
         {
             if (cupo == configuracion.AppSettings["CupoDefault"])
@@ -11227,5 +11239,137 @@ namespace Molinos.Scato.Servicios.Impl
 
             return EsCuitNesle;
         }
+
+        public ListaPaginada<HuellaDigitalOrdenDto> ListarHuellaDigital(string filtro, Paginacion paginacion, bool esHistorico)
+        {
+
+            filtro = filtro?.Trim();
+
+            var query = GnerarQueryHuellaDigital(filtro, esHistorico).ToList();
+
+            // Total de elementos antes de paginar
+            var itemsTotales = query.Count();
+
+            // Aplicar paginación
+            var huellasPaginadas = query
+                .Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina)
+                .Take(paginacion.ItemsPorPagina)
+                .ToList();
+
+            return new ListaPaginada<HuellaDigitalOrdenDto>(
+                huellasPaginadas,
+                paginacion.Pagina,
+                paginacion.ItemsPorPagina,
+                itemsTotales
+            );
+        }
+
+        public ListaPaginada<HuellaDigitalDto> ListarHuellaDigitalHistorico(string filtro, Paginacion paginacion)
+        {
+            Expression<Func<HuellaDigital, bool>> expresionFiltro = null;
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                filtro = filtro.Trim();
+                expresionFiltro =
+                    x => x.Patente.Contains(filtro)
+                    || x.Usuario.Contains(filtro);
+            }
+            var huellaDigitales = Listar<HuellaDigital, HuellaDigitalDto>(expresionFiltro, paginacion);
+
+            return huellaDigitales;
+        }
+
+        public HuellaDigitalDto ObtenerHuellaDigital(int id)
+        {
+            return Obtener<HuellaDigital, HuellaDigitalDto>(id);
+        }
+
+        public HuellaDigitalDto ObtenerHuellaDigitalPorAtributo(string patente, int transportista, string acoplado, bool estado = true)
+        {
+            try
+            {
+                var fechaLimite = DateTime.Now.AddMonths(-12);
+                var huellaDigital = ObtenerUltimo<HuellaDigital, HuellaDigitalDto>(c => c.Patente.Equals(patente) && c.FechaHoraPesaje >= fechaLimite && c.Estado == estado && c.Acoplado.Equals(acoplado) && c.IdTransportista == transportista, c => c.Id);
+
+
+                return huellaDigital;
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Error al obtener la huella digital con los filtros proporcionados.", ex);
+            }
+        }
+
+        public HuellaDigitalDto ObtenerHuellaDigitalPorRecorrido(string patente, string transportista, bool estado = true)
+        {
+            try
+            {
+                var fechaLimite = DateTime.Now.AddMonths(-12);
+                var huellaDigital = ObtenerUltimo<Recorrido, HuellaDigitalDto>(c => c.Patente.Equals(patente) && c.Transportista.Cuit.Equals(transportista) && c.PesoTaraFecha >= fechaLimite, c => c.Id);
+
+                return huellaDigital;
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Error al obtener la huella digital con los filtros proporcionados.", ex);
+            }
+        }
+
+        public IList<HuellaDigitalOrdenDto> ListarHuellaDigitalSinPaginacion(string filtro, bool esHistorico)
+        {
+
+            filtro = filtro?.Trim();
+
+            var huellas = GnerarQueryHuellaDigital(filtro, esHistorico).ToList();
+
+            return huellas;
+        }
+
+        public HuellaDigitalOrdenDto ObtenerHuellaDigitalPorFiltro(string patente, string acoplado, int idTransportista)
+        {
+            var query = repositorio
+                .ListarConsulta(new ListarHuellaDigital())
+                .Where(x => x.Patente == patente && x.IdTransportista == idTransportista && x.Estado == 1);
+
+            if (!string.IsNullOrEmpty(acoplado))
+            {
+                query = query.Where(x => x.Acoplado == acoplado);
+            }
+            else
+            {
+                query = query.Where(x => x.Acoplado is null);
+            }
+
+            query = query.Where(x => x.Orden == 1);
+
+            var huella = query.FirstOrDefault();
+
+            return huella;
+        }
+
+        private IEnumerable<HuellaDigitalOrdenDto> GnerarQueryHuellaDigital(string filtro, bool esHistorico)
+        {
+            var query = repositorio
+                .ListarConsulta(new ListarHuellaDigital())
+                .Where(x => string.IsNullOrEmpty(filtro) ||
+                            (x.Patente != null && x.Patente.Contains(filtro)) ||
+                            (x.Acoplado != null && x.Acoplado.Contains(filtro)) ||
+                            (x.Transportista != null && x.Transportista.Contains(filtro)))
+                .Where(x => x.Orden == 1);
+            if (!esHistorico)
+            {
+                query = query.Where(x => x.Tipo == (int)TipoHuellaDigital.HuellaManual);
+            }
+            else
+            {
+                query = query.Where(x => x.Tipo == (int)TipoHuellaDigital.HuellaManual || x.Tipo == (int)TipoHuellaDigital.Recorrido);
+            }
+
+            return query;
+        }
     }
+
+
 }

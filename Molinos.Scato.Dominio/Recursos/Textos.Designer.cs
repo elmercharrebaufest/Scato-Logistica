@@ -70,6 +70,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Huella Digital.
+        /// </summary>
+        public static string Abm_HuellaDigital {
+            get {
+                return ResourceManager.GetString("Abm_HuellaDigital", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ABM Actividad con Inicio Automático.
         /// </summary>
         public static string AbmActividadConCargaAutomatica {
@@ -435,6 +444,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AbmHidraulica {
             get {
                 return ResourceManager.GetString("AbmHidraulica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ABM Huella Digital.
+        /// </summary>
+        public static string AbmHuellaDigital {
+            get {
+                return ResourceManager.GetString("AbmHuellaDigital", resourceCulture);
             }
         }
         
@@ -8017,6 +8035,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cupo Salida.
+        /// </summary>
+        public static string CartaPorte_CupoSalida {
+            get {
+                return ResourceManager.GetString("CartaPorte_CupoSalida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Datos del Chofer.
         /// </summary>
         public static string CartaPorte_DatosChofer {
@@ -14285,11 +14312,29 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Huella Digital no encontrada.
+        /// </summary>
+        public static string Error_HuellaDigitalNoEncontrada {
+            get {
+                return ResourceManager.GetString("Error_HuellaDigitalNoEncontrada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El humedímetro no respondió dentro del tiempo esperado, de ser necesario, por favor reintente la medición.
         /// </summary>
         public static string Error_HumedimetroNoResponde {
             get {
                 return ResourceManager.GetString("Error_HumedimetroNoResponde", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IdInstancia Invalido.
+        /// </summary>
+        public static string Error_IdInstanciaInvalido {
+            get {
+                return ResourceManager.GetString("Error_IdInstanciaInvalido", resourceCulture);
             }
         }
         
@@ -14488,6 +14533,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Error_Menor {
             get {
                 return ResourceManager.GetString("Error_Menor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error modificar destino recorrido.
+        /// </summary>
+        public static string Error_ModificarDestinoRecorrido {
+            get {
+                return ResourceManager.GetString("Error_ModificarDestinoRecorrido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error modificar peso tara.
+        /// </summary>
+        public static string Error_ModificarPesoTara {
+            get {
+                return ResourceManager.GetString("Error_ModificarPesoTara", resourceCulture);
             }
         }
         
@@ -14753,6 +14816,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recorrido no encontrado.
+        /// </summary>
+        public static string Error_RecorridoNoEncontrado {
+            get {
+                return ResourceManager.GetString("Error_RecorridoNoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El último pago realizado para la tarjeta {0} no se ejecutó o ya fue devuelto.
         /// </summary>
         public static string Error_Reembolso {
@@ -15001,6 +15073,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Error_TipoEnsayo {
             get {
                 return ResourceManager.GetString("Error_TipoEnsayo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuario Invalido.
+        /// </summary>
+        public static string Error_UsuarioInvalido {
+            get {
+                return ResourceManager.GetString("Error_UsuarioInvalido", resourceCulture);
             }
         }
         
@@ -17638,6 +17719,141 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string HoraDelDia {
             get {
                 return ResourceManager.GetString("HoraDelDia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acoplado.
+        /// </summary>
+        public static string HuellaDigital_Acoplado {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Acoplado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balanza.
+        /// </summary>
+        public static string HuellaDigital_Balanza {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Balanza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chofer.
+        /// </summary>
+        public static string HuellaDigital_Chofer {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Chofer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nuevo registro.
+        /// </summary>
+        public static string HuellaDigital_Crear {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Crear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estado.
+        /// </summary>
+        public static string HuellaDigital_Estado {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Estado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha y Hora de Pesaje.
+        /// </summary>
+        public static string HuellaDigital_FechaHoraPesaje {
+            get {
+                return ResourceManager.GetString("HuellaDigital_FechaHoraPesaje", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lugar de Pesaje.
+        /// </summary>
+        public static string HuellaDigital_LugarPesaje {
+            get {
+                return ResourceManager.GetString("HuellaDigital_LugarPesaje", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Observaciones.
+        /// </summary>
+        public static string HuellaDigital_Observaciones {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Observaciones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patente.
+        /// </summary>
+        public static string HuellaDigital_Patente {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Patente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peso Tara.
+        /// </summary>
+        public static string HuellaDigital_PesoTara {
+            get {
+                return ResourceManager.GetString("HuellaDigital_PesoTara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tipo.
+        /// </summary>
+        public static string HuellaDigital_Tipo {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Tipo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Huella Digital.
+        /// </summary>
+        public static string HuellaDigital_Titulo {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transportista.
+        /// </summary>
+        public static string HuellaDigital_Transportista {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Transportista", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuario.
+        /// </summary>
+        public static string HuellaDigital_Usuario {
+            get {
+                return ResourceManager.GetString("HuellaDigital_Usuario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Huella Digital.
+        /// </summary>
+        public static string HuellaDigitalNuevo {
+            get {
+                return ResourceManager.GetString("HuellaDigitalNuevo", resourceCulture);
             }
         }
         
@@ -22888,6 +23104,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string NuevoClienteProvisorio {
             get {
                 return ResourceManager.GetString("NuevoClienteProvisorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nuevo registro.
+        /// </summary>
+        public static string NuevoRegistro_HuellaDigital {
+            get {
+                return ResourceManager.GetString("NuevoRegistro_HuellaDigital", resourceCulture);
             }
         }
         

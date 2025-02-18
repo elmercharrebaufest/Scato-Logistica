@@ -1,0 +1,138 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CartaPorteDto
+@{
+    Layout = null;
+    var i = 0;
+    var esIngreso = (bool)(ViewBag.EsIngreso ?? false);
+    var tabIndexTarifaRef = esIngreso ? 0 : -1;
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/vagon.js")"></script>
+
+<style>
+    .field-validation-error {
+        color: #b94a48;
+        font-size: 10px;
+    }
+
+    .row-tren-ferroviario-hidden {
+        visibility: collapse;
+    }
+
+    .row-tren-ferroviario-visibility {
+        visibility: visible;
+    }
+</style>
+<div id="DvDatosVagon">
+    @Html.HiddenFor(model => model.VehiculoJson, new { data_bind = "value: ko.toJSON(vagones)" })
+    <fieldset class="grupo-carta-porte">
+        <div>
+            @Textos.CartaPorte_DatosVagones
+            <button id="agregarVagon" style="float: right" class="btn-small btn" data-bind="click: $root.addVagon">@Textos.CartaPorte_AgregarVagon</button>
+        </div>
+        <table class="table table-striped table-bordered table-condensed tabla-vagones">
+            <thead>
+                <tr>
+                    <th>@Textos.CartaPorte_PatenteGrilla</th>
+                    <th>@Textos.CartaPorte_PesoBrutoGrilla</th>
+                    <th>@Textos.CartaPorte_PesoTaraGrilla</th>
+                    <th>@Textos.CartaPorte_PesoNetoGrilla</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="patentesUnicas" data-bind="foreach: vagones">
+                <tr>
+                    <td>
+                        <input type="text" class="control input-small patente-internacional PatenteRequerido PatenteUnica uppercase" maxlength=7 data-bind="value: Patente, attr: { 'id': Indice1, 'name': Indice1 }" />
+                        <span class="field-validation-valid" data-bind="attr: { 'data-valmsg-for': Indice1 }" data-valmsg-replace="true"></span>
+                    </td>
+                    <td>
+                        <input type="text" class="control input-xsmall pesoBrutoRequerido pesoBrutoNumerico pesoBrutoPositivo pesoNetoMaximoBrutoEjecutarVagon pesoNetoMinimoBrutoEjecutarVagon" maxlength=5 data-bind="value: PesoBrutoOrigen, event: { change: $root.actualizarPesoNeto.bind($root) }, attr: { 'id': Indice2, 'name': Indice2 }" />
+                        <span class="field-validation-valid" data-bind="attr: { 'data-valmsg-for': Indice2 }" data-valmsg-replace="true"></span>
+                    </td>
+                    <td>
+                        <input type="text" class="control input-xsmall pesoTaraRequerido pesoTaraNumerico pesoTaraPositivo pesoNetoMaximoTaraEjecutarVagon pesoNetoMinimoBrutoEjecutarVagon" maxlength=5 data-bind="value: PesoTaraOrigen, event: { change: $root.actualizarPesoNeto.bind($root) }, attr: { 'id': Indice3, 'name': Indice3 }" />
+                        <span class="field-validation-valid" data-bind="attr: { 'data-valmsg-for': Indice3 }" data-valmsg-replace="true"></span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-xsmall pesoNetoMaximoVagon pesoNetoMinimoVagon" data-bind="value: PesoNetoOrigen, attr: { 'id': Indice4, 'name': Indice4 }" disabled />
+                        <span class="field-validation-valid" data-bind="attr: { 'data-valmsg-for': Indice4 }" data-valmsg-replace="true"></span>
+                    </td>
+                    <td>
+                        <a href="#" data-bind="click: $root.removeVagon.bind($root)" class="icon-trash"></a>
+                    </td>
+                </tr>
+                <tr class="row-tren-ferroviario-hidden">
+                    <td colspan="2">
+                        <div style="display: inline-flex;" >
+                            <label class="control-label small", style="font-weight: bold;">Nro CTG</label>
+                            <input type="text" class="control input-xsmall" style="width: 80px;" maxlength=12 data-bind="value: NumCTG, attr: { 'id': Indice5, 'name': Indice5 }" readonly  />
+                            <span class="field-validation-valid" data-bind="attr: { 'data-valmsg-for': Indice5 }" data-valmsg-replace="true"></span>
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <div style="display: inline-flex;">
+                            @Html.Label(@Textos.CartaPorte_Nro_CPE, new { @class = "control-label small", @style = "width: 50px !important; font-weight: bold;" })
+                            <input type="text" class="control input-xsmall" maxlength=5 data-bind="value: Sucural, attr: { 'id': Indice6, 'name': Indice6 }" readonly  />
+                            <span class="field-validation-valid" data-bind="attr: { 'data-valmsg-for': Indice6 }" data-valmsg-replace="true"></span>
+                            <a id="guion-concatenacion">&nbsp;-&nbsp;</a>
+                            <input type="text" class="control input-xsmall" maxlength=8 data-bind="value: NumOrden, attr: { 'id': Indice7, 'name': Indice7 }" readonly  />
+                            <span class="field-validation-valid" data-bind="attr: { 'data-valmsg-for': Indice7 }" data-valmsg-replace="true"></span>
+                        </div>
+                    </td>
+                    <td class="image-ctg">
+                        <a href="#" data-bind="click: $root.changeImagenCPE.bind($root)" class="icon-picture"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+<div id="DvDatosTrans">
+    <fieldset class="grupo-carta-porte">@Textos.CartaPorte_DatosTransporte
+        <div class="control-group control-group-no-bottom">
+            @Html.LabelFor(model => model.KmRecorrer, new { @class = "control-label small" })
+            <div class="controls-small">
+                @Html.TextBoxFor(model => model.KmRecorrer, new
+                    {
+                        @class = "control input-small KmRecorrerRequerido KmRecorrerNumerico", maxlength = 4,
+                        autocomplete = "off",
+                        data_error_requerido = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_KmRecorrer }),
+                        data_error_numerico = string.Format(Textos.Error_SoloNumerico, new object[] { Textos.CartaPorte_KmRecorrer })
+                    })
+                @Html.ValidationMessageFor(model => model.KmRecorrer,null,new {@style = "width:48.93%"})
+            </div>
+        </div>
+
+        <div class="row row-carta-porte">
+            <div class="span6 control-group control-group-no-bottom">
+                @Html.LabelFor(model => model.TarifaReferencia, new { @class = "control-label small" })
+                <div class="controls-small">
+                    @Html.TextBoxFor(model => model.TarifaReferencia, new
+                        {
+                            @class = "control input-small TarifaReferenciaNumerico campoNumerico",
+                            autocomplete = "off",
+                            data_error_requerido = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_TarifaReferencia }),
+                            data_error_numerico = string.Format(Textos.Error_SoloNumerico, new object[] { Textos.CartaPorte_TarifaReferencia })
+                            , @tabindex = tabIndexTarifaRef})
+                    @Html.ValidationMessageFor(model => model.TarifaReferencia,null,new {@style = "width:48.93%"})
+                </div>
+            </div>
+            <div class="span6 control-group control-group-no-bottom">
+                @Html.LabelFor(model => model.TarifaTonelada, new { @class = "control-label small" })
+                <div class="controls-small">
+                    @Html.TextBoxFor(model => model.TarifaTonelada, new
+                        {
+                            @class = "control input-small TarifaToneladaRequerido TarifaToneladaNumerico campoNumerico",
+                            autocomplete = "off",
+                            data_error_requerido = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_TarifaTonelada }),
+                            data_error_numerico = string.Format(Textos.Error_SoloNumerico, new object[] { Textos.CartaPorte_TarifaTonelada })
+                        })
+                    @Html.ValidationMessageFor(model => model.TarifaTonelada,null,new {@style = "width:48.93%"})
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

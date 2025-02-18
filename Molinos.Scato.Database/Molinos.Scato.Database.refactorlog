@@ -917,4 +917,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Id_operaciones" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="d3a05031-90e8-4012-989b-6dd19382060b" ChangeDateTime="11/14/2024 14:51:29">
+    <Property Name="ElementName" Value="[dbo].[HuellaDigital].[CuitChofer]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[HuellaDigital]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Chofer_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="91d44228-ab82-4c3f-bd6a-b26a92206f49" ChangeDateTime="11/14/2024 14:52:03">
+    <Property Name="ElementName" Value="[dbo].[HuellaDigital].[LugarPesaje]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[HuellaDigital]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Centro_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9a7fd62e-dd5f-484f-8f7f-b2883b7dcba4" ChangeDateTime="11/14/2024 14:58:53">
+    <Property Name="ElementName" Value="[dbo].[HuellaDigital].[Balanza]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[HuellaDigital]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Balanza_Id" />
+  </Operation>
 </Operations>

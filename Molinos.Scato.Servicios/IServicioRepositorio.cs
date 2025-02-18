@@ -1953,6 +1953,17 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         bool MaterialEnviaASapAlmacenPredeterminado(Guid guid);
 
+        /// <summary>
+        /// Valida que sea un cupo genérico (MOL1111/11111111) o que exista en la base de datos en CargaDeCupo para un centro y código específico.
+        /// Si no existe cupo, entonces no es válido y se indicará que el cupo no existe en su mensaje de error.
+        /// Si existe cupo y tiene un recorrido asociado que no haya sido rechazado, entonces se lo considera como ya asignado 
+        /// y se indicará esto en su mensaje de error.
+        /// Si existe y tiene un recorrido asociado rechazado, se devolverá una instancia de CargaDeCupoDto, para ser reingresado. 
+        /// </summary>
+        /// <param name="cupo"></param>
+        /// <param name="centroId"></param>
+        /// <param name="numeroCartaPorte">Sin uso</param>
+        /// <returns>Un objeto ValidarCupoDto donde se indicará si el cupo es o no válido, con su mensaje de error y si ya fue asignado o debe ser reingresado.</returns>
         [OperationContract]
         ValidarCupoDto ValidarCupo(string cupo, int centroId, string numeroCartaPorte);
 
@@ -3061,9 +3072,31 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         bool ValidarCuitNestleOrdenCargaFas(int idRecorrido);
+        
+        [OperationContract]
+		bool ValidarCuitNestle(int idRecorrido);
 
         [OperationContract]
-        bool ValidarCuitNestle(int idRecorrido);
+        ListaPaginada<HuellaDigitalOrdenDto> ListarHuellaDigital(string filtro, Paginacion paginacion, bool esHistorico);
+
+        [OperationContract]
+        HuellaDigitalDto ObtenerHuellaDigital(int id);
+
+        [OperationContract]
+        ListaPaginada<HuellaDigitalDto> ListarHuellaDigitalHistorico(string filtro, Paginacion paginacion);
+
+        [OperationContract]
+        HuellaDigitalDto ObtenerHuellaDigitalPorAtributo(string patente, int transportista, string acoplado, bool estado = true);
+
+        [OperationContract]
+        HuellaDigitalDto ObtenerHuellaDigitalPorRecorrido(string patente, string transportista, bool estado = true);
+
+        [OperationContract]
+        IList<HuellaDigitalOrdenDto> ListarHuellaDigitalSinPaginacion(string filtro, bool esHistorico);
+
+        [OperationContract]
+        HuellaDigitalOrdenDto ObtenerHuellaDigitalPorFiltro(string patente, string acoplado, int idTransportista);
+
     }
 
 }

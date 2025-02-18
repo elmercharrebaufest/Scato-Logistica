@@ -214,6 +214,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         AbmConfiguracionCalleHidraulica = 701,
         [Display(ResourceType = typeof(Textos), Name = "AbmExcepcionAlControlProveedor")]
         AbmExcepcionAlControlProveedor = 702,
+        [Display(ResourceType = typeof(Textos), Name = "AbmHuellaDigital")]
+        AbmHuellaDigital = 710,
 
         //Permisos Actividades
         [Display(ResourceType = typeof(Textos), Name = "ActAutorizarDescuentosEntregador")]
@@ -426,6 +428,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         AbmComercial = 705,
         [Display(ResourceType = typeof(Textos), Name = "EstadoVolcadoras")]
         EstadoVolcadoras = 706,
+        [Display(ResourceType = typeof(Textos), Name = "ActCargarCartaPorteByPass")]
+        ActividadCargarCartaPorteByPass = 709,
 
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]

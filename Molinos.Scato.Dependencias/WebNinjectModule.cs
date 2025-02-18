@@ -4,10 +4,12 @@ using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.ComplianceWebServiceV2;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
 using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
+using Ninject;
 using Ninject.Modules;
 
 namespace Molinos.Scato.Dependencias

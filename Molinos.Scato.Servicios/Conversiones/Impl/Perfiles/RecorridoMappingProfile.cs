@@ -52,6 +52,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(t => t.Entregador, f => f.MapFrom(r => r.Vehiculo.CartaPorte.Entregador.RazonSocial));
 
             Mapper.CreateMap<Recorrido, OtroRecorridoDelChoferDto>();
+
+           
+
         }
 
     }

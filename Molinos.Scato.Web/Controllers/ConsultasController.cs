@@ -576,5 +576,18 @@ namespace Molinos.Scato.Web.Controllers
             return Json(proveedores, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult BuscarChoferesAutoComplete(string term)
+        {
+            var choferes = servicio.BuscarChoferesGeneral(term);
+            return Json(choferes.Select(s => new { label = $"{s.Cuil} - {s.Nombre + " " + s.Apellido}", value = s.Id}), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult BuscarTransportistasAutoComplete(string term)
+        {
+            log.Info("Comienza la búsqueda de Transportistas");
+            var transporstistas = servicio.BuscarTransportistas(term);
+            log.Info("Finaliza la búsqueda de Transportistas");
+            return Json(transporstistas.Select(s => new { label = s.Cuit + " - " + s.RazonSocial, value = s.Id }), JsonRequestBehavior.AllowGet);
+        }
     }
 }

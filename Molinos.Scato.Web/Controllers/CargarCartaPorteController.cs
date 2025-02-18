@@ -51,6 +51,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.FotoMesaDigitalizacionSustentable = null;
             ViewBag.Usuario = datosUsuario.NombreUsuario;
             log.Debug("Cookie Usuario: {0}", new CookieUsuario());
+
             if (!servicio.WorkflowActivoConDefinicionActiva(workflow))
             {
                 TempData["Alerta"] = Textos.Error_WorkflowSinDefinicionActiva;
@@ -61,40 +62,44 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj, datosUsuario.CentroId);
 
-            if (String.IsNullOrEmpty(destinatarioCodigoSap) && workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
+            if (string.IsNullOrEmpty(destinatarioCodigoSap) && workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
             {
                 destinatarioCodigoSap = configuracion.ObtenerFirmaSinLogo().CodigoSAP;
             }
 
             var carta = servicio.ObtenerCartaPorteVacia(datosUsuario.CentroId, workflow, destinatarioCodigoSap, titularCodigoSap, centroDestino, rtteComercial);
-            //var cargaCupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
             carta.EsClienteDestinatario = false;
+
             if (cargaDeCupoId > 0)
             {
                 var carga = servicio.ObtenerCupoPorId(cargaDeCupoId);
-                carta.NroCartaPorte = carga.CPE ? carga.CTG : carga.NumeroCartaPorte;
-                carta.Cpe = carga.CPE;
-                ViewBag.NroCartaPorteGarita = carga.NumeroCartaPorte;
-                if (!string.IsNullOrEmpty(carga.FotoRutaDestino))
+                if (carga != null)
                 {
-                    var foto = servicio.ObtenerFotoPorPath(carga.FotoRutaDestino);
-                    if (foto.Fotos.Any())
+                    carta.NroCartaPorte = carga.CPE ? carga.CTG : carga.NumeroCartaPorte;
+                    carta.Cpe = carga.CPE;
+                    ViewBag.NroCartaPorteGarita = carga.NumeroCartaPorte;
+
+                    if (!string.IsNullOrEmpty(carga.FotoRutaDestino))
                     {
-                        var path = Path.GetDirectoryName(carga.FotoRutaDestino).Replace("temp", "");
-                        ViewBag.FotoMesaDigitalizacion1 = foto.Fotos.First().Foto;
-                        ViewBag.PuestoDeTrabajo = path;
+                        log.Debug("FotoRutaDestino {0}", carga.FotoRutaDestino);
+                        var foto = servicio.ObtenerFotoPorPath(carga.FotoRutaDestino);
+                        if (foto.Fotos.Any())
+                        {
+                            var path = Path.GetDirectoryName(carga.FotoRutaDestino).Replace("temp", "");
+                            ViewBag.FotoMesaDigitalizacion1 = foto.Fotos.First().Foto;
+                            ViewBag.PuestoDeTrabajo = path;
+                        }
                     }
-                }
-                if (!string.IsNullOrEmpty(carga.FotoRutaSustentable))
-                {
-                    var foto = servicio.ObtenerFotoPorPath(carga.FotoRutaSustentable);
-                    if (foto.Fotos.Any())
+
+                    if (!string.IsNullOrEmpty(carga.FotoRutaSustentable))
                     {
-                        ViewBag.FotoMesaDigitalizacionSustentable = foto.Fotos.First().Foto;
+                        var foto = servicio.ObtenerFotoPorPath(carga.FotoRutaSustentable);
+                        if (foto.Fotos.Any())
+                        {
+                            ViewBag.FotoMesaDigitalizacionSustentable = foto.Fotos.First().Foto;
+                        }
                     }
-                }
-                if (!(carga is null))
-                {
+
                     var vehiculos = new List<VehiculoDto> { new VehiculoDto { Patente = carga.Patente } };
                     carta.Patente = carga.Patente;
                     carta.MaterialId = carga.MaterialId.GetValueOrDefault();
@@ -103,6 +108,7 @@ namespace Molinos.Scato.Web.Controllers
                     carta.Cupo = carga.Cupo;
                 }
             }
+
             return View(carta);
         }
 

@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Servicios;
+﻿using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.ComplianceWebServiceV2;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
@@ -11,6 +12,9 @@ namespace Molinos.Scato.Dependencias
     {
         public override void Load()
         {
+            Bind(typeof(IServicioActividadFactory<>)).To(typeof(ServicioActividadFactory<>)).InSingletonScope();
+
+            this.BindChannelFactory<IServicioWorkflows>("ServicioWorkflows");
             this.BindChannelFactory<IFirmaProvider>("FirmaProvider");
             this.BindChannelFactory<IServicioRepositorio>("ServicioRepositorio");
             this.BindChannelFactory<IServicioComandos>("ServicioComandos");

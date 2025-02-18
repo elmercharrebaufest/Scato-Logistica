@@ -1554,6 +1554,36 @@ BEGIN
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('CargaDeCupo', 'MaterialExcepcionFastPass', '64194', 5, GETDATE(), 'SCATO')
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'CrearCartaPorteByPass' AND  Nombre = 'Localidad' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('CrearCartaPorteByPass', 'Localidad', '287', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'CrearCartaPorteByPass' AND  Nombre = 'Provincia' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('CrearCartaPorteByPass', 'Provincia', '5', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'CrearCartaPorteByPass' AND  Nombre = 'Planta' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('CrearCartaPorteByPass', 'Planta', '3191', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'CrearCartaPorteByPass' AND  Nombre = 'Centro' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('CrearCartaPorteByPass', 'Centro', '5', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'CrearCartaPorteByPass' AND  Nombre = 'TipoComercialEgreso' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('CrearCartaPorteByPass', 'TipoComercialEgreso', '700', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'CrearCartaPorteByPass' AND  Nombre = 'WorkFlowEgreso' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('CrearCartaPorteByPass', 'WorkFlowEgreso', 'AcopiosByPass-Egreso', NULL, GETDATE(), 'SCATO')
+END
+
 --Equivalencias de Característica de Calidad
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
 BEGIN 

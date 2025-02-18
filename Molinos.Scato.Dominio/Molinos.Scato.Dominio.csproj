@@ -106,8 +106,14 @@
     <Compile Include="Comandos\AnularCPEDGDummy.cs" />
     <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\ConfirmarCTGVencidas.cs" />
+    <Compile Include="Comandos\CrearCartaPorteByPass.cs" />
+    <Compile Include="Comandos\CrearCaracteristicasAnalizadas.cs" />
+    <Compile Include="Comandos\CrearHuellaDigital.cs" />
     <Compile Include="Comandos\EliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Comandos\ResultadoValidarCompliance.cs" />
+    <Compile Include="Comandos\VerificarEnCompliance.cs" />
     <Compile Include="Comandos\InformarViajeOrdenesResiduos.cs" />
+    <Compile Include="Comandos\EliminarKmPorProveedor.cs" />
     <Compile Include="Comandos\InformarViajeOrdenFason.cs" />
     <Compile Include="Comandos\LimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\ModificarAutomatismoGranos.cs" />
@@ -143,6 +149,7 @@
     <Compile Include="Comandos\ModificarEstadoLlamadoAutomatismoNoGrano.cs" />
     <Compile Include="Comandos\ModificarEstadoAutomatismoNoGrano.cs" />
     <Compile Include="Comandos\ModificarEstadoCallePlantaNoGrano.cs" />
+    <Compile Include="Comandos\ModificarHuellaDigital.cs" />
     <Compile Include="Comandos\ModificarPuntoDeCarga.cs" />
     <Compile Include="Comandos\ModificarCallePreHidraulica.cs" />
     <Compile Include="Comandos\ModificarCallePrebalanza.cs" />
@@ -416,7 +423,7 @@
     <Compile Include="Comandos\ModificarUsuarioMatricula.cs" />
     <Compile Include="Comandos\ModificarUsuarioUltimoLogin.cs" />
     <Compile Include="Comandos\ModificarKmPorProveedor.cs" />
-    <Compile Include="Comandos\EliminarKmPorProveedor.cs" />
+    <Compile Include="Comandos\EliminarHuellaDigital.cs" />
     <Compile Include="Comandos\CrearKmPorProveedor.cs" />
     <Compile Include="Comandos\EliminarExcepcionAlDescuento.cs" />
     <Compile Include="Comandos\ModificarExcepcionAlDescuento.cs" />
@@ -782,6 +789,7 @@
     <Compile Include="Dto\AsignacionAutomatismoGranoEnRecorridoDto.cs" />
     <Compile Include="Dto\AutomatismoNoGranoDto.cs" />
     <Compile Include="Dto\Base\AuditoriaBaseDto.cs" />
+    <Compile Include="Dto\AdicionalesCartaPorteByPassDto.cs" />
     <Compile Include="Dto\EstablecimientoProveedorDto.cs" />
     <Compile Include="Dto\ComercialDto.cs" />
     <Compile Include="Dto\CallePreBalanzaPlayaInternaDto.cs" />
@@ -790,6 +798,7 @@
     <Compile Include="Dto\DerivadoGranario\RequestAltaCTGDGDto.cs" />
     <Compile Include="Dto\DomicilioDto.cs" />
     <Compile Include="Dto\HistorialMensajeCartelLedDto.cs" />
+    <Compile Include="Dto\HuellaDigitalOrdenDto.cs" />
     <Compile Include="Dto\InfoCalleDto.cs" />
     <Compile Include="Dto\IngresosEgresosResiduosDto.cs" />
     <Compile Include="Dto\IngresosEgresosFasonesDto.cs" />
@@ -803,6 +812,7 @@
     <Compile Include="Dto\PuntoDeCargaDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaComplementarioDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaDto.cs" />
+    <Compile Include="Dto\HuellaDigitalDto.cs" />
     <Compile Include="Dto\RespuestaEstandar\MensajeEstandarAutomatismoDto.cs" />
     <Compile Include="Dto\TipoCallePlantaDto.cs" />
     <Compile Include="Dto\ConfigSensoresDto.cs" />
@@ -1146,6 +1156,7 @@
     <Compile Include="Entidades\MuestraDeInase.cs" />
     <Compile Include="Entidades\PuntoDeCarga.cs" />
     <Compile Include="Entidades\AsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Entidades\HuellaDigital.cs" />
     <Compile Include="Entidades\RegistroInactividad.cs" />
     <Compile Include="Entidades\MotivoInactividad.cs" />
     <Compile Include="Entidades\MotivosDeCorte.cs" />
@@ -1261,6 +1272,7 @@
     <Compile Include="Enums\RecursoWebAPI.cs" />
     <Compile Include="Enums\LlamadoAutomatico.cs" />
     <Compile Include="Enums\TipoOrdenCargaNoGranos.cs" />
+    <Compile Include="Enums\TipoHuellaDigital.cs" />
     <Compile Include="Enums\TipoPerfil.cs" />
     <Compile Include="Enums\EstadoHidraulica.cs" />
     <Compile Include="Enums\EstadosCPEFromAFIP.cs" />

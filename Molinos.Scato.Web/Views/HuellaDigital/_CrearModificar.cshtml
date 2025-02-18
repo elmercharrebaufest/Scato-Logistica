@@ -1,0 +1,231 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using System.Globalization
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.HuellaDigitalDto
+
+@{
+    // Cambia la cultura de la vista
+    var cultura = new CultureInfo("es-ES");
+    System.Threading.Thread.CurrentThread.CurrentCulture = cultura;
+    System.Threading.Thread.CurrentThread.CurrentUICulture = cultura;
+}
+
+
+<div id="links"
+     data-url-buscar-transportistas="@Url.Action("BuscarTransportistasAutoComplete", "Consultas")"
+     data-url-buscar-chofer-unico="@Url.Action("BuscarChoferesAutoComplete", "Consultas")"
+     data-url-buscar-balanza="@Url.Action("ObtenerBalanzaPorCentro", "HuellaDigital")">
+</div>
+
+@Html.ValidationSummary(true)
+@Html.ValidationMessage("")
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
+    <div class="controls">
+        @if (Model.EsEdicion)
+        {
+            @Html.TextBoxFor(model => model.Patente, new
+            {
+                @class = "control input-large ",
+                maxlength = "7",
+                @readonly = "readonly",
+             style = "text-transform: uppercase;",
+             oninput = "this.value = this.value.toUpperCase()"
+       })
+
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.Patente, new
+            {
+                @class = "control input-large ",
+                maxlength = "7",
+             style = "text-transform: uppercase;",
+             oninput = "this.value = this.value.toUpperCase()"
+       })
+        }
+
+        @Html.ValidationMessageFor(model => model.Patente)
+
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Acoplado, new { @class = "control-label" })
+    <div class="controls">
+        @if (Model.EsEdicion)
+        {
+            @Html.TextBoxFor(model => model.Acoplado, new
+            {
+                @class = "control input-large ",
+                maxlength = "7",
+                @readonly = "readonly",
+            style = "text-transform: uppercase;",
+            oninput = "this.value = this.value.toUpperCase()"
+       })
+
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.Acoplado, new
+            {
+                @class = "control input-large ",
+                maxlength = "7",
+            style = "text-transform: uppercase;",
+            oninput = "this.value = this.value.toUpperCase()"
+       })
+        }
+
+        @Html.ValidationMessageFor(model => model.Acoplado)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Chofer, "Chofer", new { @class = "control-label" })
+    <div class="controls">
+        @if (Model.EsEdicion)
+        {
+            @Html.TextBoxFor(model => model.Chofer, new
+            {
+                @class = "control input-large ",
+                @readonly = "readonly",
+             style = "text-transform: uppercase;",
+             oninput = "this.value = this.value.toUpperCase()"
+       })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.Chofer, new
+            {
+                @class = "control input-large ",
+            style = "text-transform: uppercase;",
+            oninput = "this.value = this.value.toUpperCase()"
+       })
+        }
+
+        @Html.ValidationMessageFor(model => model.Chofer)
+        @Html.HiddenFor(model => model.IdChofer)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Transportista, "Transportista", new { @class = "control-label" })
+    <div class="controls">
+        @if (Model.EsEdicion)
+        {
+            @Html.TextBoxFor(model => model.Transportista, new
+            {
+                @class = "control input-large ",
+                @readonly = "readonly",
+            style = "text-transform: uppercase;",
+            oninput = "this.value = this.value.toUpperCase()"
+       })
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.Transportista, new
+            {
+                @class = "control input-large ",
+            style = "text-transform: uppercase;",
+            oninput = "this.value = this.value.toUpperCase()"
+       })
+        }
+
+        @Html.ValidationMessageFor(model => model.Transportista)
+        @Html.HiddenFor(model => model.IdTransportista)
+
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.PesoTara, "Peso Tara", new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBox("PesoTara", Model.PesoTara == 0 ? "" : Model.PesoTara.ToString(), new { id = "PesoTara", @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.PesoTara)
+
+    </div>
+</div>
+
+
+
+<div class="control-group">
+    @Html.LabelFor(model => model.IdCentro, "Lugar de pesaje", new { @class = "control-label" })
+    <div class="controls">
+        @if (Model.EsEdicion)
+        {
+            @Html.DropDownListFor(model => model.IdCentro, (IEnumerable<SelectListItem>)ViewBag.Centros, Textos.Default_Centro, new { id = "centrosDropDown", @class = "control input-large ", @readonly = "readonly" })
+        }
+        else
+        {
+            @Html.DropDownListFor(model => model.IdCentro, (IEnumerable<SelectListItem>)ViewBag.Centros, Textos.Default_Centro, new { id = "centrosDropDown", @class = "control input-large " })
+        }
+
+        @Html.ValidationMessageFor(model => model.IdCentro)
+        @Html.HiddenFor(model => model.IdCentro)
+
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.IdBalanza, "Balanza", new { @class = "control-label" })
+    <div class="controls">
+        @if (Model.EsEdicion)
+        {
+            @Html.DropDownListFor(model => model.IdBalanza, (IEnumerable<SelectListItem>)ViewBag.Balanzas, Textos.Default_BalanzaTara, new { id = "balanzaDropDown", @class = "control input-large ", @readonly = "readonly" })
+
+        }
+        else
+        {
+            @Html.DropDownListFor(model => model.IdBalanza, (IEnumerable<SelectListItem>)ViewBag.Balanzas, Textos.Default_BalanzaTara, new { id = " balanzaDropDown", @class = "control input-large " })
+        }
+
+        @Html.ValidationMessageFor(model => model.IdBalanza, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IdBalanza)
+
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.FechaHoraPesaje, "Fecha y Hora de Pesaje", new { @class = "control-label" })
+    <div class="controls">
+        @if (Model.EsEdicion)
+        {
+            @Html.TextBoxFor(model => model.FechaHoraPesaje, new { @type = "datetime-local", @Value = Model.FechaHoraPesaje.ToString(), @class = "control input-large", @readonly = "readonly" })
+
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.FechaHoraPesaje, new { @type = "datetime-local", @Value = Model.FechaHoraPesaje.ToString(), @class = "control input-large" })
+        }
+
+        @Html.ValidationMessageFor(model => model.FechaHoraPesaje)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Observaciones, new { @class = "control-label" })
+    <div class="controls">
+        @if (Model.EsEdicion)
+        {
+            @Html.TextAreaFor(model => model.Observaciones, new { @class = "control input-large ", @readonly = "readonly" })
+
+        }
+        else
+        {
+            @Html.TextAreaFor(model => model.Observaciones, new { @class = "control input-large " })
+        }
+
+        @Html.ValidationMessageFor(model => model.Observaciones)
+
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Estado, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.Estado, new { @class = "control input-large " })
+        @Html.ValidationMessageFor(model => model.Estado)
+    </div>
+</div>
+
+
+<div id="autocompleteChofer"></div>
+<div id="autocompleteTran"></div>

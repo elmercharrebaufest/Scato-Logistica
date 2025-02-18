@@ -15,6 +15,7 @@ using Ninject.Modules;
 using System.Data.Entity;
 using System.Net.Http;
 using System.ServiceModel;
+using Molinos.Scato.Servicios.ComplianceWebServiceV2;
 using Molinos.Scato.Servicios.Estrategias;
 using Molinos.Scato.Dominio.Validations;
 using Molinos.Scato.Dominio.Validations.Interfaces;
@@ -61,6 +62,8 @@ namespace Molinos.Scato.Dependencias
             this.BindChannelFactory<IServicioOrquestador>("Orquestador");
             this.BindChannelFactory<IServicioImpresion>("ServicioImpresion");
             this.BindChannelFactory<CpePortType>("CpeEndPoint");
+            this.BindChannelFactory<DatosPort>("DatosPortV2");
+
 
             Bind<IBalanzadaContext>().To<BalanzadaContext>().InTransientScope();
             Bind<IBalanzadaStrategy>().To<BalanzadaStrategy>().InTransientScope();

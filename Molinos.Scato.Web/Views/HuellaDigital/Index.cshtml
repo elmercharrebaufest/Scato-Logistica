@@ -1,0 +1,112 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.HuellaDigital_Titulo;
+}
+
+<script>
+    function mostrarOverlay() {
+        document.getElementById('overlay').style.display = 'flex';
+    }
+
+    function ocultarOverlay() {
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const enlace = document.getElementById("dynamicLink");
+        const historicoChk = document.getElementById("historico");
+        const filtroInput = document.querySelector('input[name="filtro"]');
+        const esHistoricoInput = document.getElementById("esHistorico");
+
+        // Restore checkbox state from localStorage
+        if (localStorage.getItem("historicoChecked") === "true") {
+            historicoChk.checked = true;
+            esHistoricoInput.value = true;
+        } else {
+            historicoChk.checked = false;
+            esHistoricoInput.value = false;
+        }
+
+        if (historicoChk && esHistoricoInput) {
+            historicoChk.addEventListener("click", () => {
+                esHistoricoInput.value = historicoChk.checked;
+                localStorage.setItem("historicoChecked", historicoChk.checked);
+                historicoChk.form.submit();
+            });
+        }
+
+        if (enlace && filtroInput) {
+            enlace.addEventListener("click", (event) => {
+                const filtroValor = filtroInput.value;
+                const esHistorico = historicoChk.checked;
+                enlace.href = `/Scato.Web/HuellaDigital/DescargarArchivo?filtro=${encodeURIComponent(filtroValor)}&esHistorico=${encodeURIComponent(esHistorico)}`;
+            });
+        }
+    });
+</script>
+
+<style>
+    /* Superposición de bloqueo de pantalla */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con transparencia */
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        z-index: 1000; /* Asegura que esté encima de otros elementos */
+        display: none; /* Oculto por defecto */
+    }
+</style>
+
+<div id="overlay" class="overlay">
+    <div>Procesando...</div>
+</div>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.HuellaDigital_Titulo</div>
+    @Html.Hidden("esHistorico", false, new { id = "esHistorico" })
+</div>
+
+<div class="container-fluid content grillaPad">
+    <div class="row">
+
+        @using (Ajax.BeginForm("Index", null, new AjaxOptions
+        {
+            HttpMethod = "GET",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "gridContainer",
+            OnBegin = "mostrarOverlay",    // Mostrar superposición al iniciar AJAX
+            OnComplete = "ocultarOverlay"
+        }, new { id = "search-form", @class = "form-search" }))
+        {
+            <div class="span12search bordeGris" style="width:auto">
+                <input type="text" name="filtro" class="input-large" />
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+            </div>
+            <div class="span12search" style="width:auto">
+                <div class="form-check">
+                    @Html.CheckBox("historico", new { id = "historico", @class = "form-check-input", style = "margin-top: 0;" })
+                    <label for="historico" class="form-check-label mt-2">Ver Históricos</label>
+                </div>
+            </div>
+        }
+        <div class="pull-right">
+            @Html.ActionLink(Textos.Exportar_Excel, "DescargarArchivo", "HuellaDigital", new { filtro = "", esHistorico = false }, new { id = "dynamicLink", @class = "btn btn-secondary btn-export-excel me-2" })
+            @Html.ActionLink(Textos.NuevoRegistro_HuellaDigital, "Crear", "HuellaDigital", null, new { @class = "ajax-editar-link btn btn-primary" })
+        </div>
+    </div>
+
+    <div id="gridContainer" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("Listar")
+    </div>
+
+</div>
+

@@ -91,7 +91,12 @@
     <Compile Include="ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="InformarOrdenInsumosOperaciones.cs" />
+    <Compile Include="Interfaces\ICargarCartaPorteByPassService.cs" />
     <Compile Include="Internas\ActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="CrearCartaPorteByPass.cs" />
+    <Compile Include="Internas\IniciarWorkflowEgreso.cs" />
+    <Compile Include="Internas\ObtenerCupoSalida.cs" />
+    <Compile Include="Internas\IngresarPesoTaraByPass.cs" />
     <Compile Include="Internas\VerificarAutomatismoGranos.cs" />
     <Compile Include="InformarOrdenFasonOperaciones.cs" />
     <Compile Include="LimpiarCartelLlamadoNoGranos.cs" />
@@ -1323,6 +1328,30 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="EnTransitoV3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarCartaPorteByPass.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SalidaDeIngresoByPass.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarCartaPorteRedespachoMercaderiaByPass.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SalidaDeCentroIngresoByPass.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

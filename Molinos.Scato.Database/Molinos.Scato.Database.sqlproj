@@ -541,6 +541,9 @@
     <Build Include="dbo\Tables\AutomatismoTipoLlamado.sql" />
     <Build Include="dbo\Tables\AutomatismoGranoTipoVariedad.sql" />
     <Build Include="dbo\Tables\TipoVariedadPorMaterialAlmacen.sql" />
+    <Build Include="dbo\Tables\HuellaDigital.sql" />
+    <Build Include="dbo\Views\HuellaDigitalUnion.sql" />
+    <Build Include="dbo\Views\HuellaDigitalOrden.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

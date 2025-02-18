@@ -1,0 +1,31 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<HuellaDigitalOrdenDto>
+    )ViewBag.Items;
+    }
+
+    <script src="~/Scripts/listarHuellaDigital.js"></script>
+
+    <div class="controls">
+        @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificarHuellaDigital(Html, "HuellaDigital"),
+        grilla.Columna("Tipo", Textos.HuellaDigital_Tipo, c => c.DescripcionTipo),
+        grilla.Columna("Patente", Textos.HuellaDigital_Patente, c => c.Patente),
+        grilla.Columna("Acoplado", Textos.HuellaDigital_Acoplado, c => c.Acoplado),
+        grilla.Columna("CuitChofer", Textos.HuellaDigital_Chofer, c => c.Chofer),
+        grilla.Columna("CuitTransportista", Textos.HuellaDigital_Transportista, c => c.Transportista),
+        grilla.Columna("PesoTara", Textos.HuellaDigital_PesoTara, c => c.PesoTara),
+        grilla.Columna("LugarPesaje", Textos.HuellaDigital_LugarPesaje, c => c.LugarPesaje),
+        grilla.Columna("FechaHoraPesaje", Textos.HuellaDigital_FechaHoraPesaje, c => c.FechaHoraPesaje),
+        grilla.Columna("Estado", Textos.HuellaDigital_Estado, c => c.DescripcionEstado),
+        grilla.Columna("Balanza", Textos.HuellaDigital_Balanza, c => c.Balanza),
+        grilla.Columna("Usuario", Textos.HuellaDigital_Usuario, c => c.Usuario)
+
+        ))
+    </div>
