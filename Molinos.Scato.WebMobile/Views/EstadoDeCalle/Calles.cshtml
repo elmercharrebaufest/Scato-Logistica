@@ -21,7 +21,8 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <!-- Updated margin class from 'ml-auto' to 'ms-auto' -->
     <li class="nav-item ms-auto">
-        <div class="input-group input-group-sm"> <!-- Changed 'input-sm' to Bootstrap 5's 'input-group-sm' class -->
+        <div class="input-group input-group-sm">
+            <!-- Changed 'input-sm' to Bootstrap 5's 'input-group-sm' class -->
             <input data-bind="value: PatenteBuscada, valueUpdate: 'afterkeydown'" class="form-control" type="text" placeholder="Buscar Patente" aria-label="Buscar Patente" oninput="this.value = this.value.toUpperCase()">
         </div>
     </li>
@@ -45,7 +46,10 @@
             <div class="nav-link nav-material bg-PelletG text-white">Pellet Aceite Girasol(<strong data-bind="text: CantidadPelletGirasol"></strong>)</div>
         </li>
         <li class="nav-item tagmaterial">
-            <div class="nav-link nav-material bg-Biodiesel text-white">Biodiesel(<strong data-bind="text: Biodiesel"></strong>)</div>
+            <div class="nav-link nav-material bg-Biodiesel text-white">Biodiesel(<strong data-bind="text: CantidadBiodiesel"></strong>)</div>
+        </li>
+        <li class="nav-item tagmaterial">
+            <div class="nav-link nav-material bg-AceiteNeutralizado text-white">Aceite Neutralizado(<strong data-bind="text: CantidadAceiteNeutralizado"></strong>)</div>
         </li>
     }
 

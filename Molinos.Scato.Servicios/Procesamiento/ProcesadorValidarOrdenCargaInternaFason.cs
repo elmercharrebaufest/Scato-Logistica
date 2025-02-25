@@ -168,10 +168,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     ordenCargaInterna.Cliente = clientes["Destino"].Descripcion;
                     ordenCargaInterna.ClienteId = clientes["Destino"].Id;
                     ordenCargaInterna.PlantaDGDestino = int.TryParse(ordenOperaciones.PlantaCodigo, out var plantId) ? plantId : (int?)null;
-                    ordenCargaInterna.TipoYOrdenDestino = $"{ordenOperaciones.DomicilioTipo}-{ordenOperaciones.DomicilioTipo}";
+                    ordenCargaInterna.TipoYOrdenDestino = $"{ordenOperaciones.DomicilioTipo}-{ordenOperaciones.DomicilioOrden}";
                     ordenCargaInterna.PagadorFlete = clientes["PagadorFlete"].Descripcion;
                     ordenCargaInterna.PagadorFleteId = clientes["PagadorFlete"].Id;
-                    _clienteId = clientes["Cliente"].Id;
+                    _clienteId = clientes["Destino"].Id;
                 }
                 else
                 {

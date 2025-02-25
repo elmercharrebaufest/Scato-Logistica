@@ -641,6 +641,7 @@ function ConfiguracionNoGranosInactiva() {
     $("#Patente").val("");
     $('#MaterialId').val("");
     $('#cpe').prop('disabled', false);
+    $('#TipoOrdenCargaNoGranos').val("");
     DisabledControlers(false);
     clearValidation();
 }

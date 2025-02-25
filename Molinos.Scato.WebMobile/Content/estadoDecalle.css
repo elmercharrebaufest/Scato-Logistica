@@ -136,6 +136,7 @@
 
 .bg-dark {
     background-color: rgba(0,0,255,0.3);
+    color: #FFF;
 }
 
 .bg-warning {
@@ -352,7 +353,12 @@ div.card.parpadeo {
 
 .bg-Biodiesel {
     background: #1b5813;
-    color: #f7f7f7;
+    color: #FFF;
+}
+
+.bg-AceiteNeutralizado {
+    background: #78d4e8;
+    color: #FFF;
 }
 
 .bg-SojaEUDR {
