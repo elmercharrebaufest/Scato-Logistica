@@ -96,8 +96,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         CodigoEstablecimiento = e.CodigoDeEstablecimiento,
                         Cosecha = cp.Cosecha,
                         Usuario = r.PesoBrutoUsuario,
-                        ModalidadBruto = case when r.PesoBrutoModalidad is null then '' when r.PesoBrutoModalidad = 0 then 'Manual' else 'Automatica' end,
-                        ModalidadTara = case when r.PesoTaraModalidad is null then '' when r.PesoTaraModalidad = 0 then 'Manual' else 'Automatica' end,
+                        ModalidadPesadaBruto = case when r.PesoBrutoModalidad is null then '' when r.PesoBrutoModalidad = 0 then 'Manual' else 'Automatica' end,
+                        ModalidadPesadaTara = case when r.PesoTaraModalidad is null then '' when r.PesoTaraModalidad = 0 then 'Manual' else 'Automatica' end,
                         CPEDG = case when cpdg.Sucursal is null or cpdg.NroOrden is null then '' else cpdg.Sucursal + cpdg.NroOrden end,
 						CTGDG = case when cpdg.NroCTG is null then '' else cpdg.NroCTG end,
                         TipoVariedad = tv.Descripcion

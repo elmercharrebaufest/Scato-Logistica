@@ -25,7 +25,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected readonly IServicioRepositorio servicio;
         private readonly IServicioOperaciones servicioOperaciones;
         private ResultadoOrdenFason resultado;
-        private int _clienteId;
 
         public ProcesadorValidarOrdenCargaInternaFason(IServicioComandos servicioComandos, IValidatorEntity<OrdenCargaInternaFasonDto> validacionCrearOrdenInternaFason, IServicioRepositorio servicio, IRepositorio repositorio, IConversor conversor, ILogger log, IServicioOperaciones servicioOperaciones)
             : base(repositorio, conversor, log)
@@ -169,17 +168,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     ordenCargaInterna.ClienteId = clientes["Destino"].Id;
                     ordenCargaInterna.PlantaDGDestino = int.TryParse(ordenOperaciones.PlantaCodigo, out var plantId) ? plantId : (int?)null;
                     ordenCargaInterna.TipoYOrdenDestino = $"{ordenOperaciones.DomicilioTipo}-{ordenOperaciones.DomicilioOrden}";
+                    ordenCargaInterna.TipoDomicilioDestino = int.TryParse(ordenOperaciones.DomicilioTipo, out var domicilioTipo) ? domicilioTipo : (int?)null;
+                    ordenCargaInterna.OrdenDomicilioDestino = ordenOperaciones.DomicilioOrden;
                     ordenCargaInterna.PagadorFlete = clientes["PagadorFlete"].Descripcion;
                     ordenCargaInterna.PagadorFleteId = clientes["PagadorFlete"].Id;
-                    _clienteId = clientes["Destino"].Id;
                 }
                 else
                 {
+                    ordenCargaInterna.DerivadoGranarioHabilitado = false;
                     ordenCargaInterna.Cliente = clientes["Cliente"].Descripcion;
                     ordenCargaInterna.ClienteId = clientes["Cliente"].Id;
-                    ordenCargaInterna.DerivadoGranarioHabilitado = false;
                     ordenCargaInterna.PlantaDGDestino = null;
                     ordenCargaInterna.TipoYOrdenDestino = null;
+                    ordenCargaInterna.TipoDomicilioDestino = null;
+                    ordenCargaInterna.OrdenDomicilioDestino = null;
                     ordenCargaInterna.PagadorFlete = null;
                     ordenCargaInterna.PagadorFleteId = null;
                 }
@@ -246,40 +248,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
-        /// <summary>
-        /// Obtiene las plantas DG para un centro y cliente específicos.
-        /// </summary>
-        /// <param name="centroId">Identificador del centro.</param>
-        /// <param name="clienteId">Identificador del cliente.</param>
-        /// <param name="plantaId">Identificador de la planta (opcional).</param>
-        /// <param name="clienteCuit">CUIT del cliente (opcional).</param>
-        /// <returns>Resultado de la operación.</returns>
-        /// <remarks>
-        /// Validaciones realizadas:
-        /// 1. Se obtiene el CUIT del cliente.
-        /// 2. Se ejecuta el comando para consultar las plantas Derivados Granarios en Arca.
-        /// 3. Se manejan los errores del resultado.
-        /// 4. Se verifica si la planta seleccionada es válida.
-        /// </remarks>
-        public Resultado ObtenerPlantasDg(int centroId, int clienteId, int? plantaId, string clienteCuit = null)
-        {
-            var cuit = ObtenerCuit(clienteId, clienteCuit);
-            var result = servicioComandos.Ejecutar(new ConsultarPlantasDG
-            {
-                CentroId = centroId,
-                Cuit = long.Parse(cuit)
-            }) as ResultadoConsultaPlantasDG;
-
-            ManejarErrores(result.Errores);
-
-            if (!result.Plantas.Any(p => p.Equals(plantaId)))
-            {
-                resultado.Error("2", Textos.PlantaNoValida);
-            }
-
-            return resultado;
-        }
-
         private string ObtenerCuit(int clienteId, string clienteCuit)
         {
             if (!string.IsNullOrEmpty(clienteCuit))
@@ -304,41 +272,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
-        /// <summary>
-        /// Obtiene los domicilios Derivados Granarios desde el Arca para un centro y cliente específicos.
-        /// </summary>
-        /// <param name="centroId">Identificador del centro.</param>
-        /// <param name="clienteId">Identificador del cliente.</param>
-        /// <param name="tipoDomicilio">Identificador del tipo domicilio.</param>
-        /// <param name="ordenDomicilio">Identificador del tipo orden domicilio.</param>
-        /// <param name="clienteCuit">CUIT del cliente (opcional).</param>
-        /// <returns>Resultado de la operación con los domicilios obtenidos.</returns>      
-        public Resultado ObtenerDomiciliosDg(int centroId, int clienteId, int? tipoDomicilio,int? ordenDomicilio, string clienteCuit = null)
-        {
-            var cuit = ObtenerCuit(clienteId, clienteCuit);
-            var result = servicioComandos.Ejecutar(new ConsultarDomiciliosDG
-            {
-                CentroId = centroId,
-                Cuit = long.Parse(cuit)
-            }) as ResultadoConsultaDomiciliosDG;
-
-            ManejarErrores(result.Errores);
-
-            if (!result.Domicilios.Any(p => p.Tipo == tipoDomicilio && p.Orden == ordenDomicilio))
-            {
-                resultado.Error("2", Textos.DomicilioNoValido);
-            }
-
-            return resultado;
-        }
-
         private Comando GenerarConsultaEscalables(string patente, string acoplado, string usuario)
         {
             if (ValidarDummyActivo())
             {
                 return new ConsultarEscalablesDummy { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario };
             }
-
             else
             {
                 return new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario };
@@ -389,9 +328,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return this.resultado;
                 }
 
-                //Procesar Domicilio y Destino
-                ProcesarTipoYOrdenDestino(ref orden);
-
                 // Validar la orden utilizando FluentValidation
                 var resultado = ValidarOrden(orden, idCentro);
 
@@ -425,18 +361,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         resultado.Error("1", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_Destinatario));
                         return resultado;
-                    }
-
-                    var validarPlantas = ObtenerPlantasDg(idCentro, _clienteId, orden.PlantaDGDestino, orden.ClienteCuit) as ResultadoOrdenFason;
-                    if (validarPlantas.HayErrores)
-                    {
-                        return validarPlantas;
-                    }
-
-                    var validarDomicilios = ObtenerDomiciliosDg(idCentro, _clienteId, orden.TipoDomicilioDestino, orden.OrdenDomicilioDestino, orden.ClienteCuit) as ResultadoOrdenFason;
-                    if (validarDomicilios.HayErrores)
-                    {
-                        return validarDomicilios;
                     }
 
                     var resultadoAltaDummy = EjecutarAutorizarCpeDGDummy(orden, idCentro);
@@ -685,24 +609,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 choferDto.Id = (resultadoChofer as ResultadoCrear).Id;
             }
             return true;
-        }
-
-        private void ProcesarTipoYOrdenDestino(ref OrdenCargaInternaFasonDto orden)
-        {
-            try
-            {
-                if (orden.TipoYOrdenDestino != null)
-                {
-                    var domicilio = orden.TipoYOrdenDestino.Split('-');
-                    orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
-                    orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
-                }
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-
         }
 
         private ResultadoCartaPorteElectronicaDummy EjecutarAutorizarCpeDGDummy(OrdenCargaInternaFasonDto orden, int idCentro)

@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.10.35004.147</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-11-27T12:49:39.8499140Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-02-25T18:09:48.8594370Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -156,61 +156,68 @@ ELSE
     SET @fecha = @FechaHoy;
 
 
-					select mt.Descripcion as EgresoxD,
-					SUM(COALESCE(CantidadxD, 0)) as CantidadxD,
-					SUM(COALESCE(TonsxD, 0)) as TonsxD,
-					SUM(COALESCE(CantidadxM, 0)) as CantidadxM,
-					SUM(COALESCE(TonsxM, 0)) as TonsxM,
-					SUM(COALESCE(CantidadxA, 0)) as CantidadxA,
-					SUM(COALESCE(TonsxA, 0)) as TonsxA
-					from MaterialReporteDeMovimientos mt
-					left join (
-					SELECT
-					case
-					when r.Material_Id = 81223 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Harina High Pro Venta'
-					when r.Material_Id = 81223 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Harina High Pro EXPORTACION'
-					when r.Material_Id = 63750 and (case when w.Id != 220 then 0 else 1 end) = 0 then 'Pecaso Venta'
-					when r.Material_Id = 63750 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Pecaso EXPORTACION'
-					when r.Material_Id = 63734 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Aceite Venta a 3ros'
-					when r.Material_Id = 63734 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'ACEITE CRUDO DE SOJA EXPORTACION'
-					when r.Material_Id = 63746 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Lecitina  de Soja Venta'
-					when r.Material_Id = 63746 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Lecitina de Soja EXPORTACION'
-					when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1   and ocif.cliente_id = 60324 then 'Aceite Santa Clara'
-					when r.Material_Id = 63734 and (case when w.Id = 67 or w.Id = 66 then 1 else 0 end) = 1   and ocif.cliente_id = 59498 then 'Aceite Soja Crudo Patagonia Bioenergia'
-					when r.Material_Id = 63734 and (case when w.Id = 65  then 1 else 0 end) = 1  and ocf.Cliente_Id is not null then 'Aceite Venta a 3ros'
-					when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1  and ocif.cliente_id &lt;&gt; 60324 then 'Aceite Soja Crudo Retiro Fazon con 3°'
-					else mt.Descripcion end
-					as 'EgresoxD',
-					sum(case when r.PesoBrutoFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.PesoBrutoFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end  ) as 'CantidadxD',
-					cast(((sum(case when r.PesoBrutoFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.PesoBrutoFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast( r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000)  as numeric(18,2)) AS 'TonsxD',
-					sum(case when r.PesoBrutoFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoBrutoFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end  ) as 'CantidadxM',
-					cast (((sum(case when r.PesoBrutoFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoBrutoFecha  &lt;=  @fecha + '23:59:59' then cast( r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000)  as numeric(18,2))AS 'TonsxM',
-					count(*) as CantidadxA,
-					cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
-					FROM [Recorrido] as r WITH(NOLOCK)
-					inner join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
-					inner join Material as m WITH(NOLOCK) on m.Id = r.Material_Id
-					inner join MaterialReporteDeMovimientos mt on mt.Material like '%'+m.Descripcion +'%'
-					inner join TipoComercial as tc WITH(NOLOCK) on tc.Id = r.TipoComercial_Id
-					left join OrdenCargaInternaFason as ocif on ocif.Recorrido_Id = r.Id
-					left join OrdenCargaFas as ocf on ocf.Recorrido_Id = r.Id
-					where w.TipoDeWorkflow = 1 and  r.Centro_Id = @CentroId
-					and r.PesoBrutoFecha  is not null and terminado = 1 and Rechazado = 0
-					and ((MONTH(@fecha) &gt; 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
-					(MONTH(@fecha) &lt;= 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
-					and r.PesoBrutoFecha  &lt;= @fecha+'23:59:59'
-					and Ingreso = 0
-					group by mt.Descripcion, r.Material_Id,
-					case when w.Id = 220 then 1 else 0 end,
-					case when w.Id != 220 then 0 else 1 end,
-					case when w.Id != 220 then 1 else 0 end,
-					case when w.Id = 67  then 1 else 0 end,
-					case when w.Id = 65  then 1 else 0 end,
-					case when w.Id = 67 or w.Id = 66 then 1 else 0 end,
-					ocif.cliente_id, ocf.Cliente_Id)as Datos on Datos.EgresoxD = mt.Descripcion
-					where Ingreso = 0
-					group by mt.Descripcion, mt.Orden
-					order by mt.Orden</CommandText>
+SELECT mt.Descripcion as EgresoxD,
+	SUM(COALESCE(CantidadxD, 0)) as CantidadxD,
+	SUM(COALESCE(TonsxD, 0)) as TonsxD,
+	SUM(COALESCE(CantidadxM, 0)) as CantidadxM,
+	SUM(COALESCE(TonsxM, 0)) as TonsxM,
+	SUM(COALESCE(CantidadxA, 0)) as CantidadxA,
+	SUM(COALESCE(TonsxA, 0)) as TonsxA
+	from MaterialReporteDeMovimientos mt
+	left join 
+		(SELECT
+			case
+			when r.Material_Id = 81223 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Harina High Pro Venta'
+			when r.Material_Id = 81223 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Harina High Pro EXPORTACION'
+			when r.Material_Id = 63750 and (case when w.Id != 220 then 0 else 1 end) = 0 then 'Pecaso Venta'
+			when r.Material_Id = 63750 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Pecaso EXPORTACION'
+			when r.Material_Id = 63734 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Aceite Venta a 3ros'
+			when r.Material_Id = 63734 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'ACEITE CRUDO DE SOJA EXPORTACION'
+			when r.Material_Id = 63746 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Lecitina  de Soja Venta'
+			when r.Material_Id = 63746 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Lecitina de Soja EXPORTACION'
+			when r.Material_Id = 63691 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'ACEITE GIRASOL CRUDO EXPORTACION'
+			when r.Material_Id = 172798 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'PELLET DE GIRASOL INTEGRAL EXPORTACION'
+			when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1   and ocif.cliente_id = 60324 then 'Aceite Santa Clara'
+			when r.Material_Id = 63734 and (case when w.Id = 67 or w.Id = 66 then 1 else 0 end) = 1   and ocif.cliente_id = 59498 then 'Aceite Soja Crudo Patagonia Bioenergia'
+			when r.Material_Id = 63734 and (case when w.Id = 65  then 1 else 0 end) = 1  and ocf.Cliente_Id is not null then 'Aceite Venta a 3ros'
+			when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1  and ocif.cliente_id &lt;&gt; 60324 then 'Aceite Soja Crudo Retiro Fazon con 3°'
+			else mt.Descripcion end
+			as 'EgresoxD',
+			sum(case when r.PesoBrutoFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.PesoBrutoFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end  ) as 'CantidadxD',
+			cast(((sum(case when r.PesoBrutoFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.PesoBrutoFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast( r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000)  as numeric(18,2)) AS 'TonsxD',
+			sum(case when r.PesoBrutoFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoBrutoFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end  ) as 'CantidadxM',
+			cast (((sum(case when r.PesoBrutoFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoBrutoFecha  &lt;=  @fecha + '23:59:59' then cast( r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000)  as numeric(18,2))AS 'TonsxM',
+			count(*) as CantidadxA,
+			cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
+		FROM [Recorrido] as r WITH(NOLOCK)
+		inner join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
+		inner join Material as m WITH(NOLOCK) on m.Id = r.Material_Id
+		inner join MaterialReporteDeMovimientos mt on mt.Material like '%'+m.Descripcion +'%'
+		inner join TipoComercial as tc WITH(NOLOCK) on tc.Id = r.TipoComercial_Id
+		left join OrdenCargaInternaFason as ocif on ocif.Recorrido_Id = r.Id
+		left join OrdenCargaFas as ocf on ocf.Recorrido_Id = r.Id
+		WHERE w.TipoDeWorkflow = 1 
+			and  r.Centro_Id = @CentroId
+			and r.PesoBrutoFecha  is not null 
+			and terminado = 1 
+			and Rechazado = 0
+			and ((MONTH(@fecha) &gt; 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR (MONTH(@fecha) &lt;= 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
+			and r.PesoBrutoFecha  &lt;= @fecha+'23:59:59'
+			and Ingreso = 0
+		group by mt.Descripcion, 
+		r.Material_Id,
+		case when w.Id = 220 then 1 else 0 end,
+		case when w.Id != 220 then 0 else 1 end,
+		case when w.Id != 220 then 1 else 0 end,
+		case when w.Id = 67  then 1 else 0 end,
+		case when w.Id = 65  then 1 else 0 end,
+		case when w.Id = 67 or w.Id = 66 then 1 else 0 end,
+		ocif.cliente_id, 
+		ocf.Cliente_Id)
+	as Datos on Datos.EgresoxD = mt.Descripcion
+WHERE Ingreso = 0
+GROUP BY mt.Descripcion, mt.Orden
+ORDER BY mt.Orden</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
