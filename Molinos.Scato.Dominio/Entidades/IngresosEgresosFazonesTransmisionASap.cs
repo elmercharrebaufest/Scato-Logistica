@@ -26,7 +26,9 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string TipoDocumentoChofer { get; set; }
         public virtual string PatenteAcoplado { get; set; }
         public virtual string RecorridoId { get; set; }
-                                   
+        public virtual string CTG { get; set; }
+        public virtual string CPEDG { get; set; }
+        public virtual string DestinoMercaderia { get; set; }
 
         public override Type ObtenerTipoObjeto()
         {

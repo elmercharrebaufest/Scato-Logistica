@@ -64,7 +64,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
                                      Material = rec.Material.Descripcion,
                                      Vendedor = muestra.CartaPorte.Destinatario.Descripcion,
-                                     Corredor = muestra.CartaPorte.Corredor.Descripcion,
+                                     Corredor = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Descripcion : null,
                                      Proveedor = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Descripcion : remito.ProveedorOrigen.Descripcion,
                                      ProveedorCodigoSap = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.CodigoSap : remito.ProveedorOrigen.CodigoSap,
                                      FechaCartaPorte = muestra.CartaPorte != null ? muestra.CartaPorte.FechaCP : (remito != null ? remito.FechaOD : rec.FechaEgreso.Value),
@@ -80,8 +80,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      DestinatarioCuil = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Cuil : empresa.Cuil,
                                      DestinatarioMail = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Mail : empresa.Mail,
                                      
-                                     CorredorCuil = muestra.CartaPorte.Corredor.Cuil,
-                                     CorredorId = muestra.CartaPorte.Corredor != null ? muestra.CartaPorte.Corredor.Id : 0,
+                                     CorredorCuil = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Cuil : null,
+                                     CorredorId = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Id : 0,
 
                                      RtteComercial = muestra.CartaPorte.RtteComercial.Descripcion,
                                      RtteComercialCuit = muestra.CartaPorte.RtteComercial.Cuil,

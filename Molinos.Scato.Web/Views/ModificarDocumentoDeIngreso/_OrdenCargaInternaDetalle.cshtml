@@ -1,0 +1,194 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums;
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.OrdenCargaInternaDto
+
+@{
+    var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
+    var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
+    var tiposDocumentos = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentos;
+    var almacenes = (IEnumerable<SelectListItem>)ViewBag.Almacenes;
+    var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
+}
+
+<div class="row-fluid form__group">
+    <div class="span6">
+        <div class="form__control">
+            @Html.LabelFor(model => model.NumeroOrden, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.NumeroOrden, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="@(Model.DerivadoGranarioHabilitado ? "form__control" : "hidden")">
+            @Html.LabelFor(model => model.NumeroCTG, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.NumeroCTG, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+    <div class="span6" style="padding: 0 2.5rem;">
+        <div class="form__control">
+            @Html.LabelFor(model => model.FechaEmision, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.FechaEmision, new { @class = "control", @readonly = "readonly", @Value = Model.FechaEmision.FormattedFixed() })
+            </div>
+        </div>
+        <div class="@(Model.DerivadoGranarioHabilitado ? "form__control" : "hidden")">
+            @Html.LabelFor(model => model.NumeroCPE, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.NumeroCPE, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid margin">
+    <div class="form__group span6">
+        <div class="form__control">
+            @Html.LabelFor(model => model.PatenteCamion, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.Id_operaciones, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.Id_operaciones, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small" })
+            <div>
+                @Html.EnumDropDownListFor(model => model.TipoVehiculo, new { @class = "control form__input--disable", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.PatenteAcoplado, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.TipoComercialId, new { @class = "control-label small" })
+            <div>
+                @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control form__input--disable", @readonly = "readonly" })
+                @Html.HiddenFor(model => model.TipoComercialId)
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.Transportista, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.Transportista, new { @class = "control", @readonly = "readonly" })
+                @Html.HiddenFor(model => model.TransportistaId)
+                @Html.HiddenFor(model => model.EsTransportista)
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small" })
+            <div>
+                @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control form__input--disable", @readonly = "readonly" })
+                @Html.HiddenFor(model => model.DerivadoGranarioHabilitado)
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.Destino, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.Destino, new { @class = "control", @readonly = "readonly" })
+                @Html.HiddenFor(model => model.DestinoId)
+            </div>
+        </div>
+        <div class="hidden">
+            @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.LocalidadDestinoDescripcion, new { @class = "control", @readonly = "readonly" })
+                @Html.HiddenFor(model => model.LocalidadDestinoId)
+            </div>
+        </div>
+        <div class="@(Model.DerivadoGranarioHabilitado ? "form__control" : "hidden")">
+            @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label small" })
+            <div>
+                @Html.TextBox("PlantaDGDestinoDesc", ("Nro. " + Model.PlantaDGDestino), new { @class = "control", @readonly = "readonly", @id = "PlantaDGDestinoDesc" })
+                @Html.HiddenFor(model => model.PlantaDGDestino)
+            </div>
+        </div>
+        <div class="@(Model.DerivadoGranarioHabilitado ? "form__control" : "hidden")">
+            @Html.LabelFor(model => model.TipoYOrdenDestino, new { @class = "control-label small" })
+            <div>
+                @Html.TextBox("DomicilioDGDestinoDesc", ("(" + Model.TipoDomicilioDestino + "-" + Model.OrdenDomicilioDestino + ")"), new { @class = "control", @readonly = "readonly", @id = "DomicilioDGDestinoDesc" })
+                @Html.HiddenFor(model => model.OrdenDomicilioDestino)
+                @Html.HiddenFor(model => model.TipoDomicilioDestino)
+            </div>
+        </div>
+        <div class="@(Model.DerivadoGranarioHabilitado ? "form__control" : "hidden")">
+            @Html.LabelFor(model => model.PagadorFlete, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control", @readonly = "readonly" })
+                @Html.HiddenFor(model => model.PagadorFleteId)
+            </div>
+        </div>
+    </div>
+
+    <div class="form__group span6">
+        <span class="small strong" style="margin-left: -15px;">@Textos.DatosDelChofer</span>
+        @Html.HiddenFor(model => model.Chofer.Id)
+        <div class="form__control">
+            @Html.LabelFor(model => model.Chofer.Cuil, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.EsExtranjero, "Extranjero", new { @class = "control-label small" })
+            <div>
+                @Html.CheckBoxFor(model => model.EsExtranjero, new { @class = "control form__input--disable", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.Chofer.Nombre, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.Chofer.Nombre, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.Chofer.Apellido, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.Chofer.Apellido, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.Chofer.TipoDocumentoIdentidadId, new { @class = "control-label small" })
+            <div>
+                @Html.DropDownListFor(model => model.Chofer.TipoDocumentoIdentidadId, tiposDocumentos, new { @class = "control form__input--disable", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.KmARecorrer, new { @class = "control-label small" })
+            <div>
+                @Html.TextBoxFor(model => model.KmARecorrer, new { @class = "control", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid margin">
+    <div class="form__group span6">
+        <div class="form__control">
+            @Html.LabelFor(model => model.Almacen_Id, new { @class = "control-label small" })
+            <div>
+                @Html.DropDownListFor(model => model.Almacen_Id, almacenes, "Almacenes", new { @class = "control form__input--disable", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form__control">
+            @Html.LabelFor(model => model.Calle_Id, new { @class = "control-label small" })
+            <div>
+                @Html.DropDownListFor(model => model.Calle_Id, calles, "Calle", new { @class = "control form__input--disable", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+</div>

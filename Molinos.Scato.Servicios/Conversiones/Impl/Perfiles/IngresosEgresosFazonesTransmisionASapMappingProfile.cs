@@ -33,6 +33,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(x => x.TipoDoc, mat => mat.MapFrom(m => m.TipoDocumentoChofer))
                 .ForMember(x => x.Patente2, mat => mat.MapFrom(m => m.PatenteAcoplado))
                 .ForMember(x => x.IM_NUM_SCATO, mat => mat.MapFrom(m => m.RecorridoId))
+                .ForMember(x => x.IM_CTG, mat => mat.MapFrom(m => m.CTG))
+                .ForMember(x => x.IM_CPEDG, mat => mat.MapFrom(m => m.CPEDG))
+                .ForMember(x => x.IM_DESTINO_MERCADERIA, mat => mat.MapFrom(m => m.DestinoMercaderia))
                 ;
             Mapper.CreateMap<IngresosEgresosFazones, IngresosEgresosFazonesTransmisionASap>()
                 .ForMember(x => x.Almacen, mat => mat.MapFrom(m => m.Almacen))
@@ -54,6 +57,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(x => x.TipoDocumentoChofer, mat => mat.MapFrom(m => m.TipoDoc))
                 .ForMember(x => x.PatenteAcoplado, mat => mat.MapFrom(m => m.Patente2))
                 .ForMember(x => x.RecorridoId, mat => mat.MapFrom(m => m.IM_NUM_SCATO))
+                .ForMember(x => x.CTG, mat => mat.MapFrom(m => m.IM_CTG))
+                .ForMember(x => x.CPEDG, mat => mat.MapFrom(m => m.IM_CPEDG))
+                .ForMember(x => x.DestinoMercaderia, mat => mat.MapFrom(m => m.IM_DESTINO_MERCADERIA))
                 ;
         }
     }

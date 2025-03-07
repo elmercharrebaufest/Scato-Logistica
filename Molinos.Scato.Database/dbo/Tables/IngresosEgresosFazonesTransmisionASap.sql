@@ -19,6 +19,9 @@
     [TipoDocumentoChofer] NVARCHAR(100) NULL, 
     [PatenteAcoplado] NVARCHAR(100) NULL, 
     [RecorridoId] NVARCHAR(100) NULL, 
+    [CTG] NVARCHAR(12) NULL, 
+    [CPEGDG] NVARCHAR(13) NULL, 
+    [DestinoMercaderia] NVARCHAR(100) NULL, 
     CONSTRAINT [PK_dbo.IngresosEgresosFazonesTransmisionASap] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.IngresosEgresosFazonesTransmisionASap.TransmisionASapId] FOREIGN KEY ([Id]) REFERENCES [dbo].[TransmisionASap] ([Id]) ON DELETE CASCADE
 );

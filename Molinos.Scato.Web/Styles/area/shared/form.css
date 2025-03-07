@@ -1,0 +1,16 @@
+﻿.form__group {
+    border: 1px solid #ddd;
+    padding: 1rem 2.5rem;
+    width: auto;
+}
+
+.form__control {
+    display: flex;
+    gap: 5px;
+    margin: 0.5rem 0;
+}
+
+.form__input--disable {
+    cursor: not-allowed;
+    pointer-events: none;
+}

@@ -3,15 +3,7 @@
 @using Molinos.Scato.Web.Helpers
 @model Molinos.Scato.Dominio.Dto.OrdenCargaInternaDto
 @{
-    if (ViewBag.esDocumentoDeOrigen != null && ViewBag.esDocumentoDeOrigen)
-    {
-        Layout = null;
-    }
-    if (ViewBag.SoloLectura == null)
-    {
-        ViewBag.SoloLectura = false;
-    }
-    bool soloLectura = ViewBag.SoloLectura;
+    bool soloLectura = (bool?)ViewBag.SoloLectura ?? false;
     string workflow = ViewBag.Workflow;
     int recorridoId = ViewBag.RecorridoId;
     bool esRechazado = ViewBag.Rechazado;
@@ -20,88 +12,36 @@
     string numeroDoc = ViewBag.NumeroDocumento;
 }
 
-@Scripts.Render("~/bundles/jqueryval")
-<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
-<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
-@*<script src="@Url.Script("~/Scripts/ordencargainterna.index.js")" type="text/javascript"></script>*@
-<script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
-<script>
-    const textoVariasOrdenes = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Textos.OrdenesFasonOperApiVarias))';
-    const patenteNoEncontrada = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Textos.PatenteNoEncontradaApiOpera))';
-    let hayError = '@Html.Raw(ViewBag.HasErrors)';
-</script>
-<script>
-    $(document).ready(function () {
-        if ($('#soloLectura').val() == "True") {
-            $('input').attr("disabled", "disabled");
-            $('select').attr("disabled", "disabled");
-            $("#aceptar").attr("style", "visibility: hidden");
-            $("#FechaEmision").datepicker("destroy");
-        } else {
-            $('#FechaEmision').attr("readonly", "readonly");
-            $("#FechaEmision").datepicker("destroy");
-            $('#Destino').attr("readonly", "readonly");
-        }
-        $('#TipoVehiculo').attr("readonly", "readonly");
-        $('#TipoVehiculo').attr("disabled", "disabled");
-        $('#EsTransportista').val(true);
+<link rel="stylesheet" href="~/Styles/area/shared/form.css" />
 
-    });
-</script>
-
-
-<style>
-    .content {
-        padding-top: 20px;
-    }
-    .negrita{
-        font-weight: bolder;
-    }
-</style>
-
+@Html.Hidden("SoloLectura", (bool)ViewBag.SoloLectura, new { id = "soloLectura" })
 <div class="container">
     @{
         if (soloLectura)
         {
             <div class="titSecciones">@Textos.ConsultarDocumentoDeIngreso_Titulo</div>
-            <br />
-            <div class="row">
-                <div class="span2 negrita">@Textos.Workflow_TipoDocumentoDeIngreso</div>
-                <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
-                <div class="span2 negrita">@Textos.NumeroDocumentoIngreso</div>
-                <label class="span2" style="margin-left:-53px">@numeroDoc</label>
-                <div class="span2 negrita" style="">@Textos.Patente</div>
-                <label class="span2" style="margin-left:-43px">@patente</label>
-                <div class="right">
-                    @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
-                </div>
-            </div>
-
-
         }
         else
         {
             <div class="titSecciones">@Textos.ModificarDocumentoDeIngreso_Titulo</div>
-            <br />
-            <div class="row">
-                <div class="span2 negrita">@Textos.Workflow_TipoDocumentoDeIngreso</div>
-                <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
-                <div class="span2 negrita">@Textos.NumeroDocumentoIngreso</div>
-                <label class="span2" style="margin-left:-53px">@numeroDoc</label>
-                <div class="span2 negrita" style="">@Textos.Patente</div>
-                <label class="span2" style="margin-left:-43px">@patente</label>
-                <div class="right">
-                    @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
-                </div>
-            </div>
         }
+
+        <br />
+        <div class="row">
+            <strong class="span2">@Textos.Workflow_TipoDocumentoDeIngreso</strong>
+            <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
+            <strong class="span2">@Textos.NumeroDocumentoIngreso</strong>
+            <label class="span2" style="margin-left:-53px">@numeroDoc</label>
+            <strong class="span2" style="">@Textos.Patente</strong>
+            <label class="span2" style="margin-left:-43px">@patente</label>
+            <div class="right">
+                @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
+            </div>
+        </div>
     }
 </div>
 
-
-
-
-@if (soloLectura && (ViewBag.esDocumentoDeOrigen == null || !ViewBag.esDocumentoDeOrigen))
+@if (soloLectura)
 {
     <div class="container">
         <ul class="nav nav-tabs">
@@ -125,15 +65,14 @@
             </li>
             @if (esRechazado)
             {
-                <label class="text-right " style="color: #FF0000; font-size: 13pt ;position: relative; display: inline-block; float:right; top: 10px">@Textos.Rechazado</label>
+                <li>
+                    <label class="text-right" style="color: #FF0000; font-size: 13pt; position: relative; display: inline-block; float:right; top: 10px;">@Textos.Rechazado</label>
+                </li>
             }
         </ul>
     </div>
 }
 
-
-
-@Html.Hidden("SoloLectura", (bool)ViewBag.SoloLectura, new { id = "soloLectura" })
 @using (Html.BeginForm("OrdenCargaInterna", "ModificarDocumentoDeIngreso", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaInterna }))
 {
     @Html.Hidden("CentroId", (int)ViewBag.CentroId)
@@ -143,7 +82,7 @@
             @Html.ValidationSummary(true)
         </div>
     }
-    @Html.Partial("~/Views/IngresarOrdenCargaInterna/_Orden.cshtml", Model)
+    @Html.Partial("~/Views/ModificarDocumentoDeIngreso/_OrdenCargaInternaDetalle.cshtml", Model)
 
     if (!soloLectura)
     {
@@ -152,6 +91,4 @@
             @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
         </div>
     }
-    
-
 }

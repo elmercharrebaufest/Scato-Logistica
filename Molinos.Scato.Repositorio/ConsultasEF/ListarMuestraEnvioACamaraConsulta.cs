@@ -69,7 +69,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      Proveedor = rec.Vehiculo != null ? rec.Vehiculo.CartaPorte.TitularCartaPorte.Descripcion : (remito != null ? remito.ProveedorOrigen.Descripcion : ""),
                                      ProveedorCodigoSap = rec.Vehiculo != null ? rec.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap : (remito != null ? remito.ProveedorOrigen.CodigoSap : ""),
                                      Vendedor = rec.Vehiculo != null ? rec.Vehiculo.CartaPorte.Destinatario.Descripcion : "",
-                                     Corredor = rec.Vehiculo != null ? rec.Vehiculo.CartaPorte.Corredor.Descripcion : "",
+                                     Corredor = (rec.Vehiculo != null && rec.Vehiculo.CartaPorte != null && rec.Vehiculo.CartaPorte.CorredorVendedorSecundario != null)
+                                                 ? rec.Vehiculo.CartaPorte.CorredorVendedorSecundario.Descripcion : "",
                                      Localidad = rec.Vehiculo != null? rec.Vehiculo.CartaPorte.Procedencia.Descripcion : (remito != null ? remito.Procedencia.Descripcion : ""),
                                      Patente = rec.Patente,
                                      WorkflowInstanceId = rec.InstanciaWorkflow,
