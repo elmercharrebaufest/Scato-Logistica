@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Dto;
@@ -11,6 +9,9 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -49,6 +50,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Patente = recorrido.Patente;
             ViewBag.WorkflowDefinicionId = recorrido.WorkflowDefinicionId;
             ViewBag.RecorridoId = recorrido.Id;
+            ViewBag.TipoCamion = GetEnumDisplayName(recorrido.TipoVehiculo);
             if (cliente != null)
             {
                 ViewBag.Cliente = cliente.Descripcion;
@@ -99,6 +101,24 @@ namespace Molinos.Scato.Web.Controllers
                 PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId
             };
             return View("_VehiculoRechazado", controlRecorrido);
+        }
+
+        private string GetEnumDisplayName(Enum valorEnum)
+        {
+            if (valorEnum == null)
+                return string.Empty;
+
+            var tipo = valorEnum.GetType();
+            var infoMiembro = tipo.GetMember(valorEnum.ToString());
+            if (infoMiembro.Length > 0)
+            {
+                var atributoDisplay = infoMiembro[0].GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.DisplayAttribute), false)
+                    .OfType<System.ComponentModel.DataAnnotations.DisplayAttribute>()
+                    .FirstOrDefault();
+                if (atributoDisplay != null)
+                    return atributoDisplay.Name;
+            }
+            return valorEnum.ToString();
         }
 
     }

@@ -35,6 +35,8 @@ namespace Molinos.Scato.Dominio.Dto
         public string CuitRemitenteComercial { get; set; }
         public string Destinatario { get; set; }
         public string CuitDestinatario { get; set; }
+        public string Consignatario { get; set; }
+        public string CuitConsignatario { get; set; }
         public string Cliente { get; set; }
         public string CuitCliente { get; set; }
         public string IntermediarioFlete { get; set; }

@@ -70,13 +70,23 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         Intermediario =isnull(cpint.Descripcion,''),
                         CuitIntermediario = replace(cpint.Cuil,'-',''),
                         RemitenteComercial = CASE WHEN ofason.Id IS NOT NULL THEN ISNULL(ofasonCliR.Descripcion , ofasonCliC.Descripcion)
-                                             ELSE cprtte.Descripcion END,
-
+                                             WHEN cprtte.Id IS NOT NULL THEN cprtte.Descripcion
+                                             ELSE ISNULL(ofasr.Descripcion, '') END,
                         CuitRemitenteComercial = CASE WHEN ofason.Id IS NOT NULL THEN replace(ISNULL(ofasonCliR.Cuit , ofasonCliC.Cuit), '-','')
-                                             ELSE  replace( cprtte.Cuil,'-','') END,
-
-                        Destinatario = isnull( cpdest.Descripcion , hyp.Descripcion),
-                        CuitDestinatario = replace( isnull(cpdest.Cuil , hyp.Cuil),'-',''),
+                                                 WHEN cprtte.Id IS NOT NULL THEN replace( ISNULL(cprtte.Cuil, ''),'-','')
+                                                 ELSE  replace( ISNULL(ofasr.Cuil,  ''),'-','') END,
+                        Destinatario = CASE WHEN cpdest.Descripcion IS NOT NULL THEN cpdest.Descripcion
+                                       WHEN hyp.Descripcion IS NOT NULL THEN hyp.Descripcion
+                                       ELSE ofasd.Descripcion END,
+                        CuitDestinatario = replace(CASE WHEN cpdest.Cuil IS NOT NULL THEN cpdest.Cuil
+                                                   WHEN hyp.Cuil IS NOT NULL THEN hyp.Cuil
+                                                   ELSE ofasd.Cuit END, '-', ''),
+                        Consignatario = CASE WHEN ofason.Id IS NOT NULL AND ofasonCliC.Id IS NOT NULL THEN ofasonCliC.Descripcion 
+                                        WHEN ofas.Id IS NOT NULL AND ofasCliC.Descripcion IS NOT NULL THEN ofasCliC.Descripcion 
+                                        ELSE '' END,
+                        CuitConsignatario = CASE WHEN ofason.Id IS NOT NULL AND ofasonCliC.Id IS NOT NULL THEN replace(ISNULL(ofasonCliC.Cuit, ''), '-', '') 
+                                            WHEN ofas.Id IS NOT NULL AND ofasCliC.Cuit IS NOT NULL THEN replace(ISNULL(ofasCliC.Cuit, ''), '-', '') 
+                                            ELSE '' END,
                         Cliente = isnull( cpcli.Descripcion , isnull(ofasc.Descripcion ,isnull( ointc.Descripcion , isnull(ofasonc.Descripcion , isnull(ocontc.Descripcion ,odescfasonc.Descripcion))))),
                         CuitCliente = replace( isnull(cpcli.Cuit , isnull(ofasc.Cuit ,isnull( ointc.Cuit ,isnull( ofasonc.Cuit ,isnull( ocontc.Cuit , odescfasonc.Cuit))))),'-',''),
                         IntermediarioFlete = isnull(cpintf.Descripcion,''),
@@ -114,7 +124,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 	                    left join Centro wc on w.Centro_Id = wc.Id
 	                    left join Material mat on r.Material_Id  = mat.Id
 	                    left join OrdenCargaFas ofas on r.Id = ofas.Recorrido_Id
+                        left join Cliente ofasd on ofasd.Id = ofas.Destinatario_Id
 	                    left join Cliente ofasc on ofasc.Id = ofas.Cliente_Id
+                        left join Proveedor ofasr on ofasr.id = ofas.Remitente_Id
 	                    left join OrdenCargaInterna oint on r.Id = oint.Recorrido_Id
 	                    left join Cliente ointc on ointc.Id = oint.Destino_Id
 	                    left join OrdenCargaInternaFason ofason on r.Id = ofason.Recorrido_Id
@@ -161,6 +173,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 	                    left join Balanza rbtara on rbtara.id = r.BalanzaTara_Id
                         left join Cliente ofasonCliR on ofasonCliR.Id = ofason.Remitente_Id
                         left join Cliente ofasonCliC on ofasonCliC.Id = ofason.Comisionista_Id
+                        left join Cliente ofasCliC on ofasCliC.Id = ofas.Comisionista_Id
                         left join CartaPorteDerivadoGranario cpdg on r.Id = cpdg.Recorrido_Id
                         left join TipoVariedad tv on tv.Id = r.TipoVariedad_Id
                     where
