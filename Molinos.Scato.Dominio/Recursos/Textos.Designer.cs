@@ -11833,7 +11833,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Los datos para para validar la orden son inválidos (Vacíos o Nulos)..
+        ///   Looks up a localized string similar to Los datos para validar la orden son inválidos (Vacíos o Nulos)..
         /// </summary>
         public static string DatosOrdenInvalidos {
             get {
@@ -12998,7 +12998,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to El Domicilio seleccionada no es válido..
+        ///   Looks up a localized string similar to El Domicilio seleccionado no es válido..
         /// </summary>
         public static string DomicilioNoValido {
             get {
@@ -22604,6 +22604,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Existen múltiples órdenes de diferentes clientes para esta patente y material..
+        /// </summary>
+        public static string Multiples_Clientes_Mismo_Material {
+            get {
+                return ResourceManager.GetString("Multiples_Clientes_Mismo_Material", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nacionalidad del Chofer.
         /// </summary>
         public static string Nacionalidad {
@@ -24350,7 +24359,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No se encontraron Ordenes de Fason con la patente ingresada..
+        ///   Looks up a localized string similar to No se encontraron órdenes de Fason con la patente ingresada..
         /// </summary>
         public static string OrdenesFasonNoEncontradas {
             get {

@@ -335,10 +335,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="bfdev258.DeployParameters.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\estadoDecalle.css" />
     <Content Include="Content\menu.css" />
     <Content Include="Content\bootstrap-datetimepicker.css" />

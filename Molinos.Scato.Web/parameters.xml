@@ -252,4 +252,9 @@
 					    match="/configuration/appSettings/add[@key='APITokenOperacionesAPI']
                             /@value" />
 	</parameter>
+
+  <parameter name="RollingLogFileAppenderFileValue log4net.config">
+    <parameterEntry kind="XmlFile" scope="log4net.config"
+					    match="/log4net/appender[@name='RollingLogFileAppender']/file/@value" />
+  </parameter>
 </parameters>

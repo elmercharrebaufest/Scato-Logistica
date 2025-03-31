@@ -17,4 +17,5 @@
 	<setParameter name="UrlAdfsLogoff Config" value="https://pase.molinosagro.com.ar/adfs/ls/?wa=wsignout1.0" />
 
 	<setParameter name="ServiciosScatoBinding Security Configuration" value="None" />
+  <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoMobile.log" />
 </parameters>

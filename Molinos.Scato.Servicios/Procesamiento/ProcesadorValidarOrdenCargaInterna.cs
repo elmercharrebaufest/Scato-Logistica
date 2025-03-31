@@ -74,11 +74,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private OrdenResiduosDto ObtenerOrdenOperaciones(string patente, int materialId)
         {
-            var ordenesOperaciones = servicioOperaciones.ObtenerOrdenesResiduos(patente).Where(x => x.CodigoProducto == materialId);
-            if (!ordenesOperaciones.Any())
-                throw new OrdenCargaInternaException(nameof(OrdenCargaInternaDto.Id_operaciones), "No se encontraron Ordenes de Residuos con la patente ingresada");
+            var ordenesOperaciones = servicioOperaciones.ObtenerOrdenesResiduos(patente);
 
-            var ordenOperacionesMasAntigua = ordenesOperaciones.OrderBy(x => x.Id).FirstOrDefault();
+            // Filtrar por el materialId (ya es el código directo en este caso)
+            var ordenesFiltradas = ordenesOperaciones.Where(x => x.CodigoProducto == materialId).ToList();
+
+            if (!ordenesFiltradas.Any())
+                throw new Exception(($"No se encontraron Ordenes de Residuos en Operaciones con la patente {patente}"));
+
+            // Verificar si hay múltiples clientes para este material
+            var clientesDistintos = ordenesFiltradas.Select(o => o.CUITCliente).Distinct().ToList();
+            if (clientesDistintos.Count > 1)
+            {
+                throw new Exception($"Existen múltiples órdenes de diferentes clientes para la patente: {patente}  y un mismo material.");
+            }
+
+            // Si hay un solo cliente, seleccionar la orden más antigua
+            var ordenOperacionesMasAntigua = ordenesFiltradas.OrderBy(x => x.Id).FirstOrDefault();
             return ordenOperacionesMasAntigua;
         }
 

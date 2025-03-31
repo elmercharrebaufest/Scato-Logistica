@@ -16,4 +16,5 @@
 	<setParameter name="ServiciosScatoBinding Security Configuration" value="None" />
   <setParameter name="PersistentSessionLifetime Config" value="5:0:0" />
   <setParameter name="WSFederationAuthenticationRequireSsl" value="true" />
+  <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoMobile.log" />
 </parameters>

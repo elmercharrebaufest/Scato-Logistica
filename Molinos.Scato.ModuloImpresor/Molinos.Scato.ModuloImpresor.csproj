@@ -147,10 +147,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bfdev258.DeployParameters.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Global.asax" />
     <Content Include="ServicioImpresion.svc" />
     <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml">

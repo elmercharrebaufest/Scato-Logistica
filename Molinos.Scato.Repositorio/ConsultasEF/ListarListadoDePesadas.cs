@@ -74,7 +74,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                              ELSE ISNULL(ofasr.Descripcion, '') END,
                         CuitRemitenteComercial = CASE WHEN ofason.Id IS NOT NULL THEN replace(ISNULL(ofasonCliR.Cuit , ofasonCliC.Cuit), '-','')
                                                  WHEN cprtte.Id IS NOT NULL THEN replace( ISNULL(cprtte.Cuil, ''),'-','')
-                                                 ELSE  replace( ISNULL(ofasr.Cuil,  ''),'-','') END,
+                                                 ELSE  replace( ISNULL(ofasr.Cuit,  ''),'-','') END,
                         Destinatario = CASE WHEN cpdest.Descripcion IS NOT NULL THEN cpdest.Descripcion
                                        WHEN hyp.Descripcion IS NOT NULL THEN hyp.Descripcion
                                        ELSE ofasd.Descripcion END,
@@ -126,7 +126,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 	                    left join OrdenCargaFas ofas on r.Id = ofas.Recorrido_Id
                         left join Cliente ofasd on ofasd.Id = ofas.Destinatario_Id
 	                    left join Cliente ofasc on ofasc.Id = ofas.Cliente_Id
-                        left join Proveedor ofasr on ofasr.id = ofas.Remitente_Id
+                        left join Cliente ofasr on ofasr.id = ofas.Remitente_Id
 	                    left join OrdenCargaInterna oint on r.Id = oint.Recorrido_Id
 	                    left join Cliente ointc on ointc.Id = oint.Destino_Id
 	                    left join OrdenCargaInternaFason ofason on r.Id = ofason.Recorrido_Id

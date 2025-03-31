@@ -110,6 +110,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             cupo.Material = Repositorio.Obtener<Material>(comando.Dto.MaterialId);
             cupo.Centro = Repositorio.Obtener<Centro>(comando.Dto.CentroId);
             cupo.PuestoDeTrabajo = Repositorio.Obtener<PuestoDeTrabajo>(comando.Dto.PuestoDeTrabajoId);
+            cupo.TipoVehiculo = comando.Dto.TipoVehiculo;
             Repositorio.Agregar(cupo);
             Repositorio.GuardarCambios();
             return cupo;

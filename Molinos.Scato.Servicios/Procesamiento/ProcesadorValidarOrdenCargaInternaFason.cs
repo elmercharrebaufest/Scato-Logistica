@@ -14,6 +14,7 @@ using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
@@ -661,11 +662,26 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private OrdenDeCargaDto ObtenerOrdenOperaciones(string patente, int materialId)
         {
+            // Obtener código SAP del material que llega de carga de cupo
             var materialCodigoSap = Repositorio.ObtenerProyeccion<Material, string>(x => x.Id == materialId, x => x.CodigoSAP);
-            var ordenesOperaciones = servicioOperaciones.ObtenerOrdenesDeCarga(patente).Where(x => x.CodigoProducto == materialCodigoSap);
-            if (!ordenesOperaciones.Any())
+            
+            // Obtener todas las órdenes para la patente
+            var ordenesOperaciones = servicioOperaciones.ObtenerOrdenesDeCarga(patente);
+
+            // Filtrar por el código SAP del material que viene de operaciones
+            var ordenesFiltradas = ordenesOperaciones.Where(x => x.CodigoProducto == materialCodigoSap).ToList();        
+
+            if (!ordenesFiltradas.Any())
                 throw new OrdenCargaInternaException(nameof(OrdenDeCargaDto.Id), Textos.OrdenesFasonNoEncontradas);
 
+            // Verificar si hay múltiples clientes para el material
+            var clientesDistintos = ordenesFiltradas.Select(o => o.CUITCliente).Distinct().Count();
+            if (clientesDistintos > 1)
+            {
+                throw new OrdenCargaInternaException("ValidacionFason",Textos.Multiples_Clientes_Mismo_Material);
+            }
+
+            //Ordenar por la mas antigua por el Id de la orden
             var ordenOperacionesMasAntigua = ordenesOperaciones.OrderBy(x => x.Id).FirstOrDefault();
             if (ordenOperacionesMasAntigua == null)
                 throw new OrdenCargaInternaException(nameof(OrdenDeCargaDto.Id), Textos.OrdenesFasonNoEncontradas);

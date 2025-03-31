@@ -60,6 +60,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                  CTG = x.CTG,
                                  FleteMOA = x.FleteMOA,
                                  TipoOrdenCargaNoGranos = x.TipoOrdenCargaNoGranos,
+                                 TipoVehiculo = x.TipoVehiculo,
                              }).OrderByDescending(x => x.FechaCreacion);
     
             if(cantidad > 0)

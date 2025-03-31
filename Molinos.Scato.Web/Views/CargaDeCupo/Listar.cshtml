@@ -27,6 +27,7 @@
             <th>@Textos.Cupo_NumeroDeCartaPorte</th>
             <th>@Textos.FormatoDeCampo_Fila</th>
             <th>@Textos.Tarjeta</th>
+            <th>@Textos.Tipo_Vehiculo</th>
         </tr>
     </thead>
     <tbody>
@@ -59,9 +60,10 @@
                 else
                 {
                     <td>@i.NumeroDocumentoDeIngreso</td>
-                }                
+                }
                 <td>@i.Calle</td>
                 <td>@i.NumeroDeTarjeta</td>
+                <td>@(i.TipoVehiculo != null ? i.TipoVehiculo.DisplayText() : "")</td>
             </tr>
         }
 

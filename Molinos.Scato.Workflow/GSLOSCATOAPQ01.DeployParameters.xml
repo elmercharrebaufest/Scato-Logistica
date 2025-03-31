@@ -23,5 +23,5 @@
   <setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
   <setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
   <setParameter name="WebMobile Config" value="http://localhost/Scato.WebMobile/" />
-
+  <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoWorkflow.log" />
 </parameters>

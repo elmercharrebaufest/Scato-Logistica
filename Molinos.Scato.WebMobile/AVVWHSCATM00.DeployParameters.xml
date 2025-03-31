@@ -18,4 +18,5 @@
 	
 	<setParameter name="ServiciosScatoBinding Security Configuration" value="None" />
   <setParameter name="PersistentSessionLifetime Config" value="8:0:0" />
+  <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoMobile.log" />
 </parameters>

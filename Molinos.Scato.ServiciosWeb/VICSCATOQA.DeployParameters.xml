@@ -44,4 +44,5 @@
 	<setParameter name="URLOperacionesAPI Config" value="http://qabaufest.moaoperaciones.com.ar/externalApi/external/api/" />
 	<setParameter name="APITokenOperacionesAPI Config" value="prueba" />
 	<setParameter name="LogCountAfterMinutes Config" value="5" />
+  <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoServicios.log" />
 </parameters>

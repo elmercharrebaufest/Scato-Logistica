@@ -1,7 +1,9 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
@@ -61,7 +63,8 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaFasDto orden, DatosUsuario datosUsuario, string MotivoDemora, int? Material)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
-            Validar(orden, workflow);
+
+            Validar(orden, workflowObj, datosUsuario);
 
             if (!ModelState.IsValid)
             {
@@ -593,27 +596,26 @@ namespace Molinos.Scato.Web.Controllers
             return orden;
         }
 
-        //TODO Refactorizar 1029-EgresoPorExportacionFCA por constante
-        private void Validar(OrdenCargaFasDto orden, string workflowId)
+        private void Validar(OrdenCargaFasDto orden, WorkflowDto workflow, DatosUsuario datosUsuario)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
-            orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA";
+            orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario && workflow.Codigo != Constantes.WorkFlow.workflowExportacionFCA;
             if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)
             {
                 ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && !orden.PlantaDGDestino.HasValue)
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflow.Codigo != Constantes.WorkFlow.workflowExportacionFCA  && !orden.PlantaDGDestino.HasValue)
             {
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflow.Codigo != Constantes.WorkFlow.workflowExportacionFCA && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
                 ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflow.Codigo != Constantes.WorkFlow.workflowExportacionFCA && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
@@ -633,14 +635,19 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && orden.LocalidadDestinoId <= 0)
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflow.Codigo != Constantes.WorkFlow.workflowExportacionFCA && orden.LocalidadDestinoId <= 0)
             {
                 ModelState.AddModelError("LocalidadDestinoId", string.Format(Textos.Error_Requerido, Textos.Error_Ctg_Localidad));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflowId != "1029-EgresoPorExportacionFCA" && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && workflow.Codigo != Constantes.WorkFlow.workflowExportacionFCA && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
             {
                 ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
+            }
+
+            if(!servicio.ListarMaterialesPorWorkflow(workflow.Id, datosUsuario.CentroId).Where(x => x.MaterialId == orden.MaterialId).Any())
+            {
+                ModelState.AddModelError("MaterialDesc", Textos.MaterialPorWorkflow_NoExistente);
             }
         }
 

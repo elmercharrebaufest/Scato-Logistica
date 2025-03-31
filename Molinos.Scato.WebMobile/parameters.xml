@@ -98,4 +98,9 @@
 						match="/configuration/system.identityModel.services/federationConfiguration/cookieHandler/@requireSsl" />
   </parameter>
 
+  <parameter name="RollingLogFileAppenderFileValue log4net.config">
+    <parameterEntry kind="XmlFile" scope="log4net.config"
+					    match="/log4net/appender[@name='RollingLogFileAppender']/file/@value" />
+  </parameter>
+
 </parameters>

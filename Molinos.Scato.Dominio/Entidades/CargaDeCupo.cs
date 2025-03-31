@@ -37,5 +37,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public bool IngresoAvanceCPEAutomatico { get; set; }
         public string FleteMOA { get; set; }
         public TipoOrdenCargaNoGranos? TipoOrdenCargaNoGranos { get; set; }
+        public virtual TipoVehiculo? TipoVehiculo { get; set; }
     }
 }

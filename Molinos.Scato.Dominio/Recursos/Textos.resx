@@ -10693,4 +10693,7 @@
   <data name="CartaPorte_CupoSalida" xml:space="preserve">
     <value>Cupo Salida</value>
   </data>
+  <data name="Multiples_Clientes_Mismo_Material" xml:space="preserve">
+    <value>Existen múltiples órdenes de diferentes clientes para esta patente y material.</value>
+  </data>
 </root>

@@ -100,6 +100,7 @@
     <Compile Include="Comandos\ConsultarEscalablesDummy.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenInsumos.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenesNoGranosCargaDeCupo.cs" />
+    <Compile Include="Comandos\Consultas\ConsultarTicketsNoGranos.cs" />
     <Compile Include="Comandos\CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Comandos\CrearCaracteristicasAnalizadas.cs" />
     <Compile Include="Comandos\CrearHuellaDigital.cs" />
     <Compile Include="Comandos\EliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarTicketsNoGranos.cs" />
     <Compile Include="Comandos\ResultadoValidarCompliance.cs" />
     <Compile Include="Comandos\VerificarEnCompliance.cs" />
     <Compile Include="Comandos\InformarViajeOrdenesResiduos.cs" />

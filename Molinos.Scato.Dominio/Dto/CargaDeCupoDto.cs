@@ -72,5 +72,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string FleteMOA { get; set; }
         public TipoOrdenCargaNoGranos? TipoOrdenCargaNoGranos { get; set; }
         public bool HayVariosMateriales { get; set; }
+        public TipoVehiculo TipoVehiculo { get; set; }
     }
 }
