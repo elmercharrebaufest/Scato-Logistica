@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 
 namespace Molinos.Scato.Dominio.Helpers
@@ -7,9 +8,18 @@ namespace Molinos.Scato.Dominio.Helpers
     {
         public static void WriteLine(string message)
         {
-            using (StreamWriter outputFile = new StreamWriter(@"C:\ScatoLogs\logTemporal.txt", true))
+            try
             {
-                outputFile.WriteLine($"{DateTime.Now} - {message}");
+                var baseUrl = ConfigurationManager.AppSettings["UrlLogTemporal"];
+                if (string.IsNullOrEmpty(baseUrl)) return;
+                
+                using (StreamWriter outputFile = new StreamWriter(baseUrl, true))
+                {
+                    outputFile.WriteLine($"{DateTime.Now} - {message}");
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
     }

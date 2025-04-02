@@ -3,6 +3,7 @@ using iTextSharp.text.pdf;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using System;
@@ -69,18 +70,21 @@ namespace Molinos.Scato.Actividades
 
                 if (Enum.GetName(typeof(TipoImpresion), TipoImpresion.CartaDePorteElectronica) == documento.CodigoDocumentoImpresion)
                 {
+                    LoggerHelper.WriteLine("Lentitud Impresora - ImpresionGenericaFile CPE Inicio");
                     var recorrido = repositorio.ObtenerRecorridoPorGuid(workflowId);
                     var cartaporteElectronica = repositorio.ObtenerCartaPorteElectronicaPorCTG(recorrido?.NumeroDocumentoIngreso);
 
                     if(!(cartaporteElectronica is null))
                     {
                         ImprimirFileGenerico(servicio, cartaporteElectronica.Pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
-                    }                    
+                        LoggerHelper.WriteLine("Lentitud Impresora - ImpresionGenericaFile CPE Fin");
+                    }
                 } else if (Enum.GetName(typeof(TipoImpresion), TipoImpresion.CartaPorteElectronicaDerivadoGranario) == documento.CodigoDocumentoImpresion)
                 {
                     var cartaporteElectronica = repositorio.ObtenerCartaPorteDerivadoGranarioPorGuid(workflowId);
                     if (cartaporteElectronica != null && !string.IsNullOrEmpty(cartaporteElectronica.RutaFotoCPEDG) && File.Exists(cartaporteElectronica.RutaFotoCPEDG))
                     {
+                        LoggerHelper.WriteLine("Lentitud Impresora - ImpresionGenericaFile CPEDG Inicio");
                         byte[] pdf = null;
                         var document = new Document();
                         using (var stream = new MemoryStream())
@@ -95,6 +99,7 @@ namespace Molinos.Scato.Actividades
                             pdf = stream.ToArray();
                         }
                         ImprimirFileGenerico(servicio, pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
+                        LoggerHelper.WriteLine("Lentitud Impresora - ImpresionGenericaFile CPEDG Fin");
                     }
                 }              
             }

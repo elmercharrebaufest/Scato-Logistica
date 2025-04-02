@@ -48,6 +48,8 @@ namespace Molinos.Scato.ModuloImpresor.Procesamiento
                 resultado.Errores.Add("2", "Ocurrio un error al imprimir el documento.");
             }
 
+            Log.Debug($"Fin impresión de {comando?.CodigoDocumentoImpresion} en la impresora: " +
+                                  comando.Impresora + " hay error: " + resultado.HayErrores);
             return resultado;
         }
 

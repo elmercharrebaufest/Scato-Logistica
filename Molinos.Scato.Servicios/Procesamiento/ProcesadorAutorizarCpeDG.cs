@@ -38,6 +38,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(AutorizarCpeDG comando)
         {
+            Log.Info($"Lentitud Impresora - AutorizarCpeDG Inicio");
             /////////////
             System.Net.ServicePointManager.ServerCertificateValidationCallback =
                 ((sender, certificate, chain, sslPolicyErrors) => true);
@@ -211,12 +212,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 };
 
                 request = autorizarCpeRequest.ToXml();
-                Log.Debug("Inicio la consulta");
-                Log.Debug($"Request Automotor : {request}");
-
-                // Realizo la consulta
+                Log.Debug($"Lentitud Impresora - Request Automotor : {request}");
                 response = serviceAfipCpe.autorizarCPEAutomotorDG(autorizarCpeRequest);
-                Log.Debug("Realizo la consulta ");
+                Log.Debug("Lentitud Impresora - Realizo la consulta ");
 
                 var responseAFIP = response?.respuesta;
                 var rutaFotoCPE = string.Empty;
@@ -319,6 +317,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Repositorio.GuardarCambios();
             }
 
+            Log.Debug("Lentitud Impresora - AutorizarCpeDG Fin");
             return resultado;
         }
 
