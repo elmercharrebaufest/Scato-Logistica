@@ -11109,7 +11109,7 @@ namespace Molinos.Scato.Servicios.Impl
             var ordenesInternas = Listar<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.NumeroOrdenExterno == numero).Select(o => o.NumeroOrden);
             try
             {
-                return Obtener<Recorrido, RecorridoDto>(r => ordenesInternas.Any(orden => r.NumeroDocumentoIngreso.Contains(orden)) && !r.Rechazado);
+                return Obtener<Recorrido, RecorridoDto>(r => ordenesInternas.Any(orden => r.NumeroDocumentoIngreso.Equals(orden)) && !r.Rechazado);
             }
             catch (InvalidOperationException e)
             {
