@@ -13,6 +13,7 @@ namespace Molinos.Scato.Dominio.Comandos
         public int FastPassWorkflowDefinicionId { get; set; }
         public OrdenCargaInternaDto OrdenCargaInterna { get; set; }
         public OrdenCargaInternaFasonDto OrdenCargaInternaFason { get; set; }
+        public OrdenCargaFasDto OrdenCargaFasDto { get; set; }
         public ControlRecorridoDto ControlRecorrido { get; set; }
     }
 }

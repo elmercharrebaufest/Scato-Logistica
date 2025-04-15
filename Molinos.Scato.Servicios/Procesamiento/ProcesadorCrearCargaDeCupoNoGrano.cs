@@ -246,6 +246,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultadoCrearCargaDeCupo.ControlRecorrido = resultadoFastPassInsumos.ControlRecorrido;
                     fastPassValido = !resultadoFastPassInsumos.HayErrores;
                     break;
+                case TipoOrdenCargaNoGranos.Fas:
+                    var resultadoFastPassFas = ValidarFastPassFas(comando);
+                    resultadoCrearCargaDeCupo.OrdenCargaFasDto = resultadoFastPassFas.Dto;
+                    resultadoCrearCargaDeCupo.ControlRecorrido = resultadoFastPassFas.ControlRecorrido;
+                    fastPassValido = !resultadoFastPassFas.HayErrores;
+                    break;
             }
 
             if (!fastPassValido)
@@ -288,6 +294,29 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (respuesta.HayErrores)
             {
                 Log.Error("Error al validar FastPass Fason: {0}", respuesta.Errores.Values.FirstOrDefault());
+            }
+
+            return respuesta;
+        }
+
+        private ResultadoOrdenFas ValidarFastPassFas(CrearCargaDeCupoNoGrano comando)
+        {
+            var respuesta = servicioComandos.Ejecutar(new ValidarOrdenCargaInternaFas()
+            {
+                CentroId = comando.Dto.CentroId,
+                Usuario = comando.Usuario,
+                AplicaFastPass = true,
+                Orden = new OrdenDeCargaDto
+                {
+                    PatenteChasis = comando.Dto.Patente,
+                    Id = comando.OrdenOperacionesId.GetValueOrDefault(),
+                    MaterialId = comando.Dto.MaterialId.ToString(),
+                }
+            }) as ResultadoOrdenFas;
+
+            if (respuesta.HayErrores)
+            {
+                Log.Error("Error al validar FastPass Fas: {0}", respuesta.Errores.Values.FirstOrDefault());
             }
 
             return respuesta;

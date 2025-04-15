@@ -5,6 +5,7 @@ using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
@@ -42,13 +43,15 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IServicioActividadFactory<ICargarCartaPorteService> factory;
         private readonly IServicioActividadFactory<IIngresarOrdenCargaInternaService> factoryNoProductivo;
         private readonly IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factoryFason;
+        private readonly IServicioActividadFactory<IIngresarOrdenCargaFasService> factoryFas;
 
         public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
             IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador,
             IConfiguracionProvider configuracion, IFirmaProvider firma,
             IServicioActividadFactory<ICargarCartaPorteService> factory, 
             IServicioActividadFactory<IIngresarOrdenCargaInternaService> factoryNoProductivo,
-            IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factoryFason)
+            IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factoryFason,
+            IServicioActividadFactory<IIngresarOrdenCargaFasService> factoryFas)
             : base(servicio)
         {
             this.servicioComandos = servicioComandos;
@@ -61,6 +64,7 @@ namespace Molinos.Scato.Web.Controllers
             this.configuracion = configuracion;
             this.factoryNoProductivo = factoryNoProductivo;
             this.factoryFason = factoryFason;
+            this.factoryFas = factoryFas;
         }
 
         [DatosUsuario]
@@ -229,12 +233,21 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var servicioWf = factoryNoProductivo.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
                 servicioWf.IngresarOrdenCargaInterna(resultadoCrearCupoNoGrano.OrdenCargaInterna, datosUsuario.CentroId, Constantes.WorkFlow.workflowMaterialNoProductivo, resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, datosUsuario.NombreUsuario, resultadoCrearCupoNoGrano.ControlRecorrido);
-            } else
+            } 
+            else if(cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.Fas)     
+            {
+                var workflow = Constantes.WorkFlow.workflowVentaFas;
+                var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+                var servicioWf = factoryFas.CrearServicio(workflowDefinicionId);
+                var resultadoActividad = servicioWf.IngresarOrdenCargaFas(resultadoCrearCupoNoGrano.OrdenCargaFasDto, datosUsuario.CentroId, workflow, workflowDefinicionId, resultadoCrearCupoNoGrano.OrdenCargaFasDto.ValidaCompliance, datosUsuario.NombreUsuario, resultadoCrearCupoNoGrano.ControlRecorrido) as ResultadoCrearWorkflow;
+            }
+            else
             {
                 var workflow = cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.FasonConFlete ? Constantes.WorkFlow.workflowFason : Constantes.WorkFlow.workflowFasonSinFlete ;
                 var servicioWf = factoryFason.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
                 var resultadoActividad = servicioWf.IngresarOrdenCargaInternaFason(resultadoCrearCupoNoGrano.OrdenCargaInternaFason, datosUsuario.CentroId, workflow, resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, datosUsuario.NombreUsuario, resultadoCrearCupoNoGrano.ControlRecorrido) as ResultadoCrearWorkflow;
             }
+            
             servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = false });
         }
 

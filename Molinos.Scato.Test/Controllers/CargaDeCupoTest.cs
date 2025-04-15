@@ -44,6 +44,7 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<HttpContextBase> httpContextMock;
         private Mock<HttpResponseBase> httpResponseMock;
         private Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService>> factoryFason;
+        private Mock<IServicioActividadFactory<IIngresarOrdenCargaFasService>> factoryFas;
 
         [SetUp]
         public void SetUp()
@@ -58,6 +59,7 @@ namespace Molinos.Scato.Test.Controllers
             factory = new Mock<IServicioActividadFactory<ICargarCartaPorteService>>();
             factoryNoProductivo = new Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaService>>();
             factoryFason = new Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService>>();
+            factoryFas = new Mock<IServicioActividadFactory<IIngresarOrdenCargaFasService>>();
             httpContextMock = new Mock<HttpContextBase>();
             httpResponseMock = new Mock<HttpResponseBase>();
             datos = new DatosUsuario
@@ -71,7 +73,7 @@ namespace Molinos.Scato.Test.Controllers
             target = new CargaDeCupoController(log, servRepositorioMock.Object, servComandoMock.Object,
                 listaMock.Object, servicioSap.Object, servOrquestador.Object, configuracion.Object,
                 firma.Object, factory.Object, factoryNoProductivo.Object,
-                factoryFason.Object);
+                factoryFason.Object, factoryFas.Object);
 
             cargaDeCupo = new CargaDeCupoDto
             {

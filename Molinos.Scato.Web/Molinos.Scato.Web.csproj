@@ -2496,6 +2496,8 @@
     <Content Include="Views\CargarCartaPorteByPass\Camion.cshtml" />
     <Content Include="Views\CargarCartaPorteByPass\Index.cshtml" />
     <Content Include="Views\CargarCartaPorteByPass\Vagon.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\_OrdenCargaInternaDetalle.cshtml" />
+    <Content Include="Views\IngresarOrdenCargaFas\_OrdenDetalle.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

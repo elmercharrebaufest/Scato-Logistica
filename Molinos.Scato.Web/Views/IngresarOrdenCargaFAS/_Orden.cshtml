@@ -13,6 +13,16 @@
     var listaMaterialesDerivadoGranario = (List<int>)ViewBag.MaterialesDerivadoGranario;
 }
 <script> var workflowCodigo = @Html.Raw(Json.Encode(ViewBag.workflowCodigo)); </script>
+
+<style>
+    /* Evitar que el select se abra */
+    .readonly {
+        pointer-events: none;
+        cursor: not-allowed;
+        background-color: #eeeeee;
+    }
+</style>
+
 <div id="links"
      data-url-buscar-choferes="@Url.Action("BuscarChoferes", "Consultas")"
      data-url-buscar-chofer-unico="@Url.Action("BuscarChoferUnico", "Consultas")"
@@ -69,7 +79,7 @@
             <div class="control-group control-group-zero-bottom">
                 @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new { @class = "control-group control-group-zero-bottom ", autocomplete = "off" })
+                    @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, "(tipo vehículo)", new { @class = "control-group control-group-zero-bottom ", autocomplete = "off" })
                     @Html.ValidationMessageFor(model => model.TipoVehiculo)
                 </div>
             </div>
@@ -158,13 +168,13 @@
                     @Html.ValidationMessageFor(model => model.TipoComercialId)
                 </div>
             </div>
-            <div class="control-group control-group-zero-bottom">
+            @*<div class="control-group control-group-zero-bottom">
                 @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label small" })
                 <div class="">
                     @Html.DropDownListFor(model => model.LocalidadDestinoId, kmdropdown, new { @id = "localidadDestinoDropdown", data_val = "false" })
                     @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
                 </div>
-            </div>
+            </div>*@
             <div class="control-group control-group-zero-bottom derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label small" })
                 <div>
@@ -246,7 +256,7 @@
                         @Html.ValidationMessageFor(model => model.Chofer.Apellido)
                     </div>
                 </div>
-                <div class="control-group control-group-zero-bottom paddingRight">
+                <div class="control-group control-group-zero-bottom paddingRight" id="divKmARecorrer">
                     @Html.LabelFor(model => model.KmARecorrer, new { @class = "control-label small" })
                     <div class="">
                         @Html.TextBoxFor(model => model.KmARecorrer, new { @class = "control-group control-group-zero-bottom " })

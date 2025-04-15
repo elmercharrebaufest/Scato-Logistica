@@ -3,6 +3,7 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
@@ -750,7 +751,7 @@ namespace Molinos.Scato.Web.Controllers
             try
             {
                 log.Debug("Obteniendo Tipo de vehiculo por patente {0} workflow {1}", patente, workflow);
-                var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = acoplado2, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
+                var resultadoEscalables = servicioComandos.Ejecutar(GenerarConsultaEscalables(patente, acoplado, acoplado2 , datosUsuario.NombreUsuario)) as ResultadoEscalables;
 
                 log.Debug(resultadoEscalables.HayErrores ? "Error al obtener el tipo de vehiculo por patente{0}: " + resultadoEscalables.Errores.Values.First() : "Devolviendo el tipo de vehiculo por patente {0}", patente);
 
@@ -871,5 +872,26 @@ namespace Molinos.Scato.Web.Controllers
                 : new Regex(@"(^[A-Z]{3}[0-9]{3}$)|(^[A-Z]{2}[0-9]{3}[A-Z]{2}$)");
             return patenteRegex.IsMatch(patente.ToUpper());
         }
+
+        private Dominio.Comandos.Comando GenerarConsultaEscalables(string patente, string acoplado, string acoplado2 ,string usuario)
+        {
+            if (ValidarDummyActivo())
+            {
+                return new ConsultarEscalablesDummy { Patente = patente, Acoplado = acoplado, Acoplado2 = acoplado2, Usuario = usuario };
+            }
+
+            else
+            {
+                return new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = acoplado2, Usuario = usuario };
+            }
+
+        }
+
+        private bool ValidarDummyActivo()
+        {
+            var configuracionGeneral = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.IngresarOrdenCargaInternaFason, Constantes.ConfiguracionGeneral.CNRT.CNRTDummy, null);
+            return configuracionGeneral is null ? false : bool.Parse(configuracionGeneral.Valor);
+        }
+
     }
 }

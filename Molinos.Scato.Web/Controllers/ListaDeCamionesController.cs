@@ -155,6 +155,13 @@ namespace Molinos.Scato.Web.Controllers
                 nameWorkflow = Constantes.WorkFlow.workflowMaterialNoProductivo;
                 return RedirectToAction("Index", Constantes.EtapaWorkflow.MaterialNoProductivo, new { workflow = nameWorkflow, cargaDeCupoId = id });
             }
+
+            if (tipoOrdenCargaNoGranos.HasValue && tipoOrdenCargaNoGranos.Value == TipoOrdenCargaNoGranos.Fas)
+            {
+                nameWorkflow = Constantes.WorkFlow.workflowVentaFas;
+                return RedirectToAction("Index", Constantes.EtapaWorkflow.IngresarOrdenCargaFas, new { workflow = nameWorkflow, cargaDeCupoId = id });
+            }
+
             return RedirectToAction("Index", proximaAccion, new { id });
         }
 

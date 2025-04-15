@@ -50,12 +50,12 @@ namespace Molinos.Scato.Dominio.Dto.OperacionesAPI
         public string MaterialId { get; set; }
         public long DestinatarioId { get; set; }
         public long PagadorFleteId { get; set; }
+        public string KmARecorrer { get; set; }
 
         #endregion
 
         #region -- Campos Fason --
 
-        public string KmARecorrer { get; set; }
         public string FechaRetiro { get; set; }
 
         #endregion

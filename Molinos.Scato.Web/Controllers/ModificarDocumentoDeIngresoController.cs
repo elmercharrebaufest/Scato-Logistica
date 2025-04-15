@@ -10,6 +10,7 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using Ninject.Planning;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -196,8 +197,9 @@ namespace Molinos.Scato.Web.Controllers
             else if ((tipoDoc == TipoDocumentoIngreso.OrdenCargaFas))
             {
                 var orden = servicio.ObtenerOrdenCargaFasPorInstanceId(recorrido.InstanciaWorkflow);
-                IngresarOrdenCargaFasController.SetearVista(recorrido.Workflow, servicio, this);
 
+                ObtenerPlantaYDomicilio(ref orden, recorrido.Centro.Id);
+                IngresarOrdenCargaFasController.SetearVista(recorrido.Workflow, servicio, this);
                 return View("OrdenCargaFas", orden);
             }
             else if ((tipoDoc == TipoDocumentoIngreso.OrdenCargaInternaFason))
@@ -1074,6 +1076,38 @@ namespace Molinos.Scato.Web.Controllers
         private string EspacioEntreMayusculas(string palabra)
         {
             return String.Concat(palabra.ToString().Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+        }
+
+        private void ObtenerPlantaYDomicilio(ref OrdenCargaFasDto orden , int  centroId)
+        {
+            var result = new ResultadoConsultaDomiciliosDG();
+            var cuit = "0";
+            if (!string.IsNullOrEmpty(orden.ClienteCuit))
+            {
+                cuit = orden.ClienteCuit.Replace("-", string.Empty);
+            }
+            else
+            {
+                var cliente = servicio.ObtenerCliente(orden.ClienteId);
+                if (cliente == null)
+                {
+                    result.Errores.Add("2", "No existe el cliente ingresado.");
+                    
+                }
+                cuit = cliente.Cuit.Replace("-", string.Empty);
+            }
+            result = servicioComandos.Ejecutar(new ConsultarDomiciliosDG
+            {
+                CentroId = centroId,
+                Cuit = long.Parse(cuit)
+            }) as ResultadoConsultaDomiciliosDG;
+
+            if (!result.HayErrores)
+            {
+                result.Errores.ToList().ForEach(f => ModelState.AddModelError("ClienteCuit", f.Value));
+            }
+            orden.PlantaDescripcion = $"Planta Nro. {orden.PlantaDGDestino}";
+            orden.Domicilio = $"({orden.TipoDomicilioDestino}-{orden.OrdenDomicilioDestino}){result.Domicilios.FirstOrDefault().Descripcion}";
         }
     }
 }

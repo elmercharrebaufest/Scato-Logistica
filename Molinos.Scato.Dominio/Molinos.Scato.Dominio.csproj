@@ -97,6 +97,7 @@
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarAsignacionAutomatismoGranoEnRecorrido .cs" />
+    <Compile Include="Comandos\ConsultarOrdenCargaFas.cs" />
     <Compile Include="Comandos\ConsultarEscalablesDummy.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenInsumos.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenesNoGranosCargaDeCupo.cs" />
@@ -111,8 +112,11 @@
     <Compile Include="Comandos\CrearCaracteristicasAnalizadas.cs" />
     <Compile Include="Comandos\CrearHuellaDigital.cs" />
     <Compile Include="Comandos\EliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Comandos\ResultadoConsultaOrdenCargaFas.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoOrdenFas.cs" />    
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarTicketsNoGranos.cs" />
     <Compile Include="Comandos\ResultadoValidarCompliance.cs" />
+    <Compile Include="Comandos\ValidarOrdenCargaInternaFas.cs" />
     <Compile Include="Comandos\VerificarEnCompliance.cs" />
     <Compile Include="Comandos\InformarViajeOrdenesResiduos.cs" />
     <Compile Include="Comandos\EliminarKmPorProveedor.cs" />
@@ -810,6 +814,7 @@
     <Compile Include="Dto\ConfirmacionCargaDescargaDto.cs" />
     <Compile Include="Dto\CartaPorteDerivadoGranarioDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenResiduosDto.cs" />
+    <Compile Include="Dto\OrdenDeCargaSapDto.cs" />
     <Compile Include="Dto\OrdenNoGranosCargaDeCupoDto.cs" />
     <Compile Include="Dto\PuntoDeCargaDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaComplementarioDto.cs" />
@@ -1793,6 +1798,7 @@
     <Compile Include="Seguridad\PermisosScato.cs" />
     <Compile Include="Entidades\SensorBarrera.cs" />
     <Compile Include="Validations\Interfaces\IValidatorEntity.cs" />
+    <Compile Include="Validations\OrdenCargaFasValidator.cs" />
     <Compile Include="Validations\OrdenCargaInternaFasonValidator.cs" />
   </ItemGroup>
   <ItemGroup>

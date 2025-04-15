@@ -46,7 +46,7 @@ jQuery(document).ready(function () {
                 LlenarDatos(orden[0]);
                 $(".btn-primary").attr("disabled", false);
                 $("#TipoComercialId").attr("disabled", false);
-                completarKmRecorrerYLocalidad();
+                /*completarKmRecorrerYLocalidad();*/
             }
         });
     });
@@ -97,7 +97,7 @@ jQuery(document).ready(function () {
             $(this).addClass("italic");
     });
     DefinirAutocompletarChofer();
-    completarKmRecorrerYLocalidad();
+   
     $('#localidadDestinoDropdown').change(function () {
         $('#KmARecorrer').val($('#localidadDestinoDropdown :selected').data('kilometros'));
     });
@@ -163,7 +163,7 @@ function deshabilitarKmRecorrerYLocalidad() {
         $('#KmARecorrer').val("");
         $('#LocalidadDestinoId').val(0);
         $('#localidadDestinoDropdown').html(null);
-        $('#KmARecorrer').attr("disabled", true);
+       // $('#KmARecorrer').attr("disabled", true);
         $('#localidadDestinoDropdown').attr("disabled", true);
     }
 }
@@ -291,9 +291,9 @@ function LlenarDatos(datos) {
         $('#ValidaCompliance').val(datos.ValidaCompliance);
         $('#TipoComercialId').val(datos.TipoComercialId);
         $('#TipoComercialDEsc').val(datos.TipoComercialDesc);
-        if ($('#LocalidadSeleccionada').val() == '0') {
-            $('#KmARecorrer').val("")
-        }
+        //if ($('#LocalidadSeleccionada').val() == '0') {
+        //    $('#KmARecorrer').val("")
+        //}
         $('#PlantaSeleccionada').val(datos.PlantaDGDestino);
         $('#OrdenDomicilioDestino').val(datos.OrdenDomicilioDestino);
         $('#TipoDomicilioDestino').val(datos.TipoDomicilioDestino);
@@ -332,6 +332,32 @@ function LlenarDatos(datos) {
         } else if ($("#RemitenteId").val() != '') {
             $("#controlRemitente").show();
         }
+
+        if (datos.PlantaDGDestino > 0) {
+            $('#PlantaDGDestino').addClass("readonly");
+        }
+        else {
+            $('#PlantaDGDestino').removeClass("readonly");
+        }
+
+        if (datos.OrdenDomicilioDestino > 0 && datos.TipoDomicilioDestino > 0) {
+            $('#TipoYOrdenDestino').addClass("readonly");
+        }
+        else {
+            $('#TipoYOrdenDestino').removeClass("readonly");
+        }
+        $("#PagadorFlete").attr("readonly", "readonly");
+        $("#Corredor").attr("readonly", "readonly");
+       
+        datos.TieneKmARecorrer ? $('#KmARecorrer').attr("readonly", "readonly") : $('#KmARecorrer').removeAttr("disabled");
+        $('#KmARecorrer').val(datos.KmARecorrer);
+        $("#TipoComercialId").addClass("readonly");
+        $("#Chofer_Cuil").attr("readonly", "readonly");
+        $("#Chofer_TipoDocumentoIdentidadId").addClass("readonly");
+        $("#Chofer_Nombre").attr("readonly", "readonly");
+        $("#Chofer_Apellido").attr("readonly", "readonly");
+
+
     }
 }
 
@@ -360,16 +386,21 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
             if (data.Categoria != null) {
                 if ($('#TipoVehiculo option[value=' + data.Categoria + ']').length == 0) {
                     MostrarAlertaError("La categoría del vehículo " + data.CategoriaDesc + " no esta configurada para el centro actual");
+                    $("#TipoVehiculo").removeClass("readonly");
                 } else {
                     $('#TipoVehiculo').val(data.Categoria);
+                    $("#TipoVehiculo").addClass("readonly");
                 }
             } else {
                 MostrarAlertaError("El servicio CNRT no devolvió información sobre la categoría del vehículo, debe ingresarla manualmente.");
+                $("#TipoVehiculo").removeClass("readonly");
             }
         } else if (data.CodigoDeError == 1) {
             $('.btn').removeAttr('disabled');
+            $("#TipoVehiculo").removeClass("readonly");
         } else {
             MostrarAlertaAdvertencia(data.Error);
+            $("#TipoVehiculo").removeClass("readonly");
         }
     }).complete(function () {
         if (callback != null) callback();
@@ -500,5 +531,7 @@ function ValidarDerivadoGranario() {
        /* $('#TipoYOrdenDestino').val('');*/
         $('#PagadorFlete').val('');
         $('#PagadorFleteId').val('');
+        $("#divKmARecorrer").css("display", "none");
+        $("#KmARecorrer").removeAttr("required");
     }
 }

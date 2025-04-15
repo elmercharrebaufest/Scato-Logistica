@@ -52,6 +52,7 @@ namespace Molinos.Scato.Dependencias
             Bind<IValidatorEntity<OrdenCargaInternaFasonDto>>().To<OrdenCargaInternaFasonValidator>();
             Bind<IExternalServiceException, ExternalServiceException>().To<ExternalServiceException>();
             Bind<IRestClientFactory, RestClientFactory>().To<RestClientFactory>().InSingletonScope();
+            Bind<IValidatorEntity<OrdenCargaFasDto>>().To<OrdenCargaFasValidator>();
 
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<LoginCMS>("LoginCms");

@@ -41,7 +41,7 @@
     @Html.Partial("_Orden")
 
     <div class="control-group paddingRight cajaButtons">
-        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaFas.showModal()" disabled>@Textos.Rechazar</button>
+        @*<button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaFas.showModal()" disabled>@Textos.Rechazar</button>*@
         @if (aceptaPendiente)
         {
             <button id="pendiente" class="btn btn-warning" type="button">@Textos.Demorar</button>

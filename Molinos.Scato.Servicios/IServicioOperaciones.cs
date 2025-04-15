@@ -14,6 +14,7 @@ namespace Molinos.Scato.Servicios
         /// <returns></returns>
         IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente);
         IEnumerable<OrdenResiduosDto> ObtenerOrdenesResiduos(string patente);
+        IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCargaFas(string patente);
 
         /// <summary>
         /// InformarViajeOrdenesDeCargaFason

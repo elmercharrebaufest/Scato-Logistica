@@ -390,6 +390,7 @@
     <Compile Include="Impl\ServicioCircular.cs" />
     <Compile Include="Impl\ServicioLlamadoAutomatico.cs" />
     <Compile Include="Impl\ServicioOperaciones.cs" />
+    <Compile Include="Impl\ServicioOperacionesMock .cs" />
     <Compile Include="InnerException.cs" />
     <Compile Include="Interfaces\Balanzada\IServicioCarga.cs" />
     <Compile Include="IRestClientFactory.cs" />
@@ -576,6 +577,7 @@
     <Compile Include="Procesamiento\ProcesadoLimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarOrdenCargaFas.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarEscalablesDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuerto.cs" />
@@ -587,6 +589,7 @@
     <Compile Include="Procesamiento\ProcesadorCrearCaracteristicasAnalizadas.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearHuellaDigital.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarOrdenCargaInternaFas.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarTicketsNoGranos.cs" />
     <Compile Include="Procesamiento\ProcesadorVerificarEnCompliance.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarViajeOrdenesResiduos.cs" />
@@ -1275,6 +1278,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Impl\ServicioSapMock.cs" />
     <Compile Include="TransmisionesCupoEnErrorDto.cs" />
   </ItemGroup>
   <ItemGroup>

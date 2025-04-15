@@ -43,7 +43,7 @@
     @Html.Partial("~/Views/IngresarOrdenCargaFas/_Orden.cshtml");
 
     <div class="control-group paddingRight cajaButtons">
-        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaFas.showModal()" disabled>@Textos.Rechazar</button>
+        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaFas.showModal()">@Textos.Rechazar</button>
         <button class="btn btn-primary" type="submit">@Textos.Aceptar</button>
         @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
     </div>

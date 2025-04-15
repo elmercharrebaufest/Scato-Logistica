@@ -89,6 +89,8 @@
                 public const string CrearCartaPorteByPass = "CrearCartaPorteByPass";
                 public const string PesadaBruto = "PesadaBruto";
                 public const string CargaDeCupo = "CargaDeCupo";
+                public const string ServicioSap = "ServicioSap";
+                public const string ServicioOperaciones = "ServicioOperaciones";
             }
 
             public struct ContingenciaPesosExcedidos
@@ -170,6 +172,14 @@
             {
                 public const string MaterialExcepcionFastPass = "MaterialExcepcionFastPass";
             }
+
+            public struct Servicios
+            {
+                public const string OperacionesDummy = "OperacionesDummy";
+                public const string OperacionesDummyResponse = "OperacionesDummyResponse";
+                public const string SapDummy = "SapDummy";
+                public const string SapDummyResponse = "SapDummyResponse";
+            }
         }
 
         public struct EtapaWorkflow
@@ -180,6 +190,7 @@
             public const string PesadaTara = "PesadaTara";
             public const string OrdenCargaInterna = "IngresarOrdenCargaInternaFason";
             public const string MaterialNoProductivo = "IngresarOrdenCargaInterna";
+            public const string IngresarOrdenCargaFas = "IngresarOrdenCargaFas";
         }
 
         public struct CartelTramaPare

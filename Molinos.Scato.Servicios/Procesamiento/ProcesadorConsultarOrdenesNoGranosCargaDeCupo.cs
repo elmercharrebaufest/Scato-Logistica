@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -15,6 +16,8 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
+using NPOI.POIFS.Properties;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -41,7 +44,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 var ordenesFason = servicioOperaciones.ObtenerOrdenesDeCarga(comando.Patente);
                 var ordenesInsumos = servicioOperaciones.ObtenerOrdenesResiduos(comando.Patente);
-                var ordenesCargaDeCupo = ProcesarOrdenes(ordenesFason, ordenesInsumos, comando);
+                var centro = Repositorio.Obtener<Dominio.Entidades.Centro>(c=> c.Id == comando.CentroId);
+                OrdenDeCargaSapDto orden = new OrdenDeCargaSapDto(centro.CodigoSAP, comando.Patente, Constantes.WorkFlow.workflowVentaFas);
+                var ordenesFas = servicioComandos.Ejecutar(new ConsultarOrdenCargaFas { Orden = orden }) as ResultadoConsultaOrdenCargaFas;
+
+                var ordenesCargaDeCupo = ProcesarOrdenes(ordenesFason, ordenesInsumos, ordenesFas.Orden ,comando);
                 resultado.Ordenes.AddRange(ordenesCargaDeCupo.Distinct(comparador));
             }
             catch (WebException ex)
@@ -84,6 +91,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private IEnumerable<OrdenNoGranosCargaDeCupoDto> ProcesarOrdenes(
             IEnumerable<OrdenDeCargaDto> ordenesFason,
             IEnumerable<OrdenResiduosDto> ordenesInsumos,
+            IEnumerable<OrdenCargaFasDto> ordenesFas,
             ConsultarOrdenesNoGranosCargaDeCupo comando)
         {
             var ordenesCargaDeCupo = new List<OrdenNoGranosCargaDeCupoDto>();
@@ -111,6 +119,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 ordenesCargaDeCupo.Add(ordenCarga);
             }
 
+            if(ordenesFas != null && ordenesFas?.Count() > 0)
+            {
+                foreach (var orden in ordenesFas)
+                {
+                    if (OrdenUtilizadaFas(orden.Id))
+                        continue;
+                    var materialId = orden.MaterialId;
+                    var ordenCarga = GenerarOrdenCarga(materialId, orden.MaterialDesc, TipoOrdenCargaNoGranos.Fas);
+                    ordenesCargaDeCupo.Add(ordenCarga);
+                }
+            }
+            
+
             return ordenesCargaDeCupo;
         }
 
@@ -123,6 +144,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             return Repositorio.Existe<OrdenCargaInterna>(x => x.Id_operaciones == ordenOperacionesId && (x.Recorrido.Rechazado == false || x.Recorrido.Terminado == false));
         }
+
+        private bool OrdenUtilizadaFas(int ordenId)
+        {
+            return Repositorio.Existe<OrdenCargaFas>(x => x.Id == ordenId && (x.Recorrido.Rechazado == false || x.Recorrido.Terminado == false));
+        }
+
 
         private OrdenNoGranosCargaDeCupoDto GenerarOrdenCarga(int materialId, string materialDescripcion, TipoOrdenCargaNoGranos tipoOrden)
         {
@@ -153,7 +180,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var ordenesCargaDeCupo = new List<OrdenNoGranosCargaDeCupoDto>();
 
-            var centroCodigoSap = Repositorio.ObtenerProyeccion<Centro, string>(x => x.Id == comando.CentroId, x => x.CodigoSAP);
+            var centroCodigoSap = Repositorio.ObtenerProyeccion<Dominio.Entidades.Centro, string>(x => x.Id == comando.CentroId, x => x.CodigoSAP);
             var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
             {
                 Centro = centroCodigoSap,

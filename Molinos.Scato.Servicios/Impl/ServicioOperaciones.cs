@@ -186,6 +186,50 @@ namespace Molinos.Scato.Servicios.Impl
 
         #endregion
 
+        #region -- FAS --
+
+        /// <summary>
+        /// Obtiene las órdenes de carga de un vehículo de FAS por patente, siendo su origen MOA Operaciones.
+        /// </summary>
+        /// <param name="patente">La patente.</param>
+        /// <returns>La lista de órdenes de FAS.</returns>
+        public IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCargaFas(string patente)
+        {
+            if (string.IsNullOrWhiteSpace(patente))
+                throw externalServiceException.ThrowException("La patente no puede estar vacía.");
+
+            IEnumerable<OrdenDeCargaDto> ordenes = null;
+            const string RECURSO = "ObtenerOrdenesDeCarga";
+            const bool FASON = false;
+            const bool FAS = true;
+
+            IRestResponse<IEnumerable<OrdenDeCargaDto>> restResponse;
+
+            try
+            {
+                var request = this.CrearRequest(RECURSO);
+                request.AddParameter("patenteChasis", patente);
+                request.AddParameter("fason", FASON);
+                request.AddParameter("fas", FAS);
+
+                var client = clientFactory.CrearClientOperaciones();
+                restResponse = client.Get<IEnumerable<OrdenDeCargaDto>>(request);
+
+                ordenes = restResponse.Data;
+            }
+            catch (Exception ex)
+            {
+                throw externalServiceException.ThrowException("Error general al consumir el servicio externo MOAOperaciones.", ex.Message, ex);
+            }
+
+            if (!restResponse.IsSuccessful)
+                RespuestaError(restResponse);
+
+            return ordenes;
+        }
+
+        #endregion
+
         private void RespuestaError(IRestResponse restResponse)
         {
             ErrorResponse errorContent;

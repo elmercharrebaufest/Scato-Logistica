@@ -1,0 +1,237 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.OrdenCargaFasDto
+@{
+    var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
+    var tiposDocumentos = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentos;
+    var kmdropdown = new List<SelectListItem>();
+    var plantasDG = new List<SelectListItem>();
+    var domiciliosDG = new List<SelectListItem>();
+    var listaMaterialesDerivadoGranario = (List<int>)ViewBag.MaterialesDerivadoGranario;
+}
+
+@Html.Hidden("EsModificacion", "True")
+<style>
+    .paddingRight {
+        display: inline-block;
+    }
+</style>
+<div id="links"
+     data-url-buscar-choferes="@Url.Action("BuscarChoferes", "Consultas")"
+     data-url-buscar-chofer-unico="@Url.Action("BuscarChoferUnico", "Consultas")"
+     data-url-buscar-kmporproveedor="@Url.Action("BuscarKmPorProveedor", "Consultas")"
+     data-url-obtener-clientes-sap="@Url.Action("ObtenerClientesSap", "Consultas")"
+     data-url-buscar-clientes="@Url.Action("BuscarClientes", "Consultas")"
+     data-url-buscar-cliente-unico="@Url.Action("BuscarCliente", "Consultas")"
+     data-url-obtener-plantas-por-cliente="@Url.Action("ObtenerPlantasDGPorClienteId", "Consultas")"
+     data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")">
+</div>
+@Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
+@Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)
+@Html.Hidden("PlantaSeleccionada", Model.PlantaDGDestino)
+@Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
+
+@Html.HiddenFor(model => model.OrdenDomicilioDestino)
+@Html.HiddenFor(model => model.TipoDomicilioDestino)
+@Html.HiddenFor(model => model.RecorridoId)
+
+<div class="row-fluid row-fluid-ie7">
+    <div class="span6">
+        <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.NumeroCTG, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.NumeroCTG)
+            </div>
+        </div>
+        <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.NumeroCPE, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.NumeroCPE)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row-fluid row-fluid-ie7">
+    <div class="span6">
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.TipoVehiculo)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.PatenteCamion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.PatenteCamion)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.PatenteAcoplado, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.PatenteAcoplado)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.ClienteDesc, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.ClienteDesc)
+                @Html.HiddenFor(model => model.ClienteId)
+            </div>
+        </div>
+        <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.DestinatarioDesc, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.DestinatarioDesc)
+                @Html.HiddenFor(model => model.DestinatarioId)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.Comisionista, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.Comisionista)
+                @Html.HiddenFor(model => model.ComisionistaId)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.Remitente, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.Remitente)
+                @Html.HiddenFor(model => model.RemitenteId)
+            </div>
+        </div>
+        @*<div class="control paddingRight">
+            @Html.LabelFor(model => model.CuitDestinatario, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.CuitDestinatario)
+                @Html.ValidationMessageFor(model => model.CuitDestinatario)
+            </div>
+        </div>*@
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.TransportistaDesc, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.TransportistaDesc)
+            </div>
+        </div>
+        <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.IntermediarioFlete)
+                @Html.HiddenFor(model => model.IntermediarioFleteId)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.MaterialDesc, new { @class = "control-label " })
+            <div class="controls">
+                @Html.DisplayFor(model => model.MaterialDesc)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.NumeroOrden, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.NumeroOrden)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.TipoComercialDesc, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.TipoComercialDesc)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.LocalidadDestinoId, new { @class = "control-label" })
+            <div class="controls">
+             @Html.DisplayFor(moodel => moodel.LocalidadDestinoDescripcion)
+            </div>
+        </div>
+        <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label" })
+            <div class="controls">
+               @Html.DisplayFor(model => model.PlantaDescripcion);
+            </div>
+        </div>
+        <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.TipoYOrdenDestino, new { @class = "control-label" })
+            <div class="controls">
+                <div>
+                    @Html.DisplayFor(model => model.Domicilio);
+                </div>
+            </div>
+        </div>
+        <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.PagadorFlete, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.PagadorFlete)
+                @Html.HiddenFor(model => model.PagadorFleteId)
+            </div>
+        </div>
+        <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.Corredor, new { @class = "control-label" })
+            <div class="controls">
+                <div>
+                    @Html.DisplayFor(model => model.Corredor)
+                    @Html.HiddenFor(model => model.CorredorId)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="row-fluid">
+            @Html.HiddenFor(model => model.Chofer.Id)
+            <div class="control-group paddingRight">
+                @Html.Label(Textos.DatosDelChofer, new { @class = "control-label strong" })
+            </div>
+            <div class="span12">
+                <div class="control paddingRight">
+                    @Html.LabelFor(model => model.Chofer.Nombre, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Chofer.Nombre, new { @class = "control input-medium autocompletado-obligatorio", @disabled = "disabled", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Apellido" }) })
+                        @Html.ValidationMessageFor(model => model.Chofer.Nombre)
+                    </div>
+                </div>
+                <div class="control paddingRight">
+                    @Html.LabelFor(model => model.Chofer.Apellido, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Chofer.Apellido, new { @class = "control input-medium autocompletado-obligatorio", @disabled = "disabled", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Apellido" }) })
+                        @Html.ValidationMessageFor(model => model.Chofer.Apellido)
+                    </div>
+                </div>
+                <div class="control paddingRight">
+                    @Html.LabelFor(model => model.Chofer.TipoDocumentoIdentidadId, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.Chofer.TipoDocumentoIdentidadId, tiposDocumentos, new { @class = "control input-medium", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Chofer.TipoDocumentoIdentidadId)
+                    </div>
+                </div>
+                <div class="control paddingRight">
+                    @Html.LabelFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control input-medium autocompletado-obligatorio", @disabled = "disabled", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Documento" }) })
+                        @Html.ValidationMessageFor(model => model.Chofer.NumeroDeDocumento)
+                    </div>
+                </div>
+                <div class="control paddingRight">
+                    @Html.LabelFor(model => model.Chofer.Cuil, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control input-medium cuilValido", data_error_cuil_invalido = string.Format(Textos.CuitInvalido), data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Cuil" }) })
+                        @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control input-medium" })
+
+                        @Html.ValidationMessageFor(model => model.Chofer.Cuil)
+                    </div>
+                </div>
+                <div class="control paddingRight">
+                    <label class="control-label">Extranjero</label>
+                    <div class="controls">
+                        <input name="esExtranjero" type="checkbox" value="false" id="esExtranjero" class="input-small" style="margin-top:8px;height: 28px;" />
+                    </div>
+                </div>
+                <div class="control paddingRight">
+                    @Html.LabelFor(model => model.KmARecorrer, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.KmARecorrer, new { @class = "control input-small" })
+                        @Html.ValidationMessageFor(model => model.KmARecorrer)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,12 @@
 ﻿using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public sealed class OrdenCargaFasDto
+    public sealed class OrdenCargaFasDto: IValidatableObject
     {
         public int Id { get; set; }
 
@@ -125,5 +126,28 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_IntermediarioFlete")]
         public string IntermediarioFlete { get; set; }
+
+        public bool TieneKmARecorrer { get; set; }
+
+        public string RemitenteCuit { get; set; }
+        public string IntermediarioFleteCuit { get; set; }
+        public string DestinatarioCuit { get; set; }
+        public string PagadorFleteCuit { get; set; }
+
+        public string PlantaDescripcion { get; set; }
+
+        public string Domicilio { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (DerivadoGranarioHabilitado && string.IsNullOrWhiteSpace(KmARecorrer))
+            {
+                string mensaje = string.Format(Textos.Error_Requerido, nameof(KmARecorrer));
+                yield return new ValidationResult(
+                    mensaje,
+                    new[] { nameof(KmARecorrer) }
+                );
+            }
+        }
     }
 }
