@@ -254,9 +254,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="log4net.config" />
-    <None Include="Molinos.Scato.WfEditorWeb_1_TemporaryKey.pfx" />
     <None Include="Molinos.Scato.WfEditorWeb_TemporaryKey.pfx" />
-    <None Include="Molinos.Scato.WfEditorWeb_TemporaryKey_old.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -292,7 +290,7 @@
     <ManifestKeyFile>Molinos.Scato.WfEditorWeb_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1F27F2151D0EAEAEAB8879615A6A2CAC68A398B7</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2C6ECC0A9BF53DDF65E2AA9D8925675A040BD62E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
