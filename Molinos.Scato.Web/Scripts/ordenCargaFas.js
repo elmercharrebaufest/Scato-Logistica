@@ -389,7 +389,7 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
                     $("#TipoVehiculo").removeClass("readonly");
                 } else {
                     $('#TipoVehiculo').val(data.Categoria);
-                    $("#TipoVehiculo").addClass("readonly");
+                    //$("#TipoVehiculo").addClass("readonly");
                 }
             } else {
                 MostrarAlertaError("El servicio CNRT no devolvió información sobre la categoría del vehículo, debe ingresarla manualmente.");
