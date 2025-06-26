@@ -16,8 +16,6 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
-using NPOI.POIFS.Properties;
-using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -26,13 +24,22 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private readonly IServicioOperaciones servicioOperaciones;
         private readonly IServicioComandos servicioComandos;
         private readonly ZSDWS_SCATO servicioSap;
+        private readonly IServicioRepositorio servicioRepositorio;
 
-        public ProcesadorConsultarOrdenesNoGranosCargaDeCupo(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioOperaciones servicioOperaciones, IServicioComandos servicioComandos, ZSDWS_SCATO servicioSap)
+        public ProcesadorConsultarOrdenesNoGranosCargaDeCupo(
+            IRepositorio repositorio, 
+            IConversor conversor, 
+            ILogger log, 
+            IServicioOperaciones servicioOperaciones, 
+            IServicioComandos servicioComandos, 
+            ZSDWS_SCATO servicioSap, 
+            IServicioRepositorio servicioRepositorio)
             : base(repositorio, conversor, log)
         {
             this.servicioOperaciones = servicioOperaciones;
             this.servicioComandos = servicioComandos;
-            this.servicioSap = servicioSap;
+            this.servicioSap = servicioSap;            
+            this.servicioRepositorio = servicioRepositorio;
         }
 
         public override Resultado Ejecutar(ConsultarOrdenesNoGranosCargaDeCupo comando)
@@ -44,11 +51,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 var ordenesFason = servicioOperaciones.ObtenerOrdenesDeCarga(comando.Patente);
                 var ordenesInsumos = servicioOperaciones.ObtenerOrdenesResiduos(comando.Patente);
-                var centro = Repositorio.Obtener<Dominio.Entidades.Centro>(c=> c.Id == comando.CentroId);
-                OrdenDeCargaSapDto orden = new OrdenDeCargaSapDto(centro.CodigoSAP, comando.Patente, Constantes.WorkFlow.workflowVentaFas);
+                var centro = Repositorio.Obtener<Centro>(c=> c.Id == comando.CentroId);
+                var orden = new OrdenDeCargaSapDto(centro.CodigoSAP, comando.Patente, Constantes.WorkFlow.workflowVentaFas);
                 var ordenesFas = servicioComandos.Ejecutar(new ConsultarOrdenCargaFas { Orden = orden }) as ResultadoConsultaOrdenCargaFas;
 
-                var ordenesCargaDeCupo = ProcesarOrdenes(ordenesFason, ordenesInsumos, ordenesFas.Orden ,comando);
+                var ordenesCargaDeCupo = ProcesarOrdenes(ordenesFason, ordenesInsumos, ordenesFas.Orden);
                 resultado.Ordenes.AddRange(ordenesCargaDeCupo.Distinct(comparador));
             }
             catch (WebException ex)
@@ -91,8 +98,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private IEnumerable<OrdenNoGranosCargaDeCupoDto> ProcesarOrdenes(
             IEnumerable<OrdenDeCargaDto> ordenesFason,
             IEnumerable<OrdenResiduosDto> ordenesInsumos,
-            IEnumerable<OrdenCargaFasDto> ordenesFas,
-            ConsultarOrdenesNoGranosCargaDeCupo comando)
+            IEnumerable<OrdenCargaFasDto> ordenesFas)
         {
             var ordenesCargaDeCupo = new List<OrdenNoGranosCargaDeCupoDto>();
 
@@ -119,7 +125,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 ordenesCargaDeCupo.Add(ordenCarga);
             }
 
-            if(ordenesFas != null && ordenesFas?.Count() > 0)
+            if(ordenesFas != null)
             {
                 foreach (var orden in ordenesFas)
                 {
@@ -129,8 +135,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var ordenCarga = GenerarOrdenCarga(materialId, orden.MaterialDesc, TipoOrdenCargaNoGranos.Fas);
                     ordenesCargaDeCupo.Add(ordenCarga);
                 }
-            }
-            
+            }            
 
             return ordenesCargaDeCupo;
         }
@@ -150,7 +155,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return Repositorio.Existe<OrdenCargaFas>(x => x.Id == ordenId && (x.Recorrido.Rechazado == false || x.Recorrido.Terminado == false));
         }
 
-
         private OrdenNoGranosCargaDeCupoDto GenerarOrdenCarga(int materialId, string materialDescripcion, TipoOrdenCargaNoGranos tipoOrden)
         {
             if ((tipoOrden == TipoOrdenCargaNoGranos.FasonConFlete || tipoOrden == TipoOrdenCargaNoGranos.FasonSinFlete))
@@ -161,7 +165,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     throw new Exception($"No se encontró el material {materialDescripcion} de la Orden {tipoOrden}");
                 else
                     materialId = material.Id;
-            } else
+            } 
+            else
             {
                 if (!Repositorio.Existe<Material>(x => x.Id == materialId))
                     throw new Exception($"No se encontró el material {materialDescripcion} de la Orden {tipoOrden}");
@@ -173,6 +178,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 MaterialDescripcion = materialDescripcion,
                 TipoOrden = tipoOrden
             };
+
             return ordenCarga;
         }
 
@@ -180,7 +186,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var ordenesCargaDeCupo = new List<OrdenNoGranosCargaDeCupoDto>();
 
-            var centroCodigoSap = Repositorio.ObtenerProyeccion<Dominio.Entidades.Centro, string>(x => x.Id == comando.CentroId, x => x.CodigoSAP);
+            var centroCodigoSap = Repositorio.ObtenerProyeccion<Centro, string>(x => x.Id == comando.CentroId, x => x.CodigoSAP);
             var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
             {
                 Centro = centroCodigoSap,
@@ -190,7 +196,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 ConsultaOrdenDeCarga = consultaOrdenDeCarga
             };
-            var respuestaSap = servicioSap.ConsultaOrdenDeCarga(request);
+
+            GenerarServicioSap(out ZSDWS_SCATO servicio);
+            var respuestaSap = servicio.ConsultaOrdenDeCarga(request);
 
             if (respuestaSap.ConsultaOrdenDeCargaResponse.Salida.Any())
             {
@@ -201,21 +209,36 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var materialCodigoSAP = orden.MATNR.TrimStart(new[] { '0' });
                     var material = Repositorio.Obtener<Material>(x => x.CodigoSAP == materialCodigoSAP);
                     if (material == null)
-                    {
                         throw new Exception(string.Format(Textos.OrdenCargaFAS_MaterialInexistente, orden.MATNR));
-                    }
 
                     var ordenCarga = new OrdenNoGranosCargaDeCupoDto
                     {
                         MaterialId = material.Id,
                         MaterialDescripcion = material.Descripcion,
-                        TipoOrden = TipoOrdenCargaNoGranos.Fas
+                        TipoOrden = TipoOrdenCargaNoGranos.Ninguno
                     };
                     ordenesCargaDeCupo.Add(ordenCarga);
                 }
             }
 
             return ordenesCargaDeCupo;
+        }
+
+        private void GenerarServicioSap(out ZSDWS_SCATO servicio)
+        {
+            Log.Info("Generando servicio SAP");
+            this.servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.ServicioSap, Constantes.ConfiguracionGeneral.Servicios.SapDummy);
+            var confiSapDummy = servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.ServicioSap, Constantes.ConfiguracionGeneral.Servicios.SapDummy);
+            bool usarMock = bool.Parse(confiSapDummy.Valor);
+            if (usarMock)
+            {
+                servicio = new ServicioSapMock(Repositorio, Conversor, Log); // Usa el mock en lugar del servicio real
+                Log.Info("Usando servicio mock");
+            }
+            else
+            {
+                servicio = servicioSap; // Usa el servicio real
+            }
         }
     }
 

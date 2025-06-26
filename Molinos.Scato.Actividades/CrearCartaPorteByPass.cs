@@ -1,11 +1,9 @@
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.Impl;
 using System;
 using System.Activities;
 using System.Linq;
@@ -59,8 +57,8 @@ namespace Molinos.Scato.Actividades
             {
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var srvRepositorio = context.GetExtension<IServicioRepositorio>();
-                var titularCartaPorteCodigoSap = srvRepositorio.ObtenerProveedor(orden.TitularCartaPorteId)?.CodigoSap;
-                var tipoMaterialPorVariedad = srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, titularCartaPorteCodigoSap);
+
+                var tipoMaterialPorVariedad = srvRepositorio.ObtenerTipoVariedadRecorridoAnterior(orden.NroCartaPorte, centroId);
                 var tipoDeWorkFlow = srvRepositorio.ObtenerTipoDeWorkflowPorGuid(instanciaWorkflow);
                 var centroDto = srvRepositorio.ObtenerCentro(orden.DestinoId);
 
@@ -69,7 +67,8 @@ namespace Molinos.Scato.Actividades
                 var provincia = srvRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.CrearCartaPorteByPass, Constantes.ConfiguracionGeneral.CrearCartaPorteByPass.Provincia);
                 var centro = srvRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.CrearCartaPorteByPass, Constantes.ConfiguracionGeneral.CrearCartaPorteByPass.Centro);
                 var tipocomercialSap = srvRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.CrearCartaPorteByPass, Constantes.ConfiguracionGeneral.CrearCartaPorteByPass.TipoComercialEgreso);
-                
+                var proveedorMOA = srvRepositorio.ObtenerProveedorPorCuit(Constantes.Proveedores.CuitMolinos, new TiposProveedor { PR = true });
+
                 orden.ProvinciaCodigoSap = orden.DestinoProvincia;
                 orden.ProcedenciaCodigoSap = orden.DestinoLocalidadCodigoSap;
                 orden.DestinoLocalidadCodigoAfip = Convert.ToInt32(localidad.Valor); 
@@ -80,7 +79,7 @@ namespace Molinos.Scato.Actividades
                 orden.DestinoId = Convert.ToInt32(centro.Valor); 
                 orden.TarifaReferencia = null;
                 orden.FotoRutaDestino = null;
-                
+                orden.TitularCartaPorteId = proveedorMOA != null ? proveedorMOA.Id : 0;
 
                 var resultadoCartaPorte = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorteByPass
                 {

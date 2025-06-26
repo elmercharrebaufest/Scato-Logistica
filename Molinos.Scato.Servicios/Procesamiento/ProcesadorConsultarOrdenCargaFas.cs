@@ -1,4 +1,9 @@
-﻿using Molinos.Scato.Dominio;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel;
+using System.Text.RegularExpressions;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
@@ -6,27 +11,9 @@ using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
-using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.Conversiones;
-using Molinos.Scato.Servicios.Impl;
-using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
-using NPOI.POIFS.Properties;
-using NPOI.SS.Formula.Functions;
-using NPOI.Util;
-using PdfiumViewer;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.ServiceModel;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web.Services.Description;
 using static Molinos.Scato.Dominio.Constantes;
 using Comando = Molinos.Scato.Dominio.Comandos.Comando;
 
@@ -159,7 +146,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         resultado.Error("Transportista", string.Format(Textos.OrdenCargaFAS_TransportistaInexistente, ordenCargaFas[i].CUIT_TR));
                     }
-
 
                     if (workflow.Contains("Venta") && tipoComercial != null && !(tipoComercial.CodigoSap.Equals("998") || tipoComercial.CodigoSap.Equals("CYO")))
                     {
@@ -329,6 +315,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     datosSap.Add(itemSap);
                 }
+
                 if (datosSap.Count > 0)
                 {
                     resultado.Orden = datosSap;
@@ -338,7 +325,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Error("OrdenCargaFas", Textos.OrdenCargaFAS_Inexistente + "para " + workflow);
                 }
             }
-
             else
             {
                 resultado.Error("OrdenCargaFas", Textos.OrdenCargaFAS_Inexistente + "para " + workflow);
@@ -408,7 +394,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 };
             }
         }
-
         private void ConsultarMoaOperaciones(ref ResultadoConsultaOrdenCargaFas resultado)
         {
             GenerarServicioOperaciones(out IServicioOperaciones servicio);
@@ -456,7 +441,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private void GenerarServicioSap(out ZSDWS_SCATO servicio)
         {
             Log.Info("Generando servicio SAP");
-            servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.ServicioSap, Constantes.ConfiguracionGeneral.Servicios.SapDummy);
+            this.servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.ServicioSap, Constantes.ConfiguracionGeneral.Servicios.SapDummy);
             var confiSapDummy = servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.ServicioSap, Constantes.ConfiguracionGeneral.Servicios.SapDummy);
             bool usarMock = bool.Parse(confiSapDummy.Valor);
             if (usarMock)
@@ -468,8 +453,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 servicio = servicioSap; // Usa el servicio real
             }
-
         }
-
     }
 }

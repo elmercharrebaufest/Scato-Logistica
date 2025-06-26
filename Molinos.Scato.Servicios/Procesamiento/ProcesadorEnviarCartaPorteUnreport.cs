@@ -1,4 +1,8 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using System;
+using System.IO;
+using System.ServiceModel;
+using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -6,9 +10,6 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Urenport;
 using Ninject.Extensions.Logging;
-using System;
-using System.IO;
-using System.ServiceModel;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -47,13 +48,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     rutaReIngreso = Repositorio.ObtenerProyeccion<CartaPorte, string>(x => x.NroCartaPorte == cp.Numero && x.FotoRutaDestino != null, x => x.FotoRutaDestino);
                 }
                 var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.WorkflowId);
-                estadoUrenport = Repositorio.Obtener<EnvioUrenport>(x => x.Recorrido.Id == recorrido.Id && x.TipoDoc == "1");
+                estadoUrenport = Repositorio.Obtener<EnvioUrenport>(x => x.Recorrido.Id == recorrido.Id && x.TipoDoc == Constantes.TipoDocEnvioUrenport.CartaPorteUrenport);
                 if (estadoUrenport == null)
                 {
                     estadoUrenport = Repositorio.Agregar(new EnvioUrenport
                     {
                         NumeroDocumentoIngreso = recorrido.NumeroDocumentoIngreso.TrimStart(new Char[] { '0' }),
-                        TipoDoc = "1",
+                        TipoDoc = Constantes.TipoDocEnvioUrenport.CartaPorteUrenport,
                         Ruta = cp.Ruta ?? rutaReIngreso,
                         Recorrido = recorrido,
                         Estado = EstadoTransmisionASap.Pendiente,

@@ -60,7 +60,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
 
                 resultado.Id = nuevoCupo.Id;
-                if (comando.Dto.TipoOrdenCargaNoGranos.HasValue)
+                if (comando.Dto.TipoOrdenCargaNoGranos.HasValue && 
+                    comando.Dto.TipoOrdenCargaNoGranos != TipoOrdenCargaNoGranos.Ninguno)
                 {
                     resultado.FastPassValido = ValidarFastPass(comando, resultado);
                     resultado.FastPassWorkflowDefinicionId = ObtenerWorkflowDefinicionId(comando.Dto.TipoOrdenCargaNoGranos.Value);
@@ -92,12 +93,28 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private int ObtenerWorkflowDefinicionId(TipoOrdenCargaNoGranos tipoOrdenCarga)
         {
-            var codigoWorkflow = tipoOrdenCarga == TipoOrdenCargaNoGranos.Insumos ? Constantes.WorkFlow.workflowMaterialNoProductivo 
-                : tipoOrdenCarga == TipoOrdenCargaNoGranos.FasonConFlete ? Constantes.WorkFlow.workflowFason
-                : tipoOrdenCarga == TipoOrdenCargaNoGranos.FasonSinFlete ? Constantes.WorkFlow.workflowFasonSinFlete
-                : string.Empty;
-            return Repositorio.ObtenerMayor<WorkflowDefinicion, int, int>(x => x.Workflow.Codigo == codigoWorkflow && x.Activa && x.FechaActivacion <= DateTime.Now, x => x.Id , x => x.Id);
+            string codigoWorkflow = string.Empty;
 
+            switch (tipoOrdenCarga)
+            {
+                case TipoOrdenCargaNoGranos.Insumos:
+                    codigoWorkflow = Constantes.WorkFlow.workflowMaterialNoProductivo;
+                    break;
+                case TipoOrdenCargaNoGranos.FasonConFlete:
+                    codigoWorkflow = Constantes.WorkFlow.workflowFason;
+                    break;
+                case TipoOrdenCargaNoGranos.FasonSinFlete:
+                    codigoWorkflow = Constantes.WorkFlow.workflowFasonSinFlete;
+                    break;
+                case TipoOrdenCargaNoGranos.Fas:
+                    codigoWorkflow = Constantes.WorkFlow.workflowVentaFas;
+                    break;
+                default:
+                    codigoWorkflow = string.Empty;
+                    break;
+            }
+
+            return Repositorio.ObtenerMayor<WorkflowDefinicion, int, int>(x => x.Workflow.Codigo == codigoWorkflow && x.Activa && x.FechaActivacion <= DateTime.Now, x => x.Id , x => x.Id);
         }
 
         private CargaDeCupo CrearEntidad(CrearCargaDeCupoNoGrano comando)
@@ -256,7 +273,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (!fastPassValido)
                 throw new ErrorNoBloqueanteCrearCupoNoGranoExcepcion("falló el fast pass.");
-
 
             return fastPassValido;
         }

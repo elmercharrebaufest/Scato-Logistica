@@ -1,4 +1,6 @@
-﻿namespace Molinos.Scato.Dominio
+﻿using System.Runtime.InteropServices;
+
+namespace Molinos.Scato.Dominio
 {
     public static class Constantes
     {
@@ -323,6 +325,12 @@
             public const string InicioError = "inicioError";
             public const string Error41 = "error41";
             public const string Error44 = "error44";
+        }
+
+        public struct TipoDocEnvioUrenport
+        {
+            public const string CartaPorteUrenport = "1";
+            public const string CertificacionHojaDeRutaCartaPorte = "2";
         }
     }
 }

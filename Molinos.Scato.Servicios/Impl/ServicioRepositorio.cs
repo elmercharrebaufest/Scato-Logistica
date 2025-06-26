@@ -11349,6 +11349,14 @@ namespace Molinos.Scato.Servicios.Impl
             return huella;
         }
 
+
+        public int ObtenerTipoVariedadRecorridoAnterior(string numeroCTG, int centroId)
+        {
+            return repositorio.ObtenerProyeccion<Recorrido, int>(
+                x => x.NumeroDocumentoIngreso == numeroCTG && x.Centro.Id == centroId && x.Terminado == true && x.Rechazado == false,
+                x => x.TipoVariedad.Id);
+        }
+
         private IEnumerable<HuellaDigitalOrdenDto> GnerarQueryHuellaDigital(string filtro, bool esHistorico)
         {
             var query = repositorio
@@ -11370,6 +11378,4 @@ namespace Molinos.Scato.Servicios.Impl
             return query;
         }
     }
-
-
 }

@@ -3097,6 +3097,7 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         HuellaDigitalOrdenDto ObtenerHuellaDigitalPorFiltro(string patente, string acoplado, int idTransportista);
 
+        [OperationContract]
+        int ObtenerTipoVariedadRecorridoAnterior(string numeroCTG, int centroId);
     }
-
 }

@@ -1,4 +1,8 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using System;
+using System.IO;
+using System.ServiceModel;
+using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -7,10 +11,6 @@ using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Urenport;
 using Ninject.Extensions.Logging;
 using PdfiumViewer;
-using System;
-using System.Drawing.Imaging;
-using System.IO;
-using System.ServiceModel;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -39,13 +39,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             else
             {
                 var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.WorkflowId);
-                estadoUrenport = Repositorio.Obtener<EnvioUrenport>(x => x.Recorrido.Id == recorrido.Id && x.TipoDoc == "2");
+                estadoUrenport = Repositorio.Obtener<EnvioUrenport>(x => x.Recorrido.Id == recorrido.Id && x.TipoDoc == Constantes.TipoDocEnvioUrenport.CertificacionHojaDeRutaCartaPorte);
                 if (estadoUrenport == null)
                 {
                     estadoUrenport = Repositorio.Agregar(new EnvioUrenport
                     {
                         NumeroDocumentoIngreso = recorrido.NumeroDocumentoIngreso.TrimStart(new Char[] { '0' }),
-                        TipoDoc = "2",
+                        TipoDoc = Constantes.TipoDocEnvioUrenport.CertificacionHojaDeRutaCartaPorte,
                         Ruta = "",
                         Recorrido = recorrido,
                         Estado = EstadoTransmisionASap.Pendiente,
@@ -53,8 +53,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     });
                 }
             }
-
-
 
             try
             {
@@ -117,7 +115,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
 
         }
-
 
         private byte[] ObtenerImagen(EnviarTicketPesadaUnreport comando, int centro_id)
         {

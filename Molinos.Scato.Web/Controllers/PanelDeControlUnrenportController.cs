@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -143,29 +144,39 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             List<Resultado> resultados = new List<Resultado>();
+            
+            Resultado resultado = null;
+            
             foreach (var x in retransmisiones)
             {
-                var resultado = new Resultado();
-                resultado = servicioComandos.Ejecutar(new EnviarCartaPorteUnreport
+                resultado = new Resultado();
+
+                switch (x.TipoDoc)
                 {
-                    EnvioUrenport = x.Id
-                });
+                    case Constantes.TipoDocEnvioUrenport.CartaPorteUrenport:
+                        resultado = servicioComandos.Ejecutar(new EnviarCartaPorteUnreport { EnvioUrenport = x.Id });                        
+                        break;
+                    case Constantes.TipoDocEnvioUrenport.CertificacionHojaDeRutaCartaPorte:
+                        resultado = servicioComandos.Ejecutar(new EnviarTicketPesadaUnreport { EnvioUrenport = x.Id });
+                        break;
+                    default:
+                        log.Error($"No se pudo procesar el EnvioUrenport con Id {x.Id} de Tipo {x.TipoDoc}");
+                        resultado.Errores.Add("CodigoDeBaja", Textos.Error_Generico);
+                        break;
+                }
+                
                 resultados.Add(resultado);
             }
 
             string content;
+
             if (resultados.All(x => !x.HayErrores))
-            {
                 content = "OK";
-            }
             else if (resultados.Any(x => !x.HayErrores))
-            {
                 content = "W-" + Textos.PanelDeControlTransSAP__MensajeAdvertencia;
-            }
             else
-            {
                 content = "E-" + Textos.PanelDeControlTransSAP__MensajeError;
-            }
+
             return new ContentResult { Content = content };
         }
     }

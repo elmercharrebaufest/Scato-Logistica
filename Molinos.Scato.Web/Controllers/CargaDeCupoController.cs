@@ -1,11 +1,17 @@
-﻿using Molinos.Scato.Actividades.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
+using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.Consultas;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Dto.OperacionesAPI;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
@@ -18,14 +24,6 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Web.Mvc;
 
 
 namespace Molinos.Scato.Web.Controllers
@@ -219,35 +217,60 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             if (!resultado.HayErrores && resultado.FastPassValido)
-                EjecutarFastPassNoGranos(resultado, model, datosUsuario);
+                IniciarWorkflowDeNoGranos(resultado, model, datosUsuario);
             
             ViewBag.MensajeExitoso = resultado.Mensaje;
             SetearVista(datosUsuario);
             return View("Form");
         }
 
-        private void EjecutarFastPassNoGranos(ResultadoCrearCargaDeCupo resultadoCrearCupoNoGrano, CargaDeCupoDto cargaDeCupo, DatosUsuario datosUsuario)
+        private void IniciarWorkflowDeNoGranos(ResultadoCrearCargaDeCupo resultadoCrearCupoNoGrano, CargaDeCupoDto cargaDeCupo, DatosUsuario datosUsuario)
         {
             servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = true });
-            if (cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.Insumos)
+
+            switch (cargaDeCupo.TipoOrdenCargaNoGranos)
             {
-                var servicioWf = factoryNoProductivo.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
-                servicioWf.IngresarOrdenCargaInterna(resultadoCrearCupoNoGrano.OrdenCargaInterna, datosUsuario.CentroId, Constantes.WorkFlow.workflowMaterialNoProductivo, resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, datosUsuario.NombreUsuario, resultadoCrearCupoNoGrano.ControlRecorrido);
-            } 
-            else if(cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.Fas)     
-            {
-                var workflow = Constantes.WorkFlow.workflowVentaFas;
-                var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
-                var servicioWf = factoryFas.CrearServicio(workflowDefinicionId);
-                var resultadoActividad = servicioWf.IngresarOrdenCargaFas(resultadoCrearCupoNoGrano.OrdenCargaFasDto, datosUsuario.CentroId, workflow, workflowDefinicionId, resultadoCrearCupoNoGrano.OrdenCargaFasDto.ValidaCompliance, datosUsuario.NombreUsuario, resultadoCrearCupoNoGrano.ControlRecorrido) as ResultadoCrearWorkflow;
+                case TipoOrdenCargaNoGranos.Insumos:
+                    var noProductivosService = factoryNoProductivo.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
+                    noProductivosService.IngresarOrdenCargaInterna(
+                        resultadoCrearCupoNoGrano.OrdenCargaInterna, 
+                        datosUsuario.CentroId, 
+                        Constantes.WorkFlow.workflowMaterialNoProductivo, 
+                        resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, 
+                        datosUsuario.NombreUsuario, 
+                        resultadoCrearCupoNoGrano.ControlRecorrido);
+                    break;
+                case TipoOrdenCargaNoGranos.Fas:
+                    var workflow = Constantes.WorkFlow.workflowVentaFas;
+                    var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+                    var fasService = factoryFas.CrearServicio(workflowDefinicionId);
+                    fasService.IngresarOrdenCargaFas(
+                        resultadoCrearCupoNoGrano.OrdenCargaFasDto, 
+                        datosUsuario.CentroId, 
+                        workflow, 
+                        workflowDefinicionId, 
+                        resultadoCrearCupoNoGrano.OrdenCargaFasDto.ValidaCompliance, 
+                        datosUsuario.NombreUsuario, 
+                        resultadoCrearCupoNoGrano.ControlRecorrido);
+                    break;
+                case TipoOrdenCargaNoGranos.FasonConFlete:
+                case TipoOrdenCargaNoGranos.FasonSinFlete:
+                    var fasonService = factoryFason.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
+                    fasonService.IngresarOrdenCargaInternaFason(
+                        resultadoCrearCupoNoGrano.OrdenCargaInternaFason, 
+                        datosUsuario.CentroId,
+                        cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.FasonConFlete ? 
+                            Constantes.WorkFlow.workflowFason : 
+                            Constantes.WorkFlow.workflowFasonSinFlete, 
+                        resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, 
+                        datosUsuario.NombreUsuario, 
+                        resultadoCrearCupoNoGrano.ControlRecorrido);
+                    break;
+                default:
+                    log.Warn($"Se intenta iniciar workflow No Granos desconocido: {cargaDeCupo.TipoOrdenCargaNoGranos}");
+                    break;
             }
-            else
-            {
-                var workflow = cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.FasonConFlete ? Constantes.WorkFlow.workflowFason : Constantes.WorkFlow.workflowFasonSinFlete ;
-                var servicioWf = factoryFason.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
-                var resultadoActividad = servicioWf.IngresarOrdenCargaInternaFason(resultadoCrearCupoNoGrano.OrdenCargaInternaFason, datosUsuario.CentroId, workflow, resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, datosUsuario.NombreUsuario, resultadoCrearCupoNoGrano.ControlRecorrido) as ResultadoCrearWorkflow;
-            }
-            
+
             servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = false });
         }
 
@@ -458,7 +481,6 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public JsonResult ObtenerCupoCtg(string numeroCartaPorte, string workflow, DatosUsuario datosUsuario)
         {
-            ////return Json(new { CartaPorte = new { NroCartaPorte = "000111111111", Cupo = "MOL3333/29012020", Patente = "CCH873", CTG = "11111111", TitularCartaPorteCodigoSap = "200069" }, CodigoDeError = "0", CodEstab = "1234" }, JsonRequestBehavior.AllowGet);
             try
             {
                 log.Debug("Obteniendo CUPO por CP {0} workflow {1}", numeroCartaPorte, workflow);
@@ -825,6 +847,10 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene las órdenes para cualquier worflow posible para completar el campo Materiales cuando es "No Granos". 
+        /// Pueden venir desde cualquier fuente de datos: MOAOperaciones, SAP
+        /// </summary>
         [AjaxOnly]
         [DatosUsuario]
         public JsonResult ObtenerOrdenesFasonInsumos(string patente, DatosUsuario datosUsuario)
