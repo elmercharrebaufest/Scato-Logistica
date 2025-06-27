@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.36212.18</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-06-24T16:38:17.4756151Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-06-26T13:14:11.7760291Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -297,7 +297,7 @@ SELECT DISTINCT
   '' Clasificacion,
   '' InterFlete,
   '' Cupo,
-  SUM(CASE WHEN ecc.EsHumedad = 1 AND ccp.CodigoExterno = 'HUMEDAD' THEN
+  MAX(CASE WHEN ecc.EsHumedad = 1 AND ccp.CodigoExterno = 'HUMEDAD' THEN
            (CASE 
                  WHEN m.CodigoONCCA = 19 AND ccp.Valor &gt; 14.5 THEN 14.5 --maiz
                  WHEN m.CodigoONCCA = 15 AND ccp.Valor &gt; 14 THEN 14 --trigo
@@ -306,190 +306,190 @@ SELECT DISTINCT
             END) 
        ELSE 0 
     END) OVER (PARTITION BY cp.NroCartaPorte) Humedad,
-	SUM(CASE WHEN ccp.CodigoExterno = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+	MAX(CASE WHEN ccp.CodigoExterno = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
 		 WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJHUM,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJGQU' THEN ccp.Valor
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJGQU' THEN ccp.Valor
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJGQU,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJGDA' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJGDA' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJGDA,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJCEX' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJCEX' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJCEX,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJMCHA' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJMCHA' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJMCHA,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJTIE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJTIE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJTIE,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJOLO' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJOLO' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJOLO,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJMCH' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJMCH' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJMCH,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJREV' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJREV' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJREV,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJMOH' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJMOH' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJMOH,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJAVE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJAVE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJAVE,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPSOJGVE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPSOJGVE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJGVE,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZGRA,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZPHE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZPHE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZPHE,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZGDA' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZGDA' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZGDA,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZQUE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZQUE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZQUE,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZMEX' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZMEX' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZMEX,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZTIP' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZTIP' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZTIP,
-	SUM(CASE WHEN ccp.CodigoExterno = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+	MAX(CASE WHEN ccp.CodigoExterno = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
 		 WHEN ecc.CodigoSap = 'MPMAZHUM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZHUM,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZOLO' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZOLO' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZOLO,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZAMO' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZAMO' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZAMO,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZMCH' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZMCH' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZMCH,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPGRA,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPPHE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPPHE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPPHE,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPCEX' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPCEX' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPCEX,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPARD' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPARD' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPARD,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPTDA' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPTDA' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPTDA,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPCAR' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPCAR' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPCAR,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPPZB' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPPZB' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPPZB,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPQUE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPQUE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPQUE,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPPIC' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPPIC' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPPIC,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPTRE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPTRE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPTRE,
-	SUM(CASE WHEN ccp.CodigoExterno = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+	MAX(CASE WHEN ccp.CodigoExterno = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
 		 WHEN ecc.CodigoSap = 'MPTRPHM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPHM,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPINS' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPINS' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPINS,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPOLO' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPOLO' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPOLO,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPPST' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPPST' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPPST,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPRTI' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPRTI' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPRTI,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPTRPRO' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPTRPRO' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPRO,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRACI' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRACI' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRACI,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRAOL' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRAOL' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRAOL,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRCEX' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRCEX' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRCEX,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRCHA' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRCHA' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRCHA,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRESC' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRESC' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRESC,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRGAR' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRGAR' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRGAR,
-	SUM(CASE WHEN ccp.CodigoExterno = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+	MAX(CASE WHEN ccp.CodigoExterno = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
 		 WHEN ecc.CodigoSap = 'MPGIRHUM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRHUM,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRHUR' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRHUR' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRHUR,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRINV' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRINV' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRINV,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRMGR' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRMGR' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRMGR,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRMOH' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRMOH' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRMOH,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIROLO' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIROLO' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIROLO,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRREV' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRREV' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRREV,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRTEM' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRTEM' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRTEM,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRGCL' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRGCL' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRGCL,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPGIRTIE' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPGIRTIE' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRTIE,
-    SUM(CASE WHEN ecc.CodigoSap = 'MPSOJINV' THEN ccp.Valor 
+    MAX(CASE WHEN ecc.CodigoSap = 'MPSOJINV' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJINV,
-	SUM(CASE WHEN ecc.CodigoSap = 'MPMAZINV' THEN ccp.Valor 
+	MAX(CASE WHEN ecc.CodigoSap = 'MPMAZINV' THEN ccp.Valor 
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZINV,
-	SUM(CASE WHEN m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
+	MAX(CASE WHEN m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPSOJVOL,
-	SUM(CASE WHEN m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
+	MAX(CASE WHEN m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPMAZVOL,
-	SUM(CASE WHEN m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
+	MAX(CASE WHEN m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
 	END) OVER (PARTITION BY cp.NroCartaPorte) MPTRPVOL,
-	SUM(CASE WHEN m.CodigoONCCA = 2 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
+	MAX(CASE WHEN m.CodigoONCCA = 2 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
-	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRVOL  
+	END) OVER (PARTITION BY cp.NroCartaPorte) MPGIRVOL
 FROM CartaPorteOtrosPuertos cp
 LEFT JOIN Material m ON m.Id = cp.Material_Id
 LEFT JOIN CaracteristicasCartaPorteOtrosPuertos ccp ON ccp.CartaPorteOtrosPuertos_Id = cp.Id 
