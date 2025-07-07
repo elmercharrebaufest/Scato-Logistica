@@ -58,6 +58,29 @@
     var cupo = Model.Cupo;
     var tipoVehi = Model.TipoVehiculoInt;
     var esEgreso = (bool)(ViewBag.EsEgreso ?? false);
+    var tipoAlertaEnumLayout = ViewBag.TipoDeAlertaTasaMunicipal as TipoAlerta?;
+}
+
+<style>
+    #alertaTasaMunicipalExitosa {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+
+    #alertaTasaMunicipalError {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+</style>
+
+@if (!string.IsNullOrEmpty(ViewBag.MensajeAlertaTasaMunicipal) && @tipoAlertaEnumLayout == TipoAlerta.Exito)
+{
+    <script type="text/javascript">MostrarAlertaExitosaTasaMunicipal('@ViewBag.MensajeAlertaTasaMunicipal', 10000);</script>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.MensajeAlertaTasaMunicipal) && @tipoAlertaEnumLayout == TipoAlerta.Error)
+{
+    <script type="text/javascript">MostrarAlertaAdvertenciaTasaMunicipal('@ViewBag.MensajeAlertaTasaMunicipal', 10000);</script>
 }
 
 @Html.Hidden("deshabilitarTitular", deshabilitarTitular, new { id = "deshabilitarTitular" })
@@ -219,16 +242,16 @@
                         </div>
                     </div>
                     @*@if (esIngreso)
-                    {
-                        <div class="span6 control-group control-group-no-bottom">
-                            @Html.Label("Imagen Cpe", new { @class = "control-label small" })
-                            <div class="controls-small">
-                                <a id="" href="#" data-bind="click: consultarImagenCpe" class="btn">
-                                    <i class="fa icon-picture"></i>
-                                </a>
+                        {
+                            <div class="span6 control-group control-group-no-bottom">
+                                @Html.Label("Imagen Cpe", new { @class = "control-label small" })
+                                <div class="controls-small">
+                                    <a id="" href="#" data-bind="click: consultarImagenCpe" class="btn">
+                                        <i class="fa icon-picture"></i>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    }*@
+                        }*@
                 </div>
                 <div class="row row-carta-porte">
                     <div class="span6 control-group control-group-no-bottom FechaCP">

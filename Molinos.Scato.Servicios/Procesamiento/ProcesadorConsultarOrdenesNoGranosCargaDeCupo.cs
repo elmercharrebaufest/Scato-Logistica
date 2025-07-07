@@ -112,7 +112,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     throw new ClienteDuplicadoException("Existe más de una entidad SAP para el CUIT ingresado. No se puede continuar con la carga.");
 
                 var materialId = int.Parse(orden.CodigoProducto);
-                var ordenCarga = GenerarOrdenCarga(materialId, orden.DescripcionProducto, orden.FleteMOA ? TipoOrdenCargaNoGranos.FasonConFlete : TipoOrdenCargaNoGranos.FasonSinFlete);
+                var ordenCarga = GenerarOrdenCarga(materialId, orden.DescripcionProducto, orden.FleteMOA ? TipoOrdenCargaNoGranos.FasonConFlete : TipoOrdenCargaNoGranos.FasonSinFlete, orden.PatenteAcoplado);
                 ordenesCargaDeCupo.Add(ordenCarga);
             }
 
@@ -121,7 +121,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (OrdenUtilizada(orden.Id.ToString()))
                     continue;
 
-                var ordenCarga = GenerarOrdenCarga(orden.CodigoProducto, orden.DescripcionProducto, TipoOrdenCargaNoGranos.Insumos);
+                var ordenCarga = GenerarOrdenCarga(orden.CodigoProducto, orden.DescripcionProducto, TipoOrdenCargaNoGranos.Insumos, orden.PatenteAcoplado);
                 ordenesCargaDeCupo.Add(ordenCarga);
             }
 
@@ -132,10 +132,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     if (OrdenUtilizadaFas(orden.Id))
                         continue;
                     var materialId = orden.MaterialId;
-                    var ordenCarga = GenerarOrdenCarga(materialId, orden.MaterialDesc, TipoOrdenCargaNoGranos.Fas);
+                    var ordenCarga = GenerarOrdenCarga(materialId, orden.MaterialDesc, TipoOrdenCargaNoGranos.Fas, orden.PatenteAcoplado);
                     ordenesCargaDeCupo.Add(ordenCarga);
                 }
-            }            
+            }
 
             return ordenesCargaDeCupo;
         }
@@ -155,7 +155,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return Repositorio.Existe<OrdenCargaFas>(x => x.Id == ordenId && (x.Recorrido.Rechazado == false || x.Recorrido.Terminado == false));
         }
 
-        private OrdenNoGranosCargaDeCupoDto GenerarOrdenCarga(int materialId, string materialDescripcion, TipoOrdenCargaNoGranos tipoOrden)
+        private OrdenNoGranosCargaDeCupoDto GenerarOrdenCarga(int materialId, string materialDescripcion, TipoOrdenCargaNoGranos tipoOrden, string patenteAcoplado)
         {
             if ((tipoOrden == TipoOrdenCargaNoGranos.FasonConFlete || tipoOrden == TipoOrdenCargaNoGranos.FasonSinFlete))
             {
@@ -176,7 +176,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 MaterialId = materialId,
                 MaterialDescripcion = materialDescripcion,
-                TipoOrden = tipoOrden
+                TipoOrden = tipoOrden,
+                PatenteAcoplado = patenteAcoplado
             };
 
             return ordenCarga;
@@ -215,7 +216,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         MaterialId = material.Id,
                         MaterialDescripcion = material.Descripcion,
-                        TipoOrden = TipoOrdenCargaNoGranos.Ninguno
+                        TipoOrden = TipoOrdenCargaNoGranos.Ninguno,
+                        PatenteAcoplado = orden.ACOPL.Trim()
                     };
                     ordenesCargaDeCupo.Add(ordenCarga);
                 }

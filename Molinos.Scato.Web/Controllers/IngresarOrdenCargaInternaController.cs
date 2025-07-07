@@ -87,6 +87,8 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaInternaDto orden, DatosUsuario datosUsuario)
         {
             var workflowObje = servicio.ObtenerWorkflowPorCodigo(workflow);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
+
             Validar(orden);
 
             if (!ModelState.IsValid)
@@ -189,11 +191,15 @@ namespace Molinos.Scato.Web.Controllers
             };
 
             int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+            
             var servicioWf = factory.CrearServicio(workflowDefinicionId);
             var resultadoActividad = servicioWf.IngresarOrdenCargaInterna(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
             
             if (!resultadoActividad.HayErrores)
             {
+                if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                    ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
                 return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
             }
 
@@ -405,6 +411,10 @@ namespace Molinos.Scato.Web.Controllers
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
+
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+
             if (material != null && material.Descripcion == "RESIDUOS ORGANICOS" && orden.Almacen_Id == null)
                 ModelState.AddModelError(nameof(OrdenCargaInternaDto.Almacen_Id), Textos.OrdenInterna_AlmacenRequerido);
 

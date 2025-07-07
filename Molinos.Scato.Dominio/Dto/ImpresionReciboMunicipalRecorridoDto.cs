@@ -6,7 +6,6 @@ namespace Molinos.Scato.Dominio.Dto
     {
         public string DocumentoInternoSap { get; set; }
         public string NumeroDocumentoIngreso { get; set; }
-
         public string Ordenanza { get; set; }
         public string Monto { get; set; }
         public string Patente { get; set; }
@@ -18,6 +17,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool Devuelto { get; set; }
         public TipoVehiculo TipoVehiculo { get; set; }
         public MaterialDto Material { get; set; }
-
+        public bool EstaPagadoPorMetodoDigital { get; set; }
     }
 }

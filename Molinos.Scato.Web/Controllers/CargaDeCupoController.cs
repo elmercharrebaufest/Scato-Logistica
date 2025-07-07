@@ -25,7 +25,6 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
 
-
 namespace Molinos.Scato.Web.Controllers
 {
     [Autorizacion(PermisosScato.CargaDeCupo)]
@@ -46,7 +45,7 @@ namespace Molinos.Scato.Web.Controllers
         public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
             IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador,
             IConfiguracionProvider configuracion, IFirmaProvider firma,
-            IServicioActividadFactory<ICargarCartaPorteService> factory, 
+            IServicioActividadFactory<ICargarCartaPorteService> factory,
             IServicioActividadFactory<IIngresarOrdenCargaInternaService> factoryNoProductivo,
             IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factoryFason,
             IServicioActividadFactory<IIngresarOrdenCargaFasService> factoryFas)
@@ -77,14 +76,15 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(CargaDeCupoDto model, string imagenCartaPorte, bool AvanceCpe, DatosUsuario datosUsuario)
         {
             log.Debug("CartaDePorte {0}, Tarjeta {1}, Centro {2}, Patente {3}", model.NumeroCartaPorte, model.Numero, datosUsuario.CentroId, model.Patente);
-            
+
             if (model.CircuitoNoGranos)
                 return RedirectToAction("IndexNoGranos", model);
-            
+
             model.ImagenCartaPorte = imagenCartaPorte.Replace("data:image/jpg;base64,", "");
             ViewBag.Materiales = servicio.ListarMaterialesPorWorkflow(225, datosUsuario.CentroId).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
             var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
             ViewBag.AvanzaAutomatico = centro.AvanzaCpe;
+            var resultadoConsultarTasa = new ResultadoConsultarPagoTasaMunicipal();
 
             ModelState.Remove("Especial");
             ModelState.Remove(nameof(CargaDeCupoDto.HayVariosMateriales));
@@ -155,6 +155,21 @@ namespace Molinos.Scato.Web.Controllers
                     model.FotoRutaDestino = resultado.Mensaje;
                     model.FotoRutaSustentable = resultado.PathSustentable;
 
+                    if (model.CentroId == Constantes.Centro.IdSanLorenzo)
+                    {
+                        resultadoConsultarTasa = servicioComandos.Ejecutar(new VerificarPagoTasaMunicipal
+                        {
+                            Patente = model.Patente,
+                            Ctg = model.CPE ? model.CTG : model.NumeroCartaPorte,
+                            MaterialId = model.MaterialId.GetValueOrDefault(),
+                            PatenteAcoplado = model.PatenteAcoplado,
+                            CentroId = model.CentroId,
+                            EsNoGranos = model.CircuitoNoGranos,
+                            CodigoEstablecimiento = model.CodEstab,
+                            TipoOrigenDeValidacion = TipoOrigenDeValidacion.CargaDeCupo
+                        }) as ResultadoConsultarPagoTasaMunicipal;
+                    }
+
                     if (!model.NoAsignaCalleEnGaritaEntrada)
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
@@ -162,10 +177,11 @@ namespace Molinos.Scato.Web.Controllers
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
 
                         if (PermitirAsignarCalleGrano(model.TitularCartaPorteCodigoSap, model.CodEstab))
-                            AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente , model.TitularCartaPorteCodigoSap);
-                        
+                            AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap, resultadoConsultarTasa);
+
                         log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
-                        AperturaDeBarrera(codigoBarrera);
+                        if (resultadoConsultarTasa.SeLevantaBarrera)
+                            AperturaDeBarrera(codigoBarrera);
                     }
                     if (model.ImprimeTarjetaDeAcceso)
                     {
@@ -177,16 +193,19 @@ namespace Molinos.Scato.Web.Controllers
                     ModelState.Clear();
                     ViewBag.MostrarAlertaExitosa = true;
 
-                    if (AvanceCpe && EsCupoValidoParaAvanceAutomatico(model))
+                    if (AvanceCpe && EsCupoValidoParaAvanceAutomatico(model)
+                        && !resultadoConsultarTasa.HayErrores
+                        && resultadoConsultarTasa.EjecutaWorkFlow)
                     {
                         servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = true });
-                        CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte);
+                        CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte, resultadoConsultarTasa);
                         servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = false });
                     }
+
+                    ProcesarResultadoTasaMunicipal(resultadoConsultarTasa.TipoAlerta, resultadoConsultarTasa.MensajeAlerta);
                     return View("Form");
                 }
             }
-            
 
             return View("Form", model);
         }
@@ -216,77 +235,84 @@ namespace Molinos.Scato.Web.Controllers
                 return View("Form", model);
             }
 
-            if (!resultado.HayErrores && resultado.FastPassValido)
-                IniciarWorkflowDeNoGranos(resultado, model, datosUsuario);
-            
+            if (!resultado.HayErrores)
+            {
+                if (resultado.FastPassValido && !resultado.ErroresOExcepcionesConsultaTasaMunicipal)
+                {
+                    IniciarWorkflows(resultado, model, resultado.IdPagoMunicipal, datosUsuario);
+                }
+            }
+            ProcesarResultadoTasaMunicipal(resultado.tipoAlerta, resultado.MensajeTasaMunicipal);
+
             ViewBag.MensajeExitoso = resultado.Mensaje;
             SetearVista(datosUsuario);
             return View("Form");
         }
 
-        private void IniciarWorkflowDeNoGranos(ResultadoCrearCargaDeCupo resultadoCrearCupoNoGrano, CargaDeCupoDto cargaDeCupo, DatosUsuario datosUsuario)
+        private void IniciarWorkflows(ResultadoCrearCargaDeCupo resultadoCrearCupoNoGrano, CargaDeCupoDto cargaDeCupo, int? idPagoMunicipal, DatosUsuario datosUsuario)
         {
+            var resultadoActividad = new ResultadoCrearWorkflow();
             servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = true });
 
             switch (cargaDeCupo.TipoOrdenCargaNoGranos)
             {
                 case TipoOrdenCargaNoGranos.Insumos:
                     var noProductivosService = factoryNoProductivo.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
-                    noProductivosService.IngresarOrdenCargaInterna(
-                        resultadoCrearCupoNoGrano.OrdenCargaInterna, 
-                        datosUsuario.CentroId, 
-                        Constantes.WorkFlow.workflowMaterialNoProductivo, 
-                        resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, 
-                        datosUsuario.NombreUsuario, 
-                        resultadoCrearCupoNoGrano.ControlRecorrido);
+                    resultadoActividad = noProductivosService.IngresarOrdenCargaInterna(
+                        resultadoCrearCupoNoGrano.OrdenCargaInterna,
+                        datosUsuario.CentroId,
+                        Constantes.WorkFlow.workflowMaterialNoProductivo,
+                        resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId,
+                        datosUsuario.NombreUsuario,
+                        resultadoCrearCupoNoGrano.ControlRecorrido) as ResultadoCrearWorkflow;
                     break;
                 case TipoOrdenCargaNoGranos.Fas:
                     var workflow = Constantes.WorkFlow.workflowVentaFas;
                     var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
                     var fasService = factoryFas.CrearServicio(workflowDefinicionId);
-                    fasService.IngresarOrdenCargaFas(
-                        resultadoCrearCupoNoGrano.OrdenCargaFasDto, 
-                        datosUsuario.CentroId, 
-                        workflow, 
-                        workflowDefinicionId, 
-                        resultadoCrearCupoNoGrano.OrdenCargaFasDto.ValidaCompliance, 
-                        datosUsuario.NombreUsuario, 
-                        resultadoCrearCupoNoGrano.ControlRecorrido);
+                    resultadoActividad = fasService.IngresarOrdenCargaFas(
+                        resultadoCrearCupoNoGrano.OrdenCargaFasDto,
+                        datosUsuario.CentroId,
+                        workflow,
+                        workflowDefinicionId,
+                        resultadoCrearCupoNoGrano.OrdenCargaFasDto.ValidaCompliance,
+                        datosUsuario.NombreUsuario,
+                        resultadoCrearCupoNoGrano.ControlRecorrido) as ResultadoCrearWorkflow;
                     break;
                 case TipoOrdenCargaNoGranos.FasonConFlete:
                 case TipoOrdenCargaNoGranos.FasonSinFlete:
                     var fasonService = factoryFason.CrearServicio(resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId);
-                    fasonService.IngresarOrdenCargaInternaFason(
-                        resultadoCrearCupoNoGrano.OrdenCargaInternaFason, 
+                    resultadoActividad = fasonService.IngresarOrdenCargaInternaFason(
+                        resultadoCrearCupoNoGrano.OrdenCargaInternaFason,
                         datosUsuario.CentroId,
-                        cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.FasonConFlete ? 
-                            Constantes.WorkFlow.workflowFason : 
-                            Constantes.WorkFlow.workflowFasonSinFlete, 
-                        resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId, 
-                        datosUsuario.NombreUsuario, 
-                        resultadoCrearCupoNoGrano.ControlRecorrido);
+                        cargaDeCupo.TipoOrdenCargaNoGranos == TipoOrdenCargaNoGranos.FasonConFlete ?
+                            Constantes.WorkFlow.workflowFason :
+                            Constantes.WorkFlow.workflowFasonSinFlete,
+                        resultadoCrearCupoNoGrano.FastPassWorkflowDefinicionId,
+                        datosUsuario.NombreUsuario,
+                        resultadoCrearCupoNoGrano.ControlRecorrido) as ResultadoCrearWorkflow;
                     break;
                 default:
                     log.Warn($"Se intenta iniciar workflow No Granos desconocido: {cargaDeCupo.TipoOrdenCargaNoGranos}");
                     break;
             }
-
+            ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, idPagoMunicipal);
             servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = false });
         }
 
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular, bool circuitoNoGranos = false, string establecimiento = null)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal, bool circuitoNoGranos = false, string establecimiento = null)
         {
             try
             {
                 var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
                 var resultado = servicioComandos.Ejecutar(new CrearCallePorRecorrido
                 {
-                    TipoCalle = circuitoNoGranos ? TipoCalle.NoGranos 
-                    : !string.IsNullOrEmpty(titular) 
-                        && (titular == codigoSapPuertoRosario 
-                            || (titular == Constantes.ValoresPorDefecto.CodigoSapACA 
+                    TipoCalle = circuitoNoGranos ? TipoCalle.NoGranos
+                    : !string.IsNullOrEmpty(titular)
+                        && (titular == codigoSapPuertoRosario
+                            || (titular == Constantes.ValoresPorDefecto.CodigoSapACA
                                 && !string.IsNullOrEmpty(establecimiento) && establecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA))
-                        ? TipoCalle.PostCalado 
+                        ? TipoCalle.PostCalado
                     : TipoCalle.PreCalado,
                     CargaDeCupoId = cargaDeCupoId,
                     TurnoActivo = turnoActivo,
@@ -316,9 +342,9 @@ namespace Molinos.Scato.Web.Controllers
                                 SePuedeDesactivar = true
                             });
                         }
-                        
+
                         log.Debug($"Fila asignada {fila} por el puestoId: {nombrePc}");
-                        MostrarPorCartel(nombrePc, fila, centroId, patente);
+                        MostrarPorCartel(nombrePc, fila, centroId, patente, resultadoTazaMunicipal.MensajeAlerta, resultadoTazaMunicipal.TipoAlerta);
                     }
                 }
             }
@@ -715,17 +741,27 @@ namespace Molinos.Scato.Web.Controllers
             return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.First());
         }
 
-        private void MostrarPorCartel(string nombrePc, string mensaje, int centroId, string patente)
+        private void MostrarPorCartel(string nombrePc, string mensaje, int centroId, string patente, string mensajeTasaMunicipal, TipoAlerta tipoAlerta)
         {
+            var codigoMensaje = tipoAlerta == TipoAlerta.Exito
+                    ? CodigoMensajeCartelLed.GaritaIngresoConTasaMunicipalExito
+                    : CodigoMensajeCartelLed.GaritaIngresoConTasaMunicipalError;
+
             var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(nombrePc, centroId);
-            var mensajesCartel = servicio.ListarMensajesCartelLed(CodigoMensajeCartelLed.GaritaIngresoAsignarCalle);
+            var mensajesCartel = servicio.ListarMensajesCartelLed(codigoMensaje);
 
             try
             {
-                var mensajes = mensajesCartel.Select(s =>
+                var mensajes = mensajesCartel
+                    .OrderBy(s => s.Orden)
+                    .Select(s =>
                     new EnviarMensajeCartelLed
                     {
-                        Mensaje = string.Format(s.Mensaje, mensaje, patente),
+                        Mensaje = string.Format(s.Mensaje,
+                                                mensaje,                       // {0}
+                                                patente,                       // {1}
+                                                tipoAlerta == TipoAlerta.Exito ? mensajeTasaMunicipal : "",    // {2} - solo se usa en Éxito (variable 07)
+                                                tipoAlerta == TipoAlerta.Error ? mensajeTasaMunicipal : ""),   // {3} - solo se usa en Error (variable 08)
                         PuestoDeTrabajoId = puestoDeTrabajo.Id,
                         NumeroPrograma = s.Programa,
                         NumeroTrama = s.Trama,
@@ -889,7 +925,7 @@ namespace Molinos.Scato.Web.Controllers
             return null;
         }
 
-        private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64)
+        private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal)
         {
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
             var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo.TitularCartaPorteCodigoSap, cargaDeCupo.RtteComercialCodigoSap, cargaDeCupo.CodEstab);
@@ -936,7 +972,7 @@ namespace Molinos.Scato.Web.Controllers
                 try
                 {
                     var path = cargaDeCupo.FotoRutaDestino != null && cargaDeCupo.FotoRutaDestino.Contains("temp") ? Path.GetDirectoryName(cargaDeCupo.FotoRutaDestino).Replace("temp", "") : "";
-                    CargarAutomaticaCartaPorte(cargaDeCupo, workflow, path, imagenCpBase64, "", orden.Cpe, datosUsuario);
+                    CargarAutomaticaCartaPorte(cargaDeCupo, workflow, path, imagenCpBase64, "", orden.Cpe, resultadoTazaMunicipal, datosUsuario);
                 }
                 catch (Exception e)
                 {
@@ -945,7 +981,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void CargarAutomaticaCartaPorte(CargaDeCupoDto cargaDeCupo, string workflow, string path, string imagenCpBase64, string fotoMesaDigitalizacion2, CartaPorteDto orden, DatosUsuario datosUsuario)
+        private void CargarAutomaticaCartaPorte(CargaDeCupoDto cargaDeCupo, string workflow, string path, string imagenCpBase64, string fotoMesaDigitalizacion2, CartaPorteDto orden, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal, DatosUsuario datosUsuario)
         {
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
@@ -1092,6 +1128,8 @@ namespace Molinos.Scato.Web.Controllers
                     }
                     orden.Id = resultadoActividad.Id;
                     instanceIds.Add(resultadoActividad.InstanciaWorkflowId);
+                    if (resultadoTazaMunicipal?.IdPago != 0)
+                        ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, resultadoTazaMunicipal.IdPago);
                 }
                 if (ModelState.IsValid) // TODO: Revisar si es necesario, ya que la linea 1127 hace lo mismo.
                 {
@@ -1310,8 +1348,8 @@ namespace Molinos.Scato.Web.Controllers
         private bool PermitirAsignarCalleGrano(string codigoSapTitularCartaPorte, string codigoEstablecimiento)
         {
             var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
-            return codigoSapTitularCartaPorte != codigoSapPuertoRosario 
-                && !(codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA 
+            return codigoSapTitularCartaPorte != codigoSapPuertoRosario
+                && !(codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA
                     && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA);
         }
 
@@ -1322,18 +1360,18 @@ namespace Molinos.Scato.Web.Controllers
 
             var workflow = string.Empty;
 
-            if ((codigoSapTitularCartaPorte == codigoSapMRP 
-                    && (codigoSapRemitenteComercial == null 
-                        || codigoSapRemitenteComercial == codigoSapMRP 
-                        || codigoSapRemitenteComercial == codigoSapMolinosAgro)) 
+            if ((codigoSapTitularCartaPorte == codigoSapMRP
+                    && (codigoSapRemitenteComercial == null
+                        || codigoSapRemitenteComercial == codigoSapMRP
+                        || codigoSapRemitenteComercial == codigoSapMolinosAgro))
                 || (codigoSapTitularCartaPorte == codigoSapMolinosAgro
-                    && (codigoSapRemitenteComercial == null 
+                    && (codigoSapRemitenteComercial == null
                         || codigoSapRemitenteComercial == codigoSapMolinosAgro)))
             {
                 workflow = ConfigurationManager.AppSettings["workflowRedespacho"];
             }
-            else if (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapTPR 
-                || (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA 
+            else if (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapTPR
+                || (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA
                     && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA))
             {
                 workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
@@ -1368,5 +1406,26 @@ namespace Molinos.Scato.Web.Controllers
             return tipoComercialId;
         }
 
+        private void ProcesarResultadoTasaMunicipal(TipoAlerta tipoAlerta, string mensajeAlerta)
+        {
+            ViewBag.MensajeAlertaTasaMunicipal = mensajeAlerta;
+            ViewBag.TipoDeAlertaTasaMunicipal = tipoAlerta;
+        }
+
+        private void ActualizarTasaMunicipal(Guid InstanciaWorkflowId, int? IdPago)
+        {
+            try
+            {
+                var respuestaTasa = servicioComandos.Ejecutar(new ModificarComoUsadoPagosTasaMunicipal
+                {
+                    InstanceId = InstanciaWorkflowId,
+                    PagoId = IdPago.Value
+                });
+            }
+            catch (Exception e)
+            {
+                log.Error("Error al modificar Tasa Municipal - {0}", e.Message);
+            }
+        }
     }
 }

@@ -29,8 +29,9 @@ namespace Molinos.Scato.Web.Firmware
             IServicioActividadFactory<IPesadaService> pesadaFactory,
             IServicioActividadFactory<IEjecutarService> factory,
             IServicioEstadoPuesto estadoPuesto,
+            IRecorridoWorkflow recorridoWorkflow,
             HubClientFactory hubClientFactory) : base(
-                log, servicioRepositorio, workflows, comandos, servicioOrquestador, factory, hubClientFactory)
+                log, servicioRepositorio, workflows, comandos, servicioOrquestador, factory, hubClientFactory, recorridoWorkflow)
         {
             this.pesadaFactory = pesadaFactory;
             this.estadoPuesto = estadoPuesto;

@@ -346,6 +346,51 @@ function MostrarAlertaCancelada() {
     $("#alertaCancelada").show();
     $("#alertaCancelada").delay(500).addClass("in").fadeOut(2000);
 }
+
+function MostrarAlertaExitosaTasaMunicipal(data, delay) {
+    posicionarAlertaTasaMunicipal();
+
+    if (data != null) {
+        $("#alertaTasaMunicipalExitosa span").html(data);
+    }
+
+    $("#alertaTasaMunicipalExitosa")
+        .show()
+        .delay(500)
+        .addClass("in")
+        .fadeOut(delay ? delay : 2500);
+}
+
+function MostrarAlertaAdvertenciaTasaMunicipal(data, delay) {
+    posicionarAlertaTasaMunicipal();
+
+    if (data != null) {
+        $("#alertaTasaMunicipalError span").html(data);
+    }
+
+    $("#alertaTasaMunicipalError")
+        .show()
+        .delay(500)
+        .addClass("in")
+        .fadeOut(delay ? delay : 2500);
+}
+
+function posicionarAlertaTasaMunicipal() {
+    $("#alertaTasaMunicipalExitosa").css({
+        position: 'fixed',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        top: '37%'
+    });
+
+    $("#alertaTasaMunicipalError").css({
+        position: 'fixed',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        top: '37%'
+    });
+}
+
 function ActualizarEstadoServicios(mensaje) {
     $('#serviciosWeb').tooltip('destroy');
     if (mensaje != null && mensaje != undefined && mensaje != "Ok") {
@@ -705,5 +750,24 @@ function NotificarCambioEstadoBarrera(mensaje) {
         }
     } catch (e) {
         console.log(e)
+    }
+}
+
+function CentrarAlertaTasaMunicipal() {
+    var $mainAlert = $('#alerta');
+    var $manualAlert = $('#alertaTasaMunicipalManual');
+
+    if ($manualAlert.length && !$manualAlert.hasClass('hide')) {
+        var mainTop = ($(window).height() - $mainAlert.outerHeight()) / 3;
+        var mainLeft = ($(window).width() - $mainAlert.outerWidth()) / 2;
+
+        var manualTop = mainTop + $mainAlert.outerHeight() + 20;
+        var manualLeft = ($(window).width() - $manualAlert.outerWidth()) / 2;
+
+        $manualAlert.css({
+            position: 'fixed',
+            left: manualLeft,
+            top: manualTop
+        });
     }
 }

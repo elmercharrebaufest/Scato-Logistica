@@ -44,20 +44,36 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (comando.Dto.ImprimeTarjetaDeAcceso)
                     ImprimirTarjetaDeAcceso(nuevoCupo.Numero, nuevoCupo.Centro.Id, nuevoCupo.PuestoDeTrabajo.Id);
 
+                var resultadoConsultarTasa = ConsultarPagoTasaMunicipal(comando.Dto); 
+
                 if (!comando.Dto.NoAsignaCalleEnGaritaEntrada) {
                     if (nuevoCupo.Material != null)
                     {
                         var resultadoCrearCalle = AsignarCalle(nuevoCupo.Id, nuevoCupo.Centro.Id);
-                        MostrarMensajeEnCartel(resultadoCrearCalle.CalleNombre, nuevoCupo.Patente, nuevoCupo.PuestoDeTrabajo.Id);
+                        MostrarMensajeEnCartel(resultadoCrearCalle.CalleNombre, 
+                                                nuevoCupo.Patente, 
+                                                nuevoCupo.PuestoDeTrabajo.Id, 
+                                                resultadoConsultarTasa.TipoAlerta, 
+                                                resultadoConsultarTasa.MensajeAlerta);
+
                         resultado.Mensaje = resultadoCrearCalle.Disponibilidad <= 5 && resultadoCrearCalle.Disponibilidad > 0
                             ? $"Carga Exitosa, se asignó {resultadoCrearCalle.CalleNombre}, ESPACIO DISPONIBLE: {resultadoCrearCalle.Disponibilidad} camiones"
                             : $"Carga Exitosa, se asignó {resultadoCrearCalle.CalleNombre}";
                     } else
                     {
-                        MostrarMensajeEnCartel("Mesa FAS", nuevoCupo.Patente, nuevoCupo.PuestoDeTrabajo.Id);
+                        MostrarMensajeEnCartel("Mesa FAS", 
+                                                nuevoCupo.Patente, 
+                                                nuevoCupo.PuestoDeTrabajo.Id,
+                                                resultadoConsultarTasa.TipoAlerta,
+                                                resultadoConsultarTasa.MensajeAlerta);
                         resultado.Mensaje = $"Carga Exitosa, Camión debe dirigirse a Mesa FAS.";
                     }
                 }
+
+                resultado.IdPagoMunicipal = resultadoConsultarTasa.IdPago;
+                resultado.MensajeTasaMunicipal = resultadoConsultarTasa.MensajeAlerta ?? string.Empty;
+                resultado.tipoAlerta = resultadoConsultarTasa.TipoAlerta;
+                resultado.ErroresOExcepcionesConsultaTasaMunicipal = resultadoConsultarTasa.HayErrores || !resultadoConsultarTasa.EjecutaWorkFlow;
 
                 resultado.Id = nuevoCupo.Id;
                 if (comando.Dto.TipoOrdenCargaNoGranos.HasValue && 
@@ -66,7 +82,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.FastPassValido = ValidarFastPass(comando, resultado);
                     resultado.FastPassWorkflowDefinicionId = ObtenerWorkflowDefinicionId(comando.Dto.TipoOrdenCargaNoGranos.Value);
                 }
-                AbrirBarrera(nuevoCupo.PuestoDeTrabajo.Entrada);
+
+                if (resultadoConsultarTasa.SeLevantaBarrera)
+                    AbrirBarrera(nuevoCupo.PuestoDeTrabajo.Entrada);
             }
             catch (ErrorCrearCupoNoGranoExcepcion ex)
             {
@@ -89,6 +107,26 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             return resultado;
+        }
+
+        private ResultadoConsultarPagoTasaMunicipal ConsultarPagoTasaMunicipal(CargaDeCupoDto model)
+        {
+            var response = new ResultadoConsultarPagoTasaMunicipal();
+
+            if (model.CentroId == Constantes.Centro.IdSanLorenzo) {
+                response = servicioComandos.Ejecutar(new VerificarPagoTasaMunicipal
+                {
+                    Patente = model.Patente,
+                    Ctg = model.CPE ? model.CTG : model.NumeroCartaPorte,
+                    MaterialId = model.MaterialId.GetValueOrDefault(),
+                    PatenteAcoplado = model.PatenteAcoplado,
+                    CentroId = model.CentroId,
+                    EsNoGranos = true,
+                    TipoOrigenDeValidacion = TipoOrigenDeValidacion.CargaDeCupo
+                }) as ResultadoConsultarPagoTasaMunicipal;
+            }
+
+            return response;
         }
 
         private int ObtenerWorkflowDefinicionId(TipoOrdenCargaNoGranos tipoOrdenCarga)
@@ -189,22 +227,34 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultadoAsignarCalle;
         }
 
-        private void MostrarMensajeEnCartel(string mensaje, string patente, int puestoId)
+        private void MostrarMensajeEnCartel(string mensaje, string patente, int puestoId, TipoAlerta tipoAlerta, string mensajeTasaMunicipal)
         {
+            var codigoMensaje = tipoAlerta == TipoAlerta.Exito
+                                                ? CodigoMensajeCartelLed.GaritaIngresoConTasaMunicipalExito
+                                                : CodigoMensajeCartelLed.GaritaIngresoConTasaMunicipalError;
+
+            var mensajesCartelLedConfig = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == codigoMensaje && x.Habilitado);
+
             try
             {
-                var mensajesCartelLedConfig = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == CodigoMensajeCartelLed.GaritaIngresoAsignarCalle && x.Habilitado);
-                var mensajes = mensajesCartelLedConfig.Select(s =>
+                var mensajes = mensajesCartelLedConfig
+                    .OrderBy(s => s.Orden)
+                    .Select(s =>
                     new EnviarMensajeCartelLed
                     {
-                        Mensaje = string.Format(s.Mensaje, mensaje, patente),
+                        Mensaje = string.Format(s.Mensaje,
+                                                mensaje,                     // {0}
+                                                patente,                     // {1}
+                                                tipoAlerta == TipoAlerta.Exito ? mensajeTasaMunicipal : "",    // {2} - solo se usa en Éxito (variable 07)
+                                                tipoAlerta == TipoAlerta.Error ? mensajeTasaMunicipal : ""),   // {3} - solo se usa en Error (variable 08)
                         PuestoDeTrabajoId = puestoId,
                         NumeroPrograma = s.Programa,
                         NumeroTrama = s.Trama,
                         NumeroVariable = s.Variable,
                         SegundosDeEspera = s.SegundosDeEspera
                     }
-                ).ToList();
+                    ).ToList();
+
                 servicioComandos.Ejecutar(new EnviarMensajesAsincronoCartelLed { Mensajes = mensajes });
             }
             catch (Exception ex)

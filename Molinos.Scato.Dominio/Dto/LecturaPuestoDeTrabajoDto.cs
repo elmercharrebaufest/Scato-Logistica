@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 
 namespace Molinos.Scato.Dominio.Dto
@@ -42,5 +43,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool Automatizado { get; set; }
         public string CodigoDispositivo { get; set; }
         public string Firmware { get; set; }
+        public TipoAlerta TipoAlerta { get; set; }
+        public string MensajeAlerta { get; set; }
     }
 }

@@ -123,6 +123,7 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var vehiculos = orden.Vehiculos;
             ViewBag.AceptaPendiente = true;
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.Patente, null, orden.NroCartaPorte, orden.TipoVehiculo, orden.CodEstab, orden.MaterialId);
 
             if (string.IsNullOrEmpty(orden.NroCartaPorte) && orden.TipoVehiculoInt == (int)TipoVehiculo.Tren)
             {
@@ -295,6 +296,7 @@ namespace Molinos.Scato.Web.Controllers
                 var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
                 var servicioWf = factory.CrearServicio(workflowDefinicionId);
                 var instanceIds = new List<Guid>();
+                
 
                 log.Info("CargarCartaPorte: Iniciando carga de workflow/s para los/el vehiculo/s: " + orden.VehiculoJson);
                 foreach (var vehiculo in vehiculos)
@@ -313,6 +315,7 @@ namespace Molinos.Scato.Web.Controllers
                             }
                         }
                     }
+                    
                     var controlRecorrido = GenerarControlRecorrido(datosUsuario);
                     var resultadoActividad = servicioWf.CargarCartaPorte(orden, vehiculo, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
                     if (resultadoActividad.HayErrores)
@@ -321,6 +324,10 @@ namespace Molinos.Scato.Web.Controllers
                         SetearVista(workflowObj, datosUsuario.CentroId);
                         return View(orden);
                     }
+                   
+                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                        ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
                     orden.Id = resultadoActividad.Id;
                     instanceIds.Add(resultadoActividad.InstanciaWorkflowId);
                 }
@@ -346,7 +353,7 @@ namespace Molinos.Scato.Web.Controllers
 
             SetearVista(workflowObj, datosUsuario.CentroId);
             return View(orden);
-        }        
+        }
 
         public ActionResult MostrarCamion(CartaPorteDto model)
         {
@@ -601,6 +608,11 @@ namespace Molinos.Scato.Web.Controllers
 
             var codigoEstablecimientoEsDeMolinos = servicio.ObtenerCodigoEstablecimientoEsDeMolinos(codigoDeEstablecimiento);
 
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+            }
+
             //si es MRP, no se valida el codigo de establecimiento
             if (codigoSapTitular == codigoSapMRP && (remitente == null || remitente.CodigoSap == codigoSapMRP || remitente.CodigoSap == codigoSapMolinosAgro))
             {
@@ -617,6 +629,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
                 return false;
             }
+
             return true;
         }
 

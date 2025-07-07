@@ -1881,3 +1881,37 @@ IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = 'PDR')
 BEGIN 
 	INSERT INTO AutomatismoTipoLlamado VALUES ('PDR','Pase Directo',1)
 END
+
+PRINT N'Actualizando [dbo].[MensajeCartelLed] para GaritaIngresoConTasaMunicipal...';
+
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo LIKE 'GaritaIngresoConTasaMunicipal%')
+BEGIN
+	INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES 
+	-- Éxito
+	('GaritaIngresoConTasaMunicipalExito', 1, '{1}', '01', '04', '05', 0, '{1}: patente del camión', 1),
+	('GaritaIngresoConTasaMunicipalExito', 2, '{0}', '01', '04', '06', 0, '{0}: fila asignada', 1),
+	('GaritaIngresoConTasaMunicipalExito', 3, '{2}', '01', '04', '07', 0, '{2}: mensaje en verde', 1),
+	('GaritaIngresoConTasaMunicipalExito', 4, '{3}', '01', '04', '08', 0, '{3}: vacio', 1),
+	('GaritaIngresoConTasaMunicipalExito', 5, 'PARE', '01', '02', '00', 20, 'Limpiar pantalla', 1),
+	-- Error  
+	('GaritaIngresoConTasaMunicipalError', 1, '{1}', '01', '04', '05', 0, '{1}: patente del camión', 1),
+	('GaritaIngresoConTasaMunicipalError', 2, '{0}', '01', '04', '06', 0, '{0}: fila asignada', 1),
+	('GaritaIngresoConTasaMunicipalError', 3, '{2}', '01', '04', '07', 0, '{3}: vacio', 1),
+	('GaritaIngresoConTasaMunicipalError', 4, '{3}', '01', '04', '08', 0, '{3}: mensaje en rojo', 1),
+	('GaritaIngresoConTasaMunicipalError', 5, 'PARE', '01', '02', '00', 20, 'Limpiar pantalla', 1);
+END
+
+PRINT N'[dbo].[MensajeCartelLed] para GaritaIngresoConTasaMunicipal Actualizadas...';
+
+-- Configuración de puestos de trabajo
+PRINT N'Actualizando [dbo].[PuestoDeTrabajo].[Firmware]...';
+
+update PuestoDeTrabajo 
+set Firmware = 'Molinos.Scato.Web.Firmware.FirmwarePagoTasaMunicipal, Molinos.Scato.Web'
+where Id = 2
+
+update PuestoDeTrabajo 
+set Firmware = 'Molinos.Scato.Web.Firmware.FirmwarePagoTasaMunicipal, Molinos.Scato.Web'
+where Id = 46
+
+PRINT N'[dbo].[PuestoDeTrabajo].[Firmware] Actualizados...';

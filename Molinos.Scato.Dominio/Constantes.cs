@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Molinos.Scato.Dominio
+﻿namespace Molinos.Scato.Dominio
 {
     public static class Constantes
     {
@@ -167,7 +165,6 @@ namespace Molinos.Scato.Dominio
                 public const string Centro = "Centro";
                 public const string WorkFlowEgreso = "WorkFlowEgreso";
                 public const string TipoComercialEgreso = "TipoComercialEgreso";
-
             }
 
             public struct CargaDeCupo
@@ -260,6 +257,7 @@ namespace Molinos.Scato.Dominio
         public struct Centro
         {
             public const string CodigoSAPSanLorenzo = "1029";
+            public const int IdSanLorenzo = 5;
         }
 
         public struct PuestoComandoPuerto
@@ -287,6 +285,9 @@ namespace Molinos.Scato.Dominio
         {
             public const string LlamarAutomatismoGrano = "JobLlamarLlamadoAutomaticoGranos";
             public const string LlamarAutomatismoNoGrano = "JobLlamarLlamadoAutomaticoNoGranos";
+            public const string SincronizarMOAPayEstadoDePagos = "SincronizarMOAPayEstadoDePagos";
+            public const string SincronizarMOAPayCPE = "SincronizarMOAPayCPE";
+            public const string DefaultCronExpressionForSincronizarMOAPayEstadoDePagos = "0 */30 * * * *"; //cada 30 minutos
         }
 
         public struct AutomatismoTipoLlamado
@@ -331,6 +332,35 @@ namespace Molinos.Scato.Dominio
         {
             public const string CartaPorteUrenport = "1";
             public const string CertificacionHojaDeRutaCartaPorte = "2";
+        }
+
+        public static class MOAPay
+        {
+            public static class Filtros
+            {
+                public const string SI = "S";
+                public const string NO = "N";
+                public const string TODO = "T";
+
+                public const string FECHAPAGO = "P";
+            }
+
+            public static class TipoDocumento
+            {
+                public const string REMITO = "Remito";
+                public const string CTG = "CTG";
+            }
+
+            public static class TipoDeVehiculo
+            {
+                public const string COMUN = "C";
+                public const string ESCALABLE = "E";
+            }
+
+            public static class Codigos
+            {
+                public const string CodigoDiferenciaDePago = "DP";
+            }
         }
     }
 }

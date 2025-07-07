@@ -1,13 +1,19 @@
-﻿using Molinos.Scato.Repositorio;
+﻿using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Validations;
+using Molinos.Scato.Dominio.Validations.Interfaces;
+using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.AfipCTGWebService;
 using Molinos.Scato.Servicios.AfipCPDigitalService;
+using Molinos.Scato.Servicios.AfipCTGWebService;
 using Molinos.Scato.Servicios.AfipWebService;
+using Molinos.Scato.Servicios.ComplianceWebServiceV2;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Conversiones.Impl;
+using Molinos.Scato.Servicios.Estrategias;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
 using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Servicios.Orquestador;
+using Molinos.Scato.Servicios.Procesamiento;
 using Molinos.Scato.Servicios.ServicioImpresion;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Servicios.Urenport;
@@ -15,11 +21,6 @@ using Ninject.Modules;
 using System.Data.Entity;
 using System.Net.Http;
 using System.ServiceModel;
-using Molinos.Scato.Servicios.ComplianceWebServiceV2;
-using Molinos.Scato.Servicios.Estrategias;
-using Molinos.Scato.Dominio.Validations;
-using Molinos.Scato.Dominio.Validations.Interfaces;
-using Molinos.Scato.Dominio.Dto;
 
 namespace Molinos.Scato.Dependencias
 {
@@ -53,6 +54,7 @@ namespace Molinos.Scato.Dependencias
             Bind<IExternalServiceException, ExternalServiceException>().To<ExternalServiceException>();
             Bind<IRestClientFactory, RestClientFactory>().To<RestClientFactory>().InSingletonScope();
             Bind<IValidatorEntity<OrdenCargaFasDto>>().To<OrdenCargaFasValidator>();
+            Bind<ICategorizadorVehiculo, CategorizadorVehiculo>().To<CategorizadorVehiculo>().InScope(ctx => OperationContext.Current);
 
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<LoginCMS>("LoginCms");
@@ -72,6 +74,14 @@ namespace Molinos.Scato.Dependencias
             Bind<IBalanzadaStrategy>().To<BalanzadaErrorStrategy>().InTransientScope();
             Bind<IBalanzadaStrategy>().To<BalanzadaFinStrategy>().InTransientScope();
             Bind<IServicioCarga, ServicioCarga>().To<ServicioCarga>().InScope(ctx => OperationContext.Current);
+
+            Bind<IReglaTasaMunicipal>().To<ReglaTasaMunicipalGranos>();
+            Bind<IReglaTasaMunicipal>().To<ReglaTasaMunicipalNoGranos>();
+            Bind<IReglaTasaMunicipal>().To<ReglaTasaMunicipalAmbos>();
+            Bind<IReglaPago24HrsTasaMunicipal>().To<ReglaExcepcionCalesita>();
+            Bind<IReglaExcepcionTasaMunicipal>().To<ReglaExcepcionSojaImpo>();
+            Bind<IReglaExcepcionTasaMunicipal>().To<ReglaExcepcionRecorrido>();
+            Bind<IProcesadorComando>().To<ProcesadorVerificarPagoTasaMunicipal>().InSingletonScope();
         }
     }
 }

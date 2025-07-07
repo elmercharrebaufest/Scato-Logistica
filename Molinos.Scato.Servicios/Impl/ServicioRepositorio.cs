@@ -16,11 +16,11 @@ using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Helpers;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
-using Ninject.Infrastructure.Language;
 using System;
 using System.Collections.Generic;
-using System.Data.Objects;
+using System.Configuration;
 using System.Data.Objects.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
@@ -5251,7 +5251,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public DatosRecorridoDto ObtenerDatosRecorridoActivo(string patente, IList<string> lecturasTarjetaDeAcceso)
         {
-            return repositorio.ObtenerProyeccion<Recorrido, DatosRecorridoDto>(
+            var datosRecorrido =  repositorio.ObtenerProyeccion<Recorrido, DatosRecorridoDto>(
                 x =>
                 (patente == null || patente == x.Patente) && x.TarjetaDeAcceso != null && !x.Terminado &&
                 lecturasTarjetaDeAcceso.Contains(x.TarjetaDeAcceso),
@@ -5279,8 +5279,23 @@ namespace Molinos.Scato.Servicios.Impl
                     Calle = x.Calle.Nombre,
                     TipoDocumento = x.TipoDocumentoIngreso,
                     TipoComercial = x.TipoComercial.Descripcion,
-                    TipoDeWorkflow = x.Workflow.TipoDeWorkflow
+                    TipoDeWorkflow = x.Workflow.TipoDeWorkflow,
+                    MaterialId = x.Material.Id,
+                    CentroId = x.Centro.Id,
+                    PatenteAcoplado = x.Vehiculo.PatenteAcoplado,
+                    Ctg = x.Vehiculo.CartaPorte.Cpe == true
+                        ? x.Vehiculo.CartaPorte.NroCartaPorte
+                        : x.Vehiculo.CartaPorte.CTG
                 });
+
+            if (datosRecorrido != null && (datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenCargaInterna
+                || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenCargaInternaFason
+                || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenCargaFas
+                || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenDeDescargaFason
+                || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.Remito))
+                datosRecorrido.PatenteAcoplado = ObtenerPatenteAcopladoOrdenesNoGranos(datosRecorrido.Id, datosRecorrido.TipoDocumento);
+            log.Debug("ObtenerDatosRecorridoActivo: {0}", JsonConvert.SerializeObject(datosRecorrido) ?? "null");
+            return datosRecorrido;
         }
 
         public DatosRecorridoDto ObtenerDatosRecorridoActivoSinTarjeta(string patente, string lecturasTarjetaDeAcceso)
@@ -6015,9 +6030,11 @@ namespace Molinos.Scato.Servicios.Impl
             if (reciboMunicipal == null)
             {
                 reciboMunicipal = repositorio.ObtenerMayor<ReciboMunicipal, int>(x => x.Centro.Id == recorrido.Centro.Id && hoy >= x.FechaActivacion &&
-            x.TipoVehiculo == null, x => x.Id);
+                x.TipoVehiculo == null, x => x.Id);
             }
             var pagoConMercadoPago = repositorio.Existe<PagoConMercadoPago>(x => x.Recorrido.Id == recorrido.Id && !string.IsNullOrEmpty(x.MercadoPagoId) && !x.Devuelto);
+
+            var pagoDigital = repositorio.Existe<PagosTasaMunicipal>(p => p.IdInstance == recorrido.InstanciaWorkflow && p.Disponible == false);
 
             return new ImpresionReciboMunicipalRecorridoDto
             {
@@ -6034,8 +6051,9 @@ namespace Molinos.Scato.Servicios.Impl
                 RecorridoId = recorrido.Id,
                 NombreTransportista = recorrido.Transportista.RazonSocial,
                 PagoConMercadoPago = pagoConMercadoPago,
-                MedioDePago = recorrido.Transportista.MedioDePago,
-                Material = AutoMapper.Mapper.Map<Material, MaterialDto>(recorrido.Material)
+                MedioDePago = pagoDigital ? MedioDePago.Digital : recorrido.Transportista.MedioDePago,
+                Material = AutoMapper.Mapper.Map<Material, MaterialDto>(recorrido.Material),
+                EstaPagadoPorMetodoDigital = pagoDigital
                 //Material = material
             };
         }
@@ -6232,7 +6250,7 @@ namespace Molinos.Scato.Servicios.Impl
                 var retorno = repositorio.ObtenerProyeccion<MaterialPorCentro, bool>(
                     x => x.Material.Id == materialCentro.MaterialId && x.Centro.Id == materialCentro.CentroId,
                     x => x.ImprimeReciboMunicipal);
-                log.Debug("Material {0} ImprimeReciboMunicipal {1}", instanceId, retorno);
+                log.Debug("InstanceId {0} ImprimeReciboMunicipal {1}", instanceId, retorno);
                 return retorno;
             }
             catch (Exception e)
@@ -9226,11 +9244,11 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ExistePagoRealizado(string patente)
         {
-            var hoy = DateTime.Now;
-            return repositorio.Existe<ImpReciboMunicipal>(
-                x => x.Patente == patente
-                && hoy > x.FechaImpresion && hoy < (DateTime)EntityFunctions.AddDays(x.FechaImpresion, 1)
-                );
+            var hoy = DateTime.Today;
+            var mañana = hoy.AddDays(1);
+            return repositorio.Existe<ImpReciboMunicipal>(x => x.Patente == patente &&
+                                                               x.FechaImpresion >= hoy &&
+                                                               x.FechaImpresion < mañana);
         }
 
         public BalanzaDto ObtenerBalanzaPorPuestoDeTrabajoSinTipoVehiculo(int puestoDeTrabajoId)
@@ -11344,17 +11362,145 @@ namespace Molinos.Scato.Servicios.Impl
 
             query = query.Where(x => x.Orden == 1);
 
+
+
             var huella = query.FirstOrDefault();
 
             return huella;
         }
-
 
         public int ObtenerTipoVariedadRecorridoAnterior(string numeroCTG, int centroId)
         {
             return repositorio.ObtenerProyeccion<Recorrido, int>(
                 x => x.NumeroDocumentoIngreso == numeroCTG && x.Centro.Id == centroId && x.Terminado == true && x.Rechazado == false,
                 x => x.TipoVariedad.Id);
+        }
+
+        public bool ExistePagoRealizadoPorListaMaterial(string codigoSap, string patente)
+        {
+            bool tienePagoRealizado = false;
+            var configuracionMaterialPagoRealizado = ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad, Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado);
+            var materialPagoRealizado = !string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor) ? configuracionMaterialPagoRealizado.Valor.Split(',').ToList() : new List<string>();
+            if (materialPagoRealizado.Contains(codigoSap))
+            {
+                tienePagoRealizado=  ExistePagoRealizado(patente);
+            }
+
+            return tienePagoRealizado;
+        }
+
+        public int ObtenerIdPagoDigitalPorInstanceId(Guid instanceId)
+        {
+            return repositorio.ObtenerProyeccion<PagosTasaMunicipal, int>(x => x.IdInstance == instanceId, x => x.IdMOAPay);
+        }
+
+        public DateTime? ObtenerUltimaFechaDePagoTasaMunicipal()
+        {
+            var resultado = repositorio.ObtenerMasReciente<PagosTasaMunicipal>(x => x.FechaPago.HasValue, x => x.FechaPago.Value);
+            return resultado?.FechaPago;
+        }
+
+        public string ObtenerPatenteAcopladoOrdenesNoGranos(int idRecorrido, TipoDocumentoIngreso tipoDocumento)
+        {
+            string patente = string.Empty;
+
+
+            switch (tipoDocumento)
+
+            {
+                case TipoDocumentoIngreso.OrdenCargaInterna:
+                    patente = repositorio.ObtenerProyeccion<OrdenCargaInterna, string>(x => x.Recorrido.Id == idRecorrido, x => x.PatenteAcoplado);
+                    break;
+
+                case TipoDocumentoIngreso.OrdenCargaFas:
+                    patente = repositorio.ObtenerProyeccion<OrdenCargaFas, string>(x => x.Recorrido.Id == idRecorrido, x => x.PatenteAcoplado);
+                    break;
+
+                case TipoDocumentoIngreso.OrdenCargaInternaFason:
+                    patente = repositorio.ObtenerProyeccion<OrdenCargaInternaFason, string>(x => x.Recorrido.Id == idRecorrido, x => x.PatenteAcoplado);
+                    break;
+
+                case TipoDocumentoIngreso.OrdenDeDescargaFason:
+                    patente = repositorio.ObtenerProyeccion<OrdenDeDescargaFason, string>(x => x.Recorrido.Id == idRecorrido, x => x.PatenteAcoplado);
+                    break;
+                case TipoDocumentoIngreso.Remito:
+                    patente = repositorio.ObtenerProyeccion<Remito, string>(x => x.Recorrido.Id == idRecorrido, x => x.PatenteAcoplado);
+                    break;
+
+                default:
+                    break;
+            }
+         return patente;
+        }
+
+        public string ObtenerWorkflowPorTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento)
+        {
+            var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
+            var codigoSapMolinosAgro = firmaProvider.ObtenerFirmaSinLogo().CodigoSAP;
+
+            var workflow = string.Empty;
+
+            if ((codigoSapTitularCartaPorte == codigoSapMRP
+                    && (codigoSapRemitenteComercial == null
+                        || codigoSapRemitenteComercial == codigoSapMRP
+                        || codigoSapRemitenteComercial == codigoSapMolinosAgro))
+                || (codigoSapTitularCartaPorte == codigoSapMolinosAgro
+                    && (codigoSapRemitenteComercial == null
+                        || codigoSapRemitenteComercial == codigoSapMolinosAgro)))
+            {
+                workflow = ConfigurationManager.AppSettings["workflowRedespacho"];
+            }
+            else if (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapTPR
+                || (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA
+                    && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA))
+            {
+                workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
+            }
+            else if (!string.IsNullOrEmpty(codigoSapTitularCartaPorte))
+            {
+                workflow = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
+            }
+
+            return workflow;
+        }
+
+        public bool DebeImprimirReciboMunicipal(string patente, Guid instanceId)
+        {
+            return !repositorio.Existe<PagosTasaMunicipal>(x => x.Dominio == patente && x.IdInstance == instanceId && !x.Disponible);
+        }
+
+        public bool ExistePagoReciboMunicipal(string patente, string ctg)
+        {
+            return repositorio.Existe<PagosTasaMunicipal>(x => x.Dominio == patente || x.NumeroDocumento == ctg);
+        }
+
+        public bool? LogPagaTicketMunicipal(Guid instanceId)
+        {
+            var recorridoPagaTicketMunicipal =
+                    repositorio.ObtenerProyeccion<LogExceptuadosTicketMunicipal, bool?>(x => x.WorkflowInstanceId == instanceId && x.PagaTicketMunicipal == false,
+                                                  x => x.PagaTicketMunicipal);
+            return recorridoPagaTicketMunicipal;
+        }
+
+        public IEnumerable<PagosTasaMunicipal> ObtenerPagosDigitalesPorInstanceId(Guid instanceId)
+        {
+            return repositorio.Listar<PagosTasaMunicipal>(x => x.IdInstance == instanceId);
+        }
+
+        public TipoVehiculo ObtenerTipodVehiculoPorPesoBruto(int pesoBruto, int centroId)
+        {
+           var tipoVehiculo =  repositorio.ObtenerMenor<PesoMaximoPorTipoVehiculo, int, TipoVehiculo>(
+                                                    c => c.PesoMaxIngreso >= pesoBruto &&
+                                                    c.Activo &&
+                                                    c.Centro.Id == centroId,
+                                                    x => x.PesoMaxIngreso,
+                                                    p=> p.TipoVehiculo);
+            return tipoVehiculo;
+        }
+
+        public IList<CartaPorteElectronicaDto> ListarCPEFiltradasPorFechaDeCacheado(DateTime fechaDesde, DateTime fechaHasta)
+        {
+            return Listar<CartaPorteElectronica, CartaPorteElectronicaDto>(c => c.FechaCacheado >= fechaDesde && c.FechaCacheado <= fechaHasta);
         }
 
         private IEnumerable<HuellaDigitalOrdenDto> GnerarQueryHuellaDigital(string filtro, bool esHistorico)

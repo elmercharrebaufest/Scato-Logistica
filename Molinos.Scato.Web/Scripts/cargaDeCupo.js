@@ -260,6 +260,9 @@ function CompletarMaterialesPorOrdenNoGranos(ordenesNoGranos) {
     } else {
         $("#HayVariosMateriales").val("false");
     }
+    if (ordenesNoGranos.length > 0 && ordenesNoGranos[0].PatenteAcoplado) {
+        $("#PatenteAcoplado").val(ordenesNoGranos[0].PatenteAcoplado);
+    }
     $.each(ordenesNoGranos, function (index, orden) {
         $("#MaterialId").append(`<option value=${orden.MaterialId} data-tipo-carga=${orden.TipoOrden}>${orden.MaterialDescripcion}</option>`);
     });

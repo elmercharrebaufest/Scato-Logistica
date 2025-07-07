@@ -1,13 +1,14 @@
-﻿using Molinos.Scato.Dominio;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Servicios.Impl
 {
@@ -42,6 +43,36 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
+        public void SincronizarMOAPayEstadoDePagos()
+        {
+            var fechaDesde = repositorio.ObtenerUltimaFechaDePagoTasaMunicipal();
+            comandos.Ejecutar(new MOAPaySincronizarEstadoDePagos
+            {
+                Disponible = MOAPay.Filtros.SI,
+                Pagado = MOAPay.Filtros.SI,
+                TipoFecha = MOAPay.Filtros.FECHAPAGO,
+                FechaDesde = fechaDesde ?? DateTime.Now.AddDays(-30),
+                FechaHasta = DateTime.Now,
+            });
+        }
+
+        public void SincronizarMOAPayCPE()
+        {
+            var cpeList = repositorio.ListarCPEFiltradasPorFechaDeCacheado(DateTime.Now.AddHours(-1), DateTime.Now);
+
+            foreach (var cpe in cpeList)
+            {
+                var tipoDeVehiculo = repositorio.ObtenerTipodVehiculoPorPesoBruto(cpe.PesoBruto, 5);
+                comandos.Ejecutar(new MOAPayCrearModificarCPE
+                {
+                    NumeroDocumento = cpe.NroCtg.ToString(),
+                    Dominio = cpe.Dominio,
+                    TipoDeVehiculo = ObtenerMOAPayTipoVehiculo(tipoDeVehiculo),
+                    CuitInterviniente = cpe.CuitTransportista.ToString()
+                });
+            }
+        }
+
         private void LlamarAutomaticoGranos()
         {
             var configuracionGeneral = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
@@ -63,11 +94,11 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarTipoLlamadoAutomaticoGrano(CalleDto callePH)
         {
-            if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PaseDirecto)
+            if (callePH.AutomatismoTipoLlamado.Codigo == AutomatismoTipoLlamado.PaseDirecto)
                 ValidarLlamadoPorPasoDirecto(callePH);
-            else if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.UnoAUno)
+            else if (callePH.AutomatismoTipoLlamado.Codigo == AutomatismoTipoLlamado.UnoAUno)
                 ValidarLlamadoPor1A1(callePH);
-            else if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PorFila)
+            else if (callePH.AutomatismoTipoLlamado.Codigo == AutomatismoTipoLlamado.PorFila)
                 ValidarLlamadoPorFila(callePH);
         }
 
@@ -385,6 +416,20 @@ namespace Molinos.Scato.Servicios.Impl
                         });
                     }
                 }
+            }
+        }
+
+        private string ObtenerMOAPayTipoVehiculo(TipoVehiculo tipoVehiculo)
+        {
+            switch (tipoVehiculo)
+            {
+                case TipoVehiculo.Bitren:
+                case TipoVehiculo.CamiónC:
+                case TipoVehiculo.CamiónD:
+                case TipoVehiculo.CamiónE:
+                    return MOAPay.TipoDeVehiculo.ESCALABLE;
+                default:
+                    return MOAPay.TipoDeVehiculo.COMUN;
             }
         }
     }

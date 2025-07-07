@@ -8,7 +8,6 @@ using Molinos.Scato.Servicios.Conversiones;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using RestSharp;
-using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +16,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorConfirmarCTGVencidas : ProcesadorComando<ConfirmarCTGVencidas>
     {
-        private readonly IConfiguracionProvider configuracion;
         private readonly IServicioComandos servicioComandos;
 
         public ProcesadorConfirmarCTGVencidas(IRepositorio repositorio,
                                             IConversor conversor,
                                             ILogger log,
-                                            IConfiguracionProvider configuracion,
                                             IServicioComandos servicioComandos)
             : base(repositorio, conversor, log)
         {
-            this.configuracion = configuracion;
             this.servicioComandos = servicioComandos;
         }
 
@@ -37,13 +33,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             Log.Debug("ProcesadorConfirmarCTGVencidas Inicio");
             try
             {
-                var client = GenerarClienteWebAPI();
+                var client = WebAPIRestClientFactory.GenerarClienteWebAPI();
                 var ctgsVencidos = ObtenerCTGVencidos(comando, client);
                 Log.Debug($"CTGDG Vencidos: {ctgsVencidos.ToJson()}");
                 foreach (var ctg in ctgsVencidos)
                 {
                     var resultadoCpe = ObtenerDatosCPEDG(comando.CentroId, ctg);
-                    if(!resultadoCpe.HayErrores)
+                    if (!resultadoCpe.HayErrores)
                         ConfirmarCPEDescargadoEnDestino(client, resultadoCpe);
                 }
             }
@@ -53,16 +49,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             Log.Debug("ProcesadorConfirmarCTGVencidas Fin");
             return resultado;
-        }
-
-        private RestClient GenerarClienteWebAPI()
-        {
-            var username = configuracion.AppSettings["UserCredentialWebAPI"];
-            var password = configuracion.AppSettings["PassCredentialWebAPI"];
-            var url = configuracion.AppSettings["UrlBaseWebAPI"];
-            var client = new RestClient(url);
-            client.Authenticator = new HttpBasicAuthenticator(username, Encriptador.Decrypt(password));
-            return client;
         }
 
         private List<long> ObtenerCTGVencidos(ConfirmarCTGVencidas comando, RestClient client)

@@ -1,5 +1,6 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Enums
 @model Molinos.Scato.Dominio.Dto.CargaDeCupoDto
 @{
     Layout = null;
@@ -13,6 +14,7 @@
     var mensajeAdvertencia = (string)ViewBag.MensajeAdvertencia;
     var mensajeInformativo = (string)ViewBag.MensajeInformativo;
     var mensajeError = (string)ViewBag.MensajeError;
+    var tipoAlertaEnumLayout = ViewBag.TipoDeAlertaTasaMunicipal as TipoAlerta?;
 }
 <script src="@Url.Script("~/Scripts/cargaDeCupo.form.js")" type="text/javascript"></script>
 
@@ -30,6 +32,16 @@
     }
 
     #alertaExitosa {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+
+    #alertaTasaMunicipalExitosa {
+        text-align: center !important;
+        font-weight: bold !important;
+    }
+
+    #alertaTasaMunicipalError {
         text-align: center !important;
         font-weight: bold !important;
     }
@@ -109,6 +121,16 @@ else if (!string.IsNullOrEmpty(mensajeAdvertencia))
 else if (!string.IsNullOrEmpty(mensajeExitoso))
 {
     <script type="text/javascript">MostrarAlertaExitosa('@mensajeExitoso', 10000);</script>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.MensajeAlertaTasaMunicipal) && @tipoAlertaEnumLayout == TipoAlerta.Exito)
+{
+    <script type="text/javascript">MostrarAlertaExitosaTasaMunicipal('@ViewBag.MensajeAlertaTasaMunicipal', 10000);</script>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.MensajeAlertaTasaMunicipal) && @tipoAlertaEnumLayout == TipoAlerta.Error)
+{
+    <script type="text/javascript">MostrarAlertaAdvertenciaTasaMunicipal('@ViewBag.MensajeAlertaTasaMunicipal', 10000);</script>
 }
 
 @if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
@@ -257,6 +279,7 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
                             maxlength = 10,
                         })
                         @Html.ValidationMessageFor(model => model.Patente)
+                        @Html.HiddenFor(model => model.PatenteAcoplado)
                     </div>
                 </div>
 

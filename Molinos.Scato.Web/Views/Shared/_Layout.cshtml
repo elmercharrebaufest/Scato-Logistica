@@ -7,27 +7,43 @@
 @{
     var mensaje = (string)TempData["Alerta"];
     var tipoMensaje = TempData["TipoAlerta"] as TipoAlerta?;
-    var clase = string.IsNullOrEmpty(mensaje) ? "hide" : string.Empty;
+    var clase = GetClaseAlertaHelper(mensaje, tipoMensaje).ToString();
     var mensajeAplicacion = (string)TempData["MensajeAplicacion"];
+    var mensajeTasaMunicipalManual = (string)TempData["AlertaTasaMunicipal"];
+    var tipoMensajeTasaMunicipalManual = TempData["TipoAlertaTasaMunicipal"] as TipoAlerta?;
+    var claseTasaMunicipalManual = GetClaseAlertaHelper(mensajeTasaMunicipalManual, tipoMensajeTasaMunicipalManual).ToString();
 
-    if (tipoMensaje != null)
+
+    @helper GetClaseAlertaHelper(string mensaje, TipoAlerta? tipo)
     {
-        switch (tipoMensaje)
+        var clase = "hide";
+
+        if (!string.IsNullOrEmpty(mensaje) && tipo.HasValue)
         {
-            case TipoAlerta.Exito:
-                clase = "alert alert-success";
-                break;
-            case TipoAlerta.Advertencia:
-                clase = "alert alert-warning";
-                break;
-            case TipoAlerta.Error:
-                clase = "alert alert-error";
-                break;
-            case TipoAlerta.Informacion:
-                clase = "alert alert-info";
-                break;
+            switch (tipo.Value)
+            {
+                case TipoAlerta.Exito:
+                    clase = "alert alert-success";
+                    break;
+                case TipoAlerta.Advertencia:
+                    clase = "alert alert-warning";
+                    break;
+                case TipoAlerta.Error:
+                    clase = "alert alert-error";
+                    break;
+                case TipoAlerta.Informacion:
+                    clase = "alert alert-info";
+                    break;
+                default:
+                    clase = "alert alert-error";
+                    break;
+            }
         }
+
+        @clase
     }
+
+
 }
 <!DOCTYPE html>
 <html>
@@ -82,7 +98,34 @@
             border: solid;
             cursor: pointer;
         }
+
+        #alertaTasaMunicipalExitosa {
+            text-align: center !important;
+            font-weight: bold !important;
+        }
+
+        #alertaTasaMunicipalError {
+            text-align: center !important;
+            font-weight: bold !important;
+        }
+
+        #alertaTasaMunicipalManual {
+            z-index: 1049;
+            position: fixed;
+            width: 50%;
+            margin: 0;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+            padding: 8px 35px 8px 14px;
+        }
     </style>
+    <script>
+        $(document).ready(function () {
+            CentrarAlertaTasaMunicipal();
+            $(window).resize(CentrarAlertaTasaMunicipal);
+        });
+    </script>
     @RenderSection("scripts", required: false)
 </head>
 
@@ -113,6 +156,13 @@
             <span id="alertaFija-span">@mensajeAplicacion</span>
         </div>
 
+        <div id="alertaTasaMunicipalExitosa" class="alert alert-success fade hide centro-pantalla alerta-box">
+            <span>@Textos.Exito_Generico</span>
+        </div>
+
+        <div id="alertaTasaMunicipalError" class="alert alert-error fade hide centro-pantalla alerta-box">
+            <span>@Textos.Error_Generico</span>
+        </div>
 
         @Html.Hidden("ValorSi", Textos.Si)
         @Html.Hidden("ValorNo", Textos.No)
@@ -134,8 +184,11 @@
             <a class="close" data-dismiss="alert">×</a>
         }
         <div>@mensaje</div>
+    </div>       
+    <div class="alerta-box @claseTasaMunicipalManual centro-pantalla" id="alertaTasaMunicipalManual">
+        <a class="close" data-dismiss="alert">×</a>
+        <div>@mensajeTasaMunicipalManual</div>
     </div>
-
 
     <div class="modal hide fade" id="dialogo-borrar">
         <div class="modal-header">
@@ -196,7 +249,7 @@
     </div>
     <div id="linksRegistrarInactividad"
          data-url-consultar-ultimo-camion-calado="@Url.Action("ConsultarUltimoCamionCalado", "RegistroInactividad")"
-        data-url-valida-inactividad="@Url.Action("ValidaInactividad", "RegistroInactividad")">
+         data-url-valida-inactividad="@Url.Action("ValidaInactividad", "RegistroInactividad")">
     </div>
 
     @Html.Hidden("Procesando", Textos.Procesando)

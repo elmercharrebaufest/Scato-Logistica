@@ -8,6 +8,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int MaterialId { get; set; }
         public string MaterialDescripcion { get; set; }
         public TipoOrdenCargaNoGranos TipoOrden { get; set; }
+        public string PatenteAcoplado { get; set; }
     }
 
     public class OrdenNoGranosCargaDeCupoComparer : IEqualityComparer<OrdenNoGranosCargaDeCupoDto>

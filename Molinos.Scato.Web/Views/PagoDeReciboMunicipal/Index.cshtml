@@ -64,6 +64,15 @@
     .botones-barrera {
         margin: 20px;
     }
+
+    #pagoManual.modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 450px;
+        transform: translate(-50%, -50%);
+        margin: 0; /* Elimina márgenes conflictivos */
+    }
 </style>
 
 @Html.Hidden("puestoDeTrabajo", puestoDeTrabajo)
@@ -129,57 +138,41 @@
             @Html.TextBox("transportista", "esperando...", new { @id = "transportista", @class = "control input-medium lowercase", @readonly = "readonly", data_toggle = "tooltip", @style = " cursor: pointer; " })
         </div>
     </div>
-    <div id="spinnerEsperandoLecturaQr">
-        <div class="controls menosAncho" style="max-width: 400px; margin-left: 32%;">
-            @Html.Label("Código QR:", new { @class = "control-label menosAncho" })
-            @Html.TextBox("tokenDePago", null, new { @id = "tokenDePago", @class = "control input-medium", data_toggle = "tooltip", placeholder = "Lea el código QR", @type = "password" })
-        </div>
-        <br />
 
-        <p style="margin-bottom:2%; font-weight:bold;" id="MensajeEstadoDePago"></p>
-
-        <div class="controls menosAncho" style="text-align: center;margin-left: 47%;margin-bottom:5%;">
-            <div class="loader"></div>
-        </div>
-    </div>
     @*<div class="contenedor-barrera">
-        <span>Estado de barrera: </span>
-        <span class="bar-ico icon-barrera-cerrada" id="barreraCargaCupo"></span>
-        <div class="botones-barrera">
-            <a class="btn tarjetaMaestro apertura btnBarrera" data-puesto-id="@ViewBag.PuestoDeTrabajoId" data-id="@ViewBag.CodigoBarrera"><i class="fa fa-unlock"> </i> </a>
-            <a class="btn tarjetaMaestro cierre btnBarrera" data-puesto-id="@ViewBag.PuestoDeTrabajoId" data-id="@ViewBag.CodigoBarrera"><i class="fa fa-lock"> </i> </a>
-        </div>
-    </div>*@
-    <div class="controls menosAncho" style="margin-left: 0px;">
-        <button id="btnCancelar" class="btn btn-sm" name="submitAction">Cancelar</button>
-        @*<button id="btnCobrarEnEfectivo" class="btn btn-primary" type="submit" name="submitAction">Cobrar en Efectivo</button>*@
-    </div>
-</div>
-
-@*<div id="barreraModal" class="modal hide fade"
-     data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
-
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-            &times;
-        </button>
-        <h3>Indique motivo:</h3>
-    </div>
-
-    <div class="modal-body form-horizontal">
-        <div class="control-group">
-            @Html.Label("Motivo", new { @class = "control-label" })
-            <div class="controls">
-                @Html.TextArea("Motivo", new { id = "motivo", @class = "form-control", style = "width:350px;" })
+            <span>Estado de barrera: </span>
+            <span class="bar-ico icon-barrera-cerrada" id="barreraCargaCupo"></span>
+            <div class="botones-barrera">
+                <a class="btn tarjetaMaestro apertura btnBarrera" data-puesto-id="@ViewBag.PuestoDeTrabajoId" data-id="@ViewBag.CodigoBarrera"><i class="fa fa-unlock"> </i> </a>
+                <a class="btn tarjetaMaestro cierre btnBarrera" data-puesto-id="@ViewBag.PuestoDeTrabajoId" data-id="@ViewBag.CodigoBarrera"><i class="fa fa-lock"> </i> </a>
+            </div>
+        </div>*@
+    <div class="control-group sinMargen">
+        <div class="controls menosAncho" style="max-width: 400px; margin-left: 32%;">
+            <div id="alertaPago" class="alert alert-success alert-dismissible fade hide alerta-box-custom" style="--width: 40%; --height: auto; --tAlign: center; --fWeight: bold; --zIndex:10000; display: none; " role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
-
-        <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
-        <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
     </div>
 
-    <div class="modal-footer">
-        <a href="javascript:void(0)" id="guardar" class="btn btn-primary btnBarrera">Aceptar</a>
-        <a data-dismiss="modal" aria-hidden="true" href="#" id="cancelar" class="btn close btnBarrera">Cancelar </a>
+    <div id="pagoManual" class="modal" style="display: none;"
+         data-backdrop="static" data-keyboard="false">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <h4>Tasa municipal adeudada</h4>
+        </div>
+
+        <div class="modal-body form-horizontal">
+            <h5>¿Desea abonar de forma manual?</h5>
+        </div>
+
+        <div class="modal-footer">
+            <button id="btnCancelarPagoMunicipal" class="btn btn-outline-primary small" onclick="cerrarModal()">No</button>
+            <button id="btnAceptarPagoMunicipal" class="btn btn-primary focus small" onclick="avanzarDeEtapa()">Si</button>
+        </div>
     </div>
-</div>*@

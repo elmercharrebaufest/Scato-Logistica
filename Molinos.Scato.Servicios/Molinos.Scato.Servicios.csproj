@@ -197,6 +197,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\LoteInaseMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\MuestraDeInaseMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CartaPorteDerivadoGranarioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PagoTasaMunicipalMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\PuntoDeCargaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\HuellaDigitalMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\RegistroInactividadMapingProfile.cs" />
@@ -384,19 +385,30 @@
     <Compile Include="CrearException.cs" />
     <Compile Include="IFirmwareFactory.cs" />
     <Compile Include="Impl\Balanzada\ServicioCarga.cs" />
+    <Compile Include="Impl\CategorizadorVehiculo .cs" />
     <Compile Include="Impl\ExternalServiceException.cs" />
+    <Compile Include="Impl\ReglaExcepcionCalesita.cs" />
+    <Compile Include="Impl\ReglaExcepcionRecorrido.cs" />
+    <Compile Include="Impl\ReglaExcepcionSojaImpo.cs" />
+    <Compile Include="Impl\ReglaExcepcionValidadoAlIngreso.cs" />
+    <Compile Include="Impl\ReglaTasaMunicipalAmbos.cs" />
+    <Compile Include="Impl\ReglaTasaMunicipalGranos.cs" />
+    <Compile Include="Impl\ReglaTasaMunicipalNoGranos.cs" />
     <Compile Include="Impl\RestClientFactory.cs" />
     <Compile Include="Impl\ServicioEstadoPuesto.cs" />
     <Compile Include="Impl\ServicioCircular.cs" />
-    <Compile Include="Impl\ServicioLlamadoAutomatico.cs" />
+    <Compile Include="Impl\Hangfire\ServicioLlamadoAutomatico.cs" />
     <Compile Include="Impl\ServicioOperaciones.cs" />
     <Compile Include="Impl\ServicioOperacionesMock .cs" />
     <Compile Include="InnerException.cs" />
     <Compile Include="Interfaces\Balanzada\IServicioCarga.cs" />
+    <Compile Include="IReglaExcepcionTasaMunicipal.cs" />
+    <Compile Include="IReglaPago24HrsTasaMunicipal.cs" />
+    <Compile Include="IReglaTasaMunicipal.cs" />
     <Compile Include="IRestClientFactory.cs" />
     <Compile Include="IServicioEstadoPuesto.cs" />
     <Compile Include="IServicioCircular.cs" />
-    <Compile Include="IServicioLlamadoAutomatico.cs" />
+    <Compile Include="Interfaces\Hangfire\IServicioLlamadoAutomatico.cs" />
     <Compile Include="IServicioOperaciones.cs" />
     <Compile Include="MercadoLibreException.cs" />
     <Compile Include="FormattingHtmlHelper.cs" />
@@ -572,23 +584,33 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\Base\WebAPIRestClientFactory.cs" />
+    <Compile Include="Procesamiento\ICategorizadorVehiculo.cs" />
+    <Compile Include="Procesamiento\MOAPay\ProcesadorMOAPayInformarPagoComoConsumido.cs" />
+    <Compile Include="Procesamiento\MOAPay\ProcesadorMOAPayCrearModificarCPE.cs" />
+    <Compile Include="Procesamiento\MOAPay\ProcesadorMOAPaySincronizarEstadoDePagos.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAutomatismoGranosEstado.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAutomatismoNoGranosEstado.cs" />
     <Compile Include="Procesamiento\ProcesadoLimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorVerificarPagoTasaMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarCategoriaVehiculoNoGranos.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarCategoriaVehiculoGranos.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarOrdenCargaFas.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarEscalablesDummy.cs" />
+    <Compile Include="Procesamiento\ProcesadorCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
     <Compile Include="Procesamiento\ProcesadorAnularCPEDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDGDummy.cs" />
-    <Compile Include="Procesamiento\ProcesadorConfirmarCTGVencidas.cs" />
+    <Compile Include="Procesamiento\AFIP\ProcesadorConfirmarCTGVencidas.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCartaPorteByPass.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCaracteristicasAnalizadas.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearHuellaDigital.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarComoUsadoPagosTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorValidarOrdenCargaInternaFas.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarTicketsNoGranos.cs" />
     <Compile Include="Procesamiento\ProcesadorVerificarEnCompliance.cs" />
@@ -648,7 +670,7 @@
     <Compile Include="Procesamiento\ProcesadorActualizarLlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLoteInase.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionDeCalle.cs" />
-    <Compile Include="Procesamiento\ProcesadorConsultarAFIP.cs" />
+    <Compile Include="Procesamiento\AFIP\ProcesadorConsultarAFIP.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlControlProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarCamionDemorado.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarVariedadPorMaterial.cs" />
@@ -1206,10 +1228,10 @@
     <Compile Include="Procesamiento\ProcesadorEliminarTransportista.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarInhabilitacionChofer.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlControl.cs" />
-    <Compile Include="Procesamiento\IProcesadorComando.cs" />
+    <Compile Include="Procesamiento\Base\IProcesadorComando.cs" />
     <Compile Include="Procesamiento\Base\ProcesadorEliminar.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarTipoDocumentoIdentidad.cs" />
-    <Compile Include="Procesamiento\ProcesadorComando.cs" />
+    <Compile Include="Procesamiento\Base\ProcesadorComando.cs" />
     <Compile Include="Procesamiento\Base\ProcesadorCrear.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarAlmacen.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarMaterial.cs" />
@@ -1948,10 +1970,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Business\Interfaces\" />
-    <Folder Include="Certificados\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\ComplianceWebService\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -2191,6 +2209,9 @@
     </None>
     <None Include="Service References\Orquestador\configuration.svcinfo" />
     <None Include="Service References\Orquestador\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Negocio\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

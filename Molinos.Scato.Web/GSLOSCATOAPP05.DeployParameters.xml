@@ -2,7 +2,6 @@
 <parameters>
 	<setParameter name="IIS Web Application Name" value="Scato/Scato.web" />
 	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSPRD.molinosagro.ad;Initial Catalog=MOAScato;Integrated Security=True" />
-	<setParameter name="ScatoHangfireDb-Web.config Connection String" value="Data Source=SCATOHFAGLSPRD.molinosagro.ad;Initial Catalog=ScatoHangfire;Integrated Security=True" />
 	<setParameter name="ServicioRepositorio Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioRepositorio.svc?wsdl" />
 	<setParameter name="ServicioComandos Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
 	<setParameter name="ListaDeWorkflows Service Endpoint Address" value="http://localhost/Scato.workflow/ListaDeWorkflows.svc?wsdl" />
@@ -38,7 +37,6 @@
 	<setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
 	<setParameter name="ICWebServerUrl Config" value="https://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
 	<setParameter name="ICWSServerUrl Config" value="wss://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
-	<setParameter name="ActivarHangFire Config" value="true" />
 	<setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
 	<setParameter name="APITokenOperacionesAPI Config" value="ZHBCyyW4SM0UoJr9nfmJTTgBBgsBky81dHka3Q6ZOCHtbZFF1W" />
   <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoWeb.log" />

@@ -662,7 +662,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Pdf = responseCp?.respuesta?.pdf is null ? null : responseCp?.respuesta?.pdf,
 
                         //Onbservacion
-                        Observacion = responseCp?.respuesta?.cabecera?.observaciones
+                        Observacion = responseCp?.respuesta?.cabecera?.observaciones,
+
+                        FechaCacheado = DateTime.Now
 
                     };
                     if (cartaPorte != null)
@@ -794,7 +796,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         CuitIntermediarioFlete = responseCp.respuesta.transporte.cuitIntermediarioFlete,
                         MercaderiaFumigada = responseCp.respuesta.transporte.mercaderiaFumigada,
                         Pdf = responseCp?.respuesta?.pdf is null ? null : responseCp?.respuesta?.pdf,
-                        TarifaReferencia = Convert.ToDouble(responseCp.respuesta.transporte.tarifaReferencia)
+                        TarifaReferencia = Convert.ToDouble(responseCp.respuesta.transporte.tarifaReferencia),
+                        FechaCacheado = DateTime.Now
 
                     };
                     if (cartaPorte != null)

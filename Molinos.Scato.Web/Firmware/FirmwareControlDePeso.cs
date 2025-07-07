@@ -24,9 +24,10 @@ namespace Molinos.Scato.Web.Firmware
             IServicioOrquestador servicioOrquestador,
             IServicioActividadFactory<IEjecutarService> factory,
             IServicioActividadFactory<IControlDePesoEsperadoService> factoryControlDePeso,
+            IRecorridoWorkflow recorridoWorkflow,
 
             HubClientFactory hubClientFactory) : base(
-                log, servicioRepositorio, workflows, comandos, servicioOrquestador, factory, hubClientFactory)
+                log, servicioRepositorio, workflows, comandos, servicioOrquestador, factory, hubClientFactory, recorridoWorkflow)
         {
             this.factoryControlDePeso = factoryControlDePeso;
         }

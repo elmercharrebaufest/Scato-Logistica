@@ -2,6 +2,7 @@
 <parameters>
 	<setParameter name="IIS Web Application Name" value="Scato/Scato.serviciosWeb" />
 	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSPRD.molinosagro.ad;Initial Catalog=MOAScato;Integrated Security=True" />
+    <setParameter name="ScatoHangfireDb-Web.config Connection String" value="Data Source=SCATOHFAGLSPRD.molinosagro.ad;Initial Catalog=ScatoHangfire;Integrated Security=True" />
 
 	<setParameter name="LoginCms Service Endpoint Address" value="https://wsaa.afip.gov.ar/ws/services/LoginCms" />
 	<setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://serviciosjava.afip.gob.ar/wsctg/services/CTGService_v4.0" />
@@ -43,5 +44,6 @@
 	<setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
 	<setParameter name="APITokenOperacionesAPI Config" value="ZHBCyyW4SM0UoJr9nfmJTTgBBgsBky81dHka3Q6ZOCHtbZFF1W" />
 	<setParameter name="LogCountAfterMinutes Config" value="5" />
-  <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoServicios.log" />
+    <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoServicios.log" />
+    <setParameter name="ActivarHangFire Config" value="true" />
 </parameters>

@@ -97,8 +97,17 @@
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarAsignacionAutomatismoGranoEnRecorrido .cs" />
+    <Compile Include="Comandos\ConsultarCategoriaVehiculoNoGranos.cs" />
     <Compile Include="Comandos\ConsultarOrdenCargaFas.cs" />
     <Compile Include="Comandos\ConsultarEscalablesDummy.cs" />
+    <Compile Include="Comandos\ConsultarCategoriaVehiculoGranos.cs" />
+    <Compile Include="Comandos\DatosExcepcionTasaMunicipal.cs" />
+    <Compile Include="Comandos\DatosTasaMunicipal.cs" />
+    <Compile Include="Comandos\MOAPay\MOAPayCrearModificarCPE.cs" />
+    <Compile Include="Comandos\MOAPay\MOAPayInformarPagoComoConsumido.cs" />
+    <Compile Include="Comandos\MOAPay\MOAPaySincronizarEstadoDePagos.cs" />
+    <Compile Include="Comandos\ResultadoValidacionEjecutarWorkflow.cs" />
+    <Compile Include="Comandos\VerificarPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenInsumos.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenesNoGranosCargaDeCupo.cs" />
     <Compile Include="Comandos\Consultas\ConsultarTicketsNoGranos.cs" />
@@ -112,8 +121,11 @@
     <Compile Include="Comandos\CrearCaracteristicasAnalizadas.cs" />
     <Compile Include="Comandos\CrearHuellaDigital.cs" />
     <Compile Include="Comandos\EliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Comandos\ModificarComoUsadoPagosTasaMunicipal.cs" />
     <Compile Include="Comandos\ResultadoConsultaOrdenCargaFas.cs" />
-    <Compile Include="Comandos\ResultadoServicio\ResultadoOrdenFas.cs" />    
+    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarCategoriaVehiculo.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarPagoTasaMunicipal.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoOrdenFas.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarTicketsNoGranos.cs" />
     <Compile Include="Comandos\ResultadoValidarCompliance.cs" />
     <Compile Include="Comandos\ValidarOrdenCargaInternaFas.cs" />
@@ -789,6 +801,8 @@
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
     <Compile Include="Consultas\InfoCalle.cs" />
+    <Compile Include="Dto\PagosTasaMunicipalDto.cs" />
+    <Compile Include="Dto\PagosTasaMunicipalResponse.cs" />
     <Compile Include="Dto\AutomatismoTipoLlamadoDto.cs" />
     <Compile Include="Dto\CalleAutomatismoDto.cs" />
     <Compile Include="Dto\AutomatismoGranoDto.cs" />
@@ -1007,6 +1021,7 @@
     <Compile Include="Dto\AsignacionNoGranoEnRecorridoDto.cs" />
     <Compile Include="Dto\VagonDto.cs" />
     <Compile Include="Dto\UbicacionDeBuquePuertoDto.cs" />
+    <Compile Include="Dto\ValoresPagoTasaMunicipalEfectivoDto.cs" />
     <Compile Include="Dto\ValoresPagarConMercadoPagoDto.cs" />
     <Compile Include="Dto\VaporDto.cs" />
     <Compile Include="Dto\CargaDto.cs" />
@@ -1083,6 +1098,9 @@
     <Compile Include="Dto\FirmaDto.cs" />
     <Compile Include="Dto\UsuarioMatriculaDto.cs" />
     <Compile Include="Dto\VisualizacionBarreraDto.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoMOAPayCrearModificarCPE.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoMOAPayInformarPagoComoConsumido.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoMOAPayConsultarPagos.cs" />
     <Compile Include="Dto\WebAPI\ResultadoCPEPendienteResolucion.cs" />
     <Compile Include="Dto\WebAPI\ResultadoConfirmacionDescargadoDestino.cs" />
     <Compile Include="Dto\WebAPI\ResponseWebAPIDto.cs" />
@@ -1095,6 +1113,7 @@
     <Compile Include="Dto\LogExceptuadosTicketMunicipalDto.cs" />
     <Compile Include="Dto\PanelServerAppPoolDto.cs" />
     <Compile Include="Dto\MuestraEnvioACamaraYRecorridoDto.cs" />
+    <Compile Include="Entidades\PagosTasaMunicipal.cs" />
     <Compile Include="Entidades\AsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Entidades\AutomatismoGrano.cs" />
     <Compile Include="Entidades\AutomatismoNoGrano.cs" />
@@ -1224,6 +1243,7 @@
     <Compile Include="Entidades\Bodega.cs" />
     <Compile Include="Entidades\Adjunto.cs" />
     <Compile Include="Entidades\ReglaDeAnalisisObligatorio.cs" />
+    <Compile Include="Enums\TipoCategoriaVehiculo.cs" />
     <Compile Include="Entidades\TipoEmbalaje.cs" />
     <Compile Include="Entidades\TipoDeActividad.cs" />
     <Compile Include="Entidades\TipoDeBuquePuerto.cs" />
@@ -1302,6 +1322,8 @@
     <Compile Include="Enums\TipoDeProteina.cs" />
     <Compile Include="Enums\TipoDestino.cs" />
     <Compile Include="Enums\EstadoWorkflow.cs" />
+    <Compile Include="Enums\TipoOrigenDeValidacion.cs" />
+    <Compile Include="Enums\TipoValidacionPagoTasaMunicipal.cs" />
     <Compile Include="Filtros\AtLeastOneItemIntAttribute.cs" />
     <Compile Include="Filtros\LoguearEntidad.cs" />
     <Compile Include="Filtros\FechaAntiguaAttribute.cs" />
@@ -1312,6 +1334,7 @@
     <Compile Include="Helpers\FormatterHelper.cs" />
     <Compile Include="Helpers\FotoCamionHelper.cs" />
     <Compile Include="Helpers\LoggerHelper.cs" />
+    <Compile Include="IPagoTasaMunicipalBuilder.cs" />
     <Compile Include="ITipeable.cs" />
     <Compile Include="Dto\ActividadPorDispositivoDto.cs" />
     <Compile Include="Dto\AjusteDeCalidadDto.cs" />
@@ -1795,6 +1818,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Textos.resx</DependentUpon>
     </Compile>
+    <Compile Include="PagoTasaMunicipalBuilder.cs" />
     <Compile Include="Seguridad\PermisosScato.cs" />
     <Compile Include="Entidades\SensorBarrera.cs" />
     <Compile Include="Validations\Interfaces\IValidatorEntity.cs" />

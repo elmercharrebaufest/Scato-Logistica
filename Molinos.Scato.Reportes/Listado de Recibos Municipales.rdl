@@ -6,15 +6,15 @@
       <am:Version>17.5.33502.453</am:Version>
     </am:CreatedBy>
     <am:UpdatedBy>
-      <am:Name>SSDTRS</am:Name>
-      <am:Version>17.5.33502.453</am:Version>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2023-04-05T20:45:00.9281499Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-07-03T16:57:21.1827100Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="Scato_Reportes_Datasource">
-      <DataSourceReference>Scato_Reportes_Datasource</DataSourceReference>
+      <DataSourceReference>/Data Sources/Scato_Reportes_Datasource</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>da93e132-c283-4745-9f3d-ae44584b6b48</rd:DataSourceID>
     </DataSource>
@@ -69,109 +69,140 @@ set @ReciboHastap = @ReciboHasta
 
 
 
-SELECT
-Recorrido.TarjetaDeAcceso as 'Tarjeta',
-SUBSTRING(ImpReciboMunicipal.TicketNro,1,13) as 'Recibo',
-Recorrido.Patente as 'Patente',
-TipoDocumentoIngreso.Descripcion as 'Tipo Doc.',
-Recorrido.NumeroDocumentoIngreso as 'Nº Documento',
-Material.Descripcion as 'Producto',
-Chofer.Cuil as 'Doc Chofer',
-Chofer.Nombre + ' ' + Chofer.Apellido as Chofer,
-Transportista.RazonSocial as 'Empresa Transportista' ,
-(
-    CASE WHEN ImpReciboMunicipal.TicketNro = 'Tasa abonada dentro del día'
-    THEN ImpReciboMunicipal.TicketNro
+;WITH TicketFiltro AS (
+    SELECT *,
+           ReciboNum = 
+               CASE 
+                   WHEN LEN(TicketNro) &gt; 7 THEN CONVERT(INT, SUBSTRING(TicketNro, 6, 7))
+                   ELSE TRY_CAST(TicketNro AS INT)
+               END
+    FROM ImpReciboMunicipal WITH(NOLOCK)
+),
+BaseRecibos AS (
+    SELECT
+        r.TarjetaDeAcceso AS 'Tarjeta',
+        LEFT(t.TicketNro, 13) AS 'Recibo',
+        r.Patente,
+        tdi.Descripcion AS 'Tipo Doc.',
+        r.NumeroDocumentoIngreso AS 'Nº Documento',
+        m.Descripcion AS 'Producto',
+        ch.Cuil AS 'Doc Chofer',
+        ch.Nombre + ' ' + ch.Apellido AS Chofer,
+        tr.RazonSocial AS 'Empresa Transportista',
+        CASE 
+            WHEN t.TicketNro = 'Tasa abonada dentro del día' THEN t.TicketNro
+            WHEN LEFT(t.TicketNro,1) = '0' THEN LEFT(t.TicketNro,4) + ' - MP'
+            ELSE LEFT(t.TicketNro,4) + ' - EFECTIVO'
+        END AS 'Garita',
+        t.Valor AS 'Monto Cobrado',
+        i.FechaImpresion AS 'Fecha Cobro',
+        null AS 'Fecha Pago Digital'
+    FROM TicketFiltro t
+    INNER JOIN Impresion i WITH(NOLOCK) ON t.Id = i.Id
+    INNER JOIN Recorrido r WITH(NOLOCK) ON r.InstanciaWorkflow = i.WorkflowId
+    INNER JOIN TipoDocumentoIngreso tdi WITH(NOLOCK) ON r.TipoDocumentoIngreso = tdi.Id
+    INNER JOIN Material m WITH(NOLOCK) ON r.Material_Id = m.Id
+    INNER JOIN Chofer ch WITH(NOLOCK) ON r.Chofer_Id = ch.Id
+    INNER JOIN Transportista tr WITH(NOLOCK) ON r.Transportista_Id = tr.Id
+    WHERE
+        (@Materialp IS NULL OR m.Id = @Materialp)
+        AND r.Centro_Id = @CentroIdp
+        AND i.FechaImpresion BETWEEN @FechaDesdep AND @FechaHastap
+        AND (t.TicketNro = 'Tasa abonada dentro del día' OR LEFT(t.TicketNro,4) IN (@Garitas))
+        AND LEFT(t.TicketNro,1) &lt;&gt; '2'
+        AND (
+            @ReciboDesdep IS NULL OR
+            t.TicketNro = 'Tasa abonada dentro del día' OR
+            t.ReciboNum &gt;= RIGHT('0000000' + CAST(@ReciboDesdep AS VARCHAR),7)
+        )
+        AND (
+            @ReciboHastap IS NULL OR
+            t.TicketNro = 'Tasa abonada dentro del día' OR
+            t.ReciboNum &lt;= RIGHT('0000000' + CAST(@ReciboHastap AS VARCHAR),7)
+        )
+),
+BaseDigital AS (
+    SELECT
+        r.TarjetaDeAcceso AS 'Tarjeta',
+        LEFT(ptam.NroRecibo, 13) AS 'Recibo',
+        r.Patente,
+        tdi.Descripcion AS 'Tipo Doc.',
+        r.NumeroDocumentoIngreso AS 'Nº Documento',
+        m.Descripcion AS 'Producto',
+        ch.Cuil AS 'Doc Chofer',
+        ch.Nombre + ' ' + ch.Apellido AS Chofer,
+        tr.RazonSocial AS 'Empresa Transportista',
+        LEFT(ptam.NroRecibo,4) + ' - DIGITAL' AS 'Garita',
+        ptam.Importe AS 'Monto Cobrado',
+        i.FechaImpresion AS 'Fecha Cobro',
+        ptam.FechaPago AS 'Fecha Pago Digital'
+    FROM PagosTasaMunicipal ptam
+    INNER JOIN ImpReciboMunicipal imp ON ptam.NroRecibo = imp.TicketNro
+	  INNER JOIN Impresion i ON imp.Id = i.Id
+    INNER JOIN Recorrido r WITH(NOLOCK) ON r.InstanciaWorkflow = ptam.Instance_Id
+    INNER JOIN TipoDocumentoIngreso tdi WITH(NOLOCK) ON r.TipoDocumentoIngreso = tdi.Id
+    INNER JOIN Material m WITH(NOLOCK) ON r.Material_Id = m.Id
+    INNER JOIN Chofer ch WITH(NOLOCK) ON r.Chofer_Id = ch.Id
+    INNER JOIN Transportista tr WITH(NOLOCK) ON r.Transportista_Id = tr.Id
+    WHERE
+        (@Materialp IS NULL OR m.Id = @Materialp)
+        AND r.Centro_Id = @CentroIdp
+        AND ptam.NroRecibo IS NOT NULL
+		    AND i.TipoImpresion = 15
+        AND ptam.NroRecibo IS NOT NULL
+        AND ptam.FechaPago BETWEEN @FechaDesdep AND @FechaHastap
+        AND LEFT(ptam.NroRecibo,4) IN (@Garitas)
+        AND (
+            @ReciboDesdep IS NULL OR
+            CONVERT(INT, SUBSTRING(ptam.NroRecibo, 6, 7)) &gt;= @ReciboDesdep
+        )
+        AND (
+            @ReciboHastap IS NULL OR
+            CONVERT(INT, SUBSTRING(ptam.NroRecibo, 6, 7)) &lt;= @ReciboHastap
+        )
+),
+Borrado AS (
+    SELECT
+        NroTarjeta AS 'Tarjeta',
+        Recibo,
+        TMB.Patente,
+        TDI.Descripcion AS 'Tipo Doc.',
+        NroDocumento AS 'Nº Documento',
+        m.Descripcion AS 'Producto',
+        ChoferCuil AS 'Doc Chofer',
+        ChoferNombre AS Chofer,
+        t.RazonSocial AS 'Empresa Transportista',
+        NULL AS 'Garita',
+        '' AS 'Monto Cobrado',
+        NULL AS 'Fecha Cobro',
+        NULL AS 'Fecha Pago Digital'
+    FROM TicketMunicipalBorrado TMB
+    INNER JOIN TipoDocumentoIngreso TDI ON TMB.TipoDocumento = TDI.Id
+    INNER JOIN Material m ON m.Id = TMB.materialId
+    INNER JOIN Recorrido r ON r.TipoDocumentoIngreso = TMB.Id
+    INNER JOIN Transportista t ON t.Id = r.Transportista_Id
+    WHERE
+        (@Materialp IS NULL OR m.Id = @Materialp)
+        AND TMB.CentroId = @CentroIdp
+        AND TMB.Fecha BETWEEN @FechaDesdep AND @FechaHastap
+        AND (TMB.Recibo = 'Tasa abonada dentro del día' OR LEFT(TMB.Recibo,4) IN (@Garitas))
+)
 
-    ELSE
-    (
-        CASE WHEN SUBSTRING(ImpReciboMunicipal.TicketNro,1,1) = '0'
-
-        THEN CONCAT(SUBSTRING(ImpReciboMunicipal.TicketNro,1,4),' - MP'
-    )
-
-    ELSE
-    CONCAT(SUBSTRING(ImpReciboMunicipal.TicketNro,1,4),' - EFECTIVO')
-    END)
-
- END
- ) as 'Garita'
- 
-,ImpReciboMunicipal.Valor   as 'Monto Cobrado'
-,Impresion.FechaImpresion 'Fecha Cobro'
-
-
-
-
-FROM [ImpReciboMunicipal] WITH(NOLOCK)
-  INNER JOIN Impresion WITH(NOLOCK) ON ImpReciboMunicipal.Id = [Impresion].Id
-  INNER JOIN Recorrido WITH(NOLOCK) ON Recorrido.InstanciaWorkflow = Impresion.WorkflowId
-  INNER JOIN TipoDocumentoIngreso WITH(NOLOCK) ON Recorrido.TipoDocumentoIngreso = TipoDocumentoIngreso.Id
-  INNER JOIN Material WITH(NOLOCK) ON Recorrido.Material_Id = Material.Id
-  INNER JOIN Chofer WITH(NOLOCK) ON Recorrido.Chofer_Id = Chofer.Id
-  INNER JOIN Transportista WITH(NOLOCK) ON Recorrido.Transportista_Id = Transportista.Id
-Where 
-	(Material.Id = @Materialp or @Materialp IS NULL)
-	AND Recorrido.Centro_Id = @CentroIdp
-	AND (CAST(Impresion.FechaImpresion AS DATE)  &gt;= CAST(@FechaDesdep AS DATE)) 
-	AND (CAST(Impresion.FechaImpresion AS DATE) &lt;=CAST( @FechaHastap AS DATE))
-	AND (ImpReciboMunicipal.TicketNro = 'Tasa abonada dentro del día' OR SUBSTRING(ImpReciboMunicipal.TicketNro,1,4) IN (@Garitas) )
-	AND (@ReciboDesdep IS NULL
-    OR
-    ImpReciboMunicipal.TicketNro = 'Tasa abonada dentro del día'
-	OR
-	(len(ImpReciboMunicipal.TicketNro) &gt; 7 AND convert(int, substring(ImpReciboMunicipal.TicketNro, 6, 7)) &gt;= RIGHT('0000000'+@ReciboDesdep,7))
-	OR (len(ImpReciboMunicipal.TicketNro) &lt;= 7 AND convert(int, ImpReciboMunicipal.TicketNro) &gt;= RIGHT('0000000'+@ReciboDesdep,7)))
-
-	AND (@ReciboHastap IS NULL
-    OR
-    ImpReciboMunicipal.TicketNro = 'Tasa abonada dentro del día'
-	OR
-	(len(ImpReciboMunicipal.TicketNro) &gt; 7 AND convert(int, substring(ImpReciboMunicipal.TicketNro, 6, 7)) &lt;= RIGHT('0000000'+@ReciboHastap,7))
-	OR (len(ImpReciboMunicipal.TicketNro) &lt;= 7 AND convert(int, ImpReciboMunicipal.TicketNro) &lt;= RIGHT('0000000'+@ReciboHastap,7)))
-
-	
-
-Union ALL
-
-Select
-NroTarjeta as 'Tarjeta',
-Recibo,
-TMB.Patente,
-TDI.Descripcion as 'Tipo Doc.',
-NroDocumento as 'Nº Documento',
-m.Descripcion as 'Producto',
-ChoferCuil as 'Doc Chofer',
-ChoferNombre as Chofer,
-t.RazonSocial as 'Empresa Transportista', 
---Fecha,
-'' as 'Fecha Cobro',
-'' as 'Monto Cobrado',
-NULL as 'Garita'
-
-from TicketMunicipalBorrado TMB
-inner join TipoDocumentoIngreso TDI on TMB.TipoDocumento = TDI.Id
-inner join Material m on m.id = TMB.materialId
-inner join Recorrido r on r.TipoDocumentoIngreso = TMB.Id
-inner join Transportista t on t.Id = r.Transportista_Id
-Where 
-	(m.Id = @Materialp or @Materialp IS NULL)
-	AND TMB.centroId = @CentroIdp
-	AND (CAST(TMB.Fecha AS DATE)  &gt;= CAST(@FechaDesdep AS DATE)) 
-	AND (CAST(TMB.Fecha AS DATE) &lt;=CAST( @FechaHastap AS DATE))
-	AND ( TMB.Recibo = 'Tasa abonada dentro del día' OR SUBSTRING(TMB.Recibo,1,4) IN (@Garitas))    
-
-ORDER BY 'Fecha Cobro' desc</CommandText>
+SELECT *
+FROM (
+    SELECT * FROM BaseRecibos
+    UNION ALL
+    SELECT * FROM BaseDigital
+    UNION ALL
+    SELECT * FROM Borrado
+) AS ResultadoFinal
+ORDER BY [Fecha Cobro] DESC;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="Fecha_Cobro">
           <DataField>Fecha Cobro</DataField>
           <rd:UserDefined>true</rd:UserDefined>
-        </Field>
-        <Field Name="Tarjeta">
-          <DataField>Tarjeta</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Monto_Cobrado">
           <DataField>Monto Cobrado</DataField>
@@ -181,37 +212,45 @@ ORDER BY 'Fecha Cobro' desc</CommandText>
           <DataField>Garita</DataField>
           <rd:UserDefined>true</rd:UserDefined>
         </Field>
-        <Field Name="Patente">
-          <DataField>Patente</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="Recibo">
           <DataField>Recibo</DataField>
           <rd:UserDefined>true</rd:UserDefined>
         </Field>
-        <Field Name="Tipo_Doc_">
-          <DataField>Tipo Doc.</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Nº_Documento">
-          <DataField>Nº Documento</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Producto">
-          <DataField>Producto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Doc_Chofer">
-          <DataField>Doc Chofer</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="Tarjeta">
+          <DataField>Tarjeta</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Chofer">
           <DataField>Chofer</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Patente">
+          <DataField>Patente</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Tipo_Doc">
+          <DataField>Tipo Doc.</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Nº_Documento">
+          <DataField>Nº Documento</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Producto">
+          <DataField>Producto</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Doc_Chofer">
+          <DataField>Doc Chofer</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Empresa_Transportista">
           <DataField>Empresa Transportista</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Fecha_Pago_Digital">
+          <DataField>Fecha Pago Digital</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>
@@ -246,15 +285,24 @@ WHERE        (Id = @CentroId)</CommandText>
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT        NULL AS Id, 'Todos' AS Material, '0' AS ord
-UNION
-SELECT        Id, Descripcion AS Material, Descripcion AS ord
-FROM            Material WITH (NOLOCK)
-WHERE        EXISTS
-                             (SELECT        1 AS Expr1
-                               FROM            Recorrido WITH (NOLOCK)
-                               WHERE        (Material_Id = Material.Id) AND (Centro_Id = @Centro))
-ORDER BY ord</CommandText>
+        <CommandText>SELECT 
+    NULL AS Id, 
+    'Todos' AS Material, 
+    '0' AS ord
+UNION ALL
+SELECT 
+    Id, 
+    Descripcion AS Material, 
+    Descripcion AS ord
+FROM Material WITH (NOLOCK)
+WHERE EXISTS (
+    SELECT 1
+    FROM Recorrido WITH (NOLOCK)
+    WHERE Material_Id = Material.Id
+      AND Centro_Id = @Centro
+)
+ORDER BY ord;</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="Id">
@@ -291,43 +339,47 @@ ORDER BY ord</CommandText>
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
+        <CommandText>SELECT DISTINCT
+    
+	CASE WHEN Id IN (2, 48) THEN '0001' ELSE '0002' END AS Id,
+    
+	CASE WHEN Id IN (2, 48) THEN '0001 - MP' ELSE '0002 - MP' END AS GaritaDescripcion
 
-SELECT    DISTINCT     
-CASE
-    WHEN Id =2 or id = 48 THEN '0001'
-    ELSE '0002'
-END 
-AS Id,
-CASE
-    WHEN Id =2 or id = 48 THEN '0001 - MP'
-    ELSE '0002 - MP'
-END
-AS  GaritaDescripcion
-FROM            [PuestoDeTrabajo] AS Garita WITH (NOLOCK)
+FROM PuestoDeTrabajo WITH (NOLOCK)
 
-WHERE 
-(id =46 or id = 48)
- AND Centro_Id = @Centro  
+WHERE Id IN (46, 48) AND Centro_Id = @Centro
 
 
- UNION
- SELECT
-CASE
-    WHEN Id =2 or id = 48 THEN '1001'
-    ELSE '1002'
-END
-AS Id,
-CASE
-    WHEN Id =2 or id = 48 THEN '1001 - EFECTIVO'
-    ELSE '1002 - EFECTIVO'
-END
-AS  GaritaDescripcion
 
-FROM  [PuestoDeTrabajo] AS Garita WITH (NOLOCK)
-WHERE 
-(Id =2 or id = 46)
- AND Centro_Id = @Centro   </CommandText>
+UNION
+
+
+
+SELECT
+    
+	CASE WHEN Id IN (2, 48) THEN '1001' ELSE '1002' END AS Id,
+    
+	CASE WHEN Id IN (2, 48) THEN '1001 - EFECTIVO' ELSE '1002 - EFECTIVO' END AS GaritaDescripcion
+
+FROM PuestoDeTrabajo WITH (NOLOCK)
+
+WHERE Id IN (2, 46) AND Centro_Id = @Centro
+
+
+
+UNION
+
+
+
+SELECT
+    
+	CASE WHEN Id IN (2, 48) THEN '2001' ELSE '2002' END AS Id,
+    
+	CASE WHEN Id IN (2, 48) THEN '2001 - DIGITAL' ELSE '2002 - DIGITAL' END AS GaritaDescripcion
+
+FROM PuestoDeTrabajo WITH (NOLOCK)
+
+WHERE Id IN (46, 48) AND Centro_Id = @Centro</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -383,7 +435,10 @@ WHERE
                   <Width>0.98425in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.203in</Width>
+                  <Width>1.15092in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.98425in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -722,6 +777,39 @@ WHERE
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Textbox22">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Fecha Cobro</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox22</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>Silver</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox9">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -729,7 +817,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Monto Cobrado</Value>
+                                  <Value>Fecha Pago Digital</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -755,14 +843,14 @@ WHERE
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox13">
+                        <Textbox Name="Textbox18">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Fecha Cobro</Value>
+                                  <Value>Monto Cobrado</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -772,7 +860,7 @@ WHERE
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox13</rd:DefaultName>
+                          <rd:DefaultName>Textbox18</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -893,7 +981,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Tipo_Doc_.Value</Value>
+                                  <Value>=Fields!Tipo_Doc.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -1103,6 +1191,70 @@ WHERE
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Fecha_Cobro1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Fecha_Cobro.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>g</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Fecha_Cobro1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Fecha_Pago_Digital">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Fecha_Pago_Digital.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>g</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Fecha_Pago_Digital</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Monto_Cobrado">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -1121,37 +1273,6 @@ WHERE
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Monto_Cobrado</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Fecha_Cobro">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Fecha_Cobro.Value</Value>
-                                  <Style>
-                                    <FontSize>8pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Fecha_Cobro</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1450,7 +1571,69 @@ WHERE
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox71">
+                        <Textbox Name="Textbox25">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox25</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox24">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox24</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox26">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1466,7 +1649,7 @@ WHERE
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox71</rd:DefaultName>
+                          <rd:DefaultName>Textbox26</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1510,43 +1693,13 @@ WHERE
                         </Textbox>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox73">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style>
-                                    <FontSize>8pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox73</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -1590,14 +1743,14 @@ WHERE
             <DataSetName>DataSet1</DataSetName>
             <Top>0.40535in</Top>
             <Height>0.66622in</Height>
-            <Width>13.69725in</Width>
+            <Width>14.62942in</Width>
             <Style />
           </Tablix>
         </ReportItems>
-        <Height>2.72179cm</Height>
+        <Height>5.84387cm</Height>
         <Style />
       </Body>
-      <Width>35.05561cm</Width>
+      <Width>40.21435cm</Width>
       <Page>
         <PageHeader>
           <Height>3.0161cm</Height>
@@ -1852,7 +2005,7 @@ WHERE
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value>=CountRows("DataSet1")</Value>
+                      <Value>=CountDistinct(Fields!Recibo.Value,"DataSet1")</Value>
                       <Style>
                         <FontWeight>Normal</FontWeight>
                       </Style>
@@ -1938,10 +2091,10 @@ WHERE
       <DataType>Integer</DataType>
       <DefaultValue>
         <Values>
-          <Value>5</Value>
+          <Value>3</Value>
         </Values>
       </DefaultValue>
-      <Prompt>Centro</Prompt>
+      <Prompt>CentroId</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
     <ReportParameter Name="FechaDesde">
@@ -1995,18 +2148,28 @@ WHERE
     <ReportParameter Name="ReciboDesde">
       <DataType>Integer</DataType>
       <Nullable>true</Nullable>
+      <DefaultValue>
+        <Values>
+          <Value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" />
+        </Values>
+      </DefaultValue>
       <Prompt>Recibo Desde</Prompt>
     </ReportParameter>
     <ReportParameter Name="ReciboHasta">
       <DataType>Integer</DataType>
       <Nullable>true</Nullable>
+      <DefaultValue>
+        <Values>
+          <Value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true" />
+        </Values>
+      </DefaultValue>
       <Prompt>Recibo Hasta</Prompt>
     </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>5</NumberOfRows>
+      <NumberOfRows>6</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2064,5 +2227,6 @@ KKaaaaKKaaaaKKaaaaKK/9k=</ImageData>
   <Language>=Parameters!Language.Value</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportServerUrl>http://gsloscatorpt00/ReportServer_MOASCATO</rd:ReportServerUrl>
   <rd:ReportID>5ef3a7d6-7d49-49de-9cd4-6f465d048417</rd:ReportID>
 </Report>

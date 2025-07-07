@@ -8,6 +8,7 @@ using Molinos.Scato.Servicios.ComplianceWebServiceV2;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject;
+using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Actividades.Behaviour
 {
@@ -36,6 +37,7 @@ namespace Molinos.Scato.Actividades.Behaviour
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<WaybillManagementPODv2>());
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<DatosPort>());
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<Scato.Servicios.ComplianceWebService.DatosPort>());
+                host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<ILogger>());
             }
         }
 

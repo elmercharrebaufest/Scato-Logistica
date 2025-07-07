@@ -12881,6 +12881,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Digital.
+        /// </summary>
+        public static string Digital {
+            get {
+                return ResourceManager.GetString("Digital", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dispositivos.
         /// </summary>
         public static string Dispositivos_Titulo {

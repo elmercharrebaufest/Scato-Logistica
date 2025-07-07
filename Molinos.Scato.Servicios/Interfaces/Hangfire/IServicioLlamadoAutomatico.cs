@@ -1,5 +1,5 @@
-﻿using Molinos.Scato.Dominio.Enums;
-using System.ServiceModel;
+﻿using System.ServiceModel;
+using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Servicios
 {
@@ -8,5 +8,11 @@ namespace Molinos.Scato.Servicios
     {
         [OperationContract]
         void Llamar(LlamadoAutomatico tipoLlamadoAutomatico);
+
+        [OperationContract]
+        void SincronizarMOAPayEstadoDePagos();
+
+        [OperationContract]
+        void SincronizarMOAPayCPE();
     }
 }

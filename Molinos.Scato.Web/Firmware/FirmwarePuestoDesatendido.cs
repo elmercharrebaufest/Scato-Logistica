@@ -17,8 +17,9 @@ namespace Molinos.Scato.Web.Firmware
             IServicioComandos comandos,
             IServicioOrquestador servicioOrquestador,
             IServicioActividadFactory<IEjecutarService> factory,
+            IRecorridoWorkflow recorridoWorkflow,
             HubClientFactory hubClientFactory) : base(
-                log, servicioRepositorio, workflows, comandos, servicioOrquestador, factory, hubClientFactory)
+                log, servicioRepositorio, workflows, comandos, servicioOrquestador, factory, hubClientFactory, recorridoWorkflow)
         {
         }
 

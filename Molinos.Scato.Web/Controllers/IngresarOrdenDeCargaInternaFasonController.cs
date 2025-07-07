@@ -74,6 +74,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.CargaDeCupoIdValue = cargaCupoIdValue;
             var material = servicio.ObtenerMaterial(orden.MaterialId);
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
 
             if (orden.TipoYOrdenDestino != null)
             {
@@ -255,6 +256,7 @@ namespace Molinos.Scato.Web.Controllers
 
             orden.NumeroOrden = servicio.ObtenerNuevoNumeroDeOrdenFason();
             int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+                      
             var servicioWf = factory.CrearServicio(workflowDefinicionId);
             var resultadoActividad = servicioWf.IngresarOrdenCargaInternaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
 
@@ -262,9 +264,13 @@ namespace Molinos.Scato.Web.Controllers
             {
                 TempData["Alerta"] = string.Format(Textos.NuevaOrdenFasonCreada, orden.NumeroOrden);
                 TempData["TipoAlerta"] = TipoAlerta.Informacion;
+                
+                if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                    ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                
                 return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
             }
-
+           
             ModelState.AgregarErrores(resultadoActividad);
             ClearNumeroOrden(orden);
             SetearVista(workflowObje, datosUsuario.CentroId);
@@ -314,8 +320,12 @@ namespace Molinos.Scato.Web.Controllers
         {
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
             var materialesPermitidos = servicio.ListarMaterialesPorWorkflow(workflowId, datosUsuario.CentroId).Select(m => m.MaterialId).ToList();
-            var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;
-            
+            var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;            
+
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+            }
 
             if (orden.NumeroOrdenExterno == null)
             {

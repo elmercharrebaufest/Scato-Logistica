@@ -1,7 +1,5 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
+using Hangfire;
+using log4net;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Molinos.Scato.Dependencias;
 using Molinos.Scato.Dominio.Comandos;
@@ -9,7 +7,10 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Seguridad;
 using Ninject;
 using Ninject.Web.Common;
-using log4net;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(Molinos.Scato.ServiciosWeb.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(Molinos.Scato.ServiciosWeb.App_Start.NinjectWebCommon), "Stop")]
@@ -67,6 +68,7 @@ namespace Molinos.Scato.ServiciosWeb.App_Start
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
             
             RegisterServices(kernel);
+            GlobalConfiguration.Configuration.UseNinjectActivator(kernel);
             return kernel;
         }
 

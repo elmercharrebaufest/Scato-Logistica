@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Configuration;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
-using Molinos.Scato.Dominio.Recursos;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -24,5 +15,9 @@ namespace Molinos.Scato.Dominio.Dto
         public DateTime? FechaUltimaActualizacion { get; set; }
         public DateTime? FechaCacheado { get; set; }
         public byte[] Pdf { get; set; }
+        public long CuitOrigen { get; set; }
+        public int PesoBruto { get; set; }
+        public long? CuitTransportista { get; set; }
+        public string Dominio { get; set; }
     }
 }

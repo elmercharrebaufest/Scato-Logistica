@@ -1,0 +1,18 @@
+﻿CREATE TABLE [dbo].[PagosTasaMunicipal] (
+    [Id] INT IDENTITY(1,1) NOT NULL,
+    [MOAPay_Id] INT NOT NULL,
+    [NumeroDocumento] NVARCHAR(20) NOT NULL,
+    [CuitInterviniente] NVARCHAR(20) NOT NULL,
+    [Dominio] NVARCHAR(20) NOT NULL,
+    [TipoVehiculo] NVARCHAR(5) NOT NULL,
+    [FechaPago] DATETIME NULL,
+    [FechaEmision] DATETIME NOT NULL,
+    [Importe] DECIMAL(18,2) NOT NULL,
+    [FechaAcceso] DATETIME NULL,
+    [Instance_Id] UNIQUEIDENTIFIER NULL,
+    [TipoDocumento] NVARCHAR(10) NOT NULL,
+    [Disponible] BIT NOT NULL,
+    [NroRecibo] NVARCHAR(20) NULL, 
+    CONSTRAINT [PK_dbo.PagosTasaMunicipal] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [CHK_TipoDocumento_ValoresValidos] CHECK ([TipoDocumento] IN ('CTG', 'Remito')), 
+);

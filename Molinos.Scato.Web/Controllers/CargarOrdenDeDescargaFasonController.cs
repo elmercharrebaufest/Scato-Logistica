@@ -59,6 +59,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenDeDescargaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
             Validar(orden);
 
             if (!ModelState.IsValid)
@@ -118,7 +119,7 @@ namespace Molinos.Scato.Web.Controllers
             var camara = servicio.ListarVideoCamarasPuesto(datosUsuario.PuestoDeTrabajoId).FirstOrDefault();
             ResultadoConsultaCpeAutomotorDG consulta = (ResultadoConsultaCpeAutomotorDG)consultaCPEAutomotor;
 
-            if(consultaCPEAutomotor != null )
+            if (consultaCPEAutomotor != null)
             {
                 servicioComandos.Ejecutar(new GuardarImagenDescarga
                 {
@@ -128,12 +129,12 @@ namespace Molinos.Scato.Web.Controllers
                     NroCartaPorte = orden.Numero,
                     Patente = orden.PatenteCamion,
                     Etapa = string.Empty,
-                    TipoVehiculo = orden.TipoVehiculo ,
+                    TipoVehiculo = orden.TipoVehiculo,
                     RutaFotoCP = camara == null ? string.Empty : camara.Directorio
 
                 });
             }
- 
+
             if (workflows.ObtenerWorkflowPorPatente(orden.PatenteCamion) != null)
             {
                 TempData["Alerta"] = Textos.OrdenCargaInterna_PatenteEnOtroWorkflow;
@@ -155,38 +156,44 @@ namespace Molinos.Scato.Web.Controllers
                 SetearVista(workflowObj, datosUsuario.CentroId);
                 return View(orden);
             }
-                orden.TipoDeWorkflow = workflowObj.TipoDeWorkflow;
+            orden.TipoDeWorkflow = workflowObj.TipoDeWorkflow;
 
-                orden.PatenteCamion = orden.PatenteCamion != null ? orden.PatenteCamion.ToUpper() : "";
-                orden.PatenteAcoplado = orden.PatenteAcoplado != null ? orden.PatenteAcoplado.ToUpper() : "";
+            orden.PatenteCamion = orden.PatenteCamion != null ? orden.PatenteCamion.ToUpper() : "";
+            orden.PatenteAcoplado = orden.PatenteAcoplado != null ? orden.PatenteAcoplado.ToUpper() : "";
 
-                int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
-                var servicioWf = factory.CrearServicio(workflowDefinicionId);
+            int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+            var servicioWf = factory.CrearServicio(workflowDefinicionId);
 
-                var controlRecorrido = new ControlRecorridoDto
-                    {
-                        Actividad = Textos.ActCargarOrdenDeDescargaFason,
-                        ActividadXaml = "CargarOrdenDeDescargaFason",
-                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                        NombreUsuario = datosUsuario.NombreUsuario
-                    };
+            var controlRecorrido = new ControlRecorridoDto
+            {
+                Actividad = Textos.ActCargarOrdenDeDescargaFason,
+                ActividadXaml = "CargarOrdenDeDescargaFason",
+                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                NombreUsuario = datosUsuario.NombreUsuario
+            };
 
-                var resultadoActividad = servicioWf.CargarOrdenDeDescargaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
-                if (resultadoActividad.HayErrores)
-                {
-                    ModelState.AgregarErrores(resultadoActividad);
-                    SetearVista(workflowObj, datosUsuario.CentroId);
-                    return View(orden);
-                }
+            var resultadoActividad = servicioWf.CargarOrdenDeDescargaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
+            if (resultadoActividad.HayErrores)
+            {
+                ModelState.AgregarErrores(resultadoActividad);
+                SetearVista(workflowObj, datosUsuario.CentroId);
+                return View(orden);
+            }
 
-               
+            if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
 
-                return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
+            return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
         }
 
         private void Validar(OrdenDeDescargaFasonDto orden)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
+
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+            }
 
             if (!material.EsDerivadoGranario && orden.ProcedenciaId == 0)
             {

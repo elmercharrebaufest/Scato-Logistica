@@ -34,8 +34,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>false</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,15 +76,6 @@
     </Reference>
     <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
-    </Reference>
-    <Reference Include="Hangfire.Core, Version=1.8.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Core.1.8.5\lib\net451\Hangfire.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Hangfire.Ninject, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Ninject.1.2.0\lib\net45\Hangfire.Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="Hangfire.SqlServer, Version=1.8.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.SqlServer.1.8.5\lib\net451\Hangfire.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlRenderer.Core.1.5.0.6\lib\net45\HtmlRenderer.dll</HintPath>
@@ -680,16 +670,18 @@
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosIngresos.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosEgresos.cs" />
     <Compile Include="EXCEL\ExcelMuestrasPendientesReporte.cs" />
-    <Compile Include="Filtros\HangfireDashboardAuthorizationFilter.cs" />
     <Compile Include="Filtros\ViewBagToResponseHeaderAttribute.cs" />
+    <Compile Include="Firmware\RecorridoWorkflow.cs" />
     <Compile Include="Firmware\FirmwareBase.cs" />
     <Compile Include="Firmware\FirmwareControlDePeso.cs" />
     <Compile Include="Firmware\FirmwareControlDePesoRechazar.cs" />
     <Compile Include="Firmware\FirmwareImprimeTarjetaDeAcceso.cs" />
     <Compile Include="Firmware\FirmwareControlDePesoAceptar.cs" />
+    <Compile Include="Firmware\FirmwarePagoTasaMunicipal.cs" />
     <Compile Include="Firmware\FirmwarePuestoDesatendido.cs" />
     <Compile Include="Firmware\FirmwarePuestoRequiereOperario.cs" />
     <Compile Include="Firmware\FirmwarePuestoBalanzaAutomatico.cs" />
+    <Compile Include="Firmware\IRecorridoWorkflow.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\ExtensionesCheckBoxListFor.cs" />
     <Compile Include="Helpers\ExtensionesInt.cs" />
@@ -697,7 +689,6 @@
     <Compile Include="Helpers\FormattingHtmlHelper.cs" />
     <Compile Include="Helpers\ReportServerConnectionScato.cs" />
     <Compile Include="Helpers\ZPLImageConveter.cs" />
-    <Compile Include="Jobs\HangfireJobs.cs" />
     <Compile Include="Models\ArchivosTxt\BahiaBlanca.cs" />
     <Compile Include="Models\ArchivosTxt\ListadoCamiones.cs" />
     <Compile Include="Models\ArchivosTxt\MuestraInase.cs" />

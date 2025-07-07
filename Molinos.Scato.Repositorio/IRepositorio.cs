@@ -1,4 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Consultas;
+using Molinos.Scato.Dominio.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -256,5 +257,12 @@ namespace Molinos.Scato.Repositorio
         /// </summary>
         /// <returns></returns>
         int ObtenerSequenciaCPENroCTG();
+
+        /// <summary>
+        /// Retorna Id de pago diponible por patente o numero de documento.
+        /// </summary>
+        /// <param name="tieneDiferencia">Condicion para encontrar el pago incompleto</param>
+        /// <returns></returns>
+        int ObtenerIdPagoTasaMunicipal(TipoCategoriaVehiculo tipoCategoria, string patente, string numeroDocumento, int diasFechaDesde, int centroId, string codigoDiferencia, bool tieneDiferencia = false);
     }
 }

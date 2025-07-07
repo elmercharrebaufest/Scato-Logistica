@@ -2,13 +2,13 @@
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.ServicioHub;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -25,15 +25,18 @@ namespace Molinos.Scato.Web.Firmware
         protected readonly IServicioComandos comandos;
         protected readonly IServicioOrquestador servicioOrquestador;
         protected readonly IServicioActividadFactory<IEjecutarService> factory;
-        private readonly HubClient hubClientLectura;
         private readonly HubClientNotificar hubClientNotificar;
+        private readonly IRecorridoWorkflow recorridoWorflow;
+        protected  HubClient hubClientLectura { get; private set; }
+       
         public FirmwareBase(ILogger log, 
             IServicioRepositorio servicioRepositorio, 
             IListaDeWorkflows workflows,
             IServicioComandos comandos,
             IServicioOrquestador servicioOrquestador,
             IServicioActividadFactory<IEjecutarService> factory, 
-            HubClientFactory hubClientFactory)
+            HubClientFactory hubClientFactory,
+            IRecorridoWorkflow recorridoWorkflow)
         {
             this.log = log;
             this.servicio = servicioRepositorio;
@@ -41,8 +44,9 @@ namespace Molinos.Scato.Web.Firmware
             this.comandos = comandos;
             this.servicioOrquestador = servicioOrquestador;
             this.factory = factory;
+            this.recorridoWorflow = recorridoWorkflow ?? throw new ArgumentNullException(nameof(recorridoWorkflow));
             hubClientLectura = hubClientFactory.GetClient("notificaLectura");
-            hubClientNotificar = hubClientFactory.GetClientNotificar("notificarUsuario");
+            hubClientNotificar = hubClientFactory.GetClientNotificar("notificarUsuario");    
         }
 
         public void Ejecutar(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
@@ -75,19 +79,8 @@ namespace Molinos.Scato.Web.Firmware
         }
 
         protected DatosRecorridoDto ObtenerRecorrido(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
-        {
-            var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { lecturaPuestoDeTrabajo.NumeroDeTarjeta }) ?? new DatosRecorridoDto
-            {
-                CentroCodigoSap = lecturaPuestoDeTrabajo.NumeroDeTarjeta,
-                SinRecorrido = true
-            };
-            if (!recorrido.SinRecorrido)
-            {
-                var datos = workflows.ObtenerWorkflowProximaAccion(recorrido.InstanciaWorkflow);
-                recorrido.ProximaAccion = datos.ProximaAccion;
-                recorrido.ProximaAccionMensaje = datos.Mensaje;
-            }
-            return recorrido;
+        {           
+            return recorridoWorflow.ObtenerRecorrido(lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
         }
 
         protected ValidarProximaAccionPorPuestoDto ValidarProximaActividad(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, DatosRecorridoDto recorrido)
@@ -184,13 +177,13 @@ namespace Molinos.Scato.Web.Firmware
             }
         }
 
-        protected void NotificarLecturaPorSignalR(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        protected  void NotificarLecturaPorSignalR(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
         {
             //Inicio la conexion con SignalR
             try
             {
-                log.Debug("Iniciando conexion signalR");
-                hubClientLectura.Invoke("NotificarLectura", lecturaPuestoDeTrabajo);
+                log.Debug($"Lectura de Puesto de Trabajo : {JsonConvert.SerializeObject(lecturaPuestoDeTrabajo)}");
+                InvokeNotificarLectura(lecturaPuestoDeTrabajo);
                 log.Debug("Fin - Iniciando conexion signalR");
             }
             catch (Exception e)
@@ -329,7 +322,66 @@ namespace Molinos.Scato.Web.Firmware
             log.Debug($"Patente leída en el puesto {lecturaPuestoDeTrabajo.PuestoDeTrabajoId}({fileName}): {resultadoConPatente.Patente}, ");
         }
 
-        
+        protected Resultado EjecutarWorkflow(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, DatosRecorridoDto recorrido)
+        {
+            Resultado resultado = new Resultado();
+            try
+            {
+                log.Debug("EjecutarWorkflow. Tarjeta: {0} Puesto: {1}",
+                lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
+
+                var proximaAccion = recorridoWorflow.ObtenerWorkflowProximaAccionConRecorrido(lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, recorrido);
+
+
+                if (recorrido != null && proximaAccion != null)
+                    EjecutarDispositivos(lecturaPuestoDeTrabajo, recorrido);
+
+                    var workflowId = proximaAccion.WorkflowDefinicionId;
+                    var instanceId = proximaAccion.InstanceId;
+                    var proximaActividad = proximaAccion.ProximaActividad;
+                    var puestoDeTrabajoId = proximaAccion.PuestoDeTrabajoId;
+                    
+                    log.Info("Ejecutando workflow. Tarjeta: {0} Puesto: {1} WorkflowId: {2} InstanceId: {3} ProximaActividad: {4} PuestoDeTrabajoId: {5}",
+                        lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
+
+                    var serviciowf = factory.CrearServicio(workflowId);
+                    var resultadoActividad = serviciowf.Ejecutar(instanceId, new ControlRecorridoDto
+                    {
+                        WorkflowInstanceId = instanceId,
+                        NombreUsuario = String.Empty,
+                        Actividad = Textos.ResourceManager.GetString("Act" + proximaActividad) ?? proximaActividad,
+                        ActividadXaml = proximaActividad,
+                        Decision = true,
+                        PuestoDeTrabajoId = puestoDeTrabajoId
+                    });
+
+                if (resultadoActividad != null && resultadoActividad.HayErrores)
+                {
+                    string mensajeError = $"Error al ejecutar la actividad {proximaActividad} " +
+                                          $"en el workflow: {workflowId}. " +
+                                          $"Errores: {string.Join(", ", resultadoActividad.Errores.Select(e => $"{e.Key}: {e.Value}"))}";
+
+                    resultado.Errores.Add(nameof(Resultado), mensajeError);
+                    lecturaPuestoDeTrabajo.TarjetaValida = false;
+                    lecturaPuestoDeTrabajo.MensajeError = proximaAccion.MensajeError;
+                }
+                log.Info("Workflow ejecutado exitosamente. Tarjeta: {0} Puesto: {1} WorkflowId: {2} InstanceId: {3} ProximaActividad: {4} PuestoDeTrabajoId: {5}",
+                        lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
+
+            }
+            catch (Exception e)
+            {
+                resultado.Errores.Add(nameof(Resultado),$"Error al ejecutar el workflow: {e.Message}");
+            }
+
+            return resultado;
+        }
+
+        protected virtual void InvokeNotificarLectura(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        {
+            hubClientLectura.Invoke("NotificarLectura", lecturaPuestoDeTrabajo);
+        }
+
     }
 }
 

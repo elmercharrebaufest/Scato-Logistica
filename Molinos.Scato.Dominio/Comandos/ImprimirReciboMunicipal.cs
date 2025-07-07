@@ -8,5 +8,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public ImpReciboMunicipalDto Dto { get; set; }
         public int CantidadCopias { get; set; }
         public FirmaDto Firma { get; set; }
+        public int IdPagoDigital { get; set; }
     }
 }

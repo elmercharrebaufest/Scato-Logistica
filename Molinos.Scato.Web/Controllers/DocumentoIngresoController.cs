@@ -1,11 +1,14 @@
-﻿using System.Linq;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Helpers;
 using Ninject.Extensions.Logging;
+using System;
+using System.Linq;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -13,6 +16,7 @@ namespace Molinos.Scato.Web.Controllers
     {
         protected readonly IServicioComandos servicioComandos;
         protected readonly ILogger log;
+        protected ResultadoConsultarPagoTasaMunicipal ResultadoPagoTasaMunicipal;
 
         protected DocumentoIngresoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos) : base(servicio)
         {
@@ -129,5 +133,53 @@ namespace Molinos.Scato.Web.Controllers
             }
             return true;
         }
+
+        protected void ConsultarPagoTasaMunicipal(int centroId, string patente, string acoplado, string nroCartaPorte, TipoVehiculo tipoVehiculo, string codigoEstablecimiento, int? materialId = null)
+        {
+            log.Debug($"Validando tasa municipal para patente: {patente}, CTG/CP: {nroCartaPorte}, materialId:{materialId}");
+
+            if (centroId == Constantes.Centro.IdSanLorenzo)
+            {
+                ResultadoPagoTasaMunicipal = servicioComandos.Ejecutar(new VerificarPagoTasaMunicipal
+                {
+                    Patente = patente,
+                    Ctg = nroCartaPorte,
+                    MaterialId = materialId,
+                    PatenteAcoplado = acoplado,
+                    CentroId = centroId,
+                    TipoVehiculo = tipoVehiculo,
+                    CodigoEstablecimiento = codigoEstablecimiento,
+                    TipoOrigenDeValidacion = TipoOrigenDeValidacion.FormularioWorkflow
+
+                }) as ResultadoConsultarPagoTasaMunicipal;
+
+                if (ResultadoPagoTasaMunicipal != null)
+                {
+                    log.Debug($"Resultado Pago Tasa Municipal: {ResultadoPagoTasaMunicipal.MensajeAlerta}, Tipo Alerta: {ResultadoPagoTasaMunicipal.TipoAlerta}, Hay Error:{ResultadoPagoTasaMunicipal.HayErrores}");
+
+                    if (!string.IsNullOrEmpty(ResultadoPagoTasaMunicipal.MensajeAlerta) && !ResultadoPagoTasaMunicipal.HayErrores)
+                    {
+                        TempData["AlertaTasaMunicipal"] = ResultadoPagoTasaMunicipal.MensajeAlerta;
+                        TempData["TipoAlertaTasaMunicipal"] = ResultadoPagoTasaMunicipal.TipoAlerta;
+                    }
+                }
+            }
+        }
+
+        protected void ActualizarTasaMunicipal(Guid InstanciaWorkflowId, int? IdPago, int IdDiferenciaDePago = 0)
+        {
+
+            if (IdPago != null)
+            {
+                var respuestaTasa = servicioComandos.Ejecutar(new ModificarComoUsadoPagosTasaMunicipal
+                {
+                    InstanceId = InstanciaWorkflowId,
+                    PagoId = IdPago.Value,
+                    DiferenciaPagoId = IdDiferenciaDePago
+                });
+            }
+
+        }
+
     }
 }

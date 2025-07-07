@@ -12,7 +12,7 @@ namespace Molinos.Scato.Web.ServicioHub
         {
             if (Clients != null)
             {
-                Clients.Group(notificacion.CentroId + "|" + notificacion.PuestoDeTrabajoId).informarLectura(new { notificacion.NumeroDeTarjeta, notificacion.PrimerNumeroDeTarjeta, notificacion.PuestoDeTrabajoId, notificacion.TarjetaValida, notificacion.MensajeError, notificacion.EsTarjetaSupervisor, notificacion.PatenteLeida, notificacion.Patente, notificacion.OcrActivo, notificacion.ReconocimientoExitoso });
+                Clients.Group(notificacion.CentroId + "|" + notificacion.PuestoDeTrabajoId).informarLectura(new { notificacion.NumeroDeTarjeta, notificacion.PrimerNumeroDeTarjeta, notificacion.PuestoDeTrabajoId, notificacion.TarjetaValida, notificacion.MensajeError, notificacion.EsTarjetaSupervisor, notificacion.PatenteLeida, notificacion.Patente, notificacion.OcrActivo, notificacion.ReconocimientoExitoso});
             }
         }
 
@@ -47,6 +47,14 @@ namespace Molinos.Scato.Web.ServicioHub
             if (Clients != null)
             {
                 Clients.Group(Constantes.NotificacionGrupos.Intercomunicador).actualizarEstadoIntercomunicador(estado);
+            }
+        }
+
+        public void NotificarLecturaPagoTasaMunicipal(LecturaPuestoDeTrabajoDto notificacion)
+        {
+            if (Clients != null)
+            {
+                Clients.Group(notificacion.CentroId + "|" + notificacion.PuestoDeTrabajoId).informarLecturaPagoTasaMunicipal(new { notificacion.NumeroDeTarjeta, notificacion.Patente, notificacion.PuestoDeTrabajoId, notificacion.TarjetaValida, notificacion.MensajeError, notificacion.TipoAlerta, notificacion.MensajeAlerta });
             }
         }
     }

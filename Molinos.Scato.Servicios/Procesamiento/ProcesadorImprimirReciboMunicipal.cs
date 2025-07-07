@@ -10,7 +10,7 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-   
+
     public class ProcesadorImprimirReciboMunicipal : ProcesadorImpresionAsync<ImprimirReciboMunicipal>
     {
         private readonly IFirmaProvider firmaProvider;
@@ -57,6 +57,51 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(e, "Error al guardar ImpReciboMunicipal ");
                 throw;
             }
+        }
+
+        protected override bool DoDebeImprimir(ImprimirReciboMunicipal comando)
+        {
+            return !Repositorio.Existe<PagosTasaMunicipal>(p => p.IdInstance == comando.Dto.WorkflowId);
+        }
+
+        protected override bool EsFlujoAlterno(ImprimirReciboMunicipal comando)
+        {
+            return comando.IdPagoDigital > 0;
+        }
+
+        protected override int EjecutarFlujoAlternoSync(ImprimirReciboMunicipal comando)
+        {
+            try
+            {
+                Log.Debug("D-Inicio para guardar ImpReciboMunicipal ");
+                GuardarRegistroImpresionPagoDigital(comando.IdPagoDigital, comando.Dto.TicketNro);
+                var entidad = Conversor.Convertir<ImpReciboMunicipalDto, ImpReciboMunicipal>(comando.Dto);
+
+                Impresion impresion = Conversor.Convertir<ImpReciboMunicipal, Impresion>(entidad);
+                impresion.FechaImpresion = DateTime.Now;
+                impresion.TipoImpresion = TipoImpresion.ReciboMunicipal;
+                impresion.Codigo = comando.Dto.Codigo;
+                Repositorio.Agregar(impresion);
+                Repositorio.GuardarCambios();
+                Log.Debug("D-Finaliza Guardado");
+                return impresion.Id;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error al guardar ImpReciboMunicipal ");
+                throw;
+            }
+        }
+
+        private void GuardarRegistroImpresionPagoDigital(int idPago, string ticket)
+        {
+            var pago = Repositorio.Obtener<PagosTasaMunicipal>(idPago);
+            if (pago == null)
+            {
+                Log.Error($"No se encontró el pago con ID {idPago} para registrar la impresión del recibo municipal.");
+                new ArgumentException($"No se encontró el pago con ID {idPago} para registrar la impresión del recibo municipal.");
+            }
+            pago.NroRecibo = ticket;
         }
     }
 }

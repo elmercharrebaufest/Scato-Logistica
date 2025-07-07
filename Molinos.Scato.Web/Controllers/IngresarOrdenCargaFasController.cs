@@ -3,13 +3,10 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
@@ -64,6 +61,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaFasDto orden, DatosUsuario datosUsuario, string MotivoDemora, int? Material)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
 
             Validar(orden, workflowObj, datosUsuario);
 
@@ -206,10 +204,15 @@ namespace Molinos.Scato.Web.Controllers
             };
 
             var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+            
             var servicioWf = factory.CrearServicio(workflowDefinicionId);
             var resultadoActividad = servicioWf.IngresarOrdenCargaFas(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, orden.ValidaCompliance, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
+            
             if (!resultadoActividad.HayErrores)
             {
+                if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                    ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
                 return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
             }
 
@@ -390,6 +393,11 @@ namespace Molinos.Scato.Web.Controllers
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario && workflow.Codigo != Constantes.WorkFlow.workflowExportacionFCA;
 
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
+
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+            }
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)
             {

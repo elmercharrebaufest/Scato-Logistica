@@ -35,5 +35,9 @@ namespace Molinos.Scato.Dominio.Dto
         public string TipoComercial { get; set; }
         public string PatentePrevia { get; set; }
         public bool PasoPorContingenciaPesosExc { get; set; }
+        public int MaterialId { get; set; }
+        public int CentroId { get; set; }
+        public string PatenteAcoplado { get; set; }
+        public string Ctg { get; set; }
     }
 }

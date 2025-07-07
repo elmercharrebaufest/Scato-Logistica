@@ -11,5 +11,7 @@
         public const string LlamadoCallePreBalanza = "LlamadoCallePreBalanza";
         public const string LlamadoCamionPreBalanza = "LlamadoCamionPreBalanza";
         public const string LlamadoCamionNoGrano = "LlamadoCamionNoGrano";
+        public const string GaritaIngresoConTasaMunicipalExito = "GaritaIngresoConTasaMunicipalExito";
+        public const string GaritaIngresoConTasaMunicipalError = "GaritaIngresoConTasaMunicipalError";
     }
 }

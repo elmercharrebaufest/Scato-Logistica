@@ -1,6 +1,7 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
@@ -8,6 +9,7 @@ using Molinos.Scato.Dominio.Seguridad;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using System.ServiceModel;
 
 namespace Molinos.Scato.Servicios
@@ -1132,7 +1134,7 @@ namespace Molinos.Scato.Servicios
         IList<AjusteDeCalidadDto> ListarCaracteristicasParaAjustesDeCalidad(int caladoId);
 
         [OperationContract]
-        ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso, string patente, TipoImpresion? tipoImpresion, Paginacion paginacion,int centroId);
+        ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso, string patente, TipoImpresion? tipoImpresion, Paginacion paginacion, int centroId);
 
         [OperationContract]
         VehiculoDto ObtenerVehiculoPorGuid(Guid instanceId);
@@ -1956,9 +1958,9 @@ namespace Molinos.Scato.Servicios
         /// <summary>
         /// Valida que sea un cupo genérico (MOL1111/11111111) o que exista en la base de datos en CargaDeCupo para un centro y código específico.
         /// Si no existe cupo, entonces no es válido y se indicará que el cupo no existe en su mensaje de error.
-        /// Si existe cupo y tiene un recorrido asociado que no haya sido rechazado, entonces se lo considera como ya asignado 
+        /// Si existe cupo y tiene un recorrido asociado que no haya sido rechazado, entonces se lo considera como ya asignado
         /// y se indicará esto en su mensaje de error.
-        /// Si existe y tiene un recorrido asociado rechazado, se devolverá una instancia de CargaDeCupoDto, para ser reingresado. 
+        /// Si existe y tiene un recorrido asociado rechazado, se devolverá una instancia de CargaDeCupoDto, para ser reingresado.
         /// </summary>
         /// <param name="cupo"></param>
         /// <param name="centroId"></param>
@@ -2925,7 +2927,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         AutomatismoGranoDto ObtenerAutomatismoGranoPorRecorridoGuid(Guid workflowInstanceId);
-        
+
         [OperationContract]
         List<AutomatismoNoGranoDto> ListarAutomatismoNoGrano();
 
@@ -2949,8 +2951,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ListarAlmacenesActivosAutomatismoNoGrano();
-    
-		[OperationContract]    
+
+        [OperationContract]
         AsignacionAutomatismoGranoEnRecorridoDto ObtenerAsignacionAutomatismoGranoEnRecorrido(Guid workflowInstanceId);
 
         [OperationContract]
@@ -3000,7 +3002,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivos();
-        
+
         [OperationContract]
         bool ValidarEspacioDisponibleEnCallePreHidraulica(int callePlayaInternaId);
 
@@ -3033,13 +3035,13 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CallePorRecorridoDto ObtenerCamionEnEsperaLlamadoGranos(int callePreBalanzaId);
-        
+
         [OperationContract]
         IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoLlamadosActivos();
 
         [OperationContract]
         IList<AlmacenDto> ListarAlmacenesPorMateriaVariedadIds(int centroId, List<int> tipoVariedadesIds, int materialId);
-        
+
         [OperationContract]
         RecorridoDto ObtenerRecorridoNoRechazadoPorIdOperaciones(string numero);
 
@@ -3063,18 +3065,18 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         string ObtenerPatentePorIdCargaCupo(int id);
-        
+
         [OperationContract]
-        string ObtenerNuevoNumeroDeOrdenFason(); 
-        
+        string ObtenerNuevoNumeroDeOrdenFason();
+
         [OperationContract]
-        bool ValidarCuitNestleOrdenCargaInterna(int idRecorrido);     
-        
+        bool ValidarCuitNestleOrdenCargaInterna(int idRecorrido);
+
         [OperationContract]
         bool ValidarCuitNestleOrdenCargaFas(int idRecorrido);
-        
+
         [OperationContract]
-		bool ValidarCuitNestle(int idRecorrido);
+        bool ValidarCuitNestle(int idRecorrido);
 
         [OperationContract]
         ListaPaginada<HuellaDigitalOrdenDto> ListarHuellaDigital(string filtro, Paginacion paginacion, bool esHistorico);
@@ -3098,6 +3100,38 @@ namespace Molinos.Scato.Servicios
         HuellaDigitalOrdenDto ObtenerHuellaDigitalPorFiltro(string patente, string acoplado, int idTransportista);
 
         [OperationContract]
+        bool ExistePagoRealizadoPorListaMaterial(string materialCodigoSap, string patente);
+        
+        [OperationContract]
+        int ObtenerIdPagoDigitalPorInstanceId(Guid instanceId);
+
+        [OperationContract]
+        DateTime? ObtenerUltimaFechaDePagoTasaMunicipal();
+
+        [OperationContract]
+        string ObtenerPatenteAcopladoOrdenesNoGranos(int idRecorrido, TipoDocumentoIngreso tipoDocumento);
+
+        [OperationContract]
+        string ObtenerWorkflowPorTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento);
+
+        [OperationContract]
+        bool DebeImprimirReciboMunicipal(string patente, Guid instanceId);
+        [OperationContract]
+        bool ExistePagoReciboMunicipal(string patente, string ctg);
+        
+        [OperationContract]
+        bool? LogPagaTicketMunicipal(Guid instanceId);
+	
+        [OperationContract]
+        IEnumerable<PagosTasaMunicipal> ObtenerPagosDigitalesPorInstanceId(Guid instanceId);
+
+	[OperationContract]
         int ObtenerTipoVariedadRecorridoAnterior(string numeroCTG, int centroId);
+	
+        [OperationContract]
+        TipoVehiculo ObtenerTipodVehiculoPorPesoBruto(int pesoBruto, int centroId);
+
+        [OperationContract]
+        IList<CartaPorteElectronicaDto> ListarCPEFiltradasPorFechaDeCacheado(DateTime fechaDesde, DateTime fechaHasta);
     }
 }

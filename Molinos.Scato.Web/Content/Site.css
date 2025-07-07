@@ -320,6 +320,14 @@ option[disabled] {
     z-index: 10000;
 }
 
+.alerta-box-custom {
+    width: var(--width, 50%);
+    height: var(--height, auto);
+    text-align: var(--tAlign, center);
+    font-weight: var(--fWeight, bold);
+    z-index: var(--zIndex, 10000);
+}
+
 .paddingRight {
     padding-left: 0px !important;
     padding-right: 60px;

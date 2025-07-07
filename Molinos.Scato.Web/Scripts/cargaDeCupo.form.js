@@ -271,7 +271,9 @@ $(document).ready(function () {
                     if (data.Cpe) {
                         if (data.Cpe.Vehiculos.length > 0) {
                             $("#Patente").val(data.Cpe.Vehiculos[0]["Patente"]);
-                            if (!data.Cpe.Vehiculos[0]["PatenteAcoplado"]) {
+                            if (data.Cpe.Vehiculos[0]["PatenteAcoplado"]) {
+                                $("#PatenteAcoplado").val(data.Cpe.Vehiculos[0]["PatenteAcoplado"]);
+                            } else {
                                 MostrarAlertaAdvertencia("Vehiculo sin acoplado");
                             }
                         }
@@ -430,6 +432,12 @@ function cargarCP(data) {
     $("#Cupo").val(data.CartaPorte.Cupo);
     $("#Patente").val(data.CartaPorte.Patente);
 
+    if (data.CartaPorte.Vehiculos.length > 0) {
+        if (data.CartaPorte.Vehiculos[0]["PatenteAcoplado"]) {
+            $("#PatenteAcoplado").val(data.CartaPorte.Vehiculos[0]["PatenteAcoplado"]);
+        }
+    }
+
     $("#CTG").val(data.CartaPorte.CTG);
     $("#CodEstab").val(data.CartaPorte.CodEstab);
     $("#RtteComercialCodigoSap").val(data.CartaPorte.RtteComercialCodigoSap);
@@ -531,6 +539,7 @@ function DisabledControlers(status) {
 
 function DisableControlersCPE(status, clearinpunts) {
     $('#Patente').prop('readonly', true);
+    $("#PatenteAcoplado").val("");
     $('#circuitoNoGranos').prop('checked', false);
     $('#NumeroCartaPorte').attr('disabled', status);
     $("#NumeroCartaPorte").val("");
@@ -625,6 +634,7 @@ function ConfiguracionNoGranosActiva() {
     $('#CodEstab').val("");
     $('#RtteComercialCodigoSap').val("");
     $('#Patente').focus();
+    $("#PatenteAcoplado").val("");
     $('#cpe').prop('disabled', true);
     DisabledControlers(true);
     clearValidation();
@@ -639,6 +649,7 @@ function ConfiguracionNoGranosInactiva() {
     $("label[for*='Patente']").text("Patente AFIP");
     $('#Patente').prop('readonly', true);
     $("#Patente").val("");
+    $("#PatenteAcoplado").val("");
     $('#MaterialId').val("");
     $('#cpe').prop('disabled', false);
     $('#TipoOrdenCargaNoGranos').val("");
@@ -715,3 +726,5 @@ function ValidarMaterialNoGranoSeleccionado() {
         return true;
     }
 }
+
+

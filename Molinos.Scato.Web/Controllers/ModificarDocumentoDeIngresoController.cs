@@ -197,8 +197,10 @@ namespace Molinos.Scato.Web.Controllers
             else if ((tipoDoc == TipoDocumentoIngreso.OrdenCargaFas))
             {
                 var orden = servicio.ObtenerOrdenCargaFasPorInstanceId(recorrido.InstanciaWorkflow);
+                
+                if (orden.DerivadoGranarioHabilitado)
+                    ObtenerPlantaYDomicilio(ref orden, recorrido.Centro.Id);
 
-                ObtenerPlantaYDomicilio(ref orden, recorrido.Centro.Id);
                 IngresarOrdenCargaFasController.SetearVista(recorrido.Workflow, servicio, this);
                 return View("OrdenCargaFas", orden);
             }

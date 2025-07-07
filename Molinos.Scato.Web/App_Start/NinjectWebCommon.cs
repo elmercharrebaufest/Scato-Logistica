@@ -1,7 +1,8 @@
-using Hangfire;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dependencias;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Web.Firmware;
 using Molinos.Scato.Web.Impl;
 using Molinos.Scato.Web.ServicioHub;
 using Ninject;
@@ -14,20 +15,20 @@ using System.Web;
 
 namespace Molinos.Scato.Web.App_Start
 {
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -47,7 +48,6 @@ namespace Molinos.Scato.Web.App_Start
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
             RegisterServices(kernel);
-            GlobalConfiguration.Configuration.UseNinjectActivator(kernel);
             return kernel;
         }
 
@@ -58,10 +58,12 @@ namespace Molinos.Scato.Web.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Load(new WebNinjectModule());
+            kernel.Bind<IRecorridoWorkflow>().To<RecorridoWorkflow>().InRequestScope();
             kernel.Bind<IFirmwareFactory, FirmwareFactory>().To<FirmwareFactory>().InSingletonScope();
             kernel.Bind<HubClient>().ToSelf().InSingletonScope();
             kernel.Bind<HubClientNotificar>().ToSelf().InSingletonScope();
             kernel.Bind<HubClientFactory>().ToSelf().InSingletonScope();
-        }        
+
+        }
     }
 }

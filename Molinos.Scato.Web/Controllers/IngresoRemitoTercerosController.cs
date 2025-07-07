@@ -1,13 +1,8 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -15,6 +10,10 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -58,6 +57,8 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, RemitoDto orden, DatosUsuario datosUsuario)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
+
             if (datosUsuario.CentroId == 0)
             {
                 TempData["Alerta"] = Textos.SeleccionarCentro_Error;
@@ -135,6 +136,9 @@ namespace Molinos.Scato.Web.Controllers
                 return View(orden);
             }
 
+            if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
             return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
         }
 
@@ -159,6 +163,13 @@ namespace Molinos.Scato.Web.Controllers
         protected virtual bool Validar(RemitoDto orden, DatosUsuario usuario)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
+
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+                return false;
+            }
+
             if (material != null && material.Descripcion == "RESIDUOS ORGANICOS" && orden.Almacen_Id == null)
             {
                 ModelState.AddModelError("Almacen_Id", Textos.OrdenInterna_AlmacenRequerido);
