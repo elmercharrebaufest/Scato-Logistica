@@ -3125,7 +3125,7 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         IEnumerable<PagosTasaMunicipal> ObtenerPagosDigitalesPorInstanceId(Guid instanceId);
 
-	[OperationContract]
+	    [OperationContract]
         int ObtenerTipoVariedadRecorridoAnterior(string numeroCTG, int centroId);
 	
         [OperationContract]
@@ -3133,5 +3133,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<CartaPorteElectronicaDto> ListarCPEFiltradasPorFechaDeCacheado(DateTime fechaDesde, DateTime fechaHasta);
+
+        [OperationContract]
+        bool EsUltimaActividadEnControlRecorrido(Guid workflowId, string actividad);
     }
 }

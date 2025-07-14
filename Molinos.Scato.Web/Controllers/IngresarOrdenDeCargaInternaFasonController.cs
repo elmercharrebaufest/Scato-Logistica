@@ -324,7 +324,7 @@ namespace Molinos.Scato.Web.Controllers
 
             if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
             {
-                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+                ModelState.AddModelError("ErrorTasaMunicipal", "");
             }
 
             if (orden.NumeroOrdenExterno == null)

@@ -608,9 +608,9 @@ namespace Molinos.Scato.Web.Controllers
 
             var codigoEstablecimientoEsDeMolinos = servicio.ObtenerCodigoEstablecimientoEsDeMolinos(codigoDeEstablecimiento);
 
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            if (!orden.VehiculoDemorado && ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
             {
-                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+                ModelState.AddModelError("ErrorTasaMunicipal","");
             }
 
             //si es MRP, no se valida el codigo de establecimiento

@@ -39,5 +39,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int CentroId { get; set; }
         public string PatenteAcoplado { get; set; }
         public string Ctg { get; set; }
+        public bool Rechazado { get; set; }
     }
 }

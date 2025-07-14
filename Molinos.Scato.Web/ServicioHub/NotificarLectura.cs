@@ -54,7 +54,16 @@ namespace Molinos.Scato.Web.ServicioHub
         {
             if (Clients != null)
             {
-                Clients.Group(notificacion.CentroId + "|" + notificacion.PuestoDeTrabajoId).informarLecturaPagoTasaMunicipal(new { notificacion.NumeroDeTarjeta, notificacion.Patente, notificacion.PuestoDeTrabajoId, notificacion.TarjetaValida, notificacion.MensajeError, notificacion.TipoAlerta, notificacion.MensajeAlerta });
+                Clients.Group(notificacion.CentroId + "|" + notificacion.PuestoDeTrabajoId).informarLecturaPagoTasaMunicipal(
+                    new { 
+                          notificacion.NumeroDeTarjeta, 
+                          notificacion.Patente, 
+                          notificacion.PuestoDeTrabajoId, 
+                          notificacion.TarjetaValida, 
+                          notificacion.MensajeError, 
+                          notificacion.TipoAlerta, 
+                          notificacion.MensajeAlerta, 
+                          notificacion.Rechazado});
             }
         }
     }

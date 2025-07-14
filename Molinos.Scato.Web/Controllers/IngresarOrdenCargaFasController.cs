@@ -394,9 +394,9 @@ namespace Molinos.Scato.Web.Controllers
 
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
 
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            if (!orden.VehiculoDemorado && ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
             {
-                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+                ModelState.AddModelError("ErrorTasaMunicipal", "");
             }
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)

@@ -122,6 +122,15 @@ namespace Molinos.Scato.Web.Controllers
             orden.InstanciaWorkflow = id;
             orden.Id = cartaPorteId;
             ModelState.Remove("Id");
+            
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.Patente, null, orden.NroCartaPorte, orden.TipoVehiculo, orden.CodEstab, orden.MaterialId);
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+                CargarCartaPorteController.SetearVista(workflowObj, datosUsuario.CentroId, servicio, this);
+                return View(orden);
+            }
+
             if (ModelState.IsValid && vehiculos != null && vehiculos.Count() != 0)
             {
                 var resultadoChofer = SetearChofer(orden.Chofer);
@@ -164,6 +173,9 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoService = demoraService.CamionDemorado(controlRecorrido, id, false);
                 if (!resultado.HayErrores && !resultadoService.HayErrores)
                 {
+                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                        ActualizarTasaMunicipal(id, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
                 ModelState.AgregarErrores(resultado);
@@ -190,8 +202,15 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.WorkflowInstanceUid = WorkflowId;
 
             log.Debug($"Camion no granos demorado {orden.PatenteCamion}, con orden nro {orden.NumeroOrden} ({WorkflowId})");
-
             var workflowObjt = servicio.ObtenerWorkflowPorCodigo(workflow);
+
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+                IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+                return View(orden);
+            }
 
             Validar(orden);
             if (!ModelState.IsValid)
@@ -308,6 +327,9 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoService = demoraService.CamionDemorado(controlRecorrido, WorkflowId, orden.Rechazado);
                 if (!resultadoService.HayErrores)
                 {
+                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                        ActualizarTasaMunicipal(WorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
                 ModelState.AgregarErrores(resultadoService);
@@ -346,6 +368,15 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult OrdenCargaInterna(OrdenCargaInternaDto model, DatosUsuario datosUsuario)
         {
             var recorrido = servicio.ObtenerRecorrido(model.RecorridoId);
+
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, model.PatenteCamion, model.PatenteAcoplado, null, model.TipoVehiculo, string.Empty, model.MaterialId);
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+                IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
                 if (model.DerivadoGranarioHabilitado && !model.Rechazado)
@@ -406,6 +437,9 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoActividad = demoraService.CamionDemorado(controlRecorrido, recorrido.InstanciaWorkflow, model.Rechazado);
                 if (!resultadoActividad.HayErrores)
                 {
+                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                        ActualizarTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
                 ModelState.AgregarErrores(resultadoActividad);
@@ -420,6 +454,15 @@ namespace Molinos.Scato.Web.Controllers
         {
             var recorrido = servicio.ObtenerRecorrido(orden.RecorridoId);
             var workflowObje = recorrido.Workflow;
+
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
+            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+            {
+                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+                IngresarOrdenCargaInternaFasonController.SetearVista(workflowObje, datosUsuario.CentroId, servicio, this);
+                return View(orden);
+            }
+
             var material = servicio.ObtenerMaterial(orden.MaterialId);
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
 
@@ -565,6 +608,9 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoActividad = demoraService.CamionDemorado(controlRecorrido, recorrido.InstanciaWorkflow, orden.Rechazado);
                 if (!resultadoActividad.HayErrores)
                 {
+                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                        ActualizarTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
 

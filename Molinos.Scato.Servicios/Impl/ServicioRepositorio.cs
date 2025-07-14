@@ -5283,6 +5283,7 @@ namespace Molinos.Scato.Servicios.Impl
                     MaterialId = x.Material.Id,
                     CentroId = x.Centro.Id,
                     PatenteAcoplado = x.Vehiculo.PatenteAcoplado,
+                    Rechazado = x.Rechazado,
                     Ctg = x.Vehiculo.CartaPorte.Cpe == true
                         ? x.Vehiculo.CartaPorte.NroCartaPorte
                         : x.Vehiculo.CartaPorte.CTG
@@ -11501,6 +11502,12 @@ namespace Molinos.Scato.Servicios.Impl
         public IList<CartaPorteElectronicaDto> ListarCPEFiltradasPorFechaDeCacheado(DateTime fechaDesde, DateTime fechaHasta)
         {
             return Listar<CartaPorteElectronica, CartaPorteElectronicaDto>(c => c.FechaCacheado >= fechaDesde && c.FechaCacheado <= fechaHasta);
+        }
+
+        public bool EsUltimaActividadEnControlRecorrido(Guid workflowId, string actividad)
+        {
+            var controles = repositorio.Listar<ControlRecorrido>(x => x.WorkflowInstanceId == workflowId).OrderByDescending(o => o.Id);
+            return controles.FirstOrDefault().ActividadXaml.Equals(actividad) ? true : false;
         }
 
         private IEnumerable<HuellaDigitalOrdenDto> GnerarQueryHuellaDigital(string filtro, bool esHistorico)

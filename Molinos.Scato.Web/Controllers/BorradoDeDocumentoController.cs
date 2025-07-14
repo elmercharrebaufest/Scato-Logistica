@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
-using Molinos.Scato.Actividades.Servicios;
+﻿using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Seguridad;
@@ -9,6 +6,8 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -30,7 +29,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Index(DatosUsuario datosUsuario, FiltroRecorridoModel filtro, string ordenarPor = "NumeroDocumentoIngreso", DirOrden dirOrden = DirOrden.Asc, int pagina = 1)
         {
-            ListarConsulta(new FiltroRecorridoModel{NumeroDocumentoIngreso = "0"}, pagina, ordenarPor, dirOrden, datosUsuario.CentroId);
+            ListarConsulta(new FiltroRecorridoModel { NumeroDocumentoIngreso = "0" }, pagina, ordenarPor, dirOrden, datosUsuario.CentroId);
             return View();
         }
 

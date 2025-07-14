@@ -91,6 +91,7 @@
                 public const string CargaDeCupo = "CargaDeCupo";
                 public const string ServicioSap = "ServicioSap";
                 public const string ServicioOperaciones = "ServicioOperaciones";
+                public const string PagoTasaMunicipal = "PagoTasaMunicipal";
             }
 
             public struct ContingenciaPesosExcedidos
@@ -165,6 +166,11 @@
                 public const string Centro = "Centro";
                 public const string WorkFlowEgreso = "WorkFlowEgreso";
                 public const string TipoComercialEgreso = "TipoComercialEgreso";
+            }
+
+            public struct PagoTasaMunicipal
+            {
+                public const string NumeroDiasParaInicioBusqueda = "NumeroDiasParaInicioBusqueda";
             }
 
             public struct CargaDeCupo

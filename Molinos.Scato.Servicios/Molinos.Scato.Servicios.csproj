@@ -594,6 +594,7 @@
     <Compile Include="Procesamiento\ProcesadoLimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarComoDevolucionPagosTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorVerificarPagoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarCategoriaVehiculoNoGranos.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarCategoriaVehiculoGranos.cs" />

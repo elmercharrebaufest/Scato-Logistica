@@ -21,7 +21,7 @@ jQuery(document).ready(function ($) {
             traerDatosCP(notificacion.NumeroDeTarjeta, notificacion.PuestoDeTrabajoId);
             var alerta = notificacion.TipoAlerta === 0 ? 'alert alert-success' : 'alert alert-danger';
             mostrarAlerta(notificacion.MensajeAlerta, alerta);
-            if (notificacion.TipoAlerta === 2) {
+            if (notificacion.TipoAlerta === 2 && !notificacion.Rechazado) {
                 $('#pagoManual').modal('show');
             }
         }

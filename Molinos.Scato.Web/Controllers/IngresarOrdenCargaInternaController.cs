@@ -412,8 +412,8 @@ namespace Molinos.Scato.Web.Controllers
             var material = servicio.ObtenerMaterial(orden.MaterialId);
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
 
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
+            if (!orden.Demorado && ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+                ModelState.AddModelError("ErrorTasaMunicipal", "");
 
             if (material != null && material.Descripcion == "RESIDUOS ORGANICOS" && orden.Almacen_Id == null)
                 ModelState.AddModelError(nameof(OrdenCargaInternaDto.Almacen_Id), Textos.OrdenInterna_AlmacenRequerido);

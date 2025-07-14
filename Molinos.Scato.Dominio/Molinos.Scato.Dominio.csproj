@@ -106,6 +106,7 @@
     <Compile Include="Comandos\MOAPay\MOAPayCrearModificarCPE.cs" />
     <Compile Include="Comandos\MOAPay\MOAPayInformarPagoComoConsumido.cs" />
     <Compile Include="Comandos\MOAPay\MOAPaySincronizarEstadoDePagos.cs" />
+    <Compile Include="Comandos\ModificarComoDevolucionPagosTasaMunicipal.cs" />
     <Compile Include="Comandos\ResultadoValidacionEjecutarWorkflow.cs" />
     <Compile Include="Comandos\VerificarPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenInsumos.cs" />

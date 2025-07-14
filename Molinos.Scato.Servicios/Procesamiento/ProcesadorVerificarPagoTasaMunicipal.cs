@@ -21,7 +21,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private readonly ICategorizadorVehiculo _categorizador;
         private readonly List<IReglaExcepcionTasaMunicipal> _reglasExcepcion;
         private readonly List<IReglaPago24HrsTasaMunicipal> _reglasPago24Hrs;
-        private readonly int numeroDiasDesde = 3;
 
         public ProcesadorVerificarPagoTasaMunicipal(IRepositorio repositorio, IConversor conversor,
                                                     ILogger log, IServicioComandos servicioComandos,
@@ -46,6 +45,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 Validar(comando);
                 Log.Info($"Validación inicial del comando {comando.Patente}, {comando.MaterialId}, {comando.CodigoEstablecimiento}, {comando.Ctg}  completada con éxito.");
+                var configuracion = _servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.PagoTasaMunicipal, Constantes.ConfiguracionGeneral.PagoTasaMunicipal.NumeroDiasParaInicioBusqueda);
+                int.TryParse(configuracion?.Valor, out int numeroDiasParaInicioBusqueda);
+                Log.Info($"Número de días para inicio de búsqueda: {numeroDiasParaInicioBusqueda}");
+
                 bool tieneExcepcion = ValidarExcepciones(comando, builder);
 
                 if (tieneExcepcion)
@@ -69,15 +72,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var datos = Conversor.Convertir<VerificarPagoTasaMunicipal, DatosTasaMunicipal>(comando);
 
                 var regla = _reglas.FirstOrDefault(r => r.Aplica(datos));
-    
+
                 var tipoVehiculo = regla.ObtenerTipoVehiculo(datos);
                 Log.Debug($"Tipo de vehículo obtenido: {tipoVehiculo} para la patente: {datos.Patente} y centro: {datos.CentroId}");
 
                 var categoriaVehiculo = _categorizador.ObtenerCategoria(tipoVehiculo);
                 Log.Debug($"Categoría de vehículo obtenida: {categoriaVehiculo} para la patente: {datos.Patente} y centro: {datos.CentroId}");
 
-                //var recibos = ObtenerReciboPorTipoVehiculo(categoriaVehiculo, comando.CentroId);
-                var pago = regla.ObtenerPago(datos, categoriaVehiculo, numeroDiasDesde).FirstOrDefault();
+                var pago = regla.ObtenerPago(datos, categoriaVehiculo, numeroDiasParaInicioBusqueda).FirstOrDefault();
                 if (pago.Key == 0)
                 {
                     Log.Info($"No se encontró un pago asociado a la patente: {datos.Patente} en el centro: {datos.CentroId}");
@@ -89,7 +91,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var tipoValidacionPago = pago.Value;
                 var validacion = ValidarPago(idPago, tipoValidacionPago, datos, regla, builder);
                 Log.Debug($"Validación del pago: {validacion} para el pago con ID: {idPago}");
-                
+
                 builder.AsignarValidacionDePago(validacion);
                 if (validacion == TipoValidacionPagoTasaMunicipal.Abonado)
                 {
@@ -102,7 +104,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         if (builder.Resultado.IdPayComplemento > 0)
                             InformarPago(builder.Resultado.IdPayComplemento);
 
-                    }     
+                    }
                     else
                     {
                         builder.AsignarIdDePago(idPago);
@@ -134,7 +136,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 throw new ArgumentException("El CentroId debe ser un valor válido.");
             }
         }
-        private TipoValidacionPagoTasaMunicipal ValidarPago(int idPago, TipoValidacionPagoTasaMunicipal tipoValidacion, DatosTasaMunicipal datosTasa, IReglaTasaMunicipal regla, PagoTasaMunicipalBuilder  builder)
+        private TipoValidacionPagoTasaMunicipal ValidarPago(int idPago, TipoValidacionPagoTasaMunicipal tipoValidacion, DatosTasaMunicipal datosTasa, IReglaTasaMunicipal regla, PagoTasaMunicipalBuilder builder)
         {
             var pagoMunicipal = Repositorio.Obtener<PagosTasaMunicipal>(p => p.Id == idPago);
             builder.AsignarIdPay(pagoMunicipal.IdMOAPay);
@@ -179,7 +181,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 throw new InvalidOperationException($"No se pudo actualizar el pago de la tasa municipal. Error en el comando: {nameof(ModificarComoUsadoPagosTasaMunicipal)} - {respuestaModificacionEstadoPago.Errores}");
 
             Log.Info($"Estado del pago actualizado exitosamente");
-            return respuestaModificacionEstadoPago;   
+            return respuestaModificacionEstadoPago;
 
         }
 
@@ -245,10 +247,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             bool validado = false;
             PagosTasaMunicipal pago = null;
             if (comando.InstanceId.HasValue && comando.InstanceId.Value != Guid.Empty)
-                pago = Repositorio.Obtener<PagosTasaMunicipal>(p => p.IdInstance == comando.InstanceId.Value 
+                pago = Repositorio.Obtener<PagosTasaMunicipal>(p => p.IdInstance == comando.InstanceId.Value
                                                                 && !p.Disponible
                                                                 && !p.NumeroDocumento.EndsWith(Constantes.MOAPay.Codigos.CodigoDiferenciaDePago));
-            
+
             if (pago != null && pago.IdMOAPay > 0)
             {
                 Log.Info($"El pago ya fue validado al ingreso para el InstanceId: {comando.InstanceId}");
@@ -257,7 +259,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 InformarPago(pago.IdMOAPay);
                 string numeroDocumento = pago.NumeroDocumento + Constantes.MOAPay.Codigos.CodigoDiferenciaDePago;
                 var complementoPago = Repositorio.Obtener<PagosTasaMunicipal>(p => p.NumeroDocumento == numeroDocumento && p.IdInstance == comando.InstanceId.Value && !p.Disponible);
-                if(complementoPago != null && complementoPago.IdMOAPay > 0)
+                if (complementoPago != null && complementoPago.IdMOAPay > 0)
                     InformarPago(complementoPago.IdMOAPay);
             }
             return validado;
