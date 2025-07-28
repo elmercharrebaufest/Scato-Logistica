@@ -9,7 +9,6 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -79,41 +78,27 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var categoriaVehiculo = _categorizador.ObtenerCategoria(tipoVehiculo);
                 Log.Debug($"Categoría de vehículo obtenida: {categoriaVehiculo} para la patente: {datos.Patente} y centro: {datos.CentroId}");
 
-                var pago = regla.ObtenerPago(datos, categoriaVehiculo, numeroDiasParaInicioBusqueda).FirstOrDefault();
-                if (pago.Key == 0)
-                {
-                    Log.Info($"No se encontró un pago asociado a la patente: {datos.Patente} en el centro: {datos.CentroId}");
-                    builder.AsignarValidacionDePago(pago.Value);
-                    return builder.ConstruirResultado();
-                }
+                var pago = ObtenerPago(datos, categoriaVehiculo, numeroDiasParaInicioBusqueda);
+                ValidarPago(datos.Patente, pago, builder);
 
-                int idPago = pago.Key;
-                var tipoValidacionPago = pago.Value;
-                var validacion = ValidarPago(idPago, tipoValidacionPago, datos, regla, builder);
-                Log.Debug($"Validación del pago: {validacion} para el pago con ID: {idPago}");
-
-                builder.AsignarValidacionDePago(validacion);
-                if (validacion == TipoValidacionPagoTasaMunicipal.Abonado)
-                {
+               if(builder.ObtenerCondicionDePago() == TipoValidacionPagoTasaMunicipal.Abonado)
+               {
                     Log.Info($"Aplica actualizacion interna: {datos.AplicaActualizacionInterna}");
                     if (datos.AplicaActualizacionInterna)
                     {
-                        Log.Debug($"Actualizando estado del pago con ID: {idPago} y InstanceId: {datos.InstanceId}, IdDiferenciaPago: {builder.Resultado.IdDiferenciaDePago}");
-                        ActualizarEstadoDePago(idPago, datos.InstanceId, builder.Resultado.IdDiferenciaDePago ?? 0);
-                        InformarPago(builder.Resultado.IdPay);
-                        if (builder.Resultado.IdPayComplemento > 0)
-                            InformarPago(builder.Resultado.IdPayComplemento);
-
+                        Log.Debug($"Actualizando estado del pago con ID: {pago.IdPagoNormal} y InstanceId: {datos.InstanceId}, IdDiferenciaPago: {pago.IdDiferenciaPago}");
+                        ActualizarEstadoDePago(pago.IdPagoNormal, datos.InstanceId, pago.IdDiferenciaPago ?? 0);
+                        InformarPago(pago.IdPayPagoNormal);
+                        if (pago.IdPayDiferenciaPago.HasValue && pago.IdPayDiferenciaPago.Value > 0)
+                            InformarPago(pago.IdPayDiferenciaPago.Value);
                     }
                     else
                     {
-                        builder.AsignarIdDePago(idPago);
-                        builder.AsignarIdDiferenciaDePago(builder.Resultado.IdDiferenciaDePago ?? 0);
+                        builder.AsignarIdDePago(pago.IdPagoNormal);
+                        builder.AsignarIdDiferenciaDePago(pago.IdDiferenciaPago ?? 0);
                     }
-
-                    Log.Info($"Pago abonado correctamente para el pago con ID: {idPago}");
-                }
-
+                    Log.Info($"Pago abonado correctamente para la Patente: {pago.Dominio}, pago con Id: {pago.IdPagoNormal}, pago con Id diferencia: {pago.IdDiferenciaPago}");
+               }
             }
             catch (Exception ex)
             {
@@ -136,34 +121,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 throw new ArgumentException("El CentroId debe ser un valor válido.");
             }
         }
-        private TipoValidacionPagoTasaMunicipal ValidarPago(int idPago, TipoValidacionPagoTasaMunicipal tipoValidacion, DatosTasaMunicipal datosTasa, IReglaTasaMunicipal regla, PagoTasaMunicipalBuilder builder)
-        {
-            var pagoMunicipal = Repositorio.Obtener<PagosTasaMunicipal>(p => p.Id == idPago);
-            builder.AsignarIdPay(pagoMunicipal.IdMOAPay);
-
-            if (tipoValidacion == TipoValidacionPagoTasaMunicipal.DiferenciaDePago)
-            {
-                var diferenciaDePago = ObtenerDiferenciaDePago(datosTasa, pagoMunicipal.NumeroDocumento);
-                if (diferenciaDePago == null)
-                {
-                    Log.Info($"No se encontró una pago para la diferencia de pago para el pago con ID: {idPago} y monto: {pagoMunicipal.Importe}");
-                    return tipoValidacion;
-                }
-                var montoPago = pagoMunicipal.Importe ?? 0;
-                var sumaDePagos = montoPago + (diferenciaDePago.Importe ?? 0);
-                var recibo = Repositorio.ObtenerMayor<ReciboMunicipal, DateTime>(r => r.Centro.Id == datosTasa.CentroId && r.TipoVehiculo == null && r.FechaActivacion <= diferenciaDePago.FechaPago, o => o.FechaActivacion);
-
-                if (sumaDePagos >= recibo.Monto)
-                {
-                    Log.Info($"Pago con ID: {idPago} y monto: {montoPago} más diferencia de pago: {diferenciaDePago.Importe ?? 0} es suficiente para cubrir el recibo con monto: {recibo}");
-                    builder.AsignarIdDiferenciaDePago(diferenciaDePago.Id);
-                    builder.AsignarIdPayComplemento(diferenciaDePago.IdMOAPay);
-                    return TipoValidacionPagoTasaMunicipal.Abonado;
-                }
-            }
-            return tipoValidacion;
-        }
-
+       
         private Resultado ActualizarEstadoDePago(int idPago, Guid instanceId, int idDiferenciaPago = 0)
         {
             Log.Info($"Actualizando estado del pago con ID: {idPago} e InstanceId: {instanceId}");
@@ -182,7 +140,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             Log.Info($"Estado del pago actualizado exitosamente");
             return respuestaModificacionEstadoPago;
-
         }
 
         private Resultado InformarPago(int idPago)
@@ -265,15 +222,79 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return validado;
         }
 
-        private PagosTasaMunicipal ObtenerDiferenciaDePago(DatosTasaMunicipal datos, string numeroDeDocumento)
+        public void ValidarPago(string patente, EstadoPagoTasaMunicipal pago, PagoTasaMunicipalBuilder builder)
         {
-            Log.Info($"Obteniendo diferencia de pago de tasa municipal para Patente: {datos.Patente} y Documento: {numeroDeDocumento}");
-            string documento = numeroDeDocumento.Trim() + "DP";
-            Expression<Func<PagosTasaMunicipal, bool>> filtro = c => c.Disponible &&
-                                                                     c.Dominio == datos.Patente &&
-                                                                     c.NumeroDocumento == documento;
+            TipoValidacionPagoTasaMunicipal tipoValidacion;
+            switch (pago.CondicionDePago)
+            {
+                case TipoValidacionPagoTasaMunicipal.Abonado:
+                    Log.Debug($"Pago normal encontrado para la patente: {patente}, documento: {pago.NumeroDocumento}, importe: {pago.ImporteNormal}");
+                    builder.AsignarIdDePago(pago.IdPagoNormal);
+                    builder.AsignarIdPay(pago.IdPayPagoNormal);
+                    if (pago.IdDiferenciaPago.HasValue && pago.IdDiferenciaPago.Value > 0)
+                    {
+                        Log.Debug($"Pago de diferencia encontrado para la patente: {patente}, documento: {pago.NumeroDocumento}, importe DP: {pago.ImporteDP}, total pagado {pago.TotalPagado}");
+                        builder.AsignarIdDiferenciaDePago(pago.IdDiferenciaPago.Value);
+                        builder.AsignarIdPayComplemento(pago.IdPayDiferenciaPago.Value);
+                    }
+                    else
+                    {
+                        Log.Debug($"No se encontró un pago de diferencia para la patente: {patente} y documento: {pago.NumeroDocumento}");
+                    }
+                    tipoValidacion = TipoValidacionPagoTasaMunicipal.Abonado;
+                    break;
 
-            var pago = Repositorio.ObtenerMayor<PagosTasaMunicipal, DateTime>(filtro, o => o.FechaPago ?? DateTime.Today);
+                case TipoValidacionPagoTasaMunicipal.DiferenciaDePago:
+                    Log.Debug($"Pago con diferencia encontrado para la patente: {patente}, documento: {pago.NumeroDocumento}, importe: {pago.ImporteNormal}, importe requerido: {pago.TarifaTipoVehiculo}");
+                    tipoValidacion = TipoValidacionPagoTasaMunicipal.DiferenciaDePago;
+                    break;
+
+                default:
+                    Log.Warn($"Pago no encontrado para la patente: {patente}, documento: {pago.NumeroDocumento}");
+                    tipoValidacion = TipoValidacionPagoTasaMunicipal.Adeudado;
+                    break;
+            }
+            Log.Debug($"Validación del pago: {tipoValidacion} para patente: {patente} y pago con ID: {pago.IdPagoNormal}");
+            builder.AsignarValidacionDePago(tipoValidacion);
+        }
+
+        private EstadoPagoTasaMunicipal ObtenerPago(DatosTasaMunicipal datos, TipoCategoriaVehiculo tipoCategoria, int numeroDiasDeConsulta)
+        {
+            Log.Info($"Obteniendo pago de tasa municipal para Patente: {datos.Patente}");
+            string numeroDocumento = string.IsNullOrWhiteSpace(datos.Ctg) ? string.Empty : datos.Ctg;
+            var pagos = Repositorio.ObtenerPagoTasaMunicipal<EstadoPagoTasaMunicipal>(tipoCategoria, datos.Patente, numeroDocumento, numeroDiasDeConsulta, datos.CentroId, Constantes.MOAPay.Codigos.CodigoDiferenciaDePago);
+            Log.Debug($"Pagos encontrados para la patente: {datos.Patente}, total de pagos: {pagos.Count}");
+            var pago = pagos.Where(p=> p.CondicionDePago == TipoValidacionPagoTasaMunicipal.Abonado).LastOrDefault();
+            if (pago != null)
+                return pago;
+            else
+            {
+                Log.Debug($"Buscando pago de diferencia para la patente: {datos.Patente}");
+                pago = pagos.Where(p => p.CondicionDePago == TipoValidacionPagoTasaMunicipal.DiferenciaDePago).LastOrDefault();
+                if (pago != null)
+                {
+                    Log.Debug($"Pago de diferencia encontrado para la patente: {datos.Patente}, documento: {pago.NumeroDocumento}, importe: {pago.ImporteDP}");
+                    return pago;
+                }
+                else
+                {
+                    Log.Warn($"No se encontró un pago abonado ni de diferencia para la patente: {datos.Patente}");
+                    pago = new EstadoPagoTasaMunicipal
+                    {
+                        Dominio = datos.Patente,
+                        NumeroDocumento = numeroDocumento,
+                        CondicionDePago = TipoValidacionPagoTasaMunicipal.Adeudado,
+                        TarifaTipoVehiculo = 0,
+                        ImporteNormal = 0,
+                        ImporteDP = 0,
+                        TotalPagado = 0,
+                        IdPagoNormal = 0,
+                        IdPayPagoNormal = 0,
+                        IdDiferenciaPago = null,
+                        IdPayDiferenciaPago = null
+                    };
+                }
+            }
             return pago;
         }
     }

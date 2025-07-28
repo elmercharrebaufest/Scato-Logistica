@@ -74,7 +74,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.CargaDeCupoIdValue = cargaCupoIdValue;
             var material = servicio.ObtenerMaterial(orden.MaterialId);
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.Demorado, orden.MaterialId);
 
             if (orden.TipoYOrdenDestino != null)
             {
@@ -321,11 +321,6 @@ namespace Molinos.Scato.Web.Controllers
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
             var materialesPermitidos = servicio.ListarMaterialesPorWorkflow(workflowId, datosUsuario.CentroId).Select(m => m.MaterialId).ToList();
             var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;            
-
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal", "");
-            }
 
             if (orden.NumeroOrdenExterno == null)
             {

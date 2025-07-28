@@ -595,35 +595,20 @@ namespace Molinos.Scato.Repositorio
             return (int)nextId;
         }
 
-        public int ObtenerIdPagoTasaMunicipal(TipoCategoriaVehiculo tipoCategoria, string patente, string numeroDocumento, int diasFechaDesde, int centroId, string codigoDiferencia, bool tieneDiferencia = false)
+        public List<TEntidad> ObtenerPagoTasaMunicipal<TEntidad>(TipoCategoriaVehiculo tipoCategoria, string patente, string numeroDocumento, int dias, int centroId, string codigoDiferencia)
         {
-            string tipoCategoriaSql = tipoCategoria == TipoCategoriaVehiculo.Comun ? "= 0" : "is null";
-            string condicionDeUnion = tieneDiferencia ? "p.Importe < r.Monto" : "p.Importe = r.Monto";
-            if (tieneDiferencia)
-            {
-                tipoCategoriaSql = " and r.TipoVehiculo is null";
-            }else
-            {
-                tipoCategoriaSql = $" and r.TipoVehiculo {tipoCategoriaSql}";
-            }
-            string query = $@"
-		            begin
-		                    declare @Patente nvarchar(20) = '{patente}';
-                            declare @NumeroDocumento nvarchar(20) = '{numeroDocumento}';
-                            declare @DiasFechaDesde int = {diasFechaDesde};
-                            select p.Id from PagosTasaMunicipal p 
-                            inner join ReciboMunicipal r on {condicionDeUnion}
-                            where r.FechaActivacion <= p.FechaPago
-                            and r.Centro_Id = {centroId}
-                            and RIGHT(p.NumeroDocumento, {codigoDiferencia.Count()}) <> '{codigoDiferencia}'
-                            {tipoCategoriaSql}
-                            and p.Disponible = 1
-                            and (p.Dominio = @Patente or p.NumeroDocumento = @NumeroDocumento)
-                            and p.FechaPago >=  DATEADD(DAY, -@DiasFechaDesde, GETDATE())
-                            Order By r.FechaActivacion
-		            end";
 
-                return context.Database.SqlQuery<int>(query).FirstOrDefault();
+            var resultado = context.Database.SqlQuery<TEntidad>(
+                "EXEC sp_ObtenerEstadoPagosTasaMunicipal @Patente, @NumeroDocumento, @DiasFechaDesde, @Centro, @TipoVehiculo, @CodigoDiferenciaPago",
+                new SqlParameter("@Patente", patente),
+                new SqlParameter("@NumeroDocumento", numeroDocumento),
+                new SqlParameter("@DiasFechaDesde", dias),
+                new SqlParameter("@Centro", centroId),
+                new SqlParameter("@TipoVehiculo", tipoCategoria),
+                new SqlParameter("@CodigoDiferenciaPago", codigoDiferencia)
+            ).ToList();
+
+            return resultado;
         }
     }
 }

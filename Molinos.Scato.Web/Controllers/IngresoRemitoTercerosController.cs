@@ -57,7 +57,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, RemitoDto orden, DatosUsuario datosUsuario)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, false,  orden.MaterialId);
 
             if (datosUsuario.CentroId == 0)
             {
@@ -163,12 +163,6 @@ namespace Molinos.Scato.Web.Controllers
         protected virtual bool Validar(RemitoDto orden, DatosUsuario usuario)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
-
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal", "");
-                return false;
-            }
 
             if (material != null && material.Descripcion == "RESIDUOS ORGANICOS" && orden.Almacen_Id == null)
             {

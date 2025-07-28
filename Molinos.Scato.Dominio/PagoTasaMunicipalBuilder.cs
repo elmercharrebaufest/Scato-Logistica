@@ -48,6 +48,11 @@ namespace Molinos.Scato.Dominio
             Resultado.IdPayComplemento = idPayComplemento;
         }
 
+        public TipoValidacionPagoTasaMunicipal ObtenerCondicionDePago()
+        {
+            return CondicionPago;
+        }
+
         public ResultadoConsultarPagoTasaMunicipal ConstruirResultado()
         {
             // Use local variables to avoid repeated property access

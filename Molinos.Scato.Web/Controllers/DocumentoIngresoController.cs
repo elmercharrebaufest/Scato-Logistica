@@ -134,7 +134,7 @@ namespace Molinos.Scato.Web.Controllers
             return true;
         }
 
-        protected void ConsultarPagoTasaMunicipal(int centroId, string patente, string acoplado, string nroCartaPorte, TipoVehiculo tipoVehiculo, string codigoEstablecimiento, int? materialId = null)
+        protected void ConsultarPagoTasaMunicipal(int centroId, string patente, string acoplado, string nroCartaPorte, TipoVehiculo tipoVehiculo, string codigoEstablecimiento, bool esDemorado, int? materialId = null)
         {
             log.Debug($"Validando tasa municipal para patente: {patente}, CTG/CP: {nroCartaPorte}, materialId:{materialId}");
 
@@ -162,6 +162,10 @@ namespace Molinos.Scato.Web.Controllers
                         TempData["AlertaTasaMunicipal"] = ResultadoPagoTasaMunicipal.MensajeAlerta;
                         TempData["TipoAlertaTasaMunicipal"] = ResultadoPagoTasaMunicipal.TipoAlerta;
                     }
+                }
+                if (!esDemorado && ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
+                {
+                    ModelState.AddModelError("ErrorTasaMunicipal", "");
                 }
             }
         }

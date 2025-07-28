@@ -123,13 +123,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.Id = cartaPorteId;
             ModelState.Remove("Id");
             
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.Patente, null, orden.NroCartaPorte, orden.TipoVehiculo, orden.CodEstab, orden.MaterialId);
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
-                CargarCartaPorteController.SetearVista(workflowObj, datosUsuario.CentroId, servicio, this);
-                return View(orden);
-            }
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.Patente, null, orden.NroCartaPorte, orden.TipoVehiculo, orden.CodEstab, false , orden.MaterialId);
 
             if (ModelState.IsValid && vehiculos != null && vehiculos.Count() != 0)
             {
@@ -204,14 +198,7 @@ namespace Molinos.Scato.Web.Controllers
             log.Debug($"Camion no granos demorado {orden.PatenteCamion}, con orden nro {orden.NumeroOrden} ({WorkflowId})");
             var workflowObjt = servicio.ObtenerWorkflowPorCodigo(workflow);
 
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
-                IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
-                return View(orden);
-            }
-
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, false, orden.MaterialId);
             Validar(orden);
             if (!ModelState.IsValid)
             {
@@ -369,13 +356,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var recorrido = servicio.ObtenerRecorrido(model.RecorridoId);
 
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, model.PatenteCamion, model.PatenteAcoplado, null, model.TipoVehiculo, string.Empty, model.MaterialId);
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
-                IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
-                return View(model);
-            }
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, model.PatenteCamion, model.PatenteAcoplado, null, model.TipoVehiculo, string.Empty, false, model.MaterialId);
 
             if (ModelState.IsValid)
             {
@@ -455,13 +436,7 @@ namespace Molinos.Scato.Web.Controllers
             var recorrido = servicio.ObtenerRecorrido(orden.RecorridoId);
             var workflowObje = recorrido.Workflow;
 
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal", ResultadoPagoTasaMunicipal.MensajeAlerta);
-                IngresarOrdenCargaInternaFasonController.SetearVista(workflowObje, datosUsuario.CentroId, servicio, this);
-                return View(orden);
-            }
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, false, orden.MaterialId);
 
             var material = servicio.ObtenerMaterial(orden.MaterialId);
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;

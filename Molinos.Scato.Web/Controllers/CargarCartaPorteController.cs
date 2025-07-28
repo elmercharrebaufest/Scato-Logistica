@@ -123,7 +123,7 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var vehiculos = orden.Vehiculos;
             ViewBag.AceptaPendiente = true;
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.Patente, null, orden.NroCartaPorte, orden.TipoVehiculo, orden.CodEstab, orden.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.Patente, null, orden.NroCartaPorte, orden.TipoVehiculo, orden.CodEstab, orden.VehiculoDemorado, orden.MaterialId);
 
             if (string.IsNullOrEmpty(orden.NroCartaPorte) && orden.TipoVehiculoInt == (int)TipoVehiculo.Tren)
             {
@@ -607,11 +607,6 @@ namespace Molinos.Scato.Web.Controllers
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
 
             var codigoEstablecimientoEsDeMolinos = servicio.ObtenerCodigoEstablecimientoEsDeMolinos(codigoDeEstablecimiento);
-
-            if (!orden.VehiculoDemorado && ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal","");
-            }
 
             //si es MRP, no se valida el codigo de establecimiento
             if (codigoSapTitular == codigoSapMRP && (remitente == null || remitente.CodigoSap == codigoSapMRP || remitente.CodigoSap == codigoSapMolinosAgro))

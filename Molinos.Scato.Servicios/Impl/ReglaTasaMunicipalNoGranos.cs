@@ -48,35 +48,6 @@ namespace Molinos.Scato.Servicios.Impl
             return tipoVehiculo;
         }
 
-        public Dictionary<int, TipoValidacionPagoTasaMunicipal> ObtenerPago(DatosTasaMunicipal datos, TipoCategoriaVehiculo tipoCategoria, int numeroDiasDesde)
-        {
-            logger.Info($"Obteniendo pago de tasa municipal para Patente: {datos.Patente}");
-            TipoValidacionPagoTasaMunicipal tipoValidacion;
-
-            string numeroDocumento = string.IsNullOrWhiteSpace(datos.Ctg) ? string.Empty : datos.Ctg;
-
-            var idPago = repositorio.ObtenerIdPagoTasaMunicipal(tipoCategoria, datos.Patente, numeroDocumento, numeroDiasDesde, datos.CentroId, Constantes.MOAPay.Codigos.CodigoDiferenciaDePago);
-            logger.Debug($"IdPago obtenido: {idPago} para Patente: {datos.Patente}, Documento: {numeroDocumento}, CentroId: {datos.CentroId}");
-            if (idPago > 0)
-                tipoValidacion = TipoValidacionPagoTasaMunicipal.Abonado;
-            else
-            {
-                var idPagoCondiferencia = repositorio.ObtenerIdPagoTasaMunicipal(tipoCategoria, datos.Patente, numeroDocumento, numeroDiasDesde, datos.CentroId, Constantes.MOAPay.Codigos.CodigoDiferenciaDePago, true);
-                if (idPagoCondiferencia == 0)
-                {
-                    logger.Debug($"No se encontró un pago válido para Patente: {datos.Patente}, Documento: {numeroDocumento}, CentroId: {datos.CentroId}");
-                    tipoValidacion = TipoValidacionPagoTasaMunicipal.Adeudado;
-                }
-                else
-                {
-                    logger.Debug($"IdPago con diferencia obtenido: {idPagoCondiferencia} para Patente: {datos.Patente}, Documento: {numeroDocumento}, CentroId: {datos.CentroId}");
-                    idPago = idPagoCondiferencia;
-                    tipoValidacion = TipoValidacionPagoTasaMunicipal.DiferenciaDePago;
-                }
-            }
-            return new Dictionary<int, TipoValidacionPagoTasaMunicipal> { { idPago, tipoValidacion } };
-        }
-
         private TipoVehiculo ConsultarTipoVehiculo(string patente, int centroId, string patenteAcoplado = null)
         {
             logger.Info($"Consultando tipo de vehículo para Patente: {patente}, Patente Acoplado: {patenteAcoplado}, CentroId: {centroId}");

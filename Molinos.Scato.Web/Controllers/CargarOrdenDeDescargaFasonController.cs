@@ -59,7 +59,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenDeDescargaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, false,  orden.MaterialId);
             Validar(orden);
 
             if (!ModelState.IsValid)
@@ -189,11 +189,6 @@ namespace Molinos.Scato.Web.Controllers
         private void Validar(OrdenDeDescargaFasonDto orden)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
-
-            if (ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal", "");
-            }
 
             if (!material.EsDerivadoGranario && orden.ProcedenciaId == 0)
             {

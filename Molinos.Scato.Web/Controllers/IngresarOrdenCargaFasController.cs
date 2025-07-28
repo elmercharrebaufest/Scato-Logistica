@@ -61,7 +61,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaFasDto orden, DatosUsuario datosUsuario, string MotivoDemora, int? Material)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, orden.VehiculoDemorado, orden.MaterialId);
 
             Validar(orden, workflowObj, datosUsuario);
 
@@ -394,11 +394,6 @@ namespace Molinos.Scato.Web.Controllers
 
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
 
-            if (!orden.VehiculoDemorado && ResultadoPagoTasaMunicipal != null && !ResultadoPagoTasaMunicipal.EjecutaWorkFlow)
-            {
-                ModelState.AddModelError("ErrorTasaMunicipal", "");
-            }
-
             if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)
             {
                 ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
@@ -441,7 +436,7 @@ namespace Molinos.Scato.Web.Controllers
 	    
             if (otroRecorridoDelChofer != null)
             {
-                ModelState.AddModelError("ChoferDesc", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
+                ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
             }
 
             if(!servicio.ListarMaterialesPorWorkflow(workflow.Id, datosUsuario.CentroId).Where(x => x.MaterialId == orden.MaterialId).Any())

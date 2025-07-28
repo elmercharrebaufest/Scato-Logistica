@@ -545,6 +545,7 @@
     <Build Include="dbo\Views\HuellaDigitalUnion.sql" />
     <Build Include="dbo\Views\HuellaDigitalOrden.sql" />
     <Build Include="dbo\Tables\PagosTasaMunicipal.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ObtenerEstadoPagosTasaMunicipal.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

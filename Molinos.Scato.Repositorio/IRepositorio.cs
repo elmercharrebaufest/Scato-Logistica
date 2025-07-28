@@ -259,10 +259,9 @@ namespace Molinos.Scato.Repositorio
         int ObtenerSequenciaCPENroCTG();
 
         /// <summary>
-        /// Retorna Id de pago diponible por patente o numero de documento.
+        /// Retorna el pago disponible por patente o numero de documento.
         /// </summary>
-        /// <param name="tieneDiferencia">Condicion para encontrar el pago incompleto</param>
         /// <returns></returns>
-        int ObtenerIdPagoTasaMunicipal(TipoCategoriaVehiculo tipoCategoria, string patente, string numeroDocumento, int diasFechaDesde, int centroId, string codigoDiferencia, bool tieneDiferencia = false);
+        List<TEntidad> ObtenerPagoTasaMunicipal<TEntidad>(TipoCategoriaVehiculo tipoCategoria, string patente, string numeroDocumento, int dias, int centroId, string codigoDiferencia);
     }
 }
