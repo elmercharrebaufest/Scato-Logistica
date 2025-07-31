@@ -696,6 +696,7 @@
     <Compile Include="Models\ArchivosTxt\OnccaEmitidas.cs" />
     <Compile Include="Models\ArchivosTxt\Rosario02.cs" />
     <Compile Include="Models\ArchivosTxt\Rosario01.cs" />
+    <Compile Include="Models\ArchivosTxt\Rosario03Base.cs" />
     <Compile Include="Models\ArchivosTxt\Rosario03.cs" />
     <Compile Include="Models\ArchivosTxt\TxtColumnaAttribute.cs" />
     <Compile Include="Models\ArchivosTxt\TxtHelper.cs" />

@@ -114,7 +114,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      ProcedenciaCodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.CodigoPostal : remito.Procedencia.CodigoPostal != null ? remito.Procedencia.CodigoPostal : 0 ,
                                      ProcedenciaSubcodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.SubcodigoPostal : remito.Procedencia.SubcodigoPostal != null ? remito.Procedencia.SubcodigoPostal : 0,
                                      EsPreLote = muestra.EsPreLote,
-                                 Caracteristicas =
+                                     Caracteristicas =
                                          muestra.CaracteristicasDeCalidad.Select(
                                              x =>
                                              new CaracteristicaDeCalidadDto
@@ -123,8 +123,21 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                                      Ensayo = x.Ensayo,
                                                      Id = x.Id,
                                                      CodigoCamara = contexto.Set<ConversionCaracteristica>().Where(y => y.Camara.Id == muestra.Camara.Id && y.Caracteristica.Id == x.Id).Select(y => y.CodigoCamara).FirstOrDefault()
-                                                 })
-                                 });
+                                                 }),
+                                     RtteComercialVentaSecundariaCuit = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria.Cuil : null,
+                                     RtteComercialVentaSecundaria = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria.Descripcion : null,
+                                     RtteComercialVentaSecundaria2Cuit = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria2.Cuil : null,
+                                     RtteComercialVentaSecundaria2 = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria2.Descripcion : null,
+                                     MercadoATerminoCuit = muestra.CartaPorte != null ? muestra.CartaPorte.AgenteCompras.Cuil : null,
+                                     MercadoATermino = muestra.CartaPorte != null ? muestra.CartaPorte.AgenteCompras.Descripcion : null,
+                                     CorredorVentaSecundariaCuit = muestra.CartaPorte != null ? muestra.CartaPorte.CorredorVendedorSecundario.Cuil : null,
+                                     CorredorVentaSecundaria = muestra.CartaPorte != null ? muestra.CartaPorte.CorredorVendedorSecundario.Descripcion : null,
+                                     RepresentanteRecibidorCuit = muestra.CartaPorte != null ? muestra.CartaPorte.RepresentanteRecibidor.Cuil : null,
+                                     RepresentanteRecibidor = muestra.CartaPorte != null ? muestra.CartaPorte.RepresentanteRecibidor.DescripcionCorta : null,
+                                     DestinoCuit = muestra.CartaPorte != null ? muestra.CartaPorte.CentroDestino.Cuit : null,
+                                     Destino = muestra.CartaPorte != null ? muestra.CartaPorte.CentroDestino.Descripcion : null
+                             });
+
     
             return resultado.ToList();
         }

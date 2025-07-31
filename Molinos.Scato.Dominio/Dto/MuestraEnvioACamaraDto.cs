@@ -86,14 +86,24 @@ namespace Molinos.Scato.Dominio.Dto
         public string Intermediario { get; set; }
         public string IntermediarioCuit { get; set; }
         public string Cosecha { get; set; }
-
         public IEnumerable<CaracteristicaDeCalidadDto> Caracteristicas { get; set; }
-
         public int NumeroVehiculo { get; set; }
         public int? Sucursal { get; set; }
-
         public int? ProcedenciaCodigoPostal { get; set; }
         public int? ProcedenciaSubcodigoPostal { get; set; }
         public bool? EsPreLote { get; set; }
+
+        public string RtteComercialVentaSecundariaCuit { get; set; }
+        public string RtteComercialVentaSecundaria { get; set; }
+        public string RtteComercialVentaSecundaria2Cuit { get; set; }
+        public string RtteComercialVentaSecundaria2 { get; set; }
+        public string MercadoATerminoCuit { get; set; }
+        public string MercadoATermino { get; set; }
+        public string CorredorVentaSecundariaCuit { get; set; }
+        public string CorredorVentaSecundaria { get; set; }
+        public string RepresentanteRecibidorCuit { get; set; }
+        public string RepresentanteRecibidor { get; set; }
+        public string DestinoCuit { get; set; }
+        public string Destino { get; set; }
     }
 }
