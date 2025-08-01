@@ -737,113 +737,110 @@ namespace Molinos.Scato.Web.Controllers
                     }
                 }
 
-                if ((!String.IsNullOrEmpty(muestra.DestinatarioCodigoSap) && muestra.DestinatarioCodigoSap != firma.CodigoSAP) || (muestra.DestinatarioCodigoSap == firma.CodigoSAP && muestra.RtteComercial != null))
-                {  
-                    if (muestra.DestinatarioCodigoSap != firma.CodigoSAP)
-                    {
-                        var cuentaOrden = muestra.DestinatarioCuil ?? "0";
-                        stringBuilder03.AppendLine(
-                            TxtHelper.GetTxtDataRow(
-                                new Rosario03
-                                {
-                                    CuentaOrden = Convert.ToInt64(cuentaOrden.Replace("-", "")),
-                                    DescripcionCuentaOrden = muestra.Destinatario,
-                                    NumeroMuestra = muestra.NroMuestra,
-                                    SucursalCuentaOrden = muestra.Sucursal ?? 0
-                                }, typeof(Rosario03).GetProperties()));
-                    }
+                if (muestra.DestinatarioCodigoSap != firma.CodigoSAP)
+                {
+                    var cuentaOrden = muestra.DestinatarioCuil ?? "0";
+                    stringBuilder03.AppendLine(
+                        TxtHelper.GetTxtDataRow(
+                            new Rosario03
+                            {
+                                CuentaOrden = Convert.ToInt64(cuentaOrden.Replace("-", "")),
+                                DescripcionCuentaOrden = muestra.Destinatario,
+                                NumeroMuestra = muestra.NroMuestra,
+                                SucursalCuentaOrden = muestra.Sucursal ?? 0
+                            }, typeof(Rosario03).GetProperties()));
+                }
 
-                    if (!String.IsNullOrEmpty(muestra.RtteComercial))
-                    {
-                        var cuentaOrden = muestra.RtteComercialCuit ?? "0";
-                        stringBuilder03.AppendLine(
-                            TxtHelper.GetTxtDataRow(
-                                new Rosario03
-                                {
-                                    CuentaOrden = Convert.ToInt64(cuentaOrden.Replace("-", "")),
-                                    DescripcionCuentaOrden = muestra.RtteComercial,
-                                    NumeroMuestra = muestra.NroMuestra,
-                                    SucursalCuentaOrden = muestra.Sucursal ?? 0
-                                }, typeof(Rosario03).GetProperties()));
-                    }
+                if (!String.IsNullOrEmpty(muestra.RtteComercial))
+                {
+                    var cuentaOrden = muestra.RtteComercialCuit ?? "0";
+                    stringBuilder03.AppendLine(
+                        TxtHelper.GetTxtDataRow(
+                            new Rosario03
+                            {
+                                CuentaOrden = Convert.ToInt64(cuentaOrden.Replace("-", "")),
+                                DescripcionCuentaOrden = muestra.RtteComercial,
+                                NumeroMuestra = muestra.NroMuestra,
+                                SucursalCuentaOrden = muestra.Sucursal ?? 0
+                            }, typeof(Rosario03).GetProperties()));
+                }
 
-                    if (!String.IsNullOrEmpty(muestra.RtteComercialVentaSecundaria))
-                    {
-                        stringBuilder03.AppendLine(
-                            TxtHelper.GetTxtDataRow(
-                                new Rosario03VentaSecundaria
-                                {
-                                    CuitRteComercialVentaSecundaria = Convert.ToInt64((muestra.RtteComercialVentaSecundariaCuit ?? "0").Replace("-", "")),
-                                    RteComercialVentaSecundaria = muestra.RtteComercialVentaSecundaria ?? "",
-                                    NumeroMuestra = muestra.NroMuestra,
-                                    SucursalCuentaOrden = muestra.Sucursal ?? 0
-                                }, typeof(Rosario03VentaSecundaria).GetProperties()));
-                    }
+                if (!String.IsNullOrEmpty(muestra.RtteComercialVentaSecundaria))
+                {
+                    stringBuilder03.AppendLine(
+                        TxtHelper.GetTxtDataRow(
+                            new Rosario03VentaSecundaria
+                            {
+                                CuitRteComercialVentaSecundaria = Convert.ToInt64((muestra.RtteComercialVentaSecundariaCuit ?? "0").Replace("-", "")),
+                                RteComercialVentaSecundaria = muestra.RtteComercialVentaSecundaria ?? "",
+                                NumeroMuestra = muestra.NroMuestra,
+                                SucursalCuentaOrden = muestra.Sucursal ?? 0
+                            }, typeof(Rosario03VentaSecundaria).GetProperties()));
+                }
 
-                    if (!String.IsNullOrEmpty(muestra.RtteComercialVentaSecundaria2))
-                    {
-                        stringBuilder03.AppendLine(
-                            TxtHelper.GetTxtDataRow(
-                                new Rosario03VentaSecundaria2
-                                {
-                                    CuitRteComercialVentaSecundaria2 = Convert.ToInt64((muestra.RtteComercialVentaSecundaria2Cuit ?? "0").Replace("-", "")),
-                                    RteComercialVentaSecundaria2 = muestra.RtteComercialVentaSecundaria2 ?? "",
-                                    NumeroMuestra = muestra.NroMuestra,
-                                    SucursalCuentaOrden = muestra.Sucursal ?? 0
-                                }, typeof(Rosario03VentaSecundaria2).GetProperties()));
-                    }
+                if (!String.IsNullOrEmpty(muestra.RtteComercialVentaSecundaria2))
+                {
+                    stringBuilder03.AppendLine(
+                        TxtHelper.GetTxtDataRow(
+                            new Rosario03VentaSecundaria2
+                            {
+                                CuitRteComercialVentaSecundaria2 = Convert.ToInt64((muestra.RtteComercialVentaSecundaria2Cuit ?? "0").Replace("-", "")),
+                                RteComercialVentaSecundaria2 = muestra.RtteComercialVentaSecundaria2 ?? "",
+                                NumeroMuestra = muestra.NroMuestra,
+                                SucursalCuentaOrden = muestra.Sucursal ?? 0
+                            }, typeof(Rosario03VentaSecundaria2).GetProperties()));
+                }
 
-                    if (!String.IsNullOrEmpty(muestra.MercadoATermino))
-                    {
-                        stringBuilder03.AppendLine(
-                            TxtHelper.GetTxtDataRow(
-                                new Rosario03MercadoATermino
-                                {
-                                    CuitMercadoATermino = Convert.ToInt64((muestra.MercadoATerminoCuit ?? "0").Replace("-", "")),
-                                    MercadoATérmino = muestra.MercadoATermino ?? "",
-                                    NumeroMuestra = muestra.NroMuestra,
-                                    SucursalCuentaOrden = muestra.Sucursal ?? 0
-                                }, typeof(Rosario03MercadoATermino).GetProperties()));
-                    }
+                if (!String.IsNullOrEmpty(muestra.MercadoATermino))
+                {
+                    stringBuilder03.AppendLine(
+                        TxtHelper.GetTxtDataRow(
+                            new Rosario03MercadoATermino
+                            {
+                                CuitMercadoATermino = Convert.ToInt64((muestra.MercadoATerminoCuit ?? "0").Replace("-", "")),
+                                MercadoATérmino = muestra.MercadoATermino ?? "",
+                                NumeroMuestra = muestra.NroMuestra,
+                                SucursalCuentaOrden = muestra.Sucursal ?? 0
+                            }, typeof(Rosario03MercadoATermino).GetProperties()));
+                }
 
-                    if (!String.IsNullOrEmpty(muestra.CorredorVentaSecundaria))
-                    {
-                        stringBuilder03.AppendLine(
-                            TxtHelper.GetTxtDataRow(
-                                new Rosario03CorredorVentaSecundaria
-                                {
-                                    CuitCorredorVentaSecundaria = Convert.ToInt64((muestra.CorredorVentaSecundariaCuit ?? "0").Replace("-", "")),
-                                    CorredorVentaSecundaria = muestra.CorredorVentaSecundaria ?? "",
-                                    NumeroMuestra = muestra.NroMuestra,
-                                    SucursalCuentaOrden = muestra.Sucursal ?? 0
-                                }, typeof(Rosario03CorredorVentaSecundaria).GetProperties()));
-                    }
+                if (!String.IsNullOrEmpty(muestra.CorredorVentaSecundaria))
+                {
+                    stringBuilder03.AppendLine(
+                        TxtHelper.GetTxtDataRow(
+                            new Rosario03CorredorVentaSecundaria
+                            {
+                                CuitCorredorVentaSecundaria = Convert.ToInt64((muestra.CorredorVentaSecundariaCuit ?? "0").Replace("-", "")),
+                                CorredorVentaSecundaria = muestra.CorredorVentaSecundaria ?? "",
+                                NumeroMuestra = muestra.NroMuestra,
+                                SucursalCuentaOrden = muestra.Sucursal ?? 0
+                            }, typeof(Rosario03CorredorVentaSecundaria).GetProperties()));
+                }
 
-                    if (!String.IsNullOrEmpty(muestra.RepresentanteRecibidor))
-                    {
-                        stringBuilder03.AppendLine(
-                            TxtHelper.GetTxtDataRow(
-                                new Rosario03RepresentanteRecibidor
-                                {
-                                    CuitRepresentanteRecibidor = Convert.ToInt64((muestra.RepresentanteRecibidorCuit ?? "0").Replace("-", "")),
-                                    RepresentanteRecibidor = muestra.RepresentanteRecibidor ?? "",
-                                    NumeroMuestra = muestra.NroMuestra,
-                                    SucursalCuentaOrden = muestra.Sucursal ?? 0
-                                }, typeof(Rosario03RepresentanteRecibidor).GetProperties()));
-                    }
+                if (!String.IsNullOrEmpty(muestra.RepresentanteRecibidor))
+                {
+                    stringBuilder03.AppendLine(
+                        TxtHelper.GetTxtDataRow(
+                            new Rosario03RepresentanteRecibidor
+                            {
+                                CuitRepresentanteRecibidor = Convert.ToInt64((muestra.RepresentanteRecibidorCuit ?? "0").Replace("-", "")),
+                                RepresentanteRecibidor = muestra.RepresentanteRecibidor ?? "",
+                                NumeroMuestra = muestra.NroMuestra,
+                                SucursalCuentaOrden = muestra.Sucursal ?? 0
+                            }, typeof(Rosario03RepresentanteRecibidor).GetProperties()));
+                }
 
-                    if (!String.IsNullOrEmpty(muestra.Destino))
-                    {
-                        stringBuilder03.AppendLine(
-                            TxtHelper.GetTxtDataRow(
-                                new Rosario03Destino
-                                {   
-                                    CuitDestino = Convert.ToInt64((muestra.DestinoCuit ?? "0").Replace("-", "")),
-                                    Destino = muestra.Destino ?? "",
-                                    NumeroMuestra = muestra.NroMuestra,
-                                    SucursalCuentaOrden = muestra.Sucursal ?? 0
-                                }, typeof(Rosario03Destino).GetProperties()));
-                    }
+                if (!String.IsNullOrEmpty(muestra.Destino))
+                {
+                    stringBuilder03.AppendLine(
+                        TxtHelper.GetTxtDataRow(
+                            new Rosario03Destino
+                            {
+                                CuitDestino = Convert.ToInt64((muestra.DestinoCuit ?? "0").Replace("-", "")),
+                                Destino = muestra.Destino ?? "",
+                                NumeroMuestra = muestra.NroMuestra,
+                                SucursalCuentaOrden = muestra.Sucursal ?? 0
+                            }, typeof(Rosario03Destino).GetProperties()));
                 }
             }
 
