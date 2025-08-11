@@ -257,9 +257,7 @@ Global
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|Any CPU.ActiveCfg = Release
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|Any CPU.Build.0 = Release
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|Any CPU.Deploy.0 = Release
-		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|x86.ActiveCfg = 
-		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|x86.Build.0 = 
-		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|x86.Deploy.0 = 
+		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|x86.ActiveCfg = Release
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Release|Any CPU.ActiveCfg = Release
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Release|Any CPU.Build.0 = Release
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Release|Any CPU.Deploy.0 = Release
@@ -459,7 +457,7 @@ Global
 		{2A13F03D-A296-4CE5-859F-A3A26B884E0D} = {58F35E93-C5AB-4C5B-9D31-C336376F6903}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = es-AR
 		SolutionGuid = {9DDEFB12-34EF-487C-AD39-BE59400A56B5}
+		RESX_NeutralResourcesLanguage = es-AR
 	EndGlobalSection
 EndGlobal

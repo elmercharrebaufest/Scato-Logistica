@@ -12,7 +12,6 @@ namespace Molinos.Scato.Actividades
 {
     public class ImpresionAsigRecorrCtrolCalid : CodeActivity<Resultado>
     {
-
         [RequiredArgument]
         public InArgument<int> CentroId { get; set; }
         [RequiredArgument]
@@ -89,21 +88,18 @@ namespace Molinos.Scato.Actividades
                 resultado.Errores.Add("", Textos.LogActividad_ErrorEnLaCarga);
             }
 
-
-
             try
             {
                 string vendedor;
                 if (destinatarioCodigoSap != firmaProvider.ObtenerFirmaSinLogo().CodigoSAP)
-                {
                     vendedor = destinatario;
-                }
                 else
-                {
                     vendedor = rtteComercial ?? titularCartaPorte;
-                }
+                
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
-                if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
+                if (documento == null)
+                    throw new Exception(string.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo));
+
                 var cartaPorte = repositorio.ObtenerCartaPortePorInstanceId(workflowId);
                 var numeroDeTarjetaAsignada = repositorio.ObtenerTarjetaRFIDAsignada(TipoDocumentoIngreso.CartaPorte, numeroDocumento);
                 var fechaYhoraDeIngreso = cartaPorte.FechaEmision.ToString();
@@ -145,11 +141,15 @@ namespace Molinos.Scato.Actividades
                 var valorMateriaGrasa = caladoRuta != null ? caladoRuta.CaladosPorCaracteristica.Where(a=>a.CaracteristicaCodigoSap== "MPGIRMGR").Select(x => x.ValorCalado).FirstOrDefault() : null;
                
                 var dto = new ImpAsigRecorrCtrolCalidDto
-
                 {
                     Impresora = documento.ImpresoraDireccion ?? "",
                     Codigo = codigo,
-                    FechaCalado = analisisRuta != null ? analisisRuta.FechaCreacion : caladoRuta != null ? caladoRuta.FechaCreacion : null,
+                    FechaCalado = 
+                        analisisRuta != null 
+                            ? analisisRuta.FechaCreacion 
+                            : caladoRuta != null 
+                                ? caladoRuta.FechaCreacion 
+                                : null,
                     FechaImpresion = DateTime.Now,
                     Almacen = almacen,
                     BalanzaBruto = balanzaBruto,
@@ -203,11 +203,12 @@ namespace Molinos.Scato.Actividades
                     Cupo = cartaPorte.Cupo ?? "",
                     ProteinaAlta = caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaAlta ? "true" : "",
                     ProteinaBaja = caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaBaja ? "true" : "",
-                    MateriaGrasa = valorMateriaGrasa.HasValue ? valorMateriaGrasa.Value.ToString("0.00").Replace(".", ",") : ""
+                    MateriaGrasa = valorMateriaGrasa.HasValue ? valorMateriaGrasa.Value.ToString("0.00").Replace(".", ",") : "",
+                    MaterialId = cartaPorte.MaterialId, 
+                    CentroId = centroId,
                 };
 
                 resultado = servicio.Ejecutar(new ImprimirAsigRecorrCtrolCalid { Dto = dto, CantidadCopias = cantCopias });
-
             }
             catch (Exception e)
             {
@@ -222,6 +223,7 @@ namespace Molinos.Scato.Actividades
             {
                 resultado.Errores.Add("2", Textos.FinDeActividad_ErrorEnLaCarga);
             }
+
             return resultado;
         }
     }

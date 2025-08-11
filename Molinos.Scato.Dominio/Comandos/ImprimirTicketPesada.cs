@@ -1,12 +1,15 @@
-﻿
-using Molinos.Scato.Dominio.Dto;
+﻿using Molinos.Scato.Dominio.Dto;
 
 namespace Molinos.Scato.Dominio.Comandos
 {
-    public class ImprimirTicketPesada : Comando
+    public class ImprimirTicketPesada : ComandoImpresion
     {
-        public ImpTicketPesadaDto Dto { get; set; }
-        public int CantidadCopias { get; set; }
+        public new ImpTicketPesadaDto Dto 
+        {
+            get { return (ImpTicketPesadaDto)base.Dto; }
+            set { base.Dto = (IDtoConCentroIdMaterialIdWorkflowId)value; }
+        }
+
         public FirmaDto Firma { get; set; }
     }
 }

@@ -1,23 +1,22 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using System;
+using System.Linq;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Servicios.ServicioImpresion;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.ServicioImpresion;
 using Ninject.Extensions.Logging;
-using System;
-using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorImprimirAsigRecorrCtrolCalid : ProcesadorImpresionAsync<ImprimirAsigRecorrCtrolCalid>
+    public class ProcesadorImprimirAsigRecorrCtrolCalid : ProcesadorComandoImpresion<ImprimirAsigRecorrCtrolCalid>
     {
         private readonly IFirmaProvider firmaProvider;
 
-        public ProcesadorImprimirAsigRecorrCtrolCalid(IRepositorio repositorio, IConversor conversor, ILogger log, IFirmaProvider firmaProvider, IServicioImpresorFactory servicioImpresion)
-            : base(repositorio, conversor, log, servicioImpresion)
+        public ProcesadorImprimirAsigRecorrCtrolCalid(IRepositorio repositorio, IConversor conversor, ILogger log, IFirmaProvider firmaProvider, IServicioImpresorFactory servicioImpresorFactory)
+            : base(repositorio, conversor, log, servicioImpresorFactory)
         {
             this.firmaProvider = firmaProvider;
         }
@@ -70,6 +69,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 throw;
             }
             
+        }
+
+        protected override Func<MaterialPorWorkflow, bool> PropiedadConfiguracionDebeImprimir
+        {
+            get { return materialPorWorkflow => materialPorWorkflow.ImprimirAsignacionRuta; }
         }
     }
 }

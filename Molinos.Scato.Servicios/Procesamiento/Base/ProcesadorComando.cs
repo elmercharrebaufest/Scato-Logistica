@@ -24,6 +24,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var count = 1;
             const int maxTries = 3;
+
             while (true)
             {
                 try
@@ -43,6 +44,5 @@ namespace Molinos.Scato.Servicios.Procesamiento
         }
 
         public abstract Resultado Ejecutar(TComando comando);
-
     }
 }

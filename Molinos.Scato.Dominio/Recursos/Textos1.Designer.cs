@@ -12881,15 +12881,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Digital.
-        /// </summary>
-        public static string Digital {
-            get {
-                return ResourceManager.GetString("Digital", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dispositivos.
         /// </summary>
         public static string Dispositivos_Titulo {
@@ -18317,15 +18308,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Imprimir Etiqueta Muestra INASE.
-        /// </summary>
-        public static string ImprimirMuestraInase {
-            get {
-                return ResourceManager.GetString("ImprimirMuestraInase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Imprimir Ticket de Pesada.
         /// </summary>
         public static string ImprimirTicketPesada {
@@ -22636,15 +22618,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string MuestreoPesajeVagonFerroviario {
             get {
                 return ResourceManager.GetString("MuestreoPesajeVagonFerroviario", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Existen múltiples órdenes de diferentes clientes para esta patente y material..
-        /// </summary>
-        public static string Multiples_Clientes_Mismo_Material {
-            get {
-                return ResourceManager.GetString("Multiples_Clientes_Mismo_Material", resourceCulture);
             }
         }
         

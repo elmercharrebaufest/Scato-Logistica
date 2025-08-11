@@ -1,43 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-	<setParameter name="IIS Web Application Name" value="Scato/Scato.web" />
-	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSPRD.molinosagro.ad;Initial Catalog=MOAScato;Integrated Security=True" />
-	<setParameter name="ServicioRepositorio Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioRepositorio.svc?wsdl" />
-	<setParameter name="ServicioComandos Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
-	<setParameter name="ListaDeWorkflows Service Endpoint Address" value="http://localhost/Scato.workflow/ListaDeWorkflows.svc?wsdl" />
-	<setParameter name="FirmaProvider Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
-	<setParameter name="ServicioNotificarUsuario Service Endpoint Address" value="http://localhost/Scato.web/ServicioHub/ServicioNotificarUsuario.svc" />
-	<setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
-	<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://sapprgap.molinosagro.ad:8080/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
-	<setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
-	<setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />
-	<setParameter name="UrlServicioNotificaciones Config" value="http://localhost/Scato.web/" />
-	<setParameter name="CertificateValidation Identity Configuration" value="None" />
-	<setParameter name="MailSettings Smtp From" value="scatoprodMOA@molinosagro.com.ar" />
-	<setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
-	<setParameter name="MailSettings Smtp Port" value="25" />
-	<setParameter name="MailSettings Smtp EnableSsl" value="false" />
-	<setParameter name="ReportingServices Url" value="https://gsloscatorpt00.molinosagro.ad/ReportServer_MOASCATO" />
-	<setParameter name="ReportingServices Viewer" value="https://scato.molinosagro.com.ar/Scato.Web/MvcReportViewer.aspx" />
-	<setParameter name="ReportingServices Username" value="scatoprodMOA" />
-	<setParameter name="ReportingServices Password" value="5vyN7xI+y5K6rE3oOOBSew==" />
-	<setParameter name="ReportingServices Domain" value="molinosagro" />
-	<setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
-	<setParameter name="SapServicePassword Config" value="ipiYlSviW3QB7BjrHn+7vw==" />
-	<setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
-	<setParameter name="HostsServiciosWeb Config" value="http://GSLOSCATOAPP03/Scato.serviciosWeb/|http://GSLOSCATOAPP04/Scato.serviciosWeb/|http://GSLOSCATOAPP05/Scato.serviciosWeb/|http://GSLOSCATOAPP06/Scato.serviciosWeb/" />
-	<setParameter name="MonsantoServiceUsername Config" value="ws_molinos" />
-	<setParameter name="MonsantoServicePassword Config" value="n41TwPC/D/iYU4ye1PAF7Q==" />
-	<setParameter name="AppPools Config" value="Scato.serviciosWeb;Scato.web;Scato.workflow" />
-	<setParameter name="ArchivoDeMovimientosIngresosPath Config" value="\\GSLOFSPRD00\Scato\Ingresos\" />
-	<setParameter name="ArchivoDeMovimientosEgresosPath Config" value="\\GSLOFSPRD00\Scato\Redespachos\" />
-	<setParameter name="Ambiente Config" value="Prod" />
-	<setParameter name="UrlExternaOperacionesPuerto Config" value="https://scatomobile.molinosagro.com.ar/PesadasHistorica" />
-	<setParameter name="WorkflowIngresoPorCompra Config" value="1029-IngresoPorCompraDeGranosCaladaExterna" />
-	<setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
-	<setParameter name="ICWebServerUrl Config" value="https://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
-	<setParameter name="ICWSServerUrl Config" value="wss://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
-	<setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
-	<setParameter name="APITokenOperacionesAPI Config" value="ZHBCyyW4SM0UoJr9nfmJTTgBBgsBky81dHka3Q6ZOCHtbZFF1W" />
-  <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoWeb.log" />
+    <setParameter name="IIS Web Application Name" value="Scato/Scato.web" />
+    <setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSPRD.molinosagro.ad;Initial Catalog=MOAScato;Integrated Security=True" />
+    <setParameter name="ServicioRepositorio Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioRepositorio.svc?wsdl" />
+    <setParameter name="ServicioComandos Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
+    <setParameter name="ListaDeWorkflows Service Endpoint Address" value="http://localhost/Scato.workflow/ListaDeWorkflows.svc?wsdl" />
+    <setParameter name="FirmaProvider Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
+    <setParameter name="ServicioNotificarUsuario Service Endpoint Address" value="http://localhost/Scato.web/ServicioHub/ServicioNotificarUsuario.svc" />
+    <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
+    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://sapprgap.molinosagro.ad/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+    <setParameter name="ZSDWS_SCATO Binding Configuration" value="ZSDWS_SCATO_HTTPS" />
+    <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
+    <setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />
+    <setParameter name="UrlServicioNotificaciones Config" value="http://localhost/Scato.web/" />
+    <setParameter name="CertificateValidation Identity Configuration" value="None" />
+    <setParameter name="MailSettings Smtp From" value="scatoprodMOA@molinosagro.com.ar" />
+    <setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
+    <setParameter name="MailSettings Smtp Port" value="25" />
+    <setParameter name="MailSettings Smtp EnableSsl" value="false" />
+    <setParameter name="ReportingServices Url" value="https://gsloscatorpt00.molinosagro.ad/ReportServer_MOASCATO" />
+    <setParameter name="ReportingServices Viewer" value="https://scato.molinosagro.com.ar/Scato.Web/MvcReportViewer.aspx" />
+    <setParameter name="ReportingServices Username" value="scatoprodMOA" />
+    <setParameter name="ReportingServices Password" value="5vyN7xI+y5K6rE3oOOBSew==" />
+    <setParameter name="ReportingServices Domain" value="molinosagro" />
+    <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
+    <setParameter name="SapServicePassword Config" value="ipiYlSviW3QB7BjrHn+7vw==" />
+    <setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
+    <setParameter name="HostsServiciosWeb Config" value="http://GSLOSCATOAPP03/Scato.serviciosWeb/|http://GSLOSCATOAPP04/Scato.serviciosWeb/|http://GSLOSCATOAPP05/Scato.serviciosWeb/|http://GSLOSCATOAPP06/Scato.serviciosWeb/" />
+    <setParameter name="MonsantoServiceUsername Config" value="ws_molinos" />
+    <setParameter name="MonsantoServicePassword Config" value="n41TwPC/D/iYU4ye1PAF7Q==" />
+    <setParameter name="AppPools Config" value="Scato.serviciosWeb;Scato.web;Scato.workflow" />
+    <setParameter name="ArchivoDeMovimientosIngresosPath Config" value="\\GSLOFSPRD00\Scato\Ingresos\" />
+    <setParameter name="ArchivoDeMovimientosEgresosPath Config" value="\\GSLOFSPRD00\Scato\Redespachos\" />
+    <setParameter name="Ambiente Config" value="Prod" />
+    <setParameter name="UrlExternaOperacionesPuerto Config" value="https://scatomobile.molinosagro.com.ar/PesadasHistorica" />
+    <setParameter name="WorkflowIngresoPorCompra Config" value="1029-IngresoPorCompraDeGranosCaladaExterna" />
+    <setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
+    <setParameter name="ICWebServerUrl Config" value="https://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
+    <setParameter name="ICWSServerUrl Config" value="wss://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
+    <setParameter name="URLOperacionesAPI Config" value="https://moaoperaciones.com.ar/externalApi/external/api/" />
+    <setParameter name="APITokenOperacionesAPI Config" value="ZHBCyyW4SM0UoJr9nfmJTTgBBgsBky81dHka3Q6ZOCHtbZFF1W" />
+    <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoWeb.log" />
 </parameters>

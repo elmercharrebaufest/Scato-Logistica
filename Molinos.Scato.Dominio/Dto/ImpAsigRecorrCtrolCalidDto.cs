@@ -1,11 +1,10 @@
-﻿using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Recursos;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Molinos.Scato.Dominio.Recursos;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public class ImpAsigRecorrCtrolCalidDto
+    public class ImpAsigRecorrCtrolCalidDto : IDtoConCentroIdMaterialIdWorkflowId
     {
         public int Id { get; set; }
         public string Impresora { get; set; }
@@ -71,5 +70,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string ProteinaAlta { get; set; }
         public string ProteinaBaja { get; set; }
         public string MateriaGrasa { get; set; }
+        public int MaterialId { get; set; }
+        public int CentroId { get; set; }
     }
 }

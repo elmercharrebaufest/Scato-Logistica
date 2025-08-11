@@ -3,7 +3,7 @@ using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public class ImpTicketPesadaDto
+    public class ImpTicketPesadaDto : IDtoConCentroIdMaterialIdWorkflowId
     {
         public int Id { get; set; }
         public string Impresora { get; set; }
@@ -13,6 +13,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string TipoDocumento { get; set; }
         public string NumeroDocumento { get; set; }
         public string Material { get; set; }
+        public int MaterialId { get; set; }
         public string PesoBruto { get; set; }
         public string PesoTara { get; set; }
         public string PesoNeto { get; set; }
@@ -26,5 +27,6 @@ namespace Molinos.Scato.Dominio.Dto
         public Guid WorkflowId { get; set; }
         public DateTime FechaImpresion { get; set; }
         public virtual string Codigo { get; set; }
+        public int CentroId { get; set; }
     }
 }

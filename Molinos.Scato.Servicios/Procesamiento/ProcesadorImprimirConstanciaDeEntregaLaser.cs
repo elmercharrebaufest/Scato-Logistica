@@ -10,7 +10,7 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorImprimirConstanciaDeEntregaLaser : ProcesadorImpresionAsync<ImprimirConstanciaDeEntregaLaser>
+    public class ProcesadorImprimirConstanciaDeEntregaLaser : ProcesadorComandoImpresion<ImprimirConstanciaDeEntregaLaser>
     {
         private readonly IFirmaProvider firmaProvider;
 
@@ -53,6 +53,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(e, "Error al guardar ImprimirConstanciaDeEntregaLaser ");
                 throw;
             }
+        }
+
+        protected override Func<MaterialPorWorkflow, bool> PropiedadConfiguracionDebeImprimir
+        {
+            get { return materialPorWorkflow => materialPorWorkflow.ImprimirTicketPesada; }
         }
     }
 }

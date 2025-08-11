@@ -1,10 +1,6 @@
-﻿using Molinos.Scato.Dominio.Enums;
-using NPOI.SS.Formula.Functions;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace Molinos.Scato.Dominio.Entidades
 {

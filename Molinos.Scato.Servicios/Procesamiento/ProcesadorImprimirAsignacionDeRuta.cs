@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Servicios.ServicioImpresion;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
+using Molinos.Scato.Servicios.ServicioImpresion;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorImprimirAsignacionDeRuta : ProcesadorImpresionAsync<ImprimirAsignacionDeRuta>
+    public class ProcesadorImprimirAsignacionDeRuta : ProcesadorComandoImpresion<ImprimirAsignacionDeRuta>
     {
-        public ProcesadorImprimirAsignacionDeRuta(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioImpresorFactory servicioImpresion)
-            : base(repositorio, conversor, log, servicioImpresion)
-        {
-        }
+        public ProcesadorImprimirAsignacionDeRuta(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioImpresorFactory servicioImpresorFactory)
+            : base(repositorio, conversor, log, servicioImpresorFactory)
+        {}
 
         protected override void EjecutarAsync(ImprimirAsignacionDeRuta comando, IServicioImpresion servicioImpresor)
         {
@@ -24,8 +22,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 Log.Debug("Iniciando impresión de AsignacionDeRuta en la impresora: " + comando.Dto.Impresora);
 
-                servicioImpresor.Ejecutar(comando);
-                
+                servicioImpresor.Ejecutar(comando);                
             }
             catch (Exception e)
             {
@@ -52,6 +49,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 throw;
             }
             
+        }
+
+        protected override Func<MaterialPorWorkflow, bool> PropiedadConfiguracionDebeImprimir
+        {
+            get { return materialPorWorkflow => materialPorWorkflow.ImprimirAsignacionRuta; }
         }
     }
 }

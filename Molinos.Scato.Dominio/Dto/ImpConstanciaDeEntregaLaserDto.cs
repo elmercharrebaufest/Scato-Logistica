@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public class ImpConstanciaDeEntregaLaserDto
+    public class ImpConstanciaDeEntregaLaserDto : IDtoConCentroIdMaterialIdWorkflowId
     {
         public int Id { get; set; }
         public string Impresora { get; set; }
@@ -38,5 +38,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string ModeloBalanzaBruto { get; set; }
         public string NroSerieBalanzaTara { get; set; }
         public string NroSerieBalanzaBruto { get; set; }
+        public int MaterialId { get; set; }
+        public int CentroId { get; set; }
     }
 }

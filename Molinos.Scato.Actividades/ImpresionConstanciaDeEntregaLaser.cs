@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Activities;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
@@ -60,12 +59,13 @@ namespace Molinos.Scato.Actividades
             var recorrido = repositorio.ObtenerRecorridoPorGuid(workflowId);
             var ultimaPesada = orden.TipoDeWorkflow == TipoDeWorkflow.Ingreso ? recorrido.PesoTaraFecha : recorrido.PesoBrutoFecha;
             var logActividad = new LogActividadDto
-                {
-                    Actividad = "Impresion Constancia De Entrega Laser",
-                    ActividadXaml = "ImpresionConstanciaDeEntregaLaser",
-                    WorkflowInstanceId = workflowId,
-                    Fecha = DateTime.Now
-                };
+            {
+                Actividad = "Impresion Constancia De Entrega Laser",
+                ActividadXaml = "ImpresionConstanciaDeEntregaLaser",
+                WorkflowInstanceId = workflowId,
+                Fecha = DateTime.Now
+            };
+            
             try
             {
                 resultado = servicio.Ejecutar(new CrearLogActividad { Dto = logActividad });
@@ -84,20 +84,17 @@ namespace Molinos.Scato.Actividades
 
                 string vendedor;
                 if (orden.DestinatarioCodigoSap != firmaProvider.ObtenerFirmaSinLogo().CodigoSAP)
-                {
                     vendedor = orden.Destinatario;
-                }
                 else
-                {
                     vendedor = orden.RtteComercial ?? orden.TitularCartaPorte;
-                }
 
                 var muestraEnvioCamara = repositorio.ObtenerMuestraEnvioACamaraPorCalado(recorrido.Calado.Id);
                 var caracteristicas = repositorio.ListarAnalisisYCaladoPorCaracteristica(workflowId);
                 var calidadValor = caracteristicas.Select(c => new CaracteristicasCalidadValorDto { Key = c.Caracteristica, Data = (c.ValorAnalisis ?? c.ValorCalado).ToString(), Descuento = c.DescuentoEnKg.ToString(), EnvioCamara = muestraEnvioCamara != null && muestraEnvioCamara.CaracteristicasDeCalidad.Select(x => x.Descripcion).Contains(c.Caracteristica) ? "Si" : "No"});
 
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
-                if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
+                if (documento == null) 
+                    throw new Exception(string.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo));
 
                 var dto = new ImpConstanciaDeEntregaLaserDto
                 {
@@ -131,7 +128,9 @@ namespace Molinos.Scato.Actividades
                     ModeloBalanzaTara = balanzaTara != null ? balanzaTara.Modelo : string.Empty,
                     NroSerieBalanzaBruto = balanzaBruto != null ? balanzaBruto.NroSerie : string.Empty,
                     NroSerieBalanzaTara = balanzaTara != null ? balanzaTara.NroSerie : string.Empty,
-                    Entregador = orden.Entregador ?? string.Empty
+                    Entregador = orden.Entregador ?? string.Empty, 
+                    MaterialId = orden.MaterialId,
+                    CentroId = centroId
                 };
 
                 resultado = servicio.Ejecutar(new ImprimirConstanciaDeEntregaLaser { Dto = dto, CantidadCopias = cantCopias });
@@ -149,6 +148,7 @@ namespace Molinos.Scato.Actividades
             {
                 resultado.Errores.Add("2", Textos.FinDeActividad_ErrorEnLaCarga);
             }
+
             return resultado;
         }
     }

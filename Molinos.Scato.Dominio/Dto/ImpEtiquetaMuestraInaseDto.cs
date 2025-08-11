@@ -3,7 +3,7 @@ using System;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public class ImpEtiquetaMuestraInaseDto
+    public class ImpEtiquetaMuestraInaseDto : IDtoConCentroIdMaterialIdWorkflowId
     {
         public int Id { get; set; }
         public string Centro { get; set; }
@@ -17,5 +17,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Patente { get; set; }
         public string NombreUsuario { get; set; }
         public string NroMuestra { get; set; }
+        public int MaterialId { get; set; }
+        public int CentroId { get; set; }
     }
 }

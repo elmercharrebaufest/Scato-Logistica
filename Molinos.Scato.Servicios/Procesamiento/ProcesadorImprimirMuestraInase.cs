@@ -10,12 +10,12 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorImprimirMuestraInase : ProcesadorImpresionAsync<ImprimirMuestraInase>
+    public class ProcesadorImprimirMuestraInase : ProcesadorComandoImpresion<ImprimirMuestraInase>
     {
         private readonly IFirmaProvider firmaProvider;
 
-        public ProcesadorImprimirMuestraInase(IRepositorio repositorio, IConversor conversor, ILogger log, IFirmaProvider firmaProvider, IServicioImpresorFactory servicioImpresion)
-            : base(repositorio, conversor, log, servicioImpresion)
+        public ProcesadorImprimirMuestraInase(IRepositorio repositorio, IConversor conversor, ILogger log, IFirmaProvider firmaProvider, IServicioImpresorFactory servicioImpresorFactory)
+            : base(repositorio, conversor, log, servicioImpresorFactory)
         {
             this.firmaProvider = firmaProvider;
         }
@@ -55,6 +55,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(e, "Error al guardar ImpIdentificacionMuestraAuditoria ");
                 throw;
             }
+        }
+
+        protected override Func<MaterialPorWorkflow, bool> PropiedadConfiguracionDebeImprimir 
+        {
+            get { return materialPorWorkflow => materialPorWorkflow.ImprimirMuestraInase; }
         }
     }
 }

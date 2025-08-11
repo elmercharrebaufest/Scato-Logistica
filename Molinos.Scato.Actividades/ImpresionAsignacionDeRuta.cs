@@ -12,7 +12,6 @@ namespace Molinos.Scato.Actividades
 {
     public class ImpresionAsignacionDeRuta : CodeActivity<Resultado>
     {
-
         [RequiredArgument]
         public InArgument<int> CentroId { get; set; }
         [RequiredArgument]
@@ -59,12 +58,13 @@ namespace Molinos.Scato.Actividades
             var puestoDeTrabajoId = PuestoDeTrabajoId.Get<int>(context);
 
             var logActividad = new LogActividadDto
-                {
-                    Actividad = "Impresion Asignacion De Ruta",
-                    ActividadXaml = "ImpresionAsignacionDeRuta",
-                    WorkflowInstanceId = workflowId,
-                    Fecha = DateTime.Now
-                };
+            {
+                Actividad = "Impresion Asignacion De Ruta",
+                ActividadXaml = "ImpresionAsignacionDeRuta",
+                WorkflowInstanceId = workflowId,
+                Fecha = DateTime.Now
+            };
+        
             try
             {
                 resultado = servicio.Ejecutar(new CrearLogActividad { Dto = logActividad });
@@ -72,9 +72,7 @@ namespace Molinos.Scato.Actividades
             catch (Exception)
             {
                 resultado.Errores.Add("", Textos.LogActividad_ErrorEnLaCarga);
-            }
-
-            
+            }            
 
             try
             {
@@ -88,7 +86,8 @@ namespace Molinos.Scato.Actividades
                 var analisis = calado != null ? repositorio.ObtenerAnalisisDeCalidadPorCaladoId(calado.Id) : null;
                 
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
-                if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
+                if (documento == null) 
+                    throw new Exception(string.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); 
 
                 var dto = new ImpAsignacionDeRutaDto
                 {
@@ -111,7 +110,9 @@ namespace Molinos.Scato.Actividades
                     WorkflowId = workflowId,
                     Observacion = observacion,
                     TipoVehiculo = asignacion.TipoVehiculo.DisplayEnum(),
-            };
+                    MaterialId = materialId,
+                    CentroId = centroId,
+                };
 
                 resultado = servicio.Ejecutar(new ImprimirAsignacionDeRuta { Dto = dto, CantidadCopias = cantCopias });
             }

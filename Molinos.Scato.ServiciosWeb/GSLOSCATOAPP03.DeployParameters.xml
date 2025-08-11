@@ -3,33 +3,26 @@
 	<setParameter name="IIS Web Application Name" value="Scato/Scato.serviciosWeb" />
 	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSPRD.molinosagro.ad;Initial Catalog=MOAScato;Integrated Security=True" />
 	<setParameter name="ScatoHangfireDb-Web.config Connection String" value="Data Source=SCATOHFAGLSPRD.molinosagro.ad;Initial Catalog=ScatoHangfire;Integrated Security=True" />
-	
 	<setParameter name="LoginCms Service Endpoint Address" value="https://wsaa.afip.gov.ar/ws/services/LoginCms" />
 	<setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://serviciosjava.afip.gob.ar/wsctg/services/CTGService_v4.0" />
-	<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://sapprgap.molinosagro.ad:8080/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
-	<setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
-	<!--<setParameter name="Orquestador Service Endpoint Address" value="net.tcp://scatoor.molinos.com.ar:8081/ServicioOrquestador" />-->
+	<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://sapprgap.molinosagro.ad/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+    <setParameter name="ZSDWS_SCATO Binding Configuration" value="ZSDWS_SCATO_HTTPS" />
+    <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
 	<setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
 	<setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
 	<setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws.afip.gob.ar/wscpe/services/soap" />
 	<setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
-
 	<setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
 	<setParameter name="SapServicePassword Config" value="ipiYlSviW3QB7BjrHn+7vw==" />
 	<setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
-
 	<setParameter name="CertificadoWsCtg Config" value="CertificadosProd\alias.p12" />
-
 	<!--Nunca hacer esto por localhost. Se pierde el balanceo de las notificaciones, esto dificulta el deploy en caliente ya que la capa nunca sale realmente del farm -->
 	<setParameter name="UrlNotificaciones Config" value="http://scato.molinosagro.com.ar/Scato.serviciosWeb/ServicioSuscriptor.svc" />
 	<setParameter name="UrlNotificacionesWeb Config" value="http://scato.molinosagro.com.ar/Scato.web/ServicioHub/ServicioSuscriptor.svc" />
-
 	<setParameter name="MonsantoServiceUsername Config" value="ws_molinos" />
 	<setParameter name="MonsantoServicePassword Config" value="n41TwPC/D/iYU4ye1PAF7Q==" />
-
 	<setParameter name="FotosPath Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\" />
 	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\" />
-
 	<setParameter name="MailSettings Smtp From" value="scatoprodMOA@molinosagro.com.ar" />
 	<setParameter name="MailSettings Smtp Host" value="smtpnuevo.molinosagro.com.ar" />
 	<setParameter name="MailSettings Smtp Port" value="25" />

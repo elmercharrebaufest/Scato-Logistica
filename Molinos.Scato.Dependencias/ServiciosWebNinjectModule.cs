@@ -1,4 +1,7 @@
-﻿using Molinos.Scato.Dominio.Dto;
+﻿using System.Data.Entity;
+using System.Net.Http;
+using System.ServiceModel;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Validations;
 using Molinos.Scato.Dominio.Validations.Interfaces;
 using Molinos.Scato.Repositorio;
@@ -18,9 +21,6 @@ using Molinos.Scato.Servicios.ServicioImpresion;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Servicios.Urenport;
 using Ninject.Modules;
-using System.Data.Entity;
-using System.Net.Http;
-using System.ServiceModel;
 
 namespace Molinos.Scato.Dependencias
 {
@@ -66,7 +66,6 @@ namespace Molinos.Scato.Dependencias
             this.BindChannelFactory<IServicioImpresion>("ServicioImpresion");
             this.BindChannelFactory<CpePortType>("CpeEndPoint");
             this.BindChannelFactory<DatosPort>("DatosPortV2");
-
 
             Bind<IBalanzadaContext>().To<BalanzadaContext>().InTransientScope();
             Bind<IBalanzadaStrategy>().To<BalanzadaStrategy>().InTransientScope();

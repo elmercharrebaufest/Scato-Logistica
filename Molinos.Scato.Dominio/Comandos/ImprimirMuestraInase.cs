@@ -1,12 +1,15 @@
-﻿
-using Molinos.Scato.Dominio.Dto;
+﻿using Molinos.Scato.Dominio.Dto;
 
 namespace Molinos.Scato.Dominio.Comandos
 {
-    public class ImprimirMuestraInase : Comando
+    public class ImprimirMuestraInase : ComandoImpresion
     {
-        public ImpEtiquetaMuestraInaseDto Dto { get; set; }
-        public int CantidadCopias { get; set; }
+        public new ImpEtiquetaMuestraInaseDto Dto
+        {
+            get { return (ImpEtiquetaMuestraInaseDto)base.Dto; }
+            set { base.Dto = (IDtoConCentroIdMaterialIdWorkflowId)value; }
+        }
+
         public FirmaDto Firma { get; set; }
     }
 }

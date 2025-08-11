@@ -546,6 +546,8 @@
     <Compile Include="Procesamiento\ProcesadorAgregarMarcaSustentableTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarEscalablesTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPDFCpeTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirAsigRecorrCtrolCalidTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMuestraInaseTest.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarClienteTest.cs" />
     <Compile Include="Procesamiento\ProcesadorPagarMercadoPagoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcaladoTest.cs" />

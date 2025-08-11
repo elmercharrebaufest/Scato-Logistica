@@ -113,10 +113,15 @@ namespace Molinos.Scato.Web.Controllers
             var balanzadasFaltantes = servicio.ListarBalanzadasFaltantesPorRango(carga.Id, carga.CargaOpuesta_Id.Value, carga.NumeroBalanza).ToList();
             if (balanzadasFaltantes.Count != 0)
             {
-                carga.Error = 5;
+                carga.Error = 6;
                 carga.ErrorMensaje = Textos.OperacionesPuerto_BalanzadasFaltantes + " " + string.Join(",", balanzadasFaltantes);
             }
 
+            // Comparación de consistencia entre inicio y fin
+            if (carga.VaporId != cargaOpuesta.VaporId || carga.ExportadorId != cargaOpuesta.ExportadorId)
+            {
+                carga.Error = 5;
+            }
         }
 
         public ActionResult Modificar(CargaFiltroDto filtro, int pagina = 1, string ordenarPor = "Id", DirOrden dirOrden = DirOrden.Asc)

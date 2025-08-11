@@ -69,18 +69,6 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI">
-      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OOXML">
-      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OOXML.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXml4Net">
-      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OpenXml4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXmlFormats">
-      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OpenXmlFormats.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -97,6 +85,7 @@
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarAsignacionAutomatismoGranoEnRecorrido .cs" />
+    <Compile Include="Comandos\ComandoImpresion.cs" />
     <Compile Include="Comandos\ConsultarCategoriaVehiculoNoGranos.cs" />
     <Compile Include="Comandos\ConsultarOrdenCargaFas.cs" />
     <Compile Include="Comandos\ConsultarEscalablesDummy.cs" />
@@ -805,6 +794,7 @@
     <Compile Include="Dto\PagosTasaMunicipalDto.cs" />
     <Compile Include="Dto\PagosTasaMunicipalResponse.cs" />
     <Compile Include="Dto\AutomatismoTipoLlamadoDto.cs" />
+    <Compile Include="Dto\Base\IDtoConCentroIdMaterialIdWorkflowId.cs" />
     <Compile Include="Dto\CalleAutomatismoDto.cs" />
     <Compile Include="Dto\AutomatismoGranoDto.cs" />
     <Compile Include="Dto\AsignacionAutomatismoGranoEnRecorridoDto.cs" />

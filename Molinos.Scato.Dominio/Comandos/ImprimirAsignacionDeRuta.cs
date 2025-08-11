@@ -1,11 +1,13 @@
-﻿
-using Molinos.Scato.Dominio.Dto;
+﻿using Molinos.Scato.Dominio.Dto;
 
 namespace Molinos.Scato.Dominio.Comandos
 {
-    public class ImprimirAsignacionDeRuta : Comando
+    public class ImprimirAsignacionDeRuta : ComandoImpresion
     {
-        public ImpAsignacionDeRutaDto Dto { get; set; }
-        public int CantidadCopias { get; set; }
+        public new ImpAsignacionDeRutaDto Dto
+        {
+            get { return (ImpAsignacionDeRutaDto)base.Dto; }
+            set { base.Dto = (IDtoConCentroIdMaterialIdWorkflowId)value; }
+        }
     }
 }

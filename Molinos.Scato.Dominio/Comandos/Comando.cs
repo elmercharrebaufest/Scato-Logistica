@@ -19,6 +19,5 @@ namespace Molinos.Scato.Dominio.Comandos
             var tipoComando = typeof (Comando);
             return tipoComando.Assembly.GetTypes().Where(tipoComando.IsAssignableFrom).ToArray();
         }
-
     }
 }

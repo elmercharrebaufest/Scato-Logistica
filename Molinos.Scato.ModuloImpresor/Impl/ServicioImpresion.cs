@@ -60,11 +60,10 @@ namespace Molinos.Scato.ModuloImpresor.Impl
                                                         && i.GetGenericTypeDefinition() == typeof(IProcesadorComando<>)
                                                         && i.GetGenericArguments().Single() == comando));
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 return null;
             }
-        }
-        
+        }        
     }
 }

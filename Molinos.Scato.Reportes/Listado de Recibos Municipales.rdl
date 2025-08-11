@@ -9,7 +9,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.0.20283.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-07-03T16:57:21.1827100Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-08-05T14:00:00.1827100Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -58,7 +58,9 @@ declare @Materialp int
 declare @FechaDesdep datetime
 declare @FechaHastap datetime
 declare @ReciboDesdep int 
-declare @ReciboHastap int 
+declare @ReciboHastap int
+declare @TasaAbonadaEnElDia varchar(30) 
+SET @TasaAbonadaEnElDia = 'Tasa abonada dentro del día' 
 
 set @CentroIdp = @CentroId
 set @Materialp =@Material
@@ -66,8 +68,6 @@ set @FechaDesdep =@FechaDesde
 set @FechaHastap = @FechaHasta
 set @ReciboDesdep = @ReciboDesde
 set @ReciboHastap = @ReciboHasta
-
-
 
 ;WITH TicketFiltro AS (
     SELECT *,
@@ -77,6 +77,7 @@ set @ReciboHastap = @ReciboHasta
                    ELSE TRY_CAST(TicketNro AS INT)
                END
     FROM ImpReciboMunicipal WITH(NOLOCK)
+    WHERE TicketNro &lt;&gt; @TasaAbonadaEnElDia
 ),
 BaseRecibos AS (
     SELECT
@@ -90,9 +91,8 @@ BaseRecibos AS (
         ch.Nombre + ' ' + ch.Apellido AS Chofer,
         tr.RazonSocial AS 'Empresa Transportista',
         CASE 
-            WHEN t.TicketNro = 'Tasa abonada dentro del día' THEN t.TicketNro
-            WHEN LEFT(t.TicketNro,1) = '0' THEN LEFT(t.TicketNro,4) + ' - MP'
-            ELSE LEFT(t.TicketNro,4) + ' - EFECTIVO'
+            WHEN LEFT(t.TicketNro, 1) = '0' THEN LEFT(t.TicketNro, 4) + ' - MP'
+            ELSE LEFT(t.TicketNro, 4) + ' - EFECTIVO'
         END AS 'Garita',
         t.Valor AS 'Monto Cobrado',
         i.FechaImpresion AS 'Fecha Cobro',
@@ -108,16 +108,14 @@ BaseRecibos AS (
         (@Materialp IS NULL OR m.Id = @Materialp)
         AND r.Centro_Id = @CentroIdp
         AND i.FechaImpresion BETWEEN @FechaDesdep AND @FechaHastap
-        AND (t.TicketNro = 'Tasa abonada dentro del día' OR LEFT(t.TicketNro,4) IN (@Garitas))
-        AND LEFT(t.TicketNro,1) &lt;&gt; '2'
+        AND LEFT(t.TicketNro, 4) IN (@Garitas)
+        AND LEFT(t.TicketNro, 1) &lt;&gt; '2'
         AND (
             @ReciboDesdep IS NULL OR
-            t.TicketNro = 'Tasa abonada dentro del día' OR
             t.ReciboNum &gt;= RIGHT('0000000' + CAST(@ReciboDesdep AS VARCHAR),7)
         )
         AND (
             @ReciboHastap IS NULL OR
-            t.TicketNro = 'Tasa abonada dentro del día' OR
             t.ReciboNum &lt;= RIGHT('0000000' + CAST(@ReciboHastap AS VARCHAR),7)
         )
 ),
@@ -136,9 +134,9 @@ BaseDigital AS (
         ptam.Importe AS 'Monto Cobrado',
         i.FechaImpresion AS 'Fecha Cobro',
         ptam.FechaPago AS 'Fecha Pago Digital'
-    FROM PagosTasaMunicipal ptam
-    INNER JOIN ImpReciboMunicipal imp ON ptam.NroRecibo = imp.TicketNro
-	  INNER JOIN Impresion i ON imp.Id = i.Id
+    FROM PagosTasaMunicipal ptam WITH(NOLOCK)
+    INNER JOIN ImpReciboMunicipal imp WITH(NOLOCK) ON ptam.NroRecibo = imp.TicketNro
+    INNER JOIN Impresion i WITH(NOLOCK) ON imp.Id = i.Id
     INNER JOIN Recorrido r WITH(NOLOCK) ON r.InstanciaWorkflow = ptam.Instance_Id
     INNER JOIN TipoDocumentoIngreso tdi WITH(NOLOCK) ON r.TipoDocumentoIngreso = tdi.Id
     INNER JOIN Material m WITH(NOLOCK) ON r.Material_Id = m.Id
@@ -148,10 +146,10 @@ BaseDigital AS (
         (@Materialp IS NULL OR m.Id = @Materialp)
         AND r.Centro_Id = @CentroIdp
         AND ptam.NroRecibo IS NOT NULL
-		    AND i.TipoImpresion = 15
+        AND i.TipoImpresion = 15
         AND ptam.NroRecibo IS NOT NULL
-        AND ptam.FechaPago BETWEEN @FechaDesdep AND @FechaHastap
-        AND LEFT(ptam.NroRecibo,4) IN (@Garitas)
+        AND i.FechaImpresion BETWEEN @FechaDesdep AND @FechaHastap
+        AND LEFT(ptam.NroRecibo, 4) IN (@Garitas)
         AND (
             @ReciboDesdep IS NULL OR
             CONVERT(INT, SUBSTRING(ptam.NroRecibo, 6, 7)) &gt;= @ReciboDesdep
@@ -185,7 +183,7 @@ Borrado AS (
         (@Materialp IS NULL OR m.Id = @Materialp)
         AND TMB.CentroId = @CentroIdp
         AND TMB.Fecha BETWEEN @FechaDesdep AND @FechaHastap
-        AND (TMB.Recibo = 'Tasa abonada dentro del día' OR LEFT(TMB.Recibo,4) IN (@Garitas))
+        AND LEFT(TMB.Recibo, 4) IN (@Garitas)
 )
 
 SELECT *

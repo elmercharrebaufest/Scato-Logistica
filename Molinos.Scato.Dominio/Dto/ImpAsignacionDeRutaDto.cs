@@ -5,7 +5,7 @@ using Molinos.Scato.Dominio.Recursos;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public class ImpAsignacionDeRutaDto
+    public class ImpAsignacionDeRutaDto : IDtoConCentroIdMaterialIdWorkflowId
     {
         public int Id { get; set; }
         private string balanzaBruto;
@@ -33,6 +33,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Codigo { get; set; }
         public string Observacion { get; set; }
         public string TipoVehiculo { get; set; }
-
+        public int MaterialId { get; set; }
+        public int CentroId { get; set; }
     }
 }

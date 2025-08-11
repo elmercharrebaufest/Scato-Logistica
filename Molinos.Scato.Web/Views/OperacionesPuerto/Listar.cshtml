@@ -34,7 +34,9 @@
                             "<span class='label label-info' style='background-color:ligthblue'>Falta Peso</span>":
                                     x.Value.Error == 4 ?
                                 "<span class='label label-info' style='background-color:red'>Diferencia de peso AW</span>":
-                                    "<span class='label label-info' style='background-color:red'>Faltan Balanzadas</span>"))
+                                    x.Value.Error == 5 ?
+                                        "<span class='label label-info' style='background-color:red'>Fin inconsistente</span>" :
+                                        "<span class='label label-info' style='background-color:red'>Faltan Balanzadas</span>"))
         ))
 
 <script>

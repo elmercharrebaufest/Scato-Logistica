@@ -18,7 +18,7 @@ namespace Molinos.Scato.Dominio.Helpers
                     outputFile.WriteLine($"{DateTime.Now} - {message}");
                 }
             }
-            catch (Exception ex)
+            catch
             {
             }
         }

@@ -1,17 +1,16 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using System;
+using System.Activities;
+using System.Globalization;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
-using System;
-using System.Activities;
-using System.Globalization;
 
 namespace Molinos.Scato.Actividades
 {
     public class ImpresionEtiquetaMuestraInase : CodeActivity<Resultado>
     {
-
         [RequiredArgument]
         public InArgument<int> CentroId { get; set; }
         [RequiredArgument]
@@ -29,7 +28,6 @@ namespace Molinos.Scato.Actividades
         public InArgument<int> PuestoDeTrabajoId { get; set; }
         [RequiredArgument]
         public InArgument<string> Material { get; set; }
-
 
         protected override Resultado Execute(CodeActivityContext context)
         {
@@ -54,6 +52,7 @@ namespace Molinos.Scato.Actividades
             {
                 return resultado;
             }
+            
             var logActividad = new LogActividadDto
             {
                 Actividad = "Impresion Etiqueta Muestra INASE",
@@ -61,6 +60,7 @@ namespace Molinos.Scato.Actividades
                 WorkflowInstanceId = workflowId,
                 Fecha = DateTime.Now
             };
+
             try
             {
                 resultado = servicio.Ejecutar(new CrearLogActividad { Dto = logActividad });
@@ -69,13 +69,13 @@ namespace Molinos.Scato.Actividades
             {
                 resultado.Errores.Add("", Textos.LogActividad_ErrorEnLaCarga);
             }
+            
             try
             {
-                
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
-                //LoggerHelper.WriteLine($"1. documento obtenido {documento}");
-                if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
-                //LoggerHelper.WriteLine($"2. documento obtenido {documento.Id}");
+
+                if (documento == null) 
+                    throw new Exception(string.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); 
 
                 var camara = repositorio.ObtenerCamaraPorMaterialPorCentro(workflowId);
                 var vehiculo = repositorio.ObtenerVehiculoPorGuid(workflowId);
@@ -83,13 +83,14 @@ namespace Molinos.Scato.Actividades
                 {
                     var convCentro = repositorio.ObtenerConversionCentro(camara.Id, centroId);
                     var codigoDeCamara = convCentro != null ? convCentro.CodigoCamara : "";
-                    numeroCartaPorte = camara.FormatoDeArchivo == CamaraFormatoDeArchivo.BahiaBlanca
-                   ? numeroCartaPorte.Substring(numeroCartaPorte.Length - 10)
-                   : (camara.FormatoDeArchivo == CamaraFormatoDeArchivo.Rosario ?
-                    codigoDeCamara.Substring(0, codigoDeCamara.Length > 3 ? 3 : codigoDeCamara.Length) :
-                    codigoDeCamara.Substring(0, codigoDeCamara.Length > 2 ? 2 : codigoDeCamara.Length)) +
-                     vehiculo.NumeroVehiculo.ToString(CultureInfo.InvariantCulture).PadLeft(2, '0') +
-                     numeroCartaPorte.Substring(numeroCartaPorte.Length - 10);
+                    numeroCartaPorte = 
+                        camara.FormatoDeArchivo == CamaraFormatoDeArchivo.BahiaBlanca
+                            ? numeroCartaPorte.Substring(numeroCartaPorte.Length - 10)
+                            : (camara.FormatoDeArchivo == CamaraFormatoDeArchivo.Rosario 
+                                ? codigoDeCamara.Substring(0, codigoDeCamara.Length > 3 ? 3 : codigoDeCamara.Length) 
+                                : codigoDeCamara.Substring(0, codigoDeCamara.Length > 2 ? 2 : codigoDeCamara.Length)) +
+                        vehiculo.NumeroVehiculo.ToString(CultureInfo.InvariantCulture).PadLeft(2, '0') +
+                        numeroCartaPorte.Substring(numeroCartaPorte.Length - 10);
                 }
 
                 var dto = new ImpEtiquetaMuestraInaseDto
@@ -104,19 +105,15 @@ namespace Molinos.Scato.Actividades
                     CuitProductor = proveedor.Cuil,
                     NroMuestra = numeroCartaPorte,
                     Material = material,
-                    
+                    MaterialId = cartaPorte.MaterialId,
+                    CentroId = centroId,
                 };
 
                 resultado = servicio.Ejecutar(new ImprimirMuestraInase { Dto = dto, CantidadCopias = cantCopias });
-                //LoggerHelper.WriteLine($"3. impresion correcta obtenido {dto.ToJson()}");
-                //LoggerHelper.WriteLine($"4. impresion correcta carta porte {cartaPorte.ToJson()}");
-
             }
             catch (Exception e)
             {
                 resultado.Errores.Add("1", e.Message);
-                //LoggerHelper.WriteLine($"4. error excepcion. {e.Message}");
-
             }
 
             try
@@ -128,11 +125,7 @@ namespace Molinos.Scato.Actividades
                 resultado.Errores.Add("2", Textos.FinDeActividad_ErrorEnLaCarga);
             }
 
-
-
             return resultado;
         }
-
-       
     }
 }

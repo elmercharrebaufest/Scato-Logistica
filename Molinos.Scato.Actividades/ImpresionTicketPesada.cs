@@ -11,33 +11,47 @@ namespace Molinos.Scato.Actividades
     public class ImpresionTicketPesada : CodeActivity<Resultado>
     {
         public InArgument<string> CodigoDeImpresion { get; set; }
+
         [RequiredArgument]
         public InArgument<int> CantCopias { get; set; }
+        
         [RequiredArgument]
         public InArgument<string> NumeroDocumento { get; set; }
+        
         [RequiredArgument]
         public InArgument<int> MaterialId { get; set; }
+        
         [RequiredArgument]
         public InArgument<int> TransportistaId { get; set; }
+        
         [RequiredArgument]
         public InArgument<string> Patente { get; set; }
 
         public InArgument<string> PatenteAcoplado { get; set; }
+        
         [RequiredArgument]
         public InArgument<int> CentroId { get; set; }
+        
         [RequiredArgument]
         public InArgument<string> NumeroIngreso { get; set; }
+        
         public InArgument<string> Observaciones { get; set; }
+        
         [RequiredArgument]
         public InArgument<string> TipoDocumento { get; set; }
+        
         [RequiredArgument]
         public InArgument<int> PesoBruto { get; set; }
+        
         [RequiredArgument]
         public InArgument<int> PesoTara { get; set; }
+        
         [RequiredArgument]
         public InArgument<int> PesoNeto { get; set; }
+        
         [RequiredArgument]
         public InArgument<Guid> WorkflowId { get; set; }
+        
         [RequiredArgument]
         public InArgument<int> PuestoDeTrabajoId { get; set; }
 
@@ -67,12 +81,13 @@ namespace Molinos.Scato.Actividades
             var puestoDeTrabajoId = PuestoDeTrabajoId.Get<int>(context);
             
             var logActividad = new LogActividadDto
-                {
-                    Actividad = "Impresion Ticket Pesada",
-                    ActividadXaml = "ImpresionTicketPesada",
-                    WorkflowInstanceId = workflowId,
-                    Fecha = DateTime.Now
-                };
+            {
+                Actividad = "Impresion Ticket Pesada",
+                ActividadXaml = "ImpresionTicketPesada",
+                WorkflowInstanceId = workflowId,
+                Fecha = DateTime.Now
+            };
+
             try
             {
                 resultado = servicio.Ejecutar(new CrearLogActividad { Dto = logActividad });
@@ -88,7 +103,9 @@ namespace Molinos.Scato.Actividades
                 var transportista = repositorio.ObtenerTransportista(transportistaId);
                 var firma = firmaProvider.ObtenerFirmaSinLogo();
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
-                if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
+
+                if (documento == null) 
+                    throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo));
                 
                 var dto = new ImpTicketPesadaDto
                 {
@@ -110,7 +127,9 @@ namespace Molinos.Scato.Actividades
                     Remitente = firma.Descripcion,
                     Emisor = firma.Descripcion,
                     WorkflowId = workflowId,
-                };
+                    MaterialId = materialId,
+                    CentroId = centroId,
+                }; 
 
                 resultado = servicio.Ejecutar(new ImprimirTicketPesada { Dto = dto, CantidadCopias = cantCopias });
             }

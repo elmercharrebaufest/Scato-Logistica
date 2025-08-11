@@ -16,32 +16,30 @@ using NUnit.Framework;
 namespace Molinos.Scato.Test.Procesamiento
 {
     [TestFixture]
-    public class ProcesadorImprimirConstanciaDeEntregaLaserTest
+    public class ProcesadorImprimirAsigRecorrCtrolCalidTest
     {
-        private ProcesadorImprimirConstanciaDeEntregaLaser target;
         private Mock<IRepositorio> repositorioMock;
         private Mock<IConversor> conversorMock;
         private Mock<ILogger> loggerMock;
-        private Mock<IFirmaProvider> firmaProviderMock;
         private Mock<IServicioImpresorFactory> servicioImpresorFactoryMock;
         private Mock<IServicioImpresion> servicioImpresorMock;
-        private ImprimirConstanciaDeEntregaLaser comando;
-        private ImpConstanciaDeEntregaLaserDto dto;
-        private ImpConstanciaDeEntregaLaser entidad;
+        private ImprimirAsigRecorrCtrolCalid comando;
+        private ImpAsigRecorrCtrolCalidDto dto;
+        private Mock<IFirmaProvider> firmaProviderMock;
 
         [SetUp]
         public void SetUp()
         {
-            repositorioMock = new Mock<IRepositorio>();
-            conversorMock = new Mock<IConversor>();
-            loggerMock = new Mock<ILogger>();
-            firmaProviderMock = new Mock<IFirmaProvider>();
-            servicioImpresorFactoryMock = new Mock<IServicioImpresorFactory>();
-            servicioImpresorMock = new Mock<IServicioImpresion>();
+            this.repositorioMock = new Mock<IRepositorio>();
+            this.conversorMock = new Mock<IConversor>();
+            this.loggerMock = new Mock<ILogger>();
+            this.firmaProviderMock = new Mock<IFirmaProvider>();
+            this.servicioImpresorFactoryMock = new Mock<IServicioImpresorFactory>();
+            this.servicioImpresorMock = new Mock<IServicioImpresion>();
 
-            servicioImpresorFactoryMock.Setup(f => f.CrearServicio()).Returns(servicioImpresorMock.Object);
+            this.servicioImpresorFactoryMock.Setup(f => f.CrearServicio()).Returns(servicioImpresorMock.Object);
 
-            dto = new ImpConstanciaDeEntregaLaserDto
+            dto = new ImpAsigRecorrCtrolCalidDto
             {
                 Codigo = "TEST-001",
                 Impresora = "Test Printer",
@@ -51,19 +49,10 @@ namespace Molinos.Scato.Test.Procesamiento
                 CentroId = 1
             };
 
-            entidad = new ImpConstanciaDeEntregaLaser
-            {
-                Id = 1,
-                Codigo = "TEST-001"
-            };
-
-            conversorMock.Setup(c => c.Convertir<ImpConstanciaDeEntregaLaserDto, ImpConstanciaDeEntregaLaser>(dto))
-                .Returns(entidad);
-
-            comando = new ImprimirConstanciaDeEntregaLaser
+            comando = new ImprimirAsigRecorrCtrolCalid
             {
                 Dto = dto,
-                CantidadCopias = 1, 
+                CantidadCopias = 1,
                 Firma = new FirmaDto
                 {
                     Descripcion = "Test Firma",
@@ -72,31 +61,18 @@ namespace Molinos.Scato.Test.Procesamiento
             };
 
             firmaProviderMock.Setup(f => f.ObtenerFirmaSinLogo())
-                .Returns(comando.Firma);            
-
-            target = new ProcesadorImprimirConstanciaDeEntregaLaser(
-                repositorioMock.Object, 
-                conversorMock.Object, 
-                loggerMock.Object, 
-                firmaProviderMock.Object, 
-                servicioImpresorFactoryMock.Object);
-        }
-
-        //[Test]
-        public void TestEjecutar()
-        {
-            
+                .Returns(comando.Firma);
         }
 
         #region DebeImprimir
 
-        private Mock<ProcesadorImprimirConstanciaDeEntregaLaser> SetupDebeImprimirMaterialPorWorkflow(MaterialPorWorkflow materialPorWorkflow)
+        private Mock<ProcesadorImprimirAsigRecorrCtrolCalid> SetupDebeImprimirMaterialPorWorkflow(MaterialPorWorkflow materialPorWorkflow)
         {
             // Mock de la clase bajo prueba, pero llamamos a los métodos reales excepto los protegidos que interceptemos
-            var targetMock = new Mock<ProcesadorImprimirConstanciaDeEntregaLaser>(
+            var targetMock = new Mock<ProcesadorImprimirAsigRecorrCtrolCalid>(
                 this.repositorioMock.Object,
                 this.conversorMock.Object,
-                this.loggerMock.Object,
+                this.loggerMock.Object, 
                 this.firmaProviderMock.Object,
                 this.servicioImpresorFactoryMock.Object)
             {
@@ -113,8 +89,6 @@ namespace Molinos.Scato.Test.Procesamiento
             return targetMock;
         }
 
-        #region DebeImprimir_CuandoConfiguracionEnMaterialPorWorkflowEsNull_DebeRetornarTrue
-
         [Test]
         public void DebeImprimir_CuandoConfiguracionEnMaterialPorWorkflowEsNull_DebeRetornarTrue()
         {
@@ -123,52 +97,42 @@ namespace Molinos.Scato.Test.Procesamiento
             var targetMock = this.SetupDebeImprimirMaterialPorWorkflow(materialPorWorkflow);
 
             // Act: invocamos el protected override DebeImprimir vía reflection
-            var method = typeof(ProcesadorImprimirConstanciaDeEntregaLaser).GetMethod("DebeImprimir", BindingFlags.NonPublic | BindingFlags.Instance);
+            var method = typeof(ProcesadorImprimirAsigRecorrCtrolCalid).GetMethod("DebeImprimir", BindingFlags.NonPublic | BindingFlags.Instance);
             bool resultado = (bool)method.Invoke(targetMock.Object, new object[] { comando });
 
             // Assert
             Assert.IsTrue(resultado);
-        }       
-
-        #endregion
-
-        #region DebeImprimir_CuandoConfiguracionEnMaterialPorWorkflowEsTrue_DebeRetornarTrue
+        }
 
         [Test]
         public void DebeImprimir_CuandoConfiguracionEnMaterialPorWorkflowEsTrue_DebeRetornarTrue()
         {
             // Arrange
-            MaterialPorWorkflow materialPorWorkflow = new MaterialPorWorkflow { ImprimirTicketPesada = true };
+            MaterialPorWorkflow materialPorWorkflow = new MaterialPorWorkflow { ImprimirAsignacionRuta = true };
             var targetMock = this.SetupDebeImprimirMaterialPorWorkflow(materialPorWorkflow);
 
-            // Act: invocamos el protected override PuedeImprimir vía reflection
-            var method = typeof(ProcesadorImprimirConstanciaDeEntregaLaser).GetMethod("DebeImprimir", BindingFlags.NonPublic | BindingFlags.Instance);
+            // Act: invocamos el protected override DebeImprimir vía reflection
+            var method = typeof(ProcesadorImprimirAsigRecorrCtrolCalid).GetMethod("DebeImprimir", BindingFlags.NonPublic | BindingFlags.Instance);
             bool resultado = (bool)method.Invoke(targetMock.Object, new object[] { comando });
 
             // Assert
             Assert.IsTrue(resultado);
-        }       
-
-        #endregion
-
-        #region DebeImprimir_CuandoConfiguracionEnMaterialPorWorkflowEsFalse_DebeRetornarFalse
+        }
 
         [Test]
         public void DebeImprimir_CuandoConfiguracionEnMaterialPorWorkflowEsFalse_DebeRetornarFalse()
         {
             // Arrange
-            MaterialPorWorkflow materialPorWorkflow = new MaterialPorWorkflow { ImprimirTicketPesada = false };
+            MaterialPorWorkflow materialPorWorkflow = new MaterialPorWorkflow { ImprimirAsignacionRuta = false };
             var targetMock = this.SetupDebeImprimirMaterialPorWorkflow(materialPorWorkflow);
 
-            // Act: invocamos el protected override PuedeImprimir vía reflection
-            var method = typeof(ProcesadorImprimirConstanciaDeEntregaLaser).GetMethod("DebeImprimir", BindingFlags.NonPublic | BindingFlags.Instance);
+            // Act: invocamos el protected override DebeImprimir vía reflection
+            var method = typeof(ProcesadorImprimirAsigRecorrCtrolCalid).GetMethod("DebeImprimir", BindingFlags.NonPublic | BindingFlags.Instance);
             bool resultado = (bool)method.Invoke(targetMock.Object, new object[] { comando });
 
             // Assert
             Assert.IsFalse(resultado);
         }
-
-        #endregion
 
         #endregion
     }
