@@ -356,46 +356,24 @@ namespace Molinos.Scato.Servicios.Impl
             ValidarCrearCargaPendiente(balanzadaRecibida);
         }
 
-        // Un inicio falso es aquel inicio cuyo registro anterior es un error41 o cuyo registros anteriores sean todos errores comenzando con un error41.
-        // Ej1: error41 inicio. Ej2: error41 error error error inicio
-        // Tambien es inicio falso cuando llega despues de un error44 y la carga anterior no finalizó
+        // Un inicio falso se da cuando un lote se detiene y se vuelve a reanudar. No existe un fin para el ultimo inicio,
+        // por lo que éste no puede ser tratado como un inicio válido. Por lo visto siempre contienen valores mayores a 0 para ToneladasAW.
+        // Estos inicios falsos luego actualizarán el peso programado del inicio verdadero.
         private bool EsInicioFalso(BalanzadaRecibidaDTO balanzada)
         {
-            var errorAnterior = ObtenerParada(balanzada);
-            if (errorAnterior == null)
-            {
-                return false;
-            }
-
-            if (errorAnterior.Tipo == TipoBalanzada.Error41)
+            if (balanzada.ToneladasAW > 0)
             {
                 return true;
             }
-            // Para Error44 Parada de emergencia
-            else
-            {
-                var registro = _repositorio.ObtenerMayor<RegistroBalanzaPuerto, int>(x => 
-                    x.Id < errorAnterior.Id && 
-                    (x.Tipo == TipoBalanzada.Inicio || x.Tipo == TipoBalanzada.Fin) && 
-                    x.NumeroBalanza == errorAnterior.NumeroBalanza, x => x.Id);
-                return registro.Tipo == TipoBalanzada.Inicio;
-            }
-        }
 
-        private RegistroBalanzaPuerto ObtenerParada(BalanzadaRecibidaDTO balanzada, int? idEspecifico = null)
-        {
-            var id = idEspecifico ?? balanzada.IdOffset;
-            var registroAnterior = _repositorio.Obtener<RegistroBalanzaPuerto>(x => x.Id == id - 1 && x.NumeroBalanza == balanzada.NumeroBalanza);
+            var inicioAnterior = _repositorio.EjecutarComando(new ObtenerCargaInicio(balanzada.IdOffset, balanzada.NumeroBalanza));
 
-            if (registroAnterior.Tipo == TipoBalanzada.Error41 || registroAnterior.Tipo == TipoBalanzada.Error44)
+            if (inicioAnterior == null)
             {
-                return registroAnterior;
+                return false;
             }
-            if (registroAnterior.Tipo == TipoBalanzada.Error)
-            {
-                return ObtenerParada(balanzada, registroAnterior.Id);
-            }
-            return null;
+            
+            return inicioAnterior.CargaOpuesta == null; // Si CargaOpuesta es null, el último inicio no tuvo fin, por lo que el nuevo inicio es falso.
         }
 
         private Carga ObtenerInicioActualizar(BalanzadaRecibidaDTO balanzada)
