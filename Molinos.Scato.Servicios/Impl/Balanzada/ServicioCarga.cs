@@ -457,7 +457,7 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 Vapor registro;
 
-                if (vapor.Length == 15)
+                if (vapor.Length == 12)
                 {
                     registro = _repositorio.Obtener<Vapor>(v => v.Nombre.StartsWith(vapor));
                 }
@@ -506,7 +506,17 @@ namespace Molinos.Scato.Servicios.Impl
         {
             if (destino != null)
             {
-                var registro = _repositorio.Obtener<Destino>(e => e.Nombre == destino);
+                Destino registro;
+
+                if (destino.Length == 12)
+                {
+                    registro = _repositorio.Obtener<Destino>(v => v.Nombre.StartsWith(destino));
+                }
+                else
+                {
+                    registro = _repositorio.Obtener<Destino>(e => e.Nombre == destino);
+                }
+
                 if (registro == null)
                 {
                     registro = new Destino
@@ -526,7 +536,17 @@ namespace Molinos.Scato.Servicios.Impl
         {
             if (exportador != null)
             {
-                var registro = _repositorio.Obtener<Exportador>(e => e.Nombre == exportador);
+                Exportador registro;
+
+                if (exportador.Length == 12)
+                {
+                    registro = _repositorio.Obtener<Exportador>(v => v.Nombre.StartsWith(exportador));
+                }
+                else
+                {
+                    registro = _repositorio.Obtener<Exportador>(e => e.Nombre == exportador);
+                }
+
                 if (registro == null)
                 {
                     registro = new Exportador
