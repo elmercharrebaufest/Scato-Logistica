@@ -57,6 +57,10 @@ namespace Molinos.Scato.Servicios.Impl
             balanzadaRecibida.IntentosValidacion = balanza.IntentosValidacion;
 
             balanzadaRecibida.Commodity = datos.ContainsKey("commodity") ? datos["commodity"] : string.Empty;
+            if (balanzadaRecibida.Commodity.ToUpper() == "HARINA DE SOJA")
+            {
+                balanzadaRecibida.Commodity += "*";
+            }
 
             balanzadaRecibida.Bodega = datos.ContainsKey("bodega") ? datos["bodega"] : string.Empty;
 
