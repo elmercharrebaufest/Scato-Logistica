@@ -332,6 +332,7 @@
             public const string InicioError = "inicioError";
             public const string Error41 = "error41";
             public const string Error44 = "error44";
+            public const string FinError = "finError";
         }
 
         public struct TipoDocEnvioUrenport

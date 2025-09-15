@@ -252,6 +252,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             catch (Exception e)
             {
+                Log.Error("Error al crear carga inicio: {0}", e);
                 resultado.Error("", e.Message);
             }
             return resultado;
@@ -282,6 +283,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             catch (Exception e)
             {
+                Log.Error("Error al crear balanzada: {0}", e);
                 resultado.Error("", e.Message);
                 throw;
             }
@@ -295,6 +297,14 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 if (ExisteRegistroBalanzaPuerto(balanzada))
                 {
+                    return resultado;
+                }
+
+                if (EsFinFalso(balanzada))
+                {
+                    var registroBalanzaPuerto = ConstruirRegistroBalanzaPuerto(balanzada, TipoBalanzada.FinError);
+                    _repositorio.Agregar(registroBalanzaPuerto);
+                    _repositorio.GuardarCambios();
                     return resultado;
                 }
 
@@ -318,6 +328,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             catch (Exception e)
             {
+                Log.Error("Error al crear carga fin: {0}", e);
                 resultado.Error("", e.Message);
             }
             return resultado;
@@ -339,6 +350,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             catch (Exception e)
             {
+                Log.Error("Error al crear registro balanza puerto: {0}", e);
                 resultado.Error("", e.Message);
             }
             return resultado;
@@ -378,6 +390,23 @@ namespace Molinos.Scato.Servicios.Impl
             }
             
             return inicioAnterior.CargaOpuesta == null; // Si CargaOpuesta es null, el último inicio no tuvo fin, por lo que el nuevo inicio es falso.
+        }
+
+        // Un fin falso se da cuando se crea un fin sin que haya un inicio previo.
+        // Esto puede ocurrir cuando se traba el cabezal y precionan STOP varias veces
+        // Deben ignorarse
+        private bool EsFinFalso(BalanzadaRecibidaDTO balanzada)
+        {
+            // Ultimo inicio
+            var inicio = _repositorio.EjecutarComando(new ObtenerCargaInicio(balanzada.IdOffset, balanzada.NumeroBalanza));
+            var idFinAnterior = _repositorio.EjecutarComando(new ObtenerIdFinAnterior(balanzada.IdOffset, balanzada.NumeroBalanza));
+
+            // Si el id del fin es mayor al id del inicio, entonces el inicio ya tiene un fin y por lo tanto el fin actual es falso
+            if (inicio != null && idFinAnterior > inicio.Id)
+            {
+                return true;
+            }
+            return inicio == null;
         }
 
         private Carga ObtenerInicioActualizar(BalanzadaRecibidaDTO balanzada)
@@ -459,7 +488,7 @@ namespace Molinos.Scato.Servicios.Impl
 
                 if (vapor.Length == 12)
                 {
-                    registro = _repositorio.Obtener<Vapor>(v => v.Nombre.StartsWith(vapor));
+                    registro = _repositorio.ObtenerPrimero<Vapor>(v => v.Nombre.StartsWith(vapor));
                 }
                 else
                 {
@@ -510,7 +539,7 @@ namespace Molinos.Scato.Servicios.Impl
 
                 if (destino.Length == 12)
                 {
-                    registro = _repositorio.Obtener<Destino>(v => v.Nombre.StartsWith(destino));
+                    registro = _repositorio.ObtenerPrimero<Destino>(v => v.Nombre.StartsWith(destino));
                 }
                 else
                 {
@@ -540,7 +569,7 @@ namespace Molinos.Scato.Servicios.Impl
 
                 if (exportador.Length == 12)
                 {
-                    registro = _repositorio.Obtener<Exportador>(v => v.Nombre.StartsWith(exportador));
+                    registro = _repositorio.ObtenerPrimero<Exportador>(v => v.Nombre.StartsWith(exportador));
                 }
                 else
                 {
