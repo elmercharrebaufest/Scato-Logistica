@@ -77,10 +77,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     respuestaSap.Errores.ToList().ForEach(x => resultado.Error(x.Key, x.Value));
                 }
 
-                var ordenFas = respuestaSap.Orden.OrderBy(x => x.Id).FirstOrDefault();
-
-                ordenFas.MaterialId = materialId;
-               
+                var ordenFas = respuestaSap.Orden.Where(x => x.MaterialId == materialId).OrderBy(x => x.Id).FirstOrDefault();
                 ValidarOrdenFront(ref ordenFas, materialId, comando.CentroId, comando.Usuario, comando.AplicaFastPass);
 
                 if (resultado.HayErrores)
