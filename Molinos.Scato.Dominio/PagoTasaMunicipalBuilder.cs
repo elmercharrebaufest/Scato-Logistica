@@ -76,7 +76,7 @@ namespace Molinos.Scato.Dominio
                     break;
 
                 case TipoValidacionPagoTasaMunicipal.DiferenciaDePago:
-                    resultado.TipoAlerta = TipoAlerta.Exito;
+                    resultado.TipoAlerta = TipoAlerta.Error;
                     resultado.MensajeAlerta = "EXISTEN DIFERENCIAS EN EL PAGO";
                     resultado.SeLevantaBarrera = true;
                     resultado.EsPagoAbonado = false;
