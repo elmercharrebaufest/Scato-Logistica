@@ -7,6 +7,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Molinos.Scato.WebMobile.App_Start;
 using Molinos.Scato.WebMobile.Filtros;
+using Molinos.Scato.WebMobile.Binders;
 using log4net;
 
 namespace Molinos.Scato.WebMobile
@@ -28,6 +29,10 @@ namespace Molinos.Scato.WebMobile
             var binder = new DateTimeModelBinder(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern, CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " HH:mm");
             ModelBinders.Binders.Add(typeof(DateTime), binder);
             ModelBinders.Binders.Add(typeof(DateTime?), binder);
+
+            var decimalBinder = new DecimalModelBinder();
+            ModelBinders.Binders.Add(typeof(decimal), decimalBinder);
+            ModelBinders.Binders.Add(typeof(decimal?), decimalBinder);
         }
 
         protected void Application_Error()

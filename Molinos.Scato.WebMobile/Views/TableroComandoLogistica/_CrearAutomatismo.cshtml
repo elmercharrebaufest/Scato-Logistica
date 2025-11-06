@@ -62,12 +62,16 @@
                         <div class="mb-3 row mt-4">
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Minimo)
-                                @Html.TextBoxFor(m => m.AutomatismoGrano.Minimo, new { @class = "form-control", type = "Number", data_val_required = "El campo 'Minimo' es requerido." })
+                                @Html.TextBox("AutomatismoGrano.Minimo", 
+                                    Model.AutomatismoGrano.Minimo.HasValue ? Model.AutomatismoGrano.Minimo.Value.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) : "", 
+                                    new { @class = "form-control decimal-input", placeholder = "Ej: 11.44", data_val_required = "El campo 'Minimo' es requerido." })
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Minimo)
                             </div>
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Maximo)
-                                @Html.TextBoxFor(m => m.AutomatismoGrano.Maximo, new { @class = "form-control", type = "Number", data_val_required = "El campo 'Maximo' es requerido." })
+                                @Html.TextBox("AutomatismoGrano.Maximo", 
+                                    Model.AutomatismoGrano.Maximo.HasValue ? Model.AutomatismoGrano.Maximo.Value.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) : "", 
+                                    new { @class = "form-control decimal-input", placeholder = "Ej: 11.44", data_val_required = "El campo 'Maximo' es requerido." })
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Maximo)
                             </div>
                         </div>

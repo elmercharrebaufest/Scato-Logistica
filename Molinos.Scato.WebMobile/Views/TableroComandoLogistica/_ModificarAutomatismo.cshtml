@@ -60,12 +60,16 @@
                         <div class="mb-3 row mt-4">
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Minimo)
-                                <input type="number" class="control input-medium form-control" data-val="true" data-val-number="El campo 'Minimo' debe ser un número." data-val-range="El campo 'Minimo' excede el largo máximo" data-val-range-max="1E+16" data-val-range-min="0" data-val-regex="El Campo 'Minimo' debe ser numérico" data-val-regex-pattern="^[0-9]*(?:,[0-9]*)?$" data-val-required="El campo 'Minimo' es requerido." id="AutomatismoGrano_Minimo" name="AutomatismoGrano.Minimo" value="@Model.AutomatismoGrano.Minimo.GetValueOrDefault().ToString("0")" novalidate="novalidate"><br />
+                                @Html.TextBox("AutomatismoGrano.Minimo", 
+                                    Model.AutomatismoGrano.Minimo.HasValue ? Model.AutomatismoGrano.Minimo.Value.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) : "", 
+                                    new { @class = "form-control decimal-input", placeholder = "Ej: 11.44", data_val_required = "El campo 'Minimo' es requerido." })
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Minimo)
                             </div>
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Maximo)
-                                <input type="number" class="control input-medium form-control" data-val="true" data-val-number="El campo 'Maximo' debe ser un número." data-val-range="El campo 'Maximo' excede el largo máximo" data-val-range-max="1E+16" data-val-range-min="0" data-val-regex="El Campo 'Maximo' debe ser numérico" data-val-regex-pattern="^[0-9]*(?:,[0-9]*)?$" data-val-required="El campo 'Maximo' es requerido." id="AutomatismoGrano_Maximo" name="AutomatismoGrano.Maximo" value="@Model.AutomatismoGrano.Maximo.GetValueOrDefault().ToString("0")" novalidate="novalidate"> <br />
+                                @Html.TextBox("AutomatismoGrano.Maximo", 
+                                    Model.AutomatismoGrano.Maximo.HasValue ? Model.AutomatismoGrano.Maximo.Value.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) : "", 
+                                    new { @class = "form-control decimal-input", placeholder = "Ej: 11.44", data_val_required = "El campo 'Maximo' es requerido." })
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Maximo)
                             </div>
                         </div>
@@ -100,4 +104,4 @@
     </div>
 </div>
 
-@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryval")@Scripts.Render("~/bundles/jqueryval")

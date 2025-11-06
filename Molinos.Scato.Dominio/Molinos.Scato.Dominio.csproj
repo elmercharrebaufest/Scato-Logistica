@@ -1321,6 +1321,7 @@
     <Compile Include="Filtros\FechaAntiguaAttribute.cs" />
     <Compile Include="Helpers\CantidadPrecaladoCircularHelper.cs" />
     <Compile Include="Helpers\ExtensionesByte.cs" />
+    <Compile Include="Helpers\ExtensionesDecimal.cs" />
     <Compile Include="Helpers\FileData.cs" />
     <Compile Include="Helpers\ExtensionesImage.cs" />
     <Compile Include="Helpers\FormatterHelper.cs" />
