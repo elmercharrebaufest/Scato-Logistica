@@ -761,6 +761,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.PanelServiciosWeb, "Index", "PanelServiciosWeb")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.PanelDeControlTransaccionesVisec))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelDeControlTransaccionesVisec, "Index", "PanelDeControlTransaccionesVisec")</li>
+                                }
                                 @if (PermisosHelper.Is(PermisosScato.PanelWorkflows))
                                 {
                                     <li>@Html.ActionLink(Textos.PanelWorkflows, "Index", "PanelWorkflows")</li>

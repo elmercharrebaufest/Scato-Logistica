@@ -2,18 +2,14 @@
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Dto.OperacionesAPI;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Validations.Interfaces;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
-using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +35,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             this.servicioOperaciones = servicioOperaciones;
         }
 
-
-
         /// <summary>
         /// Ejecuta la validación de la orden de carga fas.
         /// </summary>
@@ -59,17 +53,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             try
             {
-                
-
                 var materialId = int.Parse(comando.Orden.MaterialId);
                 var centro = servicio.ObtenerCentro(comando.CentroId);
                 var patente = comando.Orden.PatenteChasis;
                 var workflowObj = servicio.ObtenerWorkflowPorCodigo(Constantes.WorkFlow.workflowVentaFas);
 
-
                 OrdenDeCargaSapDto orden = new OrdenDeCargaSapDto(centro.CodigoSAP, patente, Constantes.WorkFlow.workflowVentaFas);
                 var respuestaSap = servicioComandos.Ejecutar(new ConsultarOrdenCargaFas { Orden = orden }) as ResultadoConsultaOrdenCargaFas;
-                
 
                 if (respuestaSap.HayErrores)
                 {
@@ -214,7 +204,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
-
         /// <summary>
         /// Obtiene las plantas DG para un centro y cliente específicos.
         /// </summary>
@@ -242,7 +231,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             ManejarErrores(result.Errores);
 
             if (!result.Plantas.Any(p => p.Equals(plantaId)))
-            {   
+            {
                 Log.Error(Textos.PlantaNoValida);
                 resultado.Error("2", Textos.PlantaNoValida);
             }
@@ -282,7 +271,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         /// <param name="tipoDomicilio">Identificador del tipo domicilio.</param>
         /// <param name="ordenDomicilio">Identificador del tipo orden domicilio.</param>
         /// <param name="clienteCuit">CUIT del cliente (opcional).</param>
-        /// <returns>Resultado de la operación con los domicilios obtenidos.</returns>      
+        /// <returns>Resultado de la operación con los domicilios obtenidos.</returns>
         public Resultado ObtenerDomiciliosDg(int centroId, int clienteId, int? tipoDomicilio, int? ordenDomicilio, string clienteCuit = null)
         {
             var cuit = ObtenerCuit(clienteId, clienteCuit);
@@ -295,7 +284,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             ManejarErrores(result.Errores);
 
             if (!result.Domicilios.Any(p => p.Tipo == tipoDomicilio && p.Orden == ordenDomicilio))
-            {   
+            {
                 Log.Error(Textos.DomicilioNoValido);
                 resultado.Error("2", Textos.DomicilioNoValido);
             }
@@ -309,12 +298,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 return new ConsultarEscalablesDummy { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario };
             }
-
             else
             {
                 return new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario };
             }
-
         }
 
         private bool ValidarDummyActivo()
@@ -344,7 +331,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Log.Error(Textos.DatosOrdenInvalidos);
                     this.resultado.Error("1", Textos.DatosOrdenInvalidos);
                     return this.resultado;
-                };
+                }
+                ;
 
                 // Validación para verificar si KmARecorrer está vacío
                 if (orden.DerivadoGranarioHabilitado &&
@@ -361,7 +349,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;
 
                 if (esClienteProvisorio && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
-                {   
+                {
                     Log.Error(string.Format(Textos.Error_Requerido, Textos.Remitente));
                     this.resultado.Error("1", string.Format(Textos.Error_Requerido, Textos.Remitente));
                     return this.resultado;
@@ -388,7 +376,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     }
 
                     if (string.IsNullOrEmpty(orden.TipoYOrdenDestino))
-                    {   
+                    {
                         Log.Error(string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
                         resultado.Error("1", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
                         return resultado;
@@ -488,7 +476,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 foreach (var error in validationResult.Errors)
                 {
-                    // Agregar los errores al resultado 
+                    // Agregar los errores al resultado
                     resultado.Error(error.PropertyName, error.ErrorMessage);
                 }
 
@@ -574,11 +562,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (tipoComercial.TransportistaEsProveedor && (transportistaId == 0))
             {
                 Log.Debug("El transportista es obligatorio para el tipo comercial");
-                if (esTransportistaTramo2) 
+                if (esTransportistaTramo2)
                 {
                     Log.Error(string.Format(Textos.Error_Requerido, Textos.Transportista_Segundo_Tramo));
                     resultado.Error("TransportistaTramo2", string.Format(Textos.Error_Requerido, Textos.Transportista_Segundo_Tramo));
-                }    
+                }
                 else
                 {
                     Log.Error(string.Format(Textos.Error_Requerido, Textos.Transportista));
@@ -602,7 +590,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Log.Error(string.Format(Textos.Error_ProveedorInvalido));
                         resultado.Error("TransportistaTramo2", string.Format(Textos.Error_ProveedorInvalido));
                     }
-                       
+
                     transportistaId = 0;
                     return false;
                 }
@@ -704,12 +692,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 throw;
             }
-
         }
 
         private ResultadoCartaPorteElectronicaDummy EjecutarAutorizarCpeDGDummy(OrdenCargaFasDto orden, int idCentro)
         {
-
             var dominios = new List<string> { orden.PatenteCamion };
             if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
             {
@@ -779,6 +765,5 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 orden.GetType().GetProperty($"{key}Id")?.SetValue(orden, 0);
             }
         }
-
     }
 }

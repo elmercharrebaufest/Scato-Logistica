@@ -1,0 +1,30 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model FiltroPanelDeTransaccionesVisecDto
+@{
+    Layout = null;
+    var items = (ListaPaginada<VisecTransmisionDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+                    grid.Columna("seleccionCol"
+                    , string.Empty
+                    , f => Html.CheckBox("seleccion", false, new { value = f.Id, @class = "columna-checkbox "})
+                    , null
+                    ,false),
+                    grid.ColumnaModificar(Html, "PanelDeControlTransaccionesVisec"),
+                    grid.Columna("NumeroProceso", Textos.PanelDeTransaccionesVisec_NumeroProceso),
+                    grid.Columna("NumeroCTG", Textos.PanelDeTransaccionesVisec_NumeroDocumento),
+                    grid.Columna("DocumentosAsociados", Textos.PanelDeTransaccionesVisec_DocumentosAsociados),
+                    grid.Columna("FechaTransaccion", Textos.PanelDeTransaccionesVisec_FechaProcesamiento),
+                    grid.Columna("Estado", Textos.PanelDeTransaccionesVisec_Estado, f => ExtensionesEnum.DisplayEnum<EstadoTransmisionAVisec>(f.Estado)),
+                    grid.Columna("DetalleTransaccion", Textos.PanelDeTransaccionesVisec_Detalle),
+                    grid.Columna("HistorialProcesos", Textos.PanelDeTransaccionesVisec_ProcesosAnteriores)
+                ))

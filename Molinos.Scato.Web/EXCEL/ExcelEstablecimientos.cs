@@ -97,7 +97,10 @@ namespace Molinos.Scato.Web.EXCEL
             celda.SetCellValue(Textos.Transportista_Localidad);
             celda = row.CreateCell(7);
             celda.CellStyle = cellBorderStyleColumnTitles;
-            celda.SetCellValue(Textos.Transportista_Provincia);
+            celda.SetCellValue(Textos.Transportista_Provincia); 
+            celda = row.CreateCell(8);
+            celda.CellStyle = cellBorderStyleColumnTitles;
+            celda.SetCellValue("Renspa");
 
             //Establecer Relleno de Celdas de la Tabla
             var i = 3; //Fila Actual
@@ -122,6 +125,8 @@ namespace Molinos.Scato.Web.EXCEL
                 celda.SetCellValue(item.Localidad);
                 celda = row.CreateCell(7);
                 celda.SetCellValue(item.Provincia);
+                celda = row.CreateCell(8);
+                celda.SetCellValue(item.CodigoRENSPA);
                 i++;
             }
 

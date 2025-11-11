@@ -26,5 +26,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         public string NumeroDocumentoIngreso { get; set; }
         public string Patente { get; set; }
+
+        public string TipoVariedadCodigo { get; set; }
     }
 }

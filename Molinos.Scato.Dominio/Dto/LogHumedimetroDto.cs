@@ -7,11 +7,11 @@ namespace Molinos.Scato.Dominio.Dto
 {
     public sealed class LogHumedimetroDto: IValidatableObject
     {
-        [Display(ResourceType = typeof (Textos), Name = "LogHumedimetro_FechaDesde")] 
+        [Display(ResourceType = typeof (Textos), Name = "FechaDesde2")] 
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public DateTime FechaDesde { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "LogHumedimetro_FechaHasta")]
+        [Display(ResourceType = typeof(Textos), Name = "FechaHasta2")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public DateTime FechaHasta { get; set; }
 
@@ -26,7 +26,7 @@ namespace Molinos.Scato.Dominio.Dto
         {
             if (FechaDesde > FechaHasta)
             {
-                yield return new ValidationResult(string.Format(Textos.Error_FechaMayor + Textos.LogHumedimetro_FechaDesde,Textos.LogHumedimetro_FechaHasta), new[] {"FechaHasta"});
+                yield return new ValidationResult(string.Format(Textos.Error_FechaMayor + Textos.FechaDesde2,Textos.FechaHasta2), new[] {"FechaHasta2"});
             }
         }
     }

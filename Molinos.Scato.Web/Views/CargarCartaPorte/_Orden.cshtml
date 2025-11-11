@@ -29,6 +29,7 @@
     var aceptaRechazar = (bool)(ViewBag.AceptaRechazar ?? false);
     var esIngreso = (bool)(ViewBag.EsIngreso ?? false);
     var controlarTiempoPorCTG = (bool)(ViewBag.ControlarTiempoPorCTG ?? false);
+    var esSanLorenzo = (bool)(ViewBag.EsSanLorenzo ?? false);
     var listaRamalFerroviario = (IEnumerable<SelectListItem>)ViewBag.ListaRamalFerroviario;
 
     var workflow = (string)ViewBag.Workflow;
@@ -42,7 +43,6 @@
     {
         Model.TipoComercialId = Convert.ToInt32(tiposComerciales.First().Value);
     }
-
 
     if (ViewBag.SoloLectura == null)
     {
@@ -83,6 +83,8 @@
     <script type="text/javascript">MostrarAlertaAdvertenciaTasaMunicipal('@ViewBag.MensajeAlertaTasaMunicipal', 10000);</script>
 }
 
+<script src="~/Scripts/jquery.inputmask.bundle.js"></script>
+
 @Html.Hidden("deshabilitarTitular", deshabilitarTitular, new { id = "deshabilitarTitular" })
 @Html.Hidden("deshabilitarEntregador", deshabilitarEntregador, new { id = "deshabilitarEntregador" })
 @Html.Hidden("deshabilitarDestinatario", deshabilitarDestinatario, new { id = "deshabilitarDestinatario" })
@@ -111,6 +113,7 @@
 @Html.Hidden("cupoModel", cupo)
 @Html.Hidden("TipoVehiculoModel", tipoVehi)
 @Html.Hidden("esEgreso", esEgreso)
+@Html.HiddenFor(model => model.TipoVariedadCodigo)
 
 <div id="links"
      data-url-obtener-proveedores-sap="@Url.Action("ObtenerProveedoresSap", "Consultas")"
@@ -135,6 +138,7 @@
      data-url-obtener-clientes-sap="@Url.Action("ObtenerClientesSap", "Consultas")"
      data-url-buscar-clientes="@Url.Action("BuscarClientes", "Consultas")"
      data-url-buscar-cliente-unico="@Url.Action("BuscarCliente", "Consultas")"
+     data-url-buscar-renspa="@Url.Action("BuscarCodigosRENSPAPorProveedor", "Consultas")"
      data-url-obtenertiposvehiculo="@Url.Action("ObtenerTiposVehiculo", "Consultas")"
      data-url-obtener-foto-mesa="@Url.Action("TomarFotoMesaDigitalizacion", "CargarCartaPorte")"
      data-url-obtener-carta-porte-electronica="@Url.Action("ObtenerCartaPorteElectronica", "CargarCartaPorte")"
@@ -257,7 +261,7 @@
                     <div class="span6 control-group control-group-no-bottom FechaCP">
                         @Html.LabelFor(model => model.FechaCP, new { @class = "control-label small" })
                         <div class="">
-                            @Html.TextBox("FechaCP", Model.FechaCP.Formatted(), new { @class = "date control input-small FechaCPValidacion", data_date_format = Html.ClientDateFormat(), data_error = string.Format(Textos.Error_FechaMenor + "<br/>" + Textos.CartaPorte_FechaIngreso, new[] { Textos.CartaPorte_FechaCP }), data_error2 = string.Format(Textos.Error_FechaCPAntigua + "<br/>", Textos.CartaPorte_FechaCP, Model.FechaEmision.AddDays(-dias).Formatted(), new[] { Textos.CartaPorte_FechaCP }), @tabindex = tabIndexFechaCp })
+                            @Html.TextBox("FechaCP", Model.FechaCP.Formatted(), new { @class = "date control input-small FechaCPValidacion", data_date_format = Html.ClientDateFormat(), data_error = string.Format(Textos.Error_FechaMenor + "<br />" + Textos.CartaPorte_FechaIngreso, new[] { Textos.CartaPorte_FechaCP }), data_error2 = string.Format(Textos.Error_FechaCPAntigua + "<br />", Textos.CartaPorte_FechaCP, Model.FechaEmision.AddDays(-dias).Formatted(), new[] { Textos.CartaPorte_FechaCP }), @tabindex = tabIndexFechaCp })
                             @Html.ValidationMessageFor(model => model.FechaCP)
                         </div>
                     </div>
@@ -316,7 +320,6 @@
                         @Html.TextBoxFor(model => model.Intermediario, new { @class = "control input-xlarge  " })
                         @Html.ValidationMessageFor(model => model.Intermediario)
                         @Html.HiddenFor(model => model.IntermediarioId)
-
                     </div>
                 </div>
                 <div class="control-group control-group-no-bottom">
@@ -687,6 +690,16 @@
                                 @Html.ValidationMessageFor(model => model.Observacion)
                             </div>
                         </div>
+
+                        <div class="row row-carta-porte">
+                            <div class="span12 control-group">
+                                @Html.LabelFor(model => model.CodigoRENSPA, new { @class = "control-label small" })
+                                <div class="controls-small">
+                                    @Html.TextBoxFor(model => model.CodigoRENSPA, new { @class = "control", @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.CodigoRENSPA)
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div id="mensajeAnexo" data-error-requerido="@String.Format(Textos.Error_Requerido,Textos.CartaPorte_CodigoAnexo)"></div>
                     @if (Model.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
@@ -771,15 +784,10 @@
                     <img id="foto2" src="">
                     <img src="" id="place-holder-2" class="@(Model.LeerCPDeFoto ? "hidden" : "")" style="margin-left: -1200px; position: absolute; z-index: 100;" />
                 </div>
-
             </div>
         </div>
     </div>
-
 </div>
-
-
-
 
 <div id="autocompleteTCP"></div>
 <div id="autocompleteInt"></div>
@@ -790,7 +798,6 @@
 <div id="autocompleteDest"></div>
 <div id="autocompleteDestino"></div>
 <div id="autocompleteTran"></div>
-
 
 <div class="modal hide fade" id="dialogo-confirmar">
     <div class="modal-header">
@@ -845,4 +852,3 @@
         }
     </style>
 }
-

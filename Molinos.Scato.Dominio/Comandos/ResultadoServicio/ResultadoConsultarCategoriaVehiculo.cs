@@ -1,5 +1,4 @@
-﻿using Molinos.Scato.Dominio.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Molinos.Scato.Dominio.Comandos.ResultadoServicio

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -58,6 +59,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.PuestoNoGranos = puestoNoGranos;
             ViewBag.ContingenciaGranos = servicio.EsPuestoEnContingencia(puestoGranos!=null?puestoGranos.Id:0, true);
             ViewBag.ContingenciaNoGranos = servicio.EsPuestoEnContingencia(puestoNoGranos!=null?puestoNoGranos.Id:0, false);
+            ViewBag.ContingenciaVisecStock = servicio.TieneContingenciaPorTipo(Constantes.Contingencia.VisecCaido);
         }
 
         [DatosUsuario]
@@ -527,6 +529,21 @@ namespace Molinos.Scato.Web.Controllers
 
                 var resultado = servicioComandos.Ejecutar(comando);
                 RegistracionContingencia("Conecta a AFIP para buscar Carta Porte Electronica", datosUsuario.NombreUsuario, aModificar.ContingenciaAfipCpe, motivo);
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(Textos.Error_ActualizarGenerico, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [DatosUsuario]
+        public JsonResult ContingenciaVisec(DatosUsuario datosUsuario, string motivo)
+        {
+            try
+            {
+                bool tieneContingencia = servicio.TieneContingenciaPorTipo(Constantes.Contingencia.VisecCaido);
+                RegistracionContingencia(Constantes.Contingencia.VisecCaido, datosUsuario.NombreUsuario, !tieneContingencia, motivo);
                 return Json("", JsonRequestBehavior.AllowGet);
             }
             catch

@@ -29,16 +29,33 @@ namespace Molinos.Scato.Actividades.Internas
                 if (establecimientoId.HasValue)
                 {
                     var establecimientoModel = servicioRepositorio.ObtenerEstablecimiento(establecimientoId ?? 0);
-                    int.TryParse(establecimientoModel.CodigoDeEstablecimiento, out int codigoEstablecimiento);
-                    if (codigoEstablecimiento <= Constantes.AsignacionDeEstablecimientoRangos.Desde
-                       || codigoEstablecimiento >= Constantes.AsignacionDeEstablecimientoRangos.Hasta)
+                    var recorrido = servicioRepositorio.ObtenerRecorridoPorGuid(instanceId);
+
+                    var esVisec = recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR || recorrido.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR;
+                    if (esVisec && !establecimientoModel.EsEUDR)
                     {
-                        resultado = servicioRepositorio.ValidarStockEstablecimiento(establecimientoId.Value, instanceId);
+                        resultado.Error(string.Empty, "Se debe elegir un establecimiento válido para Eudr");
+                        return resultado;
                     }
+
+                    int.TryParse(establecimientoModel.CodigoDeEstablecimiento, out int codigoEstablecimiento);
+                    var aplicaValidarStock = !establecimientoModel.EsEUDR
+                        && (codigoEstablecimiento <= Constantes.AsignacionDeEstablecimientoRangos.Desde || codigoEstablecimiento >= Constantes.AsignacionDeEstablecimientoRangos.Hasta);
+                    if (aplicaValidarStock)
+                        resultado = servicioRepositorio.ValidarStockEstablecimiento(establecimientoId.Value, instanceId);
+
                     if (!resultado.HayErrores)
                     {
-                        var materialId = servicioRepositorio.ObtenerMaterialIdPorInstanceId(instanceId);
-                        var tipoMaterialPorVariedad = servicioRepositorio.ObtenerVariedadIdPorMaterial(materialId, esEpa: establecimientoModel.EsSojaEPA, esSustentable: true, esEUDR: establecimientoModel.EsEUDR);
+                        int? tipoMaterialPorVariedad = null;
+                        if (esVisec && establecimientoModel.EsEUDR)
+                        {
+                            var tipoVariedad = servicioRepositorio.ObtenerTipoVariedadPorCodigo(recorrido.TipoVariedadCodigo);
+                            tipoMaterialPorVariedad = tipoVariedad?.Id;
+                        }
+                        else
+                        {
+                            tipoMaterialPorVariedad = servicioRepositorio.ObtenerVariedadIdPorMaterial(recorrido.Material.Id, esEpa: establecimientoModel.EsSojaEPA, esEUDR: establecimientoModel.EsEUDR, esSustentable: true);
+                        }
 
                         resultado = servicioComandos.Ejecutar(new ModificarRecorridoEstablecimiento
                         {
@@ -48,8 +65,6 @@ namespace Molinos.Scato.Actividades.Internas
                         });
 
                         var cartaPorte = servicioRepositorio.ObtenerCartaPortePorInstanceId(instanceId);
-                        var recorrido = servicioRepositorio.ObtenerRecorridoPorGuid(instanceId);
-
                         servicioComandos.Ejecutar(new AgregarMarcaSustentable
                         {
                             RutaFotoCP = cartaPorte.FotoRutaDestino,

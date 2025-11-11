@@ -73,6 +73,9 @@
     <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.8.6.3\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
+    <Reference Include="Hangfire.Core, Version=1.8.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.8.20\lib\net451\Hangfire.Core.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.23.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.23\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -110,6 +113,9 @@
     </Reference>
     <Reference Include="NPOI.OpenXmlFormats">
       <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL">
       <HintPath>..\packages\PdfiumViewer.2.13.0.0\lib\net20\PdfiumViewer.dll</HintPath>
@@ -316,6 +322,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\TipoEmbalajeMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoVariedadMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoVariedadPorMaterialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VisecTransmisionMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VideoCamaraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CosechaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaRubrosAnalizarMappingProfile.cs" />
@@ -369,6 +376,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\VinedoPropioMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ImpIdentificacionMuestraAuditoriaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VinedoTercerosMappingProfile.cs" />
+    <Compile Include="Dummy\DummyDataAgroServices.cs" />
     <Compile Include="ErrorRespons.cs" />
     <Compile Include="Estrategias\DTO\BalanzadaRecibidaDTO.cs" />
     <Compile Include="Estrategias\Implementacion\BalanzadaContext.cs" />
@@ -394,12 +402,15 @@
     <Compile Include="Impl\ReglaTasaMunicipalAmbos.cs" />
     <Compile Include="Impl\ReglaTasaMunicipalGranos.cs" />
     <Compile Include="Impl\ReglaTasaMunicipalNoGranos.cs" />
+    <Compile Include="Impl\Hangfire\ServicioHangfireQueue.cs" />
+    <Compile Include="Impl\Hangfire\HangfireQueue.cs" />
     <Compile Include="Impl\RestClientFactory.cs" />
     <Compile Include="Impl\ServicioEstadoPuesto.cs" />
     <Compile Include="Impl\ServicioCircular.cs" />
     <Compile Include="Impl\Hangfire\ServicioLlamadoAutomatico.cs" />
     <Compile Include="Impl\ServicioOperaciones.cs" />
     <Compile Include="Impl\ServicioOperacionesMock .cs" />
+    <Compile Include="Impl\Hangfire\ServicioSincronizacionVisec.cs" />
     <Compile Include="InnerException.cs" />
     <Compile Include="Interfaces\Balanzada\IServicioCarga.cs" />
     <Compile Include="IReglaExcepcionTasaMunicipal.cs" />
@@ -409,7 +420,10 @@
     <Compile Include="IServicioEstadoPuesto.cs" />
     <Compile Include="IServicioCircular.cs" />
     <Compile Include="Interfaces\Hangfire\IServicioLlamadoAutomatico.cs" />
+    <Compile Include="IHangfireQueue.cs" />
+    <Compile Include="IServicioHangfireQueue.cs" />
     <Compile Include="IServicioOperaciones.cs" />
+    <Compile Include="Interfaces\Hangfire\IServicioSincronizacionVisec.cs" />
     <Compile Include="MercadoLibreException.cs" />
     <Compile Include="FormattingHtmlHelper.cs" />
     <Compile Include="IFirmaProvider.cs" />
@@ -613,6 +627,15 @@
     <Compile Include="Procesamiento\ProcesadorCrearHuellaDigital.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarComoUsadoPagosTasaMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCartaPorteRENSPA.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoTipoVariedad.cs" />
+    <Compile Include="Procesamiento\Visec\ProcesadorConsultarDataAgroVisec.cs" />
+    <Compile Include="Procesamiento\Visec\ProcesadorConsultarEstadoTransmisionVisec.cs" />
+    <Compile Include="Procesamiento\Visec\ProcesadorConsultarStockRUCA.cs" />
+    <Compile Include="Procesamiento\Visec\ProcesadorConsultarStockUP.cs" />
+    <Compile Include="Procesamiento\Visec\ProcesadorVisecDistribuirStock.cs" />
+    <Compile Include="Procesamiento\Visec\ProcesadorCrearActualizarVisecTransmision.cs" />
+    <Compile Include="Procesamiento\Visec\ProcesadorImportarCartaPorteVisec.cs" />
     <Compile Include="Procesamiento\ProcesadorValidarOrdenCargaInternaFas.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarTicketsNoGranos.cs" />
     <Compile Include="Procesamiento\ProcesadorVerificarEnCompliance.cs" />
@@ -1277,6 +1300,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\DataAgroService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\GestionarCartasDePortePE\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1464,6 +1492,12 @@
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarProvinciasRespuesta.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarRenspaRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1545,6 +1579,12 @@
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1552,6 +1592,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse.datasource">
@@ -1620,6 +1663,40 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ComplianceWebService\Molinos.Scato.Servicios.ComplianceWebService.Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DataAgroService\DataAgroServices.wsdl" />
+    <None Include="Service References\DataAgroService\DataAgroServices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataAgroService\DataAgroServices1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataAgroService\DataAgroServices2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataAgroService\DataAgroServices3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataAgroService\DataAgroServices4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DataAgroService\Molinos.Scato.Servicios.DataAgroService.ApoderadoSapDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DataAgroService\Molinos.Scato.Servicios.DataAgroService.CupoSapTerceroDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DataAgroService\Molinos.Scato.Servicios.DataAgroService.ResultadoAltaCampoSustentable.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DataAgroService\Molinos.Scato.Servicios.DataAgroService.ResultadoSap.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DataAgroService\Molinos.Scato.Servicios.DataAgroService.ResultadoValidarProveedorComercial.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DataAgroService\Molinos.Scato.Servicios.DataAgroService.SISA.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\GestionarCartasDePortePE\GestionarCartasDePortePE.wsdl" />
@@ -1953,6 +2030,7 @@
     <WCFMetadataStorage Include="Service References\AfipWebService\" />
     <WCFMetadataStorage Include="Service References\ComplianceWebServiceV2\" />
     <WCFMetadataStorage Include="Service References\ComplianceWebService\" />
+    <WCFMetadataStorage Include="Service References\DataAgroService\" />
     <WCFMetadataStorage Include="Service References\GestionarCartasDePortePE\" />
     <WCFMetadataStorage Include="Service References\Orquestador\" />
     <WCFMetadataStorage Include="Service References\ServicioImpresion\" />
@@ -1986,6 +2064,12 @@
   <ItemGroup>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Intacta\GestionarCartasDePortePE.XML" />
+    <None Include="Service References\DataAgroService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\DataAgroService\configuration.svcinfo" />
+    <None Include="Service References\DataAgroService\configuration91.svcinfo" />
     <None Include="Service References\Orquestador\ServicioOrquestador1.disco" />
     <None Include="Service References\AfipCPDigitalService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>

@@ -173,6 +173,30 @@ namespace Molinos.Scato.Web.Helpers
                                                         "editar-borrar-columna", false);
         }
 
+
+        public static WebGridColumn ColumnaModificar(this WebGrid grid, HtmlHelper html, string controller, Func<dynamic, bool> condition, string style = "")
+        {
+            return grid.Column("editar", "", f =>
+            {
+                // Verificar si la condición es nula o si se cumple
+                if (condition(f))
+                {
+                    return html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString());
+                }
+                return null; // No renderizar nada si la condición no se cumple
+            },
+            "editar-borrar-columna", false);
+        }
+
+
+        //public static WebGridColumn ColumnaModificar(this WebGrid grid, HtmlHelper html, string controller, Func<dynamic, object> format = null, string style = "")
+        //{
+        //    Func<dynamic, object> formatdefault = (f => true ? html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, (style + " ajax-editar-link"), "icon-edit", true).ToHtmlString()) : null);
+
+        //    return grid.Column("editar", "", formatdefault,
+        //                                                "editar-borrar-columna", false);
+        //}
+
         public static WebGridColumn ColumnaModificarCarga(this WebGrid grid, HtmlHelper html, string action, string controller, string style = "")
         {
             return grid.Column("editar", "", f => html.Raw(html.BotonLink(Textos.Modificar, action, controller, new { f.id, f.numeroBalanza }, style, "icon-edit", true).ToHtmlString()),

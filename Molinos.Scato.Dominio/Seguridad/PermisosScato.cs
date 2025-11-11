@@ -783,5 +783,11 @@ namespace Molinos.Scato.Dominio.Seguridad
 
         [Display(ResourceType = typeof(Textos), Name = "ActPesadaTaraExportacion")]
         PesadaTaraExportacion = 708,
+
+        [Display(ResourceType = typeof(Textos), Name = "PanelDeControlTransaccionesVisec")]
+        PanelDeControlTransaccionesVisec = 711,
+
+        [Display(ResourceType = typeof(Textos), Name = "ActImportacionEgresoVisec")]
+        ActividadImportacionEgresoVisec = 712,
     }
 }

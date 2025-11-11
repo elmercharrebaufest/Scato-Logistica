@@ -1,0 +1,53 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Dominio.Enums
+@model Molinos.Scato.Web.Models.ImportacionEgresoVisecViewModel
+
+<link href="~/Styles/area/enEsperaHB4/index.css" rel="stylesheet" />
+
+<div class="titSecciones">@Textos.ActImportacionEgresoVisec</div>
+<br />
+
+<div class="contenidoCentrado">
+    <div class="grilla">
+        <div class="grilla__group">
+            <span class="grilla__cell grilla__cell--header">Patente</span>
+            <span class="grilla__cell">@Model.Patente</span>
+        </div>
+        <div class="grilla__group">
+            <span class="grilla__cell grilla__cell--header">Carta de Porte</span>
+            <span class="grilla__cell">@Model.CartaPorte</span>
+        </div>
+        <div class="grilla__group">
+            <span class="grilla__cell grilla__cell--header">Material</span>
+            <span class="grilla__cell">@Model.Material</span>
+        </div>
+    </div>
+</div>
+
+<div class="contenidoCentrado">
+    <p class="text-center negrita">
+        Kgs de Visec requeridos: <span style="color: #ffc107;">@Model.PesoVisecRequerido</span>
+    </p>
+</div>
+
+<div class="contenidoCentrado" style="margin-top: 30px;">
+    <div>¿Cómo desea proseguir con la salida de Visec?</div>
+
+    @using (Html.BeginForm("Reintentar", "ImportacionEgresoVisec", FormMethod.Post, new { @class = "causaBlock" }))
+    {
+        @Html.HiddenFor(m => m.InstanciaWorkflow)
+        @Html.HiddenFor(m => m.WorkflowDefinicionId)
+        @Html.HiddenFor(m => m.CartaPorte)
+        @Html.HiddenFor(m => m.Patente)
+        @Html.HiddenFor(m => m.Material)
+        @Html.HiddenFor(m => m.PesoVisecRequerido)
+
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; align-items: center;">
+            <button type="submit" class="btn btn-primary">Reintentar</button>
+            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

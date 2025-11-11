@@ -14,5 +14,13 @@
             public const string InformarPagoComoConsumido = "MOAPayApi/InformarPagoComoConsumido";
             public const string CrearModificar = "MOAPayApi/CrearModificar";
         }
+        
+        public struct VISEC
+        {
+            public const string ImportacionCartaPorte = "VisecApi/ImportacionCartaPorte";
+            public const string ExisteStockUP = "VisecApi/ExisteStockUnidadProductiva";
+            public const string ExisteStockRUCA = "VisecApi/ExisteStockRUCA";
+            public const string ConsultarEstadoImportacion = "VisecApi/ConsultarEstadoImportacion";
+        }
     }
 }

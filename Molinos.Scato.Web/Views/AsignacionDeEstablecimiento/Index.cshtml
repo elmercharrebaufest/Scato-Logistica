@@ -167,6 +167,8 @@
                 @Html.HiddenFor(m => m.WorkflowDefinicionId)
                 @Html.HiddenFor(m => m.Workflow)
                 @Html.HiddenFor(m => m.TipoVehiculo)
+                @Html.HiddenFor(m => m.RecorridoId)
+                @Html.HiddenFor(m => m.TipoVariedadCodigo)
                 if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
                 {
                     <div class="alert alert-error">

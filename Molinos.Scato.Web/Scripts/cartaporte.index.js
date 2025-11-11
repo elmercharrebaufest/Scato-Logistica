@@ -2,6 +2,7 @@
 vehiculoDemorado = false;
 jQuery(document).ready(function ($) { 
     activarCPE()
+    $("#CodigoRENSPA").inputmask("99.999.9.99999/99");
     $("#VehiculoDemorado").val(false);
     $('#FechaEmision').attr("readonly", "readonly");
     $('#FleteAPagar').prop('checked', true);
@@ -739,6 +740,30 @@ jQuery(document).ready(function ($) {
     });
 
     $(".foto1-conteiner").attr("style", "margin-top: 0px !import;");
+    
+    $("#CodigoRENSPA").autocomplete({
+        source: function (request, response) {
+            var titularId = $("#TitularCartaPorteId").val();
+            if (!titularId || titularId === '0') {
+                response([]);
+                return;
+            }
+
+            $.ajax({
+                url: $("#links").data().urlBuscarRenspa,
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    proveedorId: titularId,
+                    term: request.term
+                },
+                success: function (data) {
+                    response(data);
+                },
+            });
+        },
+        minLength: 1
+    });
 });
 
 

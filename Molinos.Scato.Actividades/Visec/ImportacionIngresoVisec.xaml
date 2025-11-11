@@ -1,0 +1,274 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.ImportacionIngresoVisec"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdc="clr-namespace:Molinos.Scato.Dominio.Comandos;assembly=Molinos.Scato.Dominio"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="hndInstance" Type="InArgument(p:CorrelationHandle)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="cartaPorte" Type="InArgument(msdd:CartaPorteDto)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.ImportacionIngresoVisec_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Molinos.Scato.Dominio.Dto</x:String>
+      <x:String>System.ServiceModel.Activities</x:String>
+      <x:String>Molinos.Scato.Dominio.Comandos</x:String>
+      <x:String>Molinos.Scato.Dominio.Enums</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>Ninject</AssemblyReference>
+      <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>Owin</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="ImportacionIngresoVisec" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="p:CorrelationHandle" Name="__handle1" />
+      <Variable x:TypeArguments="msdc:Resultado" Name="resultado" />
+      <Variable x:TypeArguments="x:Boolean" Name="esVisec" />
+      <Variable x:TypeArguments="x:Boolean" Name="esUnidadProductiva" />
+    </Sequence.Variables>
+    <Flowchart sap2010:WorkflowViewState.IdRef="Flowchart_1">
+      <Flowchart.StartNode>
+        <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_3">
+          <local:ValidarVariedadVisec sap2010:WorkflowViewState.IdRef="ValidarVariedadVisec_1">
+            <local:ValidarVariedadVisec.EsVisec>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">esVisec</mca:CSharpReference>
+              </OutArgument>
+            </local:ValidarVariedadVisec.EsVisec>
+            <local:ValidarVariedadVisec.InstanceId>
+              <InArgument x:TypeArguments="s:Guid">
+                <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+              </InArgument>
+            </local:ValidarVariedadVisec.InstanceId>
+          </local:ValidarVariedadVisec>
+          <FlowStep.Next>
+            <FlowDecision x:Name="__ReferenceID0" DisplayName="Es EUDR o EPA/EUDR" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+              <FlowDecision.Condition>
+                <mca:CSharpValue x:TypeArguments="x:Boolean">esVisec</mca:CSharpValue>
+              </FlowDecision.Condition>
+              <FlowDecision.True>
+                <FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_7">
+                  <local:ValidarOrigenCPEVisec sap2010:WorkflowViewState.IdRef="ValidarOrigenCPEVisec_1">
+                    <local:ValidarOrigenCPEVisec.CartaPorte>
+                      <InArgument x:TypeArguments="msdd:CartaPorteDto">
+                        <mca:CSharpValue x:TypeArguments="msdd:CartaPorteDto">cartaPorte</mca:CSharpValue>
+                      </InArgument>
+                    </local:ValidarOrigenCPEVisec.CartaPorte>
+                    <local:ValidarOrigenCPEVisec.EsUnidadProductiva>
+                      <OutArgument x:TypeArguments="x:Boolean">
+                        <mca:CSharpReference x:TypeArguments="x:Boolean">esUnidadProductiva</mca:CSharpReference>
+                      </OutArgument>
+                    </local:ValidarOrigenCPEVisec.EsUnidadProductiva>
+                  </local:ValidarOrigenCPEVisec>
+                  <FlowStep.Next>
+                    <FlowDecision x:Name="__ReferenceID2" DisplayName="Es UnidadProductiva" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
+                      <FlowDecision.Condition>
+                        <mca:CSharpValue x:TypeArguments="x:Boolean">esUnidadProductiva</mca:CSharpValue>
+                      </FlowDecision.Condition>
+                      <FlowDecision.True>
+                        <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_5">
+                          <local:EncolamientoImportacionIngresoUPVisec sap2010:WorkflowViewState.IdRef="EncolamientoImportacionIngresoUPVisec_1">
+                            <local:EncolamientoImportacionIngresoUPVisec.CartaPorte>
+                              <InArgument x:TypeArguments="msdd:CartaPorteDto">
+                                <mca:CSharpValue x:TypeArguments="msdd:CartaPorteDto">cartaPorte</mca:CSharpValue>
+                              </InArgument>
+                            </local:EncolamientoImportacionIngresoUPVisec.CartaPorte>
+                          </local:EncolamientoImportacionIngresoUPVisec>
+                        </FlowStep>
+                      </FlowDecision.True>
+                      <FlowDecision.False>
+                        <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_6">
+                          <local:EncolamientoImportacionIngresRUCAVisec sap2010:WorkflowViewState.IdRef="EncolamientoImportacionIngresRUCAVisec_1">
+                            <local:EncolamientoImportacionIngresRUCAVisec.CartaPorte>
+                              <InArgument x:TypeArguments="msdd:CartaPorteDto">
+                                <mca:CSharpValue x:TypeArguments="msdd:CartaPorteDto">cartaPorte</mca:CSharpValue>
+                              </InArgument>
+                            </local:EncolamientoImportacionIngresRUCAVisec.CartaPorte>
+                          </local:EncolamientoImportacionIngresRUCAVisec>
+                        </FlowStep>
+                      </FlowDecision.False>
+                    </FlowDecision>
+                  </FlowStep.Next>
+                </FlowStep>
+              </FlowDecision.True>
+            </FlowDecision>
+          </FlowStep.Next>
+        </FlowStep>
+      </Flowchart.StartNode>
+      <x:Reference>__ReferenceID0</x:Reference>
+      <x:Reference>__ReferenceID1</x:Reference>
+      <x:Reference>__ReferenceID2</x:Reference>
+      <x:Reference>__ReferenceID3</x:Reference>
+      <x:Reference>__ReferenceID4</x:Reference>
+      <x:Reference>__ReferenceID5</x:Reference>
+    </Flowchart>
+    <sads:DebugSymbol.Symbol>d15DOlxNT0FcUmVwb3NHaXRcU2NhdG9Mb2dpc3RpY2FNT0FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xWaXNlY1xJbXBvcnRhY2lvbkluZ3Jlc29WaXNlYy54YW1sDlEDpQEOAgEBWAWjARECAQJbC2YoAgE2ahFqVwIBLm4TeTECAR19GX1qAgEVjAEbkgFKAgEMgQEbhwFJAgEDXhFeXwIBP2MRY1cCATd2GXZyAgEmcRlxawIBHo8BIY8BcwIBDYQBIYQBcwIBBA==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="ValidarVariedadVisec_1" sap:VirtualizedContainerService.HintSize="200,22.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ValidarOrigenCPEVisec_1" sap:VirtualizedContainerService.HintSize="200,22.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="EncolamientoImportacionIngresoUPVisec_1" sap:VirtualizedContainerService.HintSize="200,22.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_5">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">80,509</av:Point>
+            <av:Size x:Key="ShapeSize">200,22.4</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="EncolamientoImportacionIngresRUCAVisec_1" sap:VirtualizedContainerService.HintSize="200,22.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">330,509</av:Point>
+            <av:Size x:Key="ShapeSize">200,22.4</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_2" sap:VirtualizedContainerService.HintSize="112.8,87.2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">244,386.5</av:Point>
+            <av:Size x:Key="ShapeSize">112.8,87.2</av:Size>
+            <av:PointCollection x:Key="TrueConnector">244,430 180,430 180,509</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">357,430 430,430 430,509</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_7">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,319</av:Point>
+            <av:Size x:Key="ShapeSize">200,22.4</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,341 300,371 300.5,371 300.5,386.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_1" sap:VirtualizedContainerService.HintSize="117.6,87.2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">243,166.5</av:Point>
+            <av:Size x:Key="ShapeSize">117.6,87.2</av:Size>
+            <av:PointCollection x:Key="TrueConnector">243,210 213,210 213,289 300,289 300,319</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_3">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,109</av:Point>
+            <av:Size x:Key="ShapeSize">200,22.4</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,131 300,161 301.666666666667,161 301.666666666667,166.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="624,636.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
+            <av:Size x:Key="ShapeSize">60,75.2</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,109</av:PointCollection>
+            <x:Double x:Key="Width">610</x:Double>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="646.4,761.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.ImportacionIngresoVisec_1" sap:VirtualizedContainerService.HintSize="686.4,841.6" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

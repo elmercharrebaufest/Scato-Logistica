@@ -16,9 +16,10 @@
         grilla.Columna("NombreDeEstablecimiento", Textos.Establecimiento_Nombre),
         grilla.Columna("CodigoDeEstablecimiento", Textos.Establecimiento_Codigo),
         grilla.Columna("Comercial.Descripcion", Textos.Comercial, c => c.Comercial),
-        grilla.Columna("CorredoresAsociados",Textos.Corredor_Acopio, c=>c.ListaCorredoresAsociados),
+        grilla.Columna("CorredoresAsociados",Textos.Corredor_Acopio, c => c.ListaCorredoresAsociados),
+        grilla.Columna("CodigoRENSPA", "Renspa"),
         grilla.Columna("Observaciones", Textos.Observaciones),
-        grilla.Columna("Localidad.Descripcion", Textos.Transportista_Localidad, c => c.localidad==null?null: c.Localidad + "(" + c.LocalidadCodigoAfip + ")"),
+        grilla.Columna("Localidad.Descripcion", Textos.Transportista_Localidad, c => c.localidad == null ? null : c.Localidad + "(" + c.LocalidadCodigoAfip + ")"),
         grilla.Columna("Provincia.Descripcion", Textos.Transportista_Provincia, c => c.Provincia)
         ))
 </div>

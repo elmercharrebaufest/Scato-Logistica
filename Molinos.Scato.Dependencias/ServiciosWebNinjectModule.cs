@@ -1,6 +1,5 @@
-﻿using System.Data.Entity;
-using System.Net.Http;
-using System.ServiceModel;
+﻿using Hangfire;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Validations;
 using Molinos.Scato.Dominio.Validations.Interfaces;
@@ -12,15 +11,23 @@ using Molinos.Scato.Servicios.AfipWebService;
 using Molinos.Scato.Servicios.ComplianceWebServiceV2;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Conversiones.Impl;
+using Molinos.Scato.Servicios.DataAgroService;
+using Molinos.Scato.Servicios.Dummy;
 using Molinos.Scato.Servicios.Estrategias;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
 using Molinos.Scato.Servicios.Impl;
+using Molinos.Scato.Servicios.Impl.Hangfire;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.Procesamiento;
 using Molinos.Scato.Servicios.ServicioImpresion;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Servicios.Urenport;
+using Ninject;
 using Ninject.Modules;
+using Ninject.Web.Common;
+using System.Data.Entity;
+using System.Net.Http;
+using System.ServiceModel;
 
 namespace Molinos.Scato.Dependencias
 {
@@ -49,12 +56,18 @@ namespace Molinos.Scato.Dependencias
             Bind<IServicioEstadoPuesto, ServicioEstadoPuesto>().To<ServicioEstadoPuesto>().InScope(ctx => OperationContext.Current);
             Bind<ICache, Cache>().To<Cache>().InSingletonScope();
             Bind<IServicioLlamadoAutomatico, ServicioLlamadoAutomatico>().To<ServicioLlamadoAutomatico>().InScope(ctx => OperationContext.Current);
+            Bind<IServicioSincronizacionVisec, ServicioSincronizacionVisec>().To<ServicioSincronizacionVisec>().InScope(ctx => OperationContext.Current);
             Bind<IServicioOperaciones, ServicioOperaciones>().To<ServicioOperaciones>();
             Bind<IValidatorEntity<OrdenCargaInternaFasonDto>>().To<OrdenCargaInternaFasonValidator>();
             Bind<IExternalServiceException, ExternalServiceException>().To<ExternalServiceException>();
             Bind<IRestClientFactory, RestClientFactory>().To<RestClientFactory>().InSingletonScope();
             Bind<IValidatorEntity<OrdenCargaFasDto>>().To<OrdenCargaFasValidator>();
             Bind<ICategorizadorVehiculo, CategorizadorVehiculo>().To<CategorizadorVehiculo>().InScope(ctx => OperationContext.Current);
+            Bind<IBackgroundJobClient>().To<BackgroundJobClient>().InSingletonScope();
+            Bind<IServicioHangfireQueue, ServicioHangfireQueue>().To<ServicioHangfireQueue>().InScope(ctx => OperationContext.Current);
+            Bind<IHangfireQueue, HangfireQueue>().To<HangfireQueue>().InScope(ctx => OperationContext.Current);
+
+            
 
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<LoginCMS>("LoginCms");
@@ -81,6 +94,29 @@ namespace Molinos.Scato.Dependencias
             Bind<IReglaExcepcionTasaMunicipal>().To<ReglaExcepcionSojaImpo>();
             Bind<IReglaExcepcionTasaMunicipal>().To<ReglaExcepcionRecorrido>();
             Bind<IProcesadorComando>().To<ProcesadorVerificarPagoTasaMunicipal>().InSingletonScope();
+            var servicioRepositorio = Kernel.Get<IServicioRepositorio>();
+            ConfigurarServicioDataAgro(servicioRepositorio);
         }
+
+        private void ConfigurarServicioDataAgro(IServicioRepositorio servicioRepositorio)
+        {
+            var configuracion = servicioRepositorio.ObtenerConfiguracionGeneral(
+                Constantes.ConfiguracionGeneral.Pantalla.ConsultaDataAgroVisec,
+                Constantes.ConfiguracionGeneral.ConsultaDataAgroVisec.DummyActivo);
+
+            bool usarDummy = !string.IsNullOrEmpty(configuracion?.Valor)
+                              && bool.TryParse(configuracion.Valor, out bool dummyActivo)
+                              && dummyActivo;
+
+            if (usarDummy)
+            {
+                Bind<IDataAgroServices>().To<DummyDataAgroServices>();
+            }
+            else 
+            {
+                this.BindChannelFactory<IDataAgroServices>("DataAgroServices", "DataAgroServiceUsername", "DataAgroServicePassword");
+            }
+        }
+        
     }
 }

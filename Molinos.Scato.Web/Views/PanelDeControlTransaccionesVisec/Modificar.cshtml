@@ -1,0 +1,131 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.VisecTransmisionDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.Modificar;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Modificar", "PanelDeControlTransaccionesVisec", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Modificar, id = "formEditar" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    <div class="control-group">
+
+        <div class="inline-group">
+            <label class="control-label">Número CPE</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroCPE, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.NumeroCPE)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">Número CTG</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroCTG, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.NumeroCTG)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">Fecha Hora Movimiento</label>
+            <div class="controls">
+                <input type="datetime" id="FechaHoraMovimiento" name="FechaHoraMovimiento" class="control input-large" data-val="true" value="@string.Format("{0:dd/MM/yyyy HH:mm}", Model.FechaHoraMovimiento)">
+                @Html.ValidationMessageFor(model => model.FechaHoraMovimiento)
+                @Html.ValidationMessage("FechaInvalida")
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">Fecha CPE</label>
+            <div class="controls">
+                <input type="datetime" id="FechaCPE" name="FechaCPE" class="control input-large" data-val="true" value="@string.Format("{0:dd/MM/yyyy HH:mm}", Model.FechaCPE)">
+                @Html.ValidationMessageFor(model => model.FechaCPE)
+                @Html.ValidationMessage("FechaCPE")
+            </div>
+        </div>
+
+
+        <div class="inline-group">
+            <label class="control-label">CUIT Titular</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CUITTitular, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.CUITTitular)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">Número RUCA Origen</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroRUCAOrigen, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.NumeroRUCAOrigen)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">CUIT Destinatario</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CUITDestinatario, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.CUITDestinatario)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">CUIT Destino</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CUITDestino, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.CUITDestino)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">Número RUCA Destino</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroRUCADestino, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.NumeroRUCADestino)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">Producto</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Producto, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.Producto)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">Campaña</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Campania, new { @class = "input-large" })
+                @Html.ValidationMessageFor(model => model.Campania)
+            </div>
+        </div>
+
+        <div class="inline-group">
+            <label class="control-label">Peso Neto Carga Kg</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.PesoNetoCargaKg, new { @class = "input-large", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.PesoNetoCargaKg)
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    $(document).ready(function () {
+        $('#FechaHoraMovimiento').datetimepicker({
+            format: 'dd/mm/yyyy hh:ii',
+            autoclose: true,
+            pickerPosition: "bottom-left"
+        });
+
+        $('#FechaCPE').datetimepicker({
+            format: 'dd/mm/yyyy hh:ii',
+            autoclose: true,
+            pickerPosition: "bottom-left"
+        });
+    });
+</script>

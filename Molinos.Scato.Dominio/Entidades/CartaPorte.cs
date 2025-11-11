@@ -81,5 +81,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Proveedor PagadorFlete { get; set; }
         public virtual Entregador RepresentanteRecibidor { get; set; }
         public virtual string FotoRutaSustentable { get; set; }
+        public string CodigoRENSPA { get; set; }
     }
 }

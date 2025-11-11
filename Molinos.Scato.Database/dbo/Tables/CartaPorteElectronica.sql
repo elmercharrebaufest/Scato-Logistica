@@ -55,6 +55,7 @@
     [TarifaReferencia]                       FLOAT (53)      DEFAULT ((0)) NOT NULL,
     [FechaCacheado]                          DATETIME        NULL,
     [NoEncontradaAFIP] BIT NULL, 
+    [NroRenspa] NVARCHAR(17) NULL, 
     PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON)
 );
 

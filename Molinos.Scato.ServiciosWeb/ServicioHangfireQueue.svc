@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Service="Molinos.Scato.Servicios.Impl.ServicioHangfireQueue" Factory="Ninject.Extensions.Wcf.NinjectServiceHostFactory" %>

@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.Consultas;
+using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
@@ -24,6 +17,14 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -137,6 +138,42 @@ namespace Molinos.Scato.Web.Controllers
                     }
                 }
 
+                var tipoVariedadCodigo = Constantes.TipoVariedadMaterial.Estandar;
+                if (model.Cupo != Constantes.ValoresPorDefecto.CupoGenerico)
+                {
+                    var resultadoConsultaDataAgroVisec = servicioComandos.Ejecutar(new ConsultarDataAgroVisec
+                    {
+                        Cupo = model.Cupo,
+                    }) as ResultadoConsultarDataAgroVisec;
+                    if (resultadoConsultaDataAgroVisec == null || resultadoConsultaDataAgroVisec.HayErrores)
+                    {
+                        ModelState.AddModelError("", "Ocurrió un error al consultar cupo en Data Agro");
+                        return View("Form", model);
+                    }
+                    tipoVariedadCodigo = resultadoConsultaDataAgroVisec.CodigoVariedad;
+
+                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.VisecCaido))
+                    {
+                        if (tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR
+                        || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR
+                        || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA)
+                        {
+                            ModelState.AddModelError("", "Contingencia Visec Activada");
+                            return View("Form", model);
+                        }
+                    }
+
+                    if (tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR)
+                    {
+                        var resultadoValidarStock = ValidarVisec(model.Cosecha, model.MaterialId.GetValueOrDefault(), model.PesoNetoOrigen, model.CodEstab, model.CodigoRENSPA);
+                        if (resultadoValidarStock.HayErrores)
+                        {
+                            ModelState.AddModelError("", resultadoValidarStock.Errores.FirstOrDefault().Value);
+                            return View("Form", model);
+                        }
+                    }
+                }
+
                 model.Fecha = DateTime.Now;
                 model.CentroId = datosUsuario.CentroId;
                 model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
@@ -193,12 +230,12 @@ namespace Molinos.Scato.Web.Controllers
                     ModelState.Clear();
                     ViewBag.MostrarAlertaExitosa = true;
 
-                    if (AvanceCpe && EsCupoValidoParaAvanceAutomatico(model)
+                    if (AvanceCpe && EsCupoValidoParaAvanceAutomatico(model, tipoVariedadCodigo)
                         && !resultadoConsultarTasa.HayErrores
                         && resultadoConsultarTasa.EjecutaWorkFlow)
                     {
                         servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = true });
-                        CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte, resultadoConsultarTasa);
+                        CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte, resultadoConsultarTasa, tipoVariedadCodigo);
                         servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = false });
                     }
 
@@ -925,7 +962,7 @@ namespace Molinos.Scato.Web.Controllers
             return null;
         }
 
-        private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal)
+        private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal, string tipoVariedadCodigo)
         {
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
             var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo.TitularCartaPorteCodigoSap, cargaDeCupo.RtteComercialCodigoSap, cargaDeCupo.CodEstab);
@@ -936,11 +973,12 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("avanceCpe", "No hay Carga De Cupo");
                 return;
             }
-            
+
             var puesto = servicio.ObtenerPuestoDeTrabajo(cargaDeCupo.PuestoDeTrabajoId);
             var orden = servicioComandos.Ejecutar(new ConsultarCPDigital { CentroId = datosUsuario.CentroId, NroCtg = long.Parse(cargaDeCupo.CTG), Usuario = datosUsuario.NombreUsuario }) as ResultadoCartaPorteElectronica;
             if (orden != null && orden.Cpe != null)
             {
+                orden.Cpe.TipoVariedadCodigo = tipoVariedadCodigo;
                 orden.Cpe.TipoComercialId = tipoComercialId;
                 orden.Cpe.Id = 0;
                 orden.Cpe.CEE = "99";
@@ -996,146 +1034,150 @@ namespace Molinos.Scato.Web.Controllers
                     orden.NroCartaPorte = $"{DateTime.Now.ToString("yyyyMMdd")}{sequenciaNroCartaPorteCPE.ToString("D4")}";
                 }
             }
+
             if (datosUsuario.CentroId == 0)
             {
                 log.Debug("El usuario {0} no tiene seleccionado un centro", datosUsuario.NombreUsuario);
                 ModelState.AddModelError("avanceCpe", $"El usuario {datosUsuario.NombreUsuario} no tiene seleccionado un centro");
                 return;
             }
+
             if (!Validar(orden, datosUsuario))
             {
                 log.Debug("No Válido");
                 //ModelState.AddModelError("avanceCpe", $"No Válido");
                 return;
             }
-            if (ModelState.IsValid && vehiculos != null && vehiculos.Count() != 0)
+
+            if (vehiculos == null || vehiculos.Count == 0)
+                ModelState.AddModelError("avanceCpe", string.Format(Textos.Error_Requerido, Textos.Vagones));
+
+            if (!ModelState.IsValid)
             {
-                var response = servicio.NumeroCartaPorteValido(orden.NroCartaPorte, datosUsuario.CentroId, workflowObj.Descripcion, orden.Cpe);
-                if (!response.Valida)
+                log.Debug("ModelState no válido");
+                return;
+            }
+
+            var response = servicio.NumeroCartaPorteValido(orden.NroCartaPorte, datosUsuario.CentroId, workflowObj.Descripcion, orden.Cpe);
+            if (!response.Valida)
+            {
+                log.Debug("No se puede crear la CP {0}. Detalle: {1}", orden.NroCartaPorte, response.Error);
+                ModelState.AddModelError("avanceCpe", $"No se puede crear la CP {orden.NroCartaPorte}. Detalle: {response.Error}");
+                return;
+            }
+
+            if (vehiculos.Count() != vehiculos.GroupBy(x => x.Patente).Count())
+            {
+                log.Debug("No se puede crear la CP {0}. Alguna de las patentes está duplicada");
+                ModelState.AddModelError("avanceCpe", $"No se puede crear la CP. Alguna de las patentes está duplicada");
+                return;
+            }
+
+            if (vehiculos.Any(vehiculo => workflows.ObtenerWorkflowPorPatente(vehiculo.Patente) != null))
+            {
+                log.Debug("No se puede crear la CP. Alguna de las patentes esta ingresada en un workflow en ejecución");
+                ModelState.AddModelError("avanceCpe", "No se puede crear la CP. Alguna de las patentes esta ingresada en un workflow en ejecución");
+                return;
+            }
+
+            var tipoComercial = servicio.ObtenerTipoComercial(orden.TipoComercialId);
+
+            if (tipoComercial?.PesoMaximoDocumentoIngreso != null && tipoComercial?.PesoMaximoDocumentoIngreso != 0)
+            {
+                if (vehiculos.Any(vehiculo => vehiculo.PesoBrutoOrigen > tipoComercial.PesoMaximoDocumentoIngreso))
                 {
-                    log.Debug("No se puede crear la CP {0}. Detalle: {1}", orden.NroCartaPorte, response.Error);
-                    ModelState.AddModelError("avanceCpe", $"No se puede crear la CP {orden.NroCartaPorte}. Detalle: {response.Error}");
+                    log.Debug("El Tipo comercial tiene configurado un peso maximo en ingreso y fue excedido");
+                    ModelState.AddModelError("avanceCpe", "El Tipo comercial tiene configurado un peso maximo en ingreso y fue excedido");
                     return;
                 }
+            }
+            var tipoVehiculo = ObtenerTipoVehiculoPorPatente(vehiculos.FirstOrDefault().Patente, vehiculos.FirstOrDefault().PatenteAcoplado, workflow, datosUsuario, vehiculos.FirstOrDefault().PatenteAcoplado2);
+            if (tipoVehiculo != null && tipoVehiculo.HayErrores)
+            {
+                log.Debug("Fallo validacion tipo vehiculo");
+                ModelState.AddModelError("avanceCpe", "Fallo validacion tipo vehiculo");
+                return;
+            }
+            orden.TipoVehiculo = tipoVehiculo.Categoria.HasValue ? tipoVehiculo.Categoria.Value : TipoVehiculo.Camión;
+            var resultadoChofer = SetearChofer(orden.Chofer);
+            if (resultadoChofer == false)
+            {
+                log.Debug("No se pudo dar de alta o asociar el chofer a la CP");
+                ModelState.AddModelError("avanceCpe", "No se pudo dar de alta o asociar el chofer a la CP");
+                return;
+            }
 
-                if (vehiculos.Count() != vehiculos.GroupBy(x => x.Patente).Count())
+            var transportistaId = orden.TransportistaId ?? 0;
+            var resultadoTransportista = SetearTransportista(ref transportistaId, orden.TipoComercialId, orden.EsTransportista);
+            orden.TransportistaId = transportistaId;
+            if (!resultadoTransportista)
+            {
+                log.Debug("No se pudo dar de alta o asociar el transportista a la CP");
+                ModelState.AddModelError("avanceCpe", "No se pudo dar de alta o asociar el transportista a la CP");
+                return;
+            }
+
+            if (!ValidarCupo(orden, datosUsuario, workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso))
+            {
+                log.Debug($"La {orden.NroCartaPorte} se queda en pendiente por tener establecimiento asociado al titular de Carta de Porte");
+                ModelState.AddModelError("avanceCpe", "Cupo ya asignado");
+                return;
+            }
+
+            orden.Vehiculos = vehiculos;
+            orden.FechaEmision = DateTime.Now;
+            orden.TipoDeWorkflow = workflowObj.TipoDeWorkflow;
+            orden.EsClienteDestinatario = false;
+            orden.CodEstab = string.IsNullOrEmpty(orden.CodEstab) ? "999999" : orden.CodEstab;
+            var i = 1;
+            foreach (var vehiculo in vehiculos)
+            {
+                vehiculo.TipoVehiculo = orden.TipoVehiculo;
+                vehiculo.Patente = vehiculo.Patente != null ? vehiculo.Patente.ToUpper() : "";
+                vehiculo.PatenteAcoplado = vehiculo.PatenteAcoplado != null ? vehiculo.PatenteAcoplado.ToUpper() : "";
+                vehiculo.PatenteAcoplado2 = vehiculo.PatenteAcoplado2 != null ? vehiculo.PatenteAcoplado2.ToUpper() : "";
+                vehiculo.NumeroVehiculo = i++;
+            }
+            var fecha = DateTime.Now;
+            if (!string.IsNullOrEmpty(path) && !string.IsNullOrEmpty(imagenCpBase64))
+            {
+                orden.FotoRutaDestino = GuardarfotoMesaDigitalizacion(imagenCpBase64, orden, path, datosUsuario, DateTime.Now);
+                if (cargaDeCupo.Especial)
                 {
-                    log.Debug("No se puede crear la CP {0}. Alguna de las patentes está duplicada");
-                    ModelState.AddModelError("avanceCpe", $"No se puede crear la CP. Alguna de las patentes está duplicada");
+                    orden.FotoRutaSustentable = GuardarfotoMesaDigitalizacionSelloSustentable(orden, datosUsuario, DateTime.Now);
+                }
+            }
+            var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+            var servicioWf = factory.CrearServicio(workflowDefinicionId);
+            var instanceIds = new List<Guid>();
+
+            log.Info("CargarCartaPorte: Iniciando carga de workflow/s para los/el vehiculo/s: " + orden.VehiculoJson);
+            foreach (var vehiculo in vehiculos)
+            {
+                var controlRecorrido = new ControlRecorridoDto
+                {
+                    Actividad = Textos.ActCargarCartaPorte,
+                    ActividadXaml = "CargarCartaPorte",
+                    PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                    NombreUsuario = datosUsuario.NombreUsuario
+                };
+                var resultadoActividad = servicioWf.CargarCartaPorte(orden, vehiculo, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
+                if (resultadoActividad.HayErrores)
+                {
+                    log.Debug(resultadoActividad.Errores.FirstOrDefault().Value);
+                    ModelState.AddModelError("avanceCpe", resultadoActividad.Errores.FirstOrDefault().Value);
                     return;
                 }
+                orden.Id = resultadoActividad.Id;
+                instanceIds.Add(resultadoActividad.InstanciaWorkflowId);
+                if (resultadoTazaMunicipal?.IdPago != 0)
+                    ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, resultadoTazaMunicipal.IdPago);
+            }
 
-                if (vehiculos.Any(vehiculo => workflows.ObtenerWorkflowPorPatente(vehiculo.Patente) != null))
-                {
-                    log.Debug("No se puede crear la CP. Alguna de las patentes esta ingresada en un workflow en ejecución");
-                    ModelState.AddModelError("avanceCpe", "No se puede crear la CP. Alguna de las patentes esta ingresada en un workflow en ejecución");
-                    return;
-                }
-
-                var tipoComercial = servicio.ObtenerTipoComercial(orden.TipoComercialId);
-
-                if (tipoComercial?.PesoMaximoDocumentoIngreso != null && tipoComercial?.PesoMaximoDocumentoIngreso != 0)
-                {
-                    if (vehiculos.Any(vehiculo => vehiculo.PesoBrutoOrigen > tipoComercial.PesoMaximoDocumentoIngreso))
-                    {
-                        log.Debug("El Tipo comercial tiene configurado un peso maximo en ingreso y fue excedido");
-                        ModelState.AddModelError("avanceCpe", "El Tipo comercial tiene configurado un peso maximo en ingreso y fue excedido");
-                        return;
-                    }
-                }
-                var tipoVehiculo = ObtenerTipoVehiculoPorPatente(vehiculos.FirstOrDefault().Patente, vehiculos.FirstOrDefault().PatenteAcoplado, workflow, datosUsuario, vehiculos.FirstOrDefault().PatenteAcoplado2);
-                if (tipoVehiculo != null && tipoVehiculo.HayErrores)
-                {
-                    log.Debug("Fallo validacion tipo vehiculo");
-                    ModelState.AddModelError("avanceCpe", "Fallo validacion tipo vehiculo");
-                    return;
-                }
-                orden.TipoVehiculo = tipoVehiculo.Categoria.HasValue ? tipoVehiculo.Categoria.Value : TipoVehiculo.Camión;
-                var resultadoChofer = SetearChofer(orden.Chofer);
-                if (resultadoChofer == false)
-                {
-                    log.Debug("No se pudo dar de alta o asociar el chofer a la CP");
-                    ModelState.AddModelError("avanceCpe", "No se pudo dar de alta o asociar el chofer a la CP");
-                    return;
-                }
-
-                var transportistaId = orden.TransportistaId ?? 0;
-                var resultadoTransportista = SetearTransportista(ref transportistaId, orden.TipoComercialId, orden.EsTransportista);
-                orden.TransportistaId = transportistaId;
-                if (!resultadoTransportista)
-                {
-                    log.Debug("No se pudo dar de alta o asociar el transportista a la CP");
-                    ModelState.AddModelError("avanceCpe", "No se pudo dar de alta o asociar el transportista a la CP");
-                    return;
-                }
-
-                if (!ValidarCupo(orden, datosUsuario, workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso))
-                {
-                    log.Debug($"La {orden.NroCartaPorte} se queda en pendiente por tener establecimiento asociado al titular de Carta de Porte");
-                    ModelState.AddModelError("avanceCpe", "Cupo ya asignado");
-                    return;
-                }
-
-                orden.Vehiculos = vehiculos;
-                orden.FechaEmision = DateTime.Now;
-                orden.TipoDeWorkflow = workflowObj.TipoDeWorkflow;
-                orden.EsClienteDestinatario = false;
-                orden.CodEstab = string.IsNullOrEmpty(orden.CodEstab) ? "999999" : orden.CodEstab;
-                var i = 1;
-                foreach (var vehiculo in vehiculos)
-                {
-                    vehiculo.TipoVehiculo = orden.TipoVehiculo;
-                    vehiculo.Patente = vehiculo.Patente != null ? vehiculo.Patente.ToUpper() : "";
-                    vehiculo.PatenteAcoplado = vehiculo.PatenteAcoplado != null ? vehiculo.PatenteAcoplado.ToUpper() : "";
-                    vehiculo.PatenteAcoplado2 = vehiculo.PatenteAcoplado2 != null ? vehiculo.PatenteAcoplado2.ToUpper() : "";
-                    vehiculo.NumeroVehiculo = i++;
-                }
-                var fecha = DateTime.Now;
-                if (!string.IsNullOrEmpty(path) && !string.IsNullOrEmpty(imagenCpBase64))
-                {
-                    orden.FotoRutaDestino = GuardarfotoMesaDigitalizacion(imagenCpBase64, orden, path, datosUsuario, DateTime.Now);
-                    if (cargaDeCupo.Especial)
-                    {
-                        orden.FotoRutaSustentable = GuardarfotoMesaDigitalizacionSelloSustentable(orden, datosUsuario, DateTime.Now);
-                    }
-                }
-                var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
-                var servicioWf = factory.CrearServicio(workflowDefinicionId);
-                var instanceIds = new List<Guid>();
-
-                if (ModelState.IsValid)
-                {
-                    cargaDeCupo.IngresoAvanceCPEAutomatico = true;
-                    servicioComandos.Ejecutar(new ModificarCargaDeCupo { Dto = cargaDeCupo });
-                }
-
-                log.Info("CargarCartaPorte: Iniciando carga de workflow/s para los/el vehiculo/s: " + orden.VehiculoJson);
-                foreach (var vehiculo in vehiculos)
-                {
-                    var controlRecorrido = new ControlRecorridoDto
-                    {
-                        Actividad = Textos.ActCargarCartaPorte,
-                        ActividadXaml = "CargarCartaPorte",
-                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                        NombreUsuario = datosUsuario.NombreUsuario
-                    };
-                    var resultadoActividad = servicioWf.CargarCartaPorte(orden, vehiculo, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
-                    if (resultadoActividad.HayErrores)
-                    {
-                        log.Debug(resultadoActividad.Errores.FirstOrDefault().Value);
-                        ModelState.AddModelError("avanceCpe", resultadoActividad.Errores.FirstOrDefault().Value);
-                        return;
-                    }
-                    orden.Id = resultadoActividad.Id;
-                    instanceIds.Add(resultadoActividad.InstanciaWorkflowId);
-                    if (resultadoTazaMunicipal?.IdPago != 0)
-                        ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, resultadoTazaMunicipal.IdPago);
-                }
-                if (ModelState.IsValid) // TODO: Revisar si es necesario, ya que la linea 1127 hace lo mismo.
-                {
-                    cargaDeCupo.IngresoAvanceCPEAutomatico = true;
-                    servicioComandos.Ejecutar(new ModificarCargaDeCupo { Dto = cargaDeCupo });
-                }
+            if (ModelState.IsValid)
+            {
+                cargaDeCupo.IngresoAvanceCPEAutomatico = true;
+                servicioComandos.Ejecutar(new ModificarCargaDeCupo { Dto = cargaDeCupo });
             }
         }
 
@@ -1165,6 +1207,19 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
                 return false;
             }
+
+            if (orden.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA)
+            {
+                if (usuario.CentroId == Constantes.Centro.IdSanLorenzo && orden.MaterialCodigoSap == Constantes.MaterialPagoRealizado.SojaSAP)
+                    return false;
+
+                if (usuario.CentroId == Constantes.Centro.IdSanLorenzo && orden.DestinatarioCuil == Constantes.Proveedores.CuitMolinos)
+                    return false;
+
+                if (!servicio.EsProveedorSustentable(orden.TitularCartaPorteId))
+                    return false;
+            }
+
             return true;
         }
 
@@ -1333,11 +1388,11 @@ namespace Molinos.Scato.Web.Controllers
             return null;
         }
 
-        private bool EsCupoValidoParaAvanceAutomatico(CargaDeCupoDto model)
+        private bool EsCupoValidoParaAvanceAutomatico(CargaDeCupoDto model, string tipoVariedadCodigo)
         {
             bool esValido = true;
 
-            if (model.Especial && model.MaterialId == 4) // CUPO SUSTENTABLE
+            if (model.Especial && model.MaterialId == 4 && tipoVariedadCodigo != Constantes.TipoVariedadMaterial.EUDR) // CUPO SUSTENTABLE, EPA o EPA/EUDR
                 esValido = false;
             else if (model.SinCupo && model.Cupo == Constantes.ValoresPorDefecto.CupoGenerico) // CUPO GENERICO
                 esValido = false;
@@ -1427,5 +1482,61 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error("Error al modificar Tasa Municipal - {0}", e.Message);
             }
         }
+        
+        private Resultado ValidarVisec(string cosecha, int materialId, int? pesoNeto, string codEstab, string codigoRENSPA)
+        {
+            var resultadoStockVisec = new Resultado();
+            if (!pesoNeto.HasValue)
+            {
+                resultadoStockVisec.Error(string.Empty, "El peso neto es obligatorio para validar el stock en VISec");
+                return resultadoStockVisec;
+            }
+
+            var plantaOrigen = int.Parse(codEstab);
+            var tipoOrigenCPE = VisecHelper.ObtenerTipoOrigenCPE(plantaOrigen);
+            var campania = cosecha.Replace("-", "/");
+            if (campania.Length == 4)
+                campania = campania.Insert(2, "/");
+
+            var material = servicio.ObtenerMaterial(materialId);
+            if (tipoOrigenCPE == TipoOrigenCPE.RUCA)
+            {
+                resultadoStockVisec = servicioComandos.Ejecutar(new ConsultarStockRUCA
+                {
+                    Campania = campania,
+                    CodigoProductoAFIP = int.Parse(material.CodigoONCCA ?? "0"),
+                    CUITEmpresaResponsable = Constantes.ValoresPorDefecto.CuitMOA.ToString(),
+                    Volumen = pesoNeto.Value,
+                    NumeroRUCATitular = plantaOrigen,
+                });
+
+                if (resultadoStockVisec.HayErrores)
+                    return resultadoStockVisec;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(codigoRENSPA))
+                {
+                    resultadoStockVisec.Error(string.Empty, "No se pudo obtener el código RENSPA");
+                    return resultadoStockVisec;
+                }
+
+                resultadoStockVisec = servicioComandos.Ejecutar(new ConsultarStockUP
+                {
+                    Campania = campania,
+                    CodigoProductoAFIP = int.Parse(material.CodigoONCCA ?? "0"),
+                    CUITEmpresaResponsable = Constantes.ValoresPorDefecto.CuitMOA.ToString(),
+                    Volumen = pesoNeto.Value,
+                    NumeroRENSPA = codigoRENSPA,
+                });
+
+                if (resultadoStockVisec.HayErrores)
+                    return resultadoStockVisec;
+
+            }
+
+            return resultadoStockVisec;
+        }
+
     }
 }

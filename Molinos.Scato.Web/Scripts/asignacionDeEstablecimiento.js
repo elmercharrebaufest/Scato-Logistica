@@ -3,8 +3,10 @@
     InicializarPantalla();
     
     $('#dropdownEstablecimientos').change(function() {
+        validarCambioVariedadComun();
         procedenciaIgualALocalidad();
     });
+
     $('#dropdownEstablecimientos').focus();
     $(document).on('click', '.rechazar-boton', MostrarDialogoRechazar);
     $(document).on('click', '.demorar-boton', MostrarDialogoDemorar);
@@ -74,7 +76,6 @@ function procedenciaIgualALocalidad() {
             $.unblockUI();
         }
     });
-    
 }
 
 
@@ -114,4 +115,13 @@ function cargarDialogoDemorar(data) {
         }
     });
     $.unblockUI();
+}
+
+function validarCambioVariedadComun() {
+    var tipoVariedadCodigo = $('#TipoVariedadCodigo').val();
+    var esVisec = tipoVariedadCodigo && (tipoVariedadCodigo.toUpperCase() === "EPAEUDR" || tipoVariedadCodigo.toUpperCase() == "EUDR");
+    var establecimiento = $('#dropdownEstablecimientos').val();
+    if (esVisec && establecimiento == '-1') {
+        MostrarAlertaAdvertencia("Se cambiará la variedad a Común");
+    }
 }

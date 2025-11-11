@@ -1492,6 +1492,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Importación Egreso Visec.
+        /// </summary>
+        public static string ActImportacionEgresoVisec {
+            get {
+                return ResourceManager.GetString("ActImportacionEgresoVisec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Impresion Certificado de Analisis.
         /// </summary>
         public static string ActImpresioCertificadoDeAnalisis {
@@ -16238,6 +16247,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fecha Desde.
+        /// </summary>
+        public static string FechaDesde2 {
+            get {
+                return ResourceManager.GetString("FechaDesde2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fecha Egreso.
         /// </summary>
         public static string FechaEgreso {
@@ -16279,6 +16297,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string FechaHasta {
             get {
                 return ResourceManager.GetString("FechaHasta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha Hasta.
+        /// </summary>
+        public static string FechaHasta2 {
+            get {
+                return ResourceManager.GetString("FechaHasta2", resourceCulture);
             }
         }
         
@@ -19960,24 +19987,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string LogHumedimetro {
             get {
                 return ResourceManager.GetString("LogHumedimetro", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fecha Desde.
-        /// </summary>
-        public static string LogHumedimetro_FechaDesde {
-            get {
-                return ResourceManager.GetString("LogHumedimetro_FechaDesde", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fecha Hasta.
-        /// </summary>
-        public static string LogHumedimetro_FechaHasta {
-            get {
-                return ResourceManager.GetString("LogHumedimetro_FechaHasta", resourceCulture);
             }
         }
         
@@ -24485,6 +24494,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Panel de Control Transacciones VISEC.
+        /// </summary>
+        public static string PanelDeControlTransaccionesVisec {
+            get {
+                return ResourceManager.GetString("PanelDeControlTransaccionesVisec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Panel de Control Transacciones Monsanto.
         /// </summary>
         public static string PanelDeControlTransMonsanto {
@@ -24634,6 +24652,69 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PanelDeControlWorkflows {
             get {
                 return ResourceManager.GetString("PanelDeControlWorkflows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detalle.
+        /// </summary>
+        public static string PanelDeTransaccionesVisec_Detalle {
+            get {
+                return ResourceManager.GetString("PanelDeTransaccionesVisec_Detalle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N° Documentos asociados.
+        /// </summary>
+        public static string PanelDeTransaccionesVisec_DocumentosAsociados {
+            get {
+                return ResourceManager.GetString("PanelDeTransaccionesVisec_DocumentosAsociados", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estado.
+        /// </summary>
+        public static string PanelDeTransaccionesVisec_Estado {
+            get {
+                return ResourceManager.GetString("PanelDeTransaccionesVisec_Estado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha de Procesamiento.
+        /// </summary>
+        public static string PanelDeTransaccionesVisec_FechaProcesamiento {
+            get {
+                return ResourceManager.GetString("PanelDeTransaccionesVisec_FechaProcesamiento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N° Documento.
+        /// </summary>
+        public static string PanelDeTransaccionesVisec_NumeroDocumento {
+            get {
+                return ResourceManager.GetString("PanelDeTransaccionesVisec_NumeroDocumento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N° de Proceso.
+        /// </summary>
+        public static string PanelDeTransaccionesVisec_NumeroProceso {
+            get {
+                return ResourceManager.GetString("PanelDeTransaccionesVisec_NumeroProceso", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procesos anteriores.
+        /// </summary>
+        public static string PanelDeTransaccionesVisec_ProcesosAnteriores {
+            get {
+                return ResourceManager.GetString("PanelDeTransaccionesVisec_ProcesosAnteriores", resourceCulture);
             }
         }
         
@@ -30387,6 +30468,51 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enviado a Visec.
+        /// </summary>
+        public static string TransmisionVisec_Estado_EnviadoAVisec {
+            get {
+                return ResourceManager.GetString("TransmisionVisec_Estado_EnviadoAVisec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string TransmisionVisec_Estado_Error {
+            get {
+                return ResourceManager.GetString("TransmisionVisec_Estado_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error en Visec.
+        /// </summary>
+        public static string TransmisionVisec_Estado_ErrorVisec {
+            get {
+                return ResourceManager.GetString("TransmisionVisec_Estado_ErrorVisec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finalizado.
+        /// </summary>
+        public static string TransmisionVisec_Estado_Finalizado {
+            get {
+                return ResourceManager.GetString("TransmisionVisec_Estado_Finalizado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pendiente.
+        /// </summary>
+        public static string TransmisionVisec_Estado_Pendiente {
+            get {
+                return ResourceManager.GetString("TransmisionVisec_Estado_Pendiente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transporte.
         /// </summary>
         public static string Transporte {
@@ -31409,6 +31535,33 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string VinedoTercerosDescripcionExistente {
             get {
                 return ResourceManager.GetString("VinedoTercerosDescripcionExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocurrió un error en la conexión a Visec.
+        /// </summary>
+        public static string Visec_Error_Conexion {
+            get {
+                return ResourceManager.GetString("Visec_Error_Conexion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocurrió un error en la conexión a Scato Visec.
+        /// </summary>
+        public static string Visec_Error_ConexionScato {
+            get {
+                return ResourceManager.GetString("Visec_Error_ConexionScato", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stock No Disponible.
+        /// </summary>
+        public static string Visec_Error_StockNoDisponible {
+            get {
+                return ResourceManager.GetString("Visec_Error_StockNoDisponible", resourceCulture);
             }
         }
         

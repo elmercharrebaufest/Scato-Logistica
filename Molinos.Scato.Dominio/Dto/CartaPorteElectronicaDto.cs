@@ -19,5 +19,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int PesoBruto { get; set; }
         public long? CuitTransportista { get; set; }
         public string Dominio { get; set; }
+        public string NroRenspa { get; set; }
     }
 }

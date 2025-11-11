@@ -21,8 +21,8 @@
                 </div>
             </div>
             
-                <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
-                <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo","10")</span>
+                <span id="error-motivo-requerido" style="color:rgb(185, 74, 72);" class="oculto">@string.Format(Textos.Error_Requerido, "Motivo")</span>
+                <span id="error-motivo-largo" style="color:rgb(185, 74, 72);" class="oculto">@string.Format(Textos.Error_LargoMensaje, "Motivo","10")</span>
            
             @Html.Hidden("elemento-id")
             @Html.Hidden("elemento-grano")

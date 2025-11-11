@@ -23,5 +23,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool Activo { get; set; }
         public DateTime FechaActivacion { get; set; }
         public int CentroId { get; set; }
+        public bool AplicaConsultaCupoDataAgro { get; set; }
     }
 }

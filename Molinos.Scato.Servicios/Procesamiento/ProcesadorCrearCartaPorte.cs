@@ -158,6 +158,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             PagadorFlete = pagadorFlete,
                             RepresentanteRecibidor = representanteRecibidor,
                             FotoRutaSustentable = comando.Orden.FotoRutaSustentable,
+                            CodigoRENSPA = comando.Orden.CodigoRENSPA,
                         };
                         cartaPorte.NroCartaPorte = cartaPorte.NroCartaPorte.Trim();
                         foreach (var vehiculo in vehiculos)

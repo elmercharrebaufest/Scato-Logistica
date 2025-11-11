@@ -160,6 +160,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         destino = new DestinoAutomotorDGSolicitud
                         {
                             planta = comando.DestinoPlanta,
+                            plantaSpecified = true,
                             cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0,
                             domicilioDestino = new DomicilioPUC
                             {

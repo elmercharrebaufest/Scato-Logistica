@@ -15,7 +15,7 @@
     <AssemblyName>Molinos.Scato.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>
     </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>
@@ -399,6 +399,7 @@
     <Compile Include="Controllers\ConfiguracionCalleHidraulicaController.cs" />
     <Compile Include="Controllers\ConfiguracionSensoresController.cs" />
     <Compile Include="Controllers\BarreraController.cs" />
+    <Compile Include="Controllers\ImportacionEgresoVisecController.cs" />
     <Compile Include="Controllers\EsperaConfirmacionController.cs" />
     <Compile Include="Controllers\ConfiguracionEficienciaCaladoController.cs" />
     <Compile Include="Controllers\ExcepcionAlControlProveedorController.cs" />
@@ -413,6 +414,7 @@
     <Compile Include="Controllers\EmbarquesPorBuquesController.cs" />
     <Compile Include="Controllers\EtiquetaPuertoController.cs" />
     <Compile Include="Controllers\CamionesPendientesNoGranosController.cs" />
+    <Compile Include="Controllers\PanelDeControlTransaccionesVisecController.cs" />
     <Compile Include="Controllers\PuestoComandoPuertoController.cs" />
     <Compile Include="Controllers\RegistroInactividadController.cs" />
     <Compile Include="Controllers\SalidaDeCentroPlayaController.cs" />
@@ -714,6 +716,7 @@
     <Compile Include="Models\CasilleroModel.cs" />
     <Compile Include="Models\EtiquetaAuditoriaModel.cs" />
     <Compile Include="Models\FiltroReportePesadaSeisHorasModel.cs" />
+    <Compile Include="Models\ImportacionEgresoVisecViewModel.cs" />
     <Compile Include="Models\IngresoNumeroCotModel.cs" />
     <Compile Include="Models\AsignacionTarjetaDeAccessoModel.cs" />
     <Compile Include="Models\ControlDeBalanzaModel.cs" />
@@ -2490,6 +2493,11 @@
     <Content Include="Views\CargarCartaPorteByPass\Vagon.cshtml" />
     <Content Include="Views\ModificarDocumentoDeIngreso\_OrdenCargaInternaDetalle.cshtml" />
     <Content Include="Views\IngresarOrdenCargaFas\_OrdenDetalle.cshtml" />
+    <Content Include="Views\PanelDeControlTransaccionesVisec\Modificar.cshtml" />
+    <Content Include="Views\PanelDeControlTransaccionesVisec\Index.cshtml" />
+    <Content Include="Views\PanelDeControlTransaccionesVisec\_Listar.cshtml" />
+    <Content Include="Views\PanelDeControlTransaccionesVisec\_Filtro.cshtml" />
+    <Content Include="Views\ImportacionEgresoVisec\Index.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

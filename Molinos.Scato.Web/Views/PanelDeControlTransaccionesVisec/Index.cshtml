@@ -1,0 +1,112 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Dominio.Dto.FiltroPanelDeTransaccionesVisecDto
+@{
+    ViewBag.Title = Textos.PanelDeControlTransaccionesVisec;
+}
+<script src="@Url.Script("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+<script type="text/javascript" src="~/scripts/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.css" />
+
+<div id="links" data-url-transmitir="@Url.Action("Transmitir")" />
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.PanelDeControlTransaccionesVisec</div>
+</div>
+<div class="container-fluid content grillaPad" id="mainContainer">
+    <div class="accordion row-fluid">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapseContent">
+                    <i class="icon-chevron-down"></i>
+                    @Textos.Busqueda
+                </a>
+            </div>
+            <div id="collapseContent" class="accordion-body in collapse">
+                @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "filterContainer", @class = "form-search" }))
+                {
+                    @Html.Partial("_Filtro")
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="gridContainer" style="margin-top: 10px" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("_Listar")
+    </div>
+
+    <div class="row-fluid" style="text-align: center; margin-top: 20px;">
+        <input id="btnTransmitir" type="button" data-url="@Url.Action("Transmitir")" value="@Textos.PanelDeControlTransSAP_Transmitir" class="btn acciones" />
+    </div>
+</div>
+
+
+<script>
+    var selectedValues = [];
+    $(document).ready(function () {
+        $(document).on("click", ".columna-checkbox", function () {
+            var value = $(this).val();
+            if ($(this).is(":checked")) {
+                if (!selectedValues.includes(value)) {
+                    selectedValues.push(value);
+                }
+            } else {
+                selectedValues = selectedValues.filter(function (item) {
+                    return item !== value;
+                });
+            }
+        });
+
+        $("#btnTransmitir").click(function () {
+            if (selectedValues.length === 0) {
+                alert("Por favor, seleccione al menos un elemento para transmitir.");
+                return;
+            }
+            BlockUI();
+
+            var url = $('#links').data().urlTransmitir;
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ transmisiones: selectedValues }),
+                success: function (response) {
+                    if (response === "OK") {
+                        MostrarAlertaExitosa();
+                    } else {
+                        MostrarAlertaError("Ocurrió un error al transmitir");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Ocurrió un error al transmitir: " + error);
+                },
+                complete: function () {
+                    $("#btnBuscar").click();
+                    $.unblockUI();
+                }
+            });
+        });
+
+        $(document).on("ajaxComplete", function () {
+            mantenerEstadoCheckboxes();
+        });
+    });
+
+
+    function mantenerEstadoCheckboxes() {
+        $(".columna-checkbox").each(function () {
+            var value = $(this).val();
+            if (selectedValues.includes(value)) {
+                $(this).prop("checked", true);
+            } else {
+                $(this).prop("checked", false);
+            }
+        });
+    }
+</script>

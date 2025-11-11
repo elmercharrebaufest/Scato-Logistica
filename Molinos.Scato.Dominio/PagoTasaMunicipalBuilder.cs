@@ -1,4 +1,4 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Dominio
@@ -96,7 +96,7 @@ namespace Molinos.Scato.Dominio
                     resultado.MensajeAlerta = "TASA ADEUDADA";
                     resultado.SeLevantaBarrera = true;
                     resultado.EsPagoAbonado = false;
-                    
+
                     break;
             }
             return resultado;

@@ -6703,12 +6703,6 @@
   <data name="ProveedorExcluidoIntacta_Existente" xml:space="preserve">
     <value>Ya existe este Proveedor exceptuado del Sistema Monsanto</value>
   </data>
-  <data name="LogHumedimetro_FechaDesde" xml:space="preserve">
-    <value>Fecha Desde</value>
-  </data>
-  <data name="LogHumedimetro_FechaHasta" xml:space="preserve">
-    <value>Fecha Hasta</value>
-  </data>
   <data name="Proveedor_Invalido" xml:space="preserve">
     <value>Proveedor Inválido</value>
   </data>
@@ -6885,6 +6879,7 @@
   </data>
   <data name="PanelDeControlTransSAP_RetransmitirTodas" xml:space="preserve">
     <value>Retransmitir Todas</value>
+    <comment>dsd </comment>
   </data>
   <data name="Retransmitiendo" xml:space="preserve">
     <value>Retransmisión</value>
@@ -10563,10 +10558,10 @@
   </data>
   <data name="NuevaOrdenFasonCreada" xml:space="preserve">
     <value>Se ha creado una nueva Orden de Fason con el No: {0}</value>
- </data>
+  </data>
   <data name="DatoConLongitudIncorrecta" xml:space="preserve">
     <value>Algún cuit/cuil no cumple con el largo esperado según formato. Validar los datos ingresados en la carga inicial de la Orden</value>
-    </data>
+  </data>
   <data name="Establecimiento_SojaEUDR" xml:space="preserve">
     <value>Soja EUDR</value>
   </data>
@@ -10584,7 +10579,7 @@
   </data>
   <data name="PuestoComando_Error_DiferenteVariedadSeleccionada" xml:space="preserve">
     <value>Selecciona Recorridos con soja {0}</value>
-</data>
+  </data>
   <data name="ErrorLlenarCaomposEntidad" xml:space="preserve">
     <value>Error al llenar datos de la entidad:</value>
   </data>
@@ -10707,5 +10702,62 @@
   </data> 
   <data name="Digital" xml:space="preserve">
     <value>Digital</value>
+  </data>
+  <data name="PanelDeControlTransaccionesVisec" xml:space="preserve">
+    <value>Panel de Control Transacciones VISEC</value>
+  </data>
+  <data name="FechaDesde2" xml:space="preserve">
+    <value>Fecha Desde</value>
+  </data>
+  <data name="FechaHasta2" xml:space="preserve">
+    <value>Fecha Hasta</value>
+  </data>
+  <data name="PanelDeTransaccionesVisec_NumeroProceso" xml:space="preserve">
+    <value>N° de Proceso</value>
+  </data>
+  <data name="PanelDeTransaccionesVisec_NumeroDocumento" xml:space="preserve">
+    <value>N° Documento</value>
+  </data>
+  <data name="PanelDeTransaccionesVisec_FechaProcesamiento" xml:space="preserve">
+    <value>Fecha de Procesamiento</value>
+  </data>
+  <data name="PanelDeTransaccionesVisec_Estado" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="PanelDeTransaccionesVisec_Detalle" xml:space="preserve">
+    <value>Detalle</value>
+  </data>
+  <data name="PanelDeTransaccionesVisec_ProcesosAnteriores" xml:space="preserve">
+    <value>Procesos anteriores</value>
+  </data>
+  <data name="Visec_Error_Conexion" xml:space="preserve">
+    <value>Ocurrió un error en la conexión a Visec</value>
+  </data>
+  <data name="Visec_Error_ConexionScato" xml:space="preserve">
+    <value>Ocurrió un error en la conexión a Scato Visec</value>
+  </data>
+  <data name="TransmisionVisec_Estado_Pendiente" xml:space="preserve">
+    <value>Pendiente</value>
+  </data>
+  <data name="TransmisionVisec_Estado_Finalizado" xml:space="preserve">
+    <value>Finalizado</value>
+  </data>
+  <data name="TransmisionVisec_Estado_EnviadoAVisec" xml:space="preserve">
+    <value>Enviado a Visec</value>
+  </data>
+  <data name="TransmisionVisec_Estado_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="TransmisionVisec_Estado_ErrorVisec" xml:space="preserve">
+    <value>Error en Visec</value>
+  </data>
+  <data name="PanelDeTransaccionesVisec_DocumentosAsociados" xml:space="preserve">
+    <value>N° Documentos asociados</value>
+  </data>
+  <data name="Visec_Error_StockNoDisponible" xml:space="preserve">
+    <value>Stock No Disponible</value>
+  </data>
+  <data name="ActImportacionEgresoVisec" xml:space="preserve">
+    <value>Importación Egreso Visec</value>
   </data>
 </root>

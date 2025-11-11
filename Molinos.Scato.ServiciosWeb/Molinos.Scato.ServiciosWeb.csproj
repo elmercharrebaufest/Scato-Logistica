@@ -56,14 +56,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.Core, Version=1.8.18.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Core.1.8.18\lib\net451\Hangfire.Core.dll</HintPath>
+    <Reference Include="Hangfire.Core, Version=1.8.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.8.20\lib\net451\Hangfire.Core.dll</HintPath>
     </Reference>
     <Reference Include="Hangfire.Ninject, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Ninject.2.0.0\lib\net45\Hangfire.Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.SqlServer, Version=1.8.18.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.SqlServer.1.8.18\lib\net451\Hangfire.SqlServer.dll</HintPath>
+    <Reference Include="Hangfire.SqlServer, Version=1.8.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.8.20\lib\net451\Hangfire.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -203,16 +203,28 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="AdministradorDeCalles.svc" />
-    <Content Include="GSLOSCATOAPP00.DeployParameters.xml" />
-    <Content Include="GSLOSCATOAPP01.DeployParameters.xml" />
-    <Content Include="GSLOSCATOAPP03.DeployParameters.xml" />
-    <Content Include="GSLOSCATOAPP04.DeployParameters.xml" />
-    <Content Include="GSLOSCATOAPP05.DeployParameters.xml" />
-    <Content Include="GSLOSCATOAPP06.DeployParameters.xml" />
-    <Content Include="ServicioLlamadoAutomatico.svc" />
+    <Content Include="ServicioHangfireQueue.svc" />
     <Content Include="ServicioEstadoPuesto.svc" />
     <Content Include="FirmaProvider.svc" />
     <Content Include="ServicioSuscriptor.svc" />
+    <Content Include="GSLOSCATOAPP01.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GSLOSCATOAPP03.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GSLOSCATOAPP04.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GSLOSCATOAPP05.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GSLOSCATOAPP06.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GSLOSCATOAPP00.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SLOSCATOPROD.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

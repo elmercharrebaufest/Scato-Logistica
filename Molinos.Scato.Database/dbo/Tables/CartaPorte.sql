@@ -62,6 +62,7 @@
     [PagadorFlete_Id]                  INT             NULL,
     [RepresentanteRecibidor_Id]        INT             NULL,
     [FotoRutaSustentable]              NVARCHAR(255)   NULL,
+    [CodigoRENSPA] NVARCHAR (17) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC) WITH (FILLFACTOR = 90, STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_CartaPorte_Categoria] FOREIGN KEY ([Categoria_Id]) REFERENCES [dbo].[Categoria] ([Id]),
     CONSTRAINT [FK_CartaPorte_Entregador_RepresentanteRecibidor] FOREIGN KEY ([RepresentanteRecibidor_Id]) REFERENCES [dbo].[Entregador] ([Id]),

@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
@@ -8,6 +9,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.Conversiones;
+using Molinos.Scato.Servicios.Impl;
 using Ninject;
 using Ninject.Extensions.Logging;
 using PdfiumViewer;
@@ -26,15 +28,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private const int cLongitudMaximaCupo = 16; //Se establece el limite maximo de caracteres para el campo cupo de la consulta de CTG.
         private readonly CpePortType serviceAfipCPDigital;
         private readonly IAccesoWsCtg accesoWsCtg;
+        private readonly IServicioComandos servicioComandos;
         private IKernel kernel;
 
         public ProcesadorConsultarCPDigital(IRepositorio repositorio, IConversor conversor, ILogger log,
-                                 CpePortType serviceAfipCPDigital, IAccesoWsCtg accesoWsCtg, IKernel kernel)
+                                 CpePortType serviceAfipCPDigital, IAccesoWsCtg accesoWsCtg, IKernel kernel, IServicioComandos servicioComandos)
             : base(repositorio, conversor, log)
         {
             this.accesoWsCtg = accesoWsCtg;
             this.kernel = kernel;
             this.serviceAfipCPDigital = serviceAfipCPDigital;
+            this.servicioComandos = servicioComandos;
         }
 
         public override Resultado Ejecutar(ConsultarCPDigital comando)
@@ -225,6 +229,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             Domicilio = responseCp.respuesta.origen.domicilio,
                             PlantaOrigen = responseCp.respuesta.origen.planta,
                             CuitOrigen = responseCp.respuesta.origen.cuit,
+                            NroRenspa = responseCp.respuesta.origen.nroRenspa,
 
                             //correspondeRetiroProductor
                             RetiroProductor = responseCp.respuesta.correspondeRetiroProductor,
@@ -309,15 +314,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 EstadoCpe = cartaPorteRequest.Estado,
                                 TitularCartaPorteCodigoSap = titular.CodigoSap,
                                 RtteComercialCodigoSap = rtte?.CodigoSap,
-                                Vehiculos = new List<VehiculoDto>() { 
-                                    new VehiculoDto { 
+                                Vehiculos = new List<VehiculoDto>()
+                                {
+                                    new VehiculoDto
+                                    {
                                         Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
                                         PatenteAcoplado = cartaPorte.Dominio.Split(',').Length > 1 ? cartaPorte.Dominio.Split(',')[1] : string.Empty,
-                                        PatenteAcoplado2 = cartaPorte.Dominio.Split(',').Length > 2 ? cartaPorte.Dominio.Split(',').LastOrDefault() : string.Empty,                               
+                                        PatenteAcoplado2 = cartaPorte.Dominio.Split(',').Length > 2 ? cartaPorte.Dominio.Split(',').LastOrDefault() : string.Empty,
                                         Primero = true,
+                                        PesoNetoOrigen = (cartaPorte.PesoBruto ?? 0) - (cartaPorte.PesoTara ?? 0),
                                     }
                                 },
                                 CodEstab = cartaPorte.PlantaOrigen.HasValue ? cartaPorte.PlantaOrigen.ToString() : string.Empty,
+                                Cosecha = cartaPorte.Cosecha.HasValue ? cartaPorte.Cosecha.Value.ToString() : string.Empty,
+                                CodigoRENSPA = VisecHelper.ObtenerTipoOrigenCPE(cartaPorte.PlantaOrigen.GetValueOrDefault()) == TipoOrigenCPE.UnidadProductiva
+                                                ? (!string.IsNullOrWhiteSpace(cartaPorte.NroRenspa)
+                                                    ? cartaPorte.NroRenspa
+                                                    : VisecHelper.ObtenerRENSPA(cartaPorte.Observacion))
+                                                : string.Empty,
                             };
                             return resultado;
                         }
@@ -406,17 +420,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             Material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo),
 
                             Vehiculos = new List<Vehiculo>
-                        {
-                           new Vehiculo
-                           {
-                               Patente = patentes?.FirstOrDefault(),
-                               PatenteAcoplado = patentes.Length > 1 ? patentes[1] : string.Empty,
-                               PatenteAcoplado2 = patentes.Length > 2 ? patentes.LastOrDefault() : string.Empty,
-                               PesoBrutoOrigen = cartaPorte.PesoBruto ?? 0,
-                               PesoTaraOrigen = cartaPorte.PesoTara ?? 0,
-                               PesoNetoOrigen = (cartaPorte.PesoBruto ?? 0) - (cartaPorte.PesoTara ?? 0)
-                           }
-                        },
+                            {
+                               new Vehiculo
+                               {
+                                   Patente = patentes?.FirstOrDefault(),
+                                   PatenteAcoplado = patentes.Length > 1 ? patentes[1] : string.Empty,
+                                   PatenteAcoplado2 = patentes.Length > 2 ? patentes.LastOrDefault() : string.Empty,
+                                   PesoBrutoOrigen = cartaPorte.PesoBruto ?? 0,
+                                   PesoTaraOrigen = cartaPorte.PesoTara ?? 0,
+                                   PesoNetoOrigen = (cartaPorte.PesoBruto ?? 0) - (cartaPorte.PesoTara ?? 0)
+                               }
+                            },
                             Destinatario = ObtenerProveedor(cartaPorte.CuitDestinatario.ToString(), resultado, Textos.CartaPorte_Destinatario, false, false, true),
                             Transportista = transportista,
                             KmRecorrer = cartaPorte.KmRecorrer,
@@ -444,7 +458,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         resultado.Cpe.TitularCartaPorte = titularCartaPorte != null ? titularCartaPorte.Descripcion : string.Empty;
                         resultado.Cpe.TipoVehiculo = TipoVehiculo.Camión;
                         resultado.Cpe.EstadoCpe = cartaPorteRequest.Estado;
-                        resultado.Cpe.EsTransportista = transportista != null; 
+                        resultado.Cpe.EsTransportista = transportista != null;;
+                        resultado.Cpe.CodigoRENSPA = VisecHelper.ObtenerTipoOrigenCPE(cartaPorte.PlantaOrigen.GetValueOrDefault()) == TipoOrigenCPE.UnidadProductiva 
+                                                     ? (!string.IsNullOrWhiteSpace(cartaPorte.NroRenspa) 
+                                                        ? cartaPorte.NroRenspa 
+                                                        : VisecHelper.ObtenerRENSPA(resultado.Cpe.Observacion)) 
+                                                     : string.Empty;
                     }
                 }
             }
@@ -568,30 +587,35 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     EstadoCpe = cartaPorte.Estado,
                     TitularCartaPorteCodigoSap = ObtenerProveedor(cartaPorte.CuitOrigen.ToString(), resultado, Textos.CartaPorte_TitularCartaPorte, false, false, true).CodigoSap,
                     EsTransportista = ObtenerTransportista(cartaPorte.CuitTransportista.ToString(), resultado) != null,
-                    Vehiculos = new List<VehiculoDto>() {
-                        new VehiculoDto {
+                    Vehiculos = new List<VehiculoDto>() 
+                    {
+                        new VehiculoDto 
+                        {
                             Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
-                            PatenteAcoplado = cartaPorte?.Dominio?.Split(',')?.Length > 1 ? cartaPorte?.Dominio?.Split(',')?.LastOrDefault() : string.Empty
+                            PatenteAcoplado = cartaPorte?.Dominio?.Split(',')?.Length > 1 ? cartaPorte?.Dominio?.Split(',')?.LastOrDefault() : string.Empty,
+                            PesoNetoOrigen = (cartaPorte.PesoBruto ?? 0) - (cartaPorte.PesoTara ?? 0),
                         }
                     },
                     CodEstab = cartaPorte.PlantaOrigen.HasValue ? cartaPorte.PlantaOrigen.ToString() : string.Empty,
                     RtteComercialCodigoSap = rtte?.CodigoSap,
+                    CodigoRENSPA = VisecHelper.ObtenerTipoOrigenCPE(cartaPorte.PlantaOrigen.GetValueOrDefault()) == TipoOrigenCPE.UnidadProductiva 
+                                ? (!string.IsNullOrWhiteSpace(cartaPorte.NroRenspa) 
+                                    ? cartaPorte.NroRenspa 
+                                    : VisecHelper.ObtenerRENSPA(cartaPorte.Observacion)) 
+                                : string.Empty,
+                    Cosecha = cartaPorte.Cosecha.HasValue ? cartaPorte.Cosecha.Value.ToString() : string.Empty,
                 };
                 return cp;
             }
-            var localidad = cartaPorte.Localidad.Value.ToString();
-            var provincia = cartaPorte.Provincia.Value.ToString();
 
+            var localidad = cartaPorte.Localidad.Value.ToString();
             var localidadObj = Repositorio.Listar<Localidad>(x => x.CodigoAfip == localidad).FirstOrDefault();
             Localidad localidadDto = null;
+
             if (localidadObj == null)
-            {
                 localidadDto = ObtenerLocalidadAfip(auth, localidad, cartaPorte.Provincia.Value);
-            }
             else
-            {
                 localidadDto = localidadObj;
-            }
 
             var cuitRepresentanteEntregador = cartaPorte.CuitRepresentanteEntregador.ToString();
             var cuitRepresentanteRecibidor = cartaPorte.CuitRepresentanteRecibidor.ToString();
@@ -631,16 +655,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo),
 
                 Vehiculos = new List<Vehiculo>
-                        {
-                           new Vehiculo
-                           {
-                               Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
-                               PatenteAcoplado = cartaPorte?.Dominio?.Split(',')?.Length > 1 ? cartaPorte?.Dominio?.Split(',')?.LastOrDefault() : string.Empty,
-                               PesoBrutoOrigen = cartaPorte.PesoBruto ?? 0,
-                               PesoTaraOrigen = cartaPorte.PesoTara ?? 0,
-                               PesoNetoOrigen = (cartaPorte.PesoBruto ?? 0) - (cartaPorte.PesoTara ?? 0)
-                           }
-                        },
+                {
+                    new Vehiculo
+                    {
+                        Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
+                        PatenteAcoplado = cartaPorte?.Dominio?.Split(',')?.Length > 1 ? cartaPorte?.Dominio?.Split(',')?.LastOrDefault() : string.Empty,
+                        PesoBrutoOrigen = cartaPorte.PesoBruto ?? 0,
+                        PesoTaraOrigen = cartaPorte.PesoTara ?? 0,
+                        PesoNetoOrigen = (cartaPorte.PesoBruto ?? 0) - (cartaPorte.PesoTara ?? 0)
+                    }
+                },
                 Destinatario = ObtenerProveedor(cartaPorte.CuitDestinatario.ToString(), resultado, Textos.CartaPorte_Destinatario, false, false, true),
                 Transportista = ObtenerTransportista(cartaPorte.CuitTransportista.ToString(), resultado),
                 KmRecorrer = cartaPorte.KmRecorrer,
@@ -668,6 +692,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             cpe.TitularCartaPorte = titularCartaPorte != null ? titularCartaPorte.Descripcion : string.Empty;
             cpe.EstadoCpe = cartaPorte.Estado;
             cpe.EsTransportista = cpe.TransportistaId != null;
+            cpe.CodigoRENSPA = VisecHelper.ObtenerTipoOrigenCPE(cartaPorte.PlantaOrigen.GetValueOrDefault()) == TipoOrigenCPE.UnidadProductiva 
+                               ? (!string.IsNullOrWhiteSpace(cartaPorte.NroRenspa) 
+                                    ? cartaPorte.NroRenspa 
+                                    : VisecHelper.ObtenerRENSPA(cpe.Observacion)) 
+                               : string.Empty;
 
             return cpe;
         }
@@ -970,6 +999,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Cpe.EstadoCpe = cartaPorteRequest.Estado;
                     resultado.Cpe.NumeroPrecinto = cartaPorteRequest.NumeroPrecinto;
                     resultado.Cpe.NumeroOperativo = cartaPorteRequest.NroOperativo;
+                    resultado.Cpe.CodigoRENSPA = VisecHelper.ObtenerTipoOrigenCPE(cartaPorte.PlantaOrigen.GetValueOrDefault()) == TipoOrigenCPE.UnidadProductiva 
+                                                 ? (!string.IsNullOrWhiteSpace(cartaPorte.NroRenspa) 
+                                                    ? cartaPorte.NroRenspa 
+                                                    : VisecHelper.ObtenerRENSPA(cartaPorteRequest.Observacion)) 
+                                                 : string.Empty;
 
                     if (!(ramalFerroviario is null))
                     {

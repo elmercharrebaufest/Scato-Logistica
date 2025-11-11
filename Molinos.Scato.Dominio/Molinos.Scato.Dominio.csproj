@@ -96,6 +96,9 @@
     <Compile Include="Comandos\MOAPay\MOAPayInformarPagoComoConsumido.cs" />
     <Compile Include="Comandos\MOAPay\MOAPaySincronizarEstadoDePagos.cs" />
     <Compile Include="Comandos\ModificarComoDevolucionPagosTasaMunicipal.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarCategoriaVehiculo.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarEstadoTransmisionVisec.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\ResultadoValidacionEjecutarWorkflow.cs" />
     <Compile Include="Comandos\VerificarPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenInsumos.cs" />
@@ -112,9 +115,11 @@
     <Compile Include="Comandos\CrearHuellaDigital.cs" />
     <Compile Include="Comandos\EliminarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ModificarComoUsadoPagosTasaMunicipal.cs" />
+    <Compile Include="Comandos\ModificarCartaPorteRENSPA.cs" />
+    <Compile Include="Comandos\ModificarRecorridoTipoVariedad.cs" />
     <Compile Include="Comandos\ResultadoConsultaOrdenCargaFas.cs" />
-    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarCategoriaVehiculo.cs" />
-    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarPagoTasaMunicipal.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarDataAgroVisec.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoVisecDistribuirStock.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoOrdenFas.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarTicketsNoGranos.cs" />
     <Compile Include="Comandos\ResultadoValidarCompliance.cs" />
@@ -790,6 +795,13 @@
     <Compile Include="Comandos\Resultado.cs" />
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
+    <Compile Include="Comandos\Visec\ConsultarDataAgroVisec.cs" />
+    <Compile Include="Comandos\Visec\ConsultarEstadoTransmisionVisec.cs" />
+    <Compile Include="Comandos\Visec\VisecDistribuirStock.cs" />
+    <Compile Include="Comandos\Visec\CrearActualizarVisecTransmision.cs" />
+    <Compile Include="Comandos\Visec\ConsultarStockUP.cs" />
+    <Compile Include="Comandos\Visec\ConsultarStockRUCA.cs" />
+    <Compile Include="Comandos\Visec\ImportarCartaPorteVisec.cs" />
     <Compile Include="Consultas\InfoCalle.cs" />
     <Compile Include="Dto\PagosTasaMunicipalDto.cs" />
     <Compile Include="Dto\PagosTasaMunicipalResponse.cs" />
@@ -801,6 +813,7 @@
     <Compile Include="Dto\AutomatismoNoGranoDto.cs" />
     <Compile Include="Dto\Base\AuditoriaBaseDto.cs" />
     <Compile Include="Dto\AdicionalesCartaPorteByPassDto.cs" />
+    <Compile Include="Dto\ProveedorRENSPADto.cs" />
     <Compile Include="Dto\EstablecimientoProveedorDto.cs" />
     <Compile Include="Dto\ComercialDto.cs" />
     <Compile Include="Dto\CallePreBalanzaPlayaInternaDto.cs" />
@@ -808,6 +821,7 @@
     <Compile Include="Dto\ExcepcionAlControlProveedorDto.cs" />
     <Compile Include="Dto\DerivadoGranario\RequestAltaCTGDGDto.cs" />
     <Compile Include="Dto\DomicilioDto.cs" />
+    <Compile Include="Dto\Visec\FiltroPanelDeTransaccionesVisecDto.cs" />
     <Compile Include="Dto\HistorialMensajeCartelLedDto.cs" />
     <Compile Include="Dto\HuellaDigitalOrdenDto.cs" />
     <Compile Include="Dto\InfoCalleDto.cs" />
@@ -1088,13 +1102,22 @@
     <Compile Include="Dto\PanelServiciosWebDto.cs" />
     <Compile Include="Dto\FirmaDto.cs" />
     <Compile Include="Dto\UsuarioMatriculaDto.cs" />
+    <Compile Include="Dto\Visec\VisecTransmisionBaseDto.cs" />
+    <Compile Include="Dto\Visec\VisecTransmisionDto.cs" />
+    <Compile Include="Dto\Visec\VisecTransmisionMovimientoDto.cs" />
     <Compile Include="Dto\VisualizacionBarreraDto.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoConsultarEstadoImportacionVisec.cs" />
     <Compile Include="Dto\WebAPI\ResultadoMOAPayCrearModificarCPE.cs" />
     <Compile Include="Dto\WebAPI\ResultadoMOAPayInformarPagoComoConsumido.cs" />
     <Compile Include="Dto\WebAPI\ResultadoMOAPayConsultarPagos.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoConsultarStockUP.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoConsultarStockRUCA.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoImportacionCartaPorteVisec.cs" />
     <Compile Include="Dto\WebAPI\ResultadoCPEPendienteResolucion.cs" />
     <Compile Include="Dto\WebAPI\ResultadoConfirmacionDescargadoDestino.cs" />
     <Compile Include="Dto\WebAPI\ResponseWebAPIDto.cs" />
+    <Compile Include="Dto\WebAPI\VisecErrorResponse.cs" />
+    <Compile Include="Dto\WebAPI\VisecValidationError.cs" />
     <Compile Include="Dto\WorkflowCreadoDto.cs" />
     <Compile Include="Dto\MovimientoDeBinesDto.cs" />
     <Compile Include="Dto\LoteBiotecnologiaListaDto.cs" />
@@ -1239,6 +1262,8 @@
     <Compile Include="Entidades\TipoEmbalaje.cs" />
     <Compile Include="Entidades\TipoDeActividad.cs" />
     <Compile Include="Entidades\TipoDeBuquePuerto.cs" />
+    <Compile Include="Entidades\VisecTransmisionMovimiento.cs" />
+    <Compile Include="Entidades\VisecTransmision.cs" />
     <Compile Include="Entidades\TurnoPuerto.cs" />
     <Compile Include="Entidades\UbicacionDeBuquePuerto.cs" />
     <Compile Include="Entidades\Vapor.cs" />
@@ -1288,10 +1313,12 @@
     <Compile Include="Entidades\VisualizacionBarrera.cs" />
     <Compile Include="Entidades\ZE7550TransmisionASap.cs" />
     <Compile Include="Enums\AccionColaImpresion.cs" />
+    <Compile Include="Enums\EstadoTransmisionAVisec.cs" />
     <Compile Include="Enums\RecursoWebAPI.cs" />
     <Compile Include="Enums\LlamadoAutomatico.cs" />
     <Compile Include="Enums\TipoOrdenCargaNoGranos.cs" />
     <Compile Include="Enums\TipoHuellaDigital.cs" />
+    <Compile Include="Enums\TipoOrigenCPE.cs" />
     <Compile Include="Enums\TipoPerfil.cs" />
     <Compile Include="Enums\EstadoHidraulica.cs" />
     <Compile Include="Enums\EstadosCPEFromAFIP.cs" />
@@ -1328,6 +1355,7 @@
     <Compile Include="Helpers\FotoCamionHelper.cs" />
     <Compile Include="Helpers\LoggerHelper.cs" />
     <Compile Include="IPagoTasaMunicipalBuilder.cs" />
+    <Compile Include="Helpers\VisecHelper.cs" />
     <Compile Include="ITipeable.cs" />
     <Compile Include="Dto\ActividadPorDispositivoDto.cs" />
     <Compile Include="Dto\AjusteDeCalidadDto.cs" />
@@ -1819,9 +1847,6 @@
     <Compile Include="Validations\OrdenCargaInternaFasonValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Recursos\Textos.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Recursos\Textos.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

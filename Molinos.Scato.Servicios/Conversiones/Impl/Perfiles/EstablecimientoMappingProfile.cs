@@ -25,6 +25,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 
             Mapper.CreateMap<EstablecimientoDto, Establecimiento>()
                   .ForMember(f => f.EPA, t => t.MapFrom(r => r.EsSojaEPA));
+
+            Mapper.CreateMap<Establecimiento, ProveedorRENSPADto>();
         }
     }
 }

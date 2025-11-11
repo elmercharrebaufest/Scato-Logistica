@@ -162,9 +162,25 @@
         <parameterEntry kind="XmlFile" scope="Web.config"
 					    match="/configuration/appSettings/add[@key='APITokenOperacionesAPI']
                             /@value" />
-    </parameter>
-    <parameter name="RollingLogFileAppenderFileValue log4net.config">
-        <parameterEntry kind="XmlFile" scope="log4net.config"
-                            match="/log4net/appender[@name='RollingLogFileAppender']/file/@value" />
-    </parameter>
+	</parameter>
+  <parameter name="RollingLogFileAppenderFileValue log4net.config">
+    <parameterEntry kind="XmlFile" scope="log4net.config"
+					    match="/log4net/appender[@name='RollingLogFileAppender']/file/@value" />
+  </parameter>
+	<parameter name="DataAgroServiceUsername Config">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/appSettings/add[@key='DataAgroServiceUsername']
+                           /@value" />
+	</parameter>
+	<parameter name="DataAgroServicePassword Config">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/appSettings/add[@key='DataAgroServicePassword']
+                           /@value" />
+	</parameter>
+	<parameter name="DataAgroServices Service Endpoint Address">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/system.serviceModel/client
+                           /endpoint[@name='DataAgroServices']
+                           /@address" />
+	</parameter>
 </parameters>

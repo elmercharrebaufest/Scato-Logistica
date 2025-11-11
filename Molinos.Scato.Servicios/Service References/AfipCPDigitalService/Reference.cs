@@ -12,7 +12,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -100,7 +100,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -287,10 +287,10 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/informarContingenciaEmisionDestinoDG", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/informarContingenciaEmisionDestinoDG", Name="Exception")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse informarContingenciaEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request);
+        Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGResponse informarContingenciaEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/informarContingenciaEmisionDestinoDG", ReplyAction="*")]
-        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse> informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request);
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGResponse> informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request);
         
         // CODEGEN: Generating message contract since the wrapper name (AnularCPEReq) of message anularCPERequest does not match the default value (anularCPE)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/anularCPE", ReplyAction="*")]
@@ -790,6 +790,24 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaAutomotor", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorResponse> editarCPEConfirmadaAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (EditarCPEConfirmadaAutomotorDgReq) of message editarCPEDGConfirmadaAutomotorRequest does not match the default value (editarCPEDGConfirmadaAutomotor)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGConfirmadaAutomotor", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGConfirmadaAutomotor", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorResponse editarCPEDGConfirmadaAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGConfirmadaAutomotor", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorResponse> editarCPEDGConfirmadaAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (EditarCPEConfirmadaFerroviariaDgReq) of message editarCPEDGConfirmadaFerroviariaRequest does not match the default value (editarCPEDGConfirmadaFerroviaria)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGConfirmadaFerroviaria", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGConfirmadaFerroviaria", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaResponse editarCPEDGConfirmadaFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGConfirmadaFerroviaria", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaResponse> editarCPEDGConfirmadaFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (EditarCPEConfirmadaDuctosReq) of message editarCPEConfirmadaDuctosRequest does not match the default value (editarCPEConfirmadaDuctos)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaDuctos", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaDuctos", Name="Exception")]
@@ -798,6 +816,15 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaDuctos", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse> editarCPEConfirmadaDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarRenspaReq) of message consultarRenspaRequest does not match the default value (consultarRenspa)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarRenspa", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarRenspa", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaResponse consultarRenspa(Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarRenspa", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaResponse> consultarRenspaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -829,7 +856,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -889,7 +916,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -950,7 +977,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -996,7 +1023,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1092,7 +1119,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1124,7 +1151,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1185,7 +1212,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1384,7 +1411,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1416,7 +1443,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1477,7 +1504,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1676,7 +1703,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1737,7 +1764,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1833,7 +1860,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1930,7 +1957,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1991,7 +2018,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2101,7 +2128,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2133,7 +2160,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2235,7 +2262,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2296,7 +2323,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2397,7 +2424,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2429,14 +2456,14 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
     public partial class ConsultarLocalidadesProductorRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private CodigoDescripcion[] localidadField;
+        private LocalidadProductor[] localidadField;
         
         private CodigoDescripcion[] erroresField;
         
@@ -2444,7 +2471,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("localidad", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public CodigoDescripcion[] localidad {
+        public LocalidadProductor[] localidad {
             get {
                 return this.localidadField;
             }
@@ -2476,6 +2503,200 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.metadataField = value;
                 this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class LocalidadProductor : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string codigoField;
+        
+        private string descripcionField;
+        
+        private CoordenadasGPS[] coordenadasField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string codigo {
+            get {
+                return this.codigoField;
+            }
+            set {
+                this.codigoField = value;
+                this.RaisePropertyChanged("codigo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string descripcion {
+            get {
+                return this.descripcionField;
+            }
+            set {
+                this.descripcionField = value;
+                this.RaisePropertyChanged("descripcion");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("coordenadas", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public CoordenadasGPS[] coordenadas {
+            get {
+                return this.coordenadasField;
+            }
+            set {
+                this.coordenadasField = value;
+                this.RaisePropertyChanged("coordenadas");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CoordenadasGPS : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private Coordenada latitudField;
+        
+        private Coordenada longitudField;
+        
+        private string ubicacionGeoreferencialField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public Coordenada latitud {
+            get {
+                return this.latitudField;
+            }
+            set {
+                this.latitudField = value;
+                this.RaisePropertyChanged("latitud");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public Coordenada longitud {
+            get {
+                return this.longitudField;
+            }
+            set {
+                this.longitudField = value;
+                this.RaisePropertyChanged("longitud");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string ubicacionGeoreferencial {
+            get {
+                return this.ubicacionGeoreferencialField;
+            }
+            set {
+                this.ubicacionGeoreferencialField = value;
+                this.RaisePropertyChanged("ubicacionGeoreferencial");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class Coordenada : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string gradosField;
+        
+        private string minutosField;
+        
+        private string segundosField;
+        
+        private string coordenadaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string grados {
+            get {
+                return this.gradosField;
+            }
+            set {
+                this.gradosField = value;
+                this.RaisePropertyChanged("grados");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string minutos {
+            get {
+                return this.minutosField;
+            }
+            set {
+                this.minutosField = value;
+                this.RaisePropertyChanged("minutos");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string segundos {
+            get {
+                return this.segundosField;
+            }
+            set {
+                this.segundosField = value;
+                this.RaisePropertyChanged("segundos");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string coordenada {
+            get {
+                return this.coordenadaField;
+            }
+            set {
+                this.coordenadaField = value;
+                this.RaisePropertyChanged("coordenada");
             }
         }
         
@@ -2531,7 +2752,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2628,7 +2849,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2674,7 +2895,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2790,7 +3011,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2836,7 +3057,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2896,7 +3117,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2942,7 +3163,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3017,7 +3238,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3342,7 +3563,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3424,8 +3645,26 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="InformarContingenciaEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class informarContingenciaEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public informarContingenciaEmisionDestinoDGResponse() {
+        }
+        
+        public informarContingenciaEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3540,7 +3779,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3669,7 +3908,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3756,7 +3995,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3885,7 +4124,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3972,7 +4211,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4073,7 +4312,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4160,7 +4399,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4247,7 +4486,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4348,7 +4587,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4449,7 +4688,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4537,7 +4776,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4598,7 +4837,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4783,7 +5022,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4843,7 +5082,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
     public enum SolicitanteDestino {
@@ -4856,7 +5095,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4958,7 +5197,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5032,7 +5271,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5106,7 +5345,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5193,7 +5432,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5322,7 +5561,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5354,7 +5593,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5415,7 +5654,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5433,6 +5672,12 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private int codLocalidadField;
         
         private bool codLocalidadFieldSpecified;
+        
+        private string latitudField;
+        
+        private string longitudField;
+        
+        private string ubicacionGeoreferencialField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -5506,6 +5751,42 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             }
         }
         
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string latitud {
+            get {
+                return this.latitudField;
+            }
+            set {
+                this.latitudField = value;
+                this.RaisePropertyChanged("latitud");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public string longitud {
+            get {
+                return this.longitudField;
+            }
+            set {
+                this.longitudField = value;
+                this.RaisePropertyChanged("longitud");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public string ubicacionGeoreferencial {
+            get {
+                return this.ubicacionGeoreferencialField;
+            }
+            set {
+                this.ubicacionGeoreferencialField = value;
+                this.RaisePropertyChanged("ubicacionGeoreferencial");
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -5558,7 +5839,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5590,7 +5871,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5651,7 +5932,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5794,7 +6075,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5938,7 +6219,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5998,7 +6279,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6030,7 +6311,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6272,7 +6553,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6346,7 +6627,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6448,7 +6729,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6480,7 +6761,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6666,7 +6947,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6712,7 +6993,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6913,7 +7194,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7113,7 +7394,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7159,7 +7440,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7485,7 +7766,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7867,7 +8148,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7889,6 +8170,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private int plantaField;
         
         private bool plantaFieldSpecified;
+        
+        private string plantaObservacionesField;
         
         private string domicilioDestinoField;
         
@@ -7990,6 +8273,18 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public string plantaObservaciones {
+            get {
+                return this.plantaObservacionesField;
+            }
+            set {
+                this.plantaObservacionesField = value;
+                this.RaisePropertyChanged("plantaObservaciones");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public string domicilioDestino {
             get {
                 return this.domicilioDestinoField;
@@ -8011,7 +8306,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8057,7 +8352,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8480,7 +8775,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8610,7 +8905,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8656,7 +8951,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8744,7 +9039,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8790,7 +9085,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8920,7 +9215,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9134,7 +9429,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9194,7 +9489,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9464,7 +9759,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9664,7 +9959,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9793,7 +10088,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9950,7 +10245,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10066,7 +10361,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10225,7 +10520,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10237,6 +10532,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private int plantaField;
         
         private bool plantaFieldSpecified;
+        
+        private string plantaObservacionesField;
         
         private long cuitTitularPlantaField;
         
@@ -10286,6 +10583,18 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string plantaObservaciones {
+            get {
+                return this.plantaObservacionesField;
+            }
+            set {
+                this.plantaObservacionesField = value;
+                this.RaisePropertyChanged("plantaObservaciones");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public long cuitTitularPlanta {
             get {
                 return this.cuitTitularPlantaField;
@@ -10309,7 +10618,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string domicilioOrigen {
             get {
                 return this.domicilioOrigenField;
@@ -10321,7 +10630,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public long cuitOrigen {
             get {
                 return this.cuitOrigenField;
@@ -10355,7 +10664,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10485,7 +10794,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10508,6 +10817,14 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool pesoTaraFieldSpecified;
         
+        private int pesoBrutoDescargaField;
+        
+        private bool pesoBrutoDescargaFieldSpecified;
+        
+        private int pesoTaraDescargaField;
+        
+        private bool pesoTaraDescargaFieldSpecified;
+        
         private short tipoEmbalajeField;
         
         private bool tipoEmbalajeFieldSpecified;
@@ -10518,11 +10835,11 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool unidadMedidaFieldSpecified;
         
-        private long cantidadUnidadesField;
+        private int cantidadUnidadesField;
         
         private bool cantidadUnidadesFieldSpecified;
         
-        private long kgLitroM3Field;
+        private int kgLitroM3Field;
         
         private bool kgLitroM3FieldSpecified;
         
@@ -10630,6 +10947,54 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public int pesoBrutoDescarga {
+            get {
+                return this.pesoBrutoDescargaField;
+            }
+            set {
+                this.pesoBrutoDescargaField = value;
+                this.RaisePropertyChanged("pesoBrutoDescarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoBrutoDescargaSpecified {
+            get {
+                return this.pesoBrutoDescargaFieldSpecified;
+            }
+            set {
+                this.pesoBrutoDescargaFieldSpecified = value;
+                this.RaisePropertyChanged("pesoBrutoDescargaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public int pesoTaraDescarga {
+            get {
+                return this.pesoTaraDescargaField;
+            }
+            set {
+                this.pesoTaraDescargaField = value;
+                this.RaisePropertyChanged("pesoTaraDescarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoTaraDescargaSpecified {
+            get {
+                return this.pesoTaraDescargaFieldSpecified;
+            }
+            set {
+                this.pesoTaraDescargaFieldSpecified = value;
+                this.RaisePropertyChanged("pesoTaraDescargaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public short tipoEmbalaje {
             get {
                 return this.tipoEmbalajeField;
@@ -10653,7 +11018,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
         public string otroEmbalaje {
             get {
                 return this.otroEmbalajeField;
@@ -10665,7 +11030,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
         public short unidadMedida {
             get {
                 return this.unidadMedidaField;
@@ -10689,8 +11054,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public long cantidadUnidades {
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public int cantidadUnidades {
             get {
                 return this.cantidadUnidadesField;
             }
@@ -10713,8 +11078,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
-        public long kgLitroM3 {
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public int kgLitroM3 {
             get {
                 return this.kgLitroM3Field;
             }
@@ -10737,7 +11102,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
         public string lote {
             get {
                 return this.loteField;
@@ -10749,7 +11114,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
         public System.DateTime fechaLote {
             get {
                 return this.fechaLoteField;
@@ -10783,7 +11148,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11024,7 +11389,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11140,7 +11505,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11299,7 +11664,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11387,7 +11752,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11544,7 +11909,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11632,7 +11997,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11777,7 +12142,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11907,7 +12272,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12037,7 +12402,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12335,7 +12700,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12576,7 +12941,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12650,7 +13015,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12751,7 +13116,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12866,7 +13231,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12940,7 +13305,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12950,6 +13315,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private long cuitField;
         
         private int plantaField;
+        
+        private bool plantaFieldSpecified;
         
         private DomicilioPUC domicilioDestinoField;
         
@@ -12978,6 +13345,18 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public DomicilioPUC domicilioDestino {
             get {
@@ -13000,7 +13379,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13087,7 +13466,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13216,7 +13595,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13303,7 +13682,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13391,7 +13770,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13506,7 +13885,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13580,7 +13959,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13681,7 +14060,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13755,7 +14134,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13765,6 +14144,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private long cuitField;
         
         private int plantaField;
+        
+        private bool plantaFieldSpecified;
         
         private DomicilioPUC domicilioDestinoField;
         
@@ -13789,6 +14170,18 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.plantaField = value;
                 this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
             }
         }
         
@@ -13856,7 +14249,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -13972,7 +14365,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14199,7 +14592,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14328,7 +14721,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14443,7 +14836,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14544,7 +14937,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14576,7 +14969,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14763,7 +15156,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -14962,7 +15355,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15301,7 +15694,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -15920,7 +16313,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16386,7 +16779,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16557,7 +16950,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16757,7 +17150,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16928,7 +17321,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -16974,7 +17367,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17173,7 +17566,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17345,7 +17738,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17419,7 +17812,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17465,7 +17858,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17525,7 +17918,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17535,6 +17928,10 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private int codProvinciaField;
         
         private int codLocalidadField;
+        
+        private string nroRenspaField;
+        
+        private CoordenadasGPSSolicitud coordenadasGPSField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -17560,6 +17957,30 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             }
         }
         
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string nroRenspa {
+            get {
+                return this.nroRenspaField;
+            }
+            set {
+                this.nroRenspaField = value;
+                this.RaisePropertyChanged("nroRenspa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public CoordenadasGPSSolicitud coordenadasGPS {
+            get {
+                return this.coordenadasGPSField;
+            }
+            set {
+                this.coordenadasGPSField = value;
+                this.RaisePropertyChanged("coordenadasGPS");
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -17571,7 +17992,127 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CoordenadasGPSSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private GMS latitudField;
+        
+        private GMS longitudField;
+        
+        private string ubicacionGeoreferencialField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public GMS latitud {
+            get {
+                return this.latitudField;
+            }
+            set {
+                this.latitudField = value;
+                this.RaisePropertyChanged("latitud");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public GMS longitud {
+            get {
+                return this.longitudField;
+            }
+            set {
+                this.longitudField = value;
+                this.RaisePropertyChanged("longitud");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string ubicacionGeoreferencial {
+            get {
+                return this.ubicacionGeoreferencialField;
+            }
+            set {
+                this.ubicacionGeoreferencialField = value;
+                this.RaisePropertyChanged("ubicacionGeoreferencial");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class GMS : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string gradosField;
+        
+        private string minutosField;
+        
+        private string segundosField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string grados {
+            get {
+                return this.gradosField;
+            }
+            set {
+                this.gradosField = value;
+                this.RaisePropertyChanged("grados");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string minutos {
+            get {
+                return this.minutosField;
+            }
+            set {
+                this.minutosField = value;
+                this.RaisePropertyChanged("minutos");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string segundos {
+            get {
+                return this.segundosField;
+            }
+            set {
+                this.segundosField = value;
+                this.RaisePropertyChanged("segundos");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17645,7 +18186,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -17669,8 +18210,6 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private bool tarifaFieldSpecified;
         
         private long cuitPagadorFleteField;
-        
-        private bool cuitPagadorFleteFieldSpecified;
         
         private long cuitIntermediarioFleteField;
         
@@ -17787,18 +18326,6 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool cuitPagadorFleteSpecified {
-            get {
-                return this.cuitPagadorFleteFieldSpecified;
-            }
-            set {
-                this.cuitPagadorFleteFieldSpecified = value;
-                this.RaisePropertyChanged("cuitPagadorFleteSpecified");
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
         public long cuitIntermediarioFlete {
             get {
@@ -17845,7 +18372,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18046,7 +18573,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18065,11 +18592,17 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool codLocalidadFieldSpecified;
         
+        private string nroRenspaField;
+        
         private string domicilioField;
         
         private int plantaField;
         
         private bool plantaFieldSpecified;
+        
+        private string plantaAFIPField;
+        
+        private CoordenadasGPSRespuesta coordenadasGPSField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -18145,6 +18678,18 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string nroRenspa {
+            get {
+                return this.nroRenspaField;
+            }
+            set {
+                this.nroRenspaField = value;
+                this.RaisePropertyChanged("nroRenspa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string domicilio {
             get {
                 return this.domicilioField;
@@ -18156,7 +18701,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public int planta {
             get {
                 return this.plantaField;
@@ -18179,6 +18724,30 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             }
         }
         
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public string plantaAFIP {
+            get {
+                return this.plantaAFIPField;
+            }
+            set {
+                this.plantaAFIPField = value;
+                this.RaisePropertyChanged("plantaAFIP");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public CoordenadasGPSRespuesta coordenadasGPS {
+            get {
+                return this.coordenadasGPSField;
+            }
+            set {
+                this.coordenadasGPSField = value;
+                this.RaisePropertyChanged("coordenadasGPS");
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -18190,7 +18759,67 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CoordenadasGPSRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string latitudField;
+        
+        private string longitudField;
+        
+        private string ubicacionGeoreferencialField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string latitud {
+            get {
+                return this.latitudField;
+            }
+            set {
+                this.latitudField = value;
+                this.RaisePropertyChanged("latitud");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string longitud {
+            get {
+                return this.longitudField;
+            }
+            set {
+                this.longitudField = value;
+                this.RaisePropertyChanged("longitud");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string ubicacionGeoreferencial {
+            get {
+                return this.ubicacionGeoreferencialField;
+            }
+            set {
+                this.ubicacionGeoreferencialField = value;
+                this.RaisePropertyChanged("ubicacionGeoreferencial");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18432,7 +19061,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -18758,7 +19387,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19097,7 +19726,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19227,7 +19856,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19287,7 +19916,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19389,7 +20018,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19603,7 +20232,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19802,7 +20431,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19918,7 +20547,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -19964,7 +20593,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20052,7 +20681,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20182,7 +20811,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20326,7 +20955,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20455,7 +21084,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20585,7 +21214,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20645,7 +21274,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20746,7 +21375,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20875,7 +21504,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -20949,7 +21578,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21050,7 +21679,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21137,7 +21766,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21153,6 +21782,10 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private bool plantaFieldSpecified;
         
         private DomicilioPUC domicilioDestinoField;
+        
+        private long cuitDestinatarioField;
+        
+        private bool cuitDestinatarioFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -21214,6 +21847,30 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             }
         }
         
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitDestinatario {
+            get {
+                return this.cuitDestinatarioField;
+            }
+            set {
+                this.cuitDestinatarioField = value;
+                this.RaisePropertyChanged("cuitDestinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitDestinatarioSpecified {
+            get {
+                return this.cuitDestinatarioFieldSpecified;
+            }
+            set {
+                this.cuitDestinatarioFieldSpecified = value;
+                this.RaisePropertyChanged("cuitDestinatarioSpecified");
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -21266,7 +21923,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21282,6 +21939,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private bool plantaFieldSpecified;
         
         private DomicilioPUC domicilioDestinoField;
+        
+        private long cuitDestinatarioField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -21343,6 +22002,18 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             }
         }
         
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitDestinatario {
+            get {
+                return this.cuitDestinatarioField;
+            }
+            set {
+                this.cuitDestinatarioField = value;
+                this.RaisePropertyChanged("cuitDestinatario");
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -21395,7 +22066,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21524,7 +22195,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21598,7 +22269,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21727,7 +22398,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21815,7 +22486,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21902,7 +22573,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -21933,15 +22604,9 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private long cuitDestinatarioField;
         
-        private bool cuitDestinatarioFieldSpecified;
-        
         private long cuitChoferField;
         
-        private bool cuitChoferFieldSpecified;
-        
         private long cuitTransportistaField;
-        
-        private bool cuitTransportistaFieldSpecified;
         
         private DestinoSolicitud destinoField;
         
@@ -21954,6 +22619,16 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private short codGranoField;
         
         private string[] dominioField;
+        
+        private int kmRecorrerField;
+        
+        private bool kmRecorrerFieldSpecified;
+        
+        private decimal tarifaField;
+        
+        private bool tarifaFieldSpecified;
+        
+        private string observacionesField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -22100,18 +22775,6 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool cuitDestinatarioSpecified {
-            get {
-                return this.cuitDestinatarioFieldSpecified;
-            }
-            set {
-                this.cuitDestinatarioFieldSpecified = value;
-                this.RaisePropertyChanged("cuitDestinatarioSpecified");
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
         public long cuitChofer {
             get {
@@ -22124,18 +22787,6 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool cuitChoferSpecified {
-            get {
-                return this.cuitChoferFieldSpecified;
-            }
-            set {
-                this.cuitChoferFieldSpecified = value;
-                this.RaisePropertyChanged("cuitChoferSpecified");
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
         public long cuitTransportista {
             get {
@@ -22144,18 +22795,6 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.cuitTransportistaField = value;
                 this.RaisePropertyChanged("cuitTransportista");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool cuitTransportistaSpecified {
-            get {
-                return this.cuitTransportistaFieldSpecified;
-            }
-            set {
-                this.cuitTransportistaFieldSpecified = value;
-                this.RaisePropertyChanged("cuitTransportistaSpecified");
             }
         }
         
@@ -22231,6 +22870,66 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             }
         }
         
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
+        public int kmRecorrer {
+            get {
+                return this.kmRecorrerField;
+            }
+            set {
+                this.kmRecorrerField = value;
+                this.RaisePropertyChanged("kmRecorrer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool kmRecorrerSpecified {
+            get {
+                return this.kmRecorrerFieldSpecified;
+            }
+            set {
+                this.kmRecorrerFieldSpecified = value;
+                this.RaisePropertyChanged("kmRecorrerSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=15)]
+        public decimal tarifa {
+            get {
+                return this.tarifaField;
+            }
+            set {
+                this.tarifaField = value;
+                this.RaisePropertyChanged("tarifa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tarifaSpecified {
+            get {
+                return this.tarifaFieldSpecified;
+            }
+            set {
+                this.tarifaFieldSpecified = value;
+                this.RaisePropertyChanged("tarifaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=16)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -22283,7 +22982,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22329,7 +23028,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -22528,16 +23227,18 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
-    public partial class EditarCPEConfirmadaDuctosSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+    public partial class EditarCPEConfirmadaAutomotorDgSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
         
         private long nroCTGField;
         
-        private DestinatarioSolicitud destinatarioField;
+        private IntervEditarConfirmadaAutomotorDgSolicitud intervinientesField;
+        
+        private string observacionesField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -22553,13 +23254,431 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public DestinatarioSolicitud destinatario {
+        public IntervEditarConfirmadaAutomotorDgSolicitud intervinientes {
             get {
-                return this.destinatarioField;
+                return this.intervinientesField;
             }
             set {
-                this.destinatarioField = value;
-                this.RaisePropertyChanged("destinatario");
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervEditarConfirmadaAutomotorDgSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaAutomotorDgReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGConfirmadaAutomotorRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaAutomotorDgSolicitud solicitud;
+        
+        public editarCPEDGConfirmadaAutomotorRequest() {
+        }
+        
+        public editarCPEDGConfirmadaAutomotorRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaAutomotorDgSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaAutomotorDgResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGConfirmadaAutomotorResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public editarCPEDGConfirmadaAutomotorResponse() {
+        }
+        
+        public editarCPEDGConfirmadaAutomotorResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class EditarCPEConfirmadaFerroviariaDgSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long nroCTGField;
+        
+        private IntervEditarConfirmadaFerroviariaDgSolicitud intervinientesField;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public IntervEditarConfirmadaFerroviariaDgSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervEditarConfirmadaFerroviariaDgSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaFerroviariaDgReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGConfirmadaFerroviariaRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaFerroviariaDgSolicitud solicitud;
+        
+        public editarCPEDGConfirmadaFerroviariaRequest() {
+        }
+        
+        public editarCPEDGConfirmadaFerroviariaRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaFerroviariaDgSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaFerroviariaDgResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGConfirmadaFerroviariaResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public editarCPEDGConfirmadaFerroviariaResponse() {
+        }
+        
+        public editarCPEDGConfirmadaFerroviariaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class EditarCPEConfirmadaDuctosSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long nroCTGField;
+        
+        private IntervEditarConfirmadaAutomotorDgSolicitud intervinientesField;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public IntervEditarConfirmadaAutomotorDgSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
             }
         }
         
@@ -22610,6 +23729,159 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public editarCPEConfirmadaDuctosResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarRenspaRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private Renspa[] renspaField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("renspa", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public Renspa[] renspa {
+            get {
+                return this.renspaField;
+            }
+            set {
+                this.renspaField = value;
+                this.RaisePropertyChanged("renspa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class Renspa : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string nroRenspaField;
+        
+        private string descripcionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string nroRenspa {
+            get {
+                return this.nroRenspaField;
+            }
+            set {
+                this.nroRenspaField = value;
+                this.RaisePropertyChanged("nroRenspa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string descripcion {
+            get {
+                return this.descripcionField;
+            }
+            set {
+                this.descripcionField = value;
+                this.RaisePropertyChanged("descripcion");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarRenspaReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarRenspaRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public long cuit;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int codProvincia;
+        
+        public consultarRenspaRequest() {
+        }
+        
+        public consultarRenspaRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, long cuit, int codProvincia) {
+            this.auth = auth;
+            this.cuit = cuit;
+            this.codProvincia = codProvincia;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarRenspaRes", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarRenspaResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarRenspaRespuesta respuesta;
+        
+        public consultarRenspaResponse() {
+        }
+        
+        public consultarRenspaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarRenspaRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -22953,7 +24225,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.informarContingenciaEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request) {
+        Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.informarContingenciaEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request) {
             return base.Channel.informarContingenciaEmisionDestinoDG(request);
         }
         
@@ -22961,16 +24233,16 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest();
             inValue.auth = auth;
             inValue.solicitud = solicitud;
-            Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).informarContingenciaEmisionDestinoDG(inValue);
+            Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).informarContingenciaEmisionDestinoDG(inValue);
             return retVal.respuesta;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request) {
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request) {
             return base.Channel.informarContingenciaEmisionDestinoDGAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse> informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.InformarContingenciaEmisionDestinoDGSolicitud solicitud) {
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGResponse> informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.InformarContingenciaEmisionDestinoDGSolicitud solicitud) {
             Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest();
             inValue.auth = auth;
             inValue.solicitud = solicitud;
@@ -24353,6 +25625,56 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGConfirmadaAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorRequest request) {
+            return base.Channel.editarCPEDGConfirmadaAutomotor(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta editarCPEDGConfirmadaAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaAutomotorDgSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGConfirmadaAutomotor(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGConfirmadaAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorRequest request) {
+            return base.Channel.editarCPEDGConfirmadaAutomotorAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorResponse> editarCPEDGConfirmadaAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaAutomotorDgSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaAutomotorRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGConfirmadaAutomotorAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGConfirmadaFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaRequest request) {
+            return base.Channel.editarCPEDGConfirmadaFerroviaria(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta editarCPEDGConfirmadaFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaFerroviariaDgSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGConfirmadaFerroviaria(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGConfirmadaFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaRequest request) {
+            return base.Channel.editarCPEDGConfirmadaFerroviariaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaResponse> editarCPEDGConfirmadaFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaFerroviariaDgSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGConfirmadaFerroviariaRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGConfirmadaFerroviariaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEConfirmadaDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest request) {
             return base.Channel.editarCPEConfirmadaDuctos(request);
         }
@@ -24375,6 +25697,33 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             inValue.auth = auth;
             inValue.solicitud = solicitud;
             return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEConfirmadaDuctosAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarRenspa(Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaRequest request) {
+            return base.Channel.consultarRenspa(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarRenspaRespuesta consultarRenspa(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, long cuit, int codProvincia) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaRequest();
+            inValue.auth = auth;
+            inValue.cuit = cuit;
+            inValue.codProvincia = codProvincia;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarRenspa(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarRenspaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaRequest request) {
+            return base.Channel.consultarRenspaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaResponse> consultarRenspaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, long cuit, int codProvincia) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarRenspaRequest();
+            inValue.auth = auth;
+            inValue.cuit = cuit;
+            inValue.codProvincia = codProvincia;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarRenspaAsync(inValue);
         }
     }
 }

@@ -73,5 +73,8 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoOrdenCargaNoGranos? TipoOrdenCargaNoGranos { get; set; }
         public bool HayVariosMateriales { get; set; }
         public TipoVehiculo TipoVehiculo { get; set; }
+        public string CodigoRENSPA { get; set; }
+        public string Cosecha { get; set; }
+        public int PesoNetoOrigen { get; set; }
     }
 }

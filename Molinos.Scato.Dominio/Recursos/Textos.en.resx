@@ -1095,9 +1095,6 @@
   <data name="Confirmar" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  <data name="FechaInvalida" xml:space="preserve">
-    <value>The date is invalid</value>
-  </data>
   <data name="AnalisisGirasolOleico" xml:space="preserve">
     <value>The refraction analysis should be performed to determine if it is Oleico</value>
   </data>
@@ -1106,5 +1103,11 @@
   </data>
   <data name="Workflow_ExcluirRechazados" xml:space="preserve">
     <value>Exclude rejected</value>
+  </data>
+  <data name="FechaInvalida" xml:space="preserve">
+    <value>The date is invalid</value>
+  </data>
+  <data name="PanelDeControlTransaccionesVisec" xml:space="preserve">
+    <value />
   </data>
 </root>

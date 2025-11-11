@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" name="DataAgroServices" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IDataAgroServices_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <http:BasicAuthentication xmlns:http="http://schemas.microsoft.com/ws/06/2004/policy/http" />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://test.dataagro.com.ar/services/DataAgroServices.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://test.dataagro.com.ar/services/DataAgroServices.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://test.dataagro.com.ar/services/DataAgroServices.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.DataAgro.Entities.Dto" />
+      <xsd:import schemaLocation="http://test.dataagro.com.ar/services/DataAgroServices.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://test.dataagro.com.ar/services/DataAgroServices.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Molinos.DataAgro.Entities.Entities" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IDataAgroServices_Ping_InputMessage">
+    <wsdl:part name="parameters" element="tns:Ping" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_Ping_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PingResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_GrabarRiesgoComercial_InputMessage">
+    <wsdl:part name="parameters" element="tns:GrabarRiesgoComercial" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_GrabarRiesgoComercial_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GrabarRiesgoComercialResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_GrabarCampaniaActual_InputMessage">
+    <wsdl:part name="parameters" element="tns:GrabarCampaniaActual" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_GrabarCampaniaActual_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GrabarCampaniaActualResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarCampaniaMaterial_InputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarCampaniaMaterial" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarCampaniaMaterial_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarCampaniaMaterialResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarEstadoComercial_InputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarEstadoComercial" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarEstadoComercial_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarEstadoComercialResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarContratoSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarContratoSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarContratoSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarContratoSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarCupoSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarCupoSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarCupoSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarCupoSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AltaCupoSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:AltaCupoSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AltaCupoSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AltaCupoSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AnularContratoSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:AnularContratoSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AnularContratoSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AnularContratoSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ValidarProveedorComercial_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidarProveedorComercial" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ValidarProveedorComercial_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidarProveedorComercialResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AltaContratoSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:AltaContratoSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AltaContratoSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AltaContratoSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarFijacionSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarFijacionSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarFijacionSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarFijacionSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AltaFijacionSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:AltaFijacionSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AltaFijacionSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AltaFijacionSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AnularFijacionSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:AnularFijacionSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AnularFijacionSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AnularFijacionSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AnulaFijacionVirtualSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:AnulaFijacionVirtualSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AnulaFijacionVirtualSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AnulaFijacionVirtualSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ProveedorApocrifo_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProveedorApocrifo" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ProveedorApocrifo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProveedorApocrifoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_TraerTipoDeCambio_InputMessage">
+    <wsdl:part name="parameters" element="tns:TraerTipoDeCambio" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_TraerTipoDeCambio_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TraerTipoDeCambioResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarCesionContratoSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarCesionContratoSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ActualizarCesionContratoSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ActualizarCesionContratoSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AltaCampoSustentable_InputMessage">
+    <wsdl:part name="parameters" element="tns:AltaCampoSustentable" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_AltaCampoSustentable_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AltaCampoSustentableResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_BuscarProveedorEnSisa_InputMessage">
+    <wsdl:part name="parameters" element="tns:BuscarProveedorEnSisa" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_BuscarProveedorEnSisa_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BuscarProveedorEnSisaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ConfirmarFijacionSAP_InputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmarFijacionSAP" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ConfirmarFijacionSAP_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmarFijacionSAPResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ListarApoderadosPorProveedor_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarApoderadosPorProveedor" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_ListarApoderadosPorProveedor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarApoderadosPorProveedorResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_DatosCupoSap_InputMessage">
+    <wsdl:part name="parameters" element="tns:DatosCupoSap" />
+  </wsdl:message>
+  <wsdl:message name="IDataAgroServices_DatosCupoSap_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DatosCupoSapResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IDataAgroServices">
+    <wsdl:operation name="Ping">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/Ping" message="tns:IDataAgroServices_Ping_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/PingResponse" message="tns:IDataAgroServices_Ping_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GrabarRiesgoComercial">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/GrabarRiesgoComercial" message="tns:IDataAgroServices_GrabarRiesgoComercial_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/GrabarRiesgoComercialResponse" message="tns:IDataAgroServices_GrabarRiesgoComercial_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GrabarCampaniaActual">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/GrabarCampaniaActual" message="tns:IDataAgroServices_GrabarCampaniaActual_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/GrabarCampaniaActualResponse" message="tns:IDataAgroServices_GrabarCampaniaActual_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarCampaniaMaterial">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarCampaniaMaterial" message="tns:IDataAgroServices_ActualizarCampaniaMaterial_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarCampaniaMaterialResponse" message="tns:IDataAgroServices_ActualizarCampaniaMaterial_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarEstadoComercial">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarEstadoComercial" message="tns:IDataAgroServices_ActualizarEstadoComercial_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarEstadoComercialResponse" message="tns:IDataAgroServices_ActualizarEstadoComercial_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarContratoSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarContratoSAP" message="tns:IDataAgroServices_ActualizarContratoSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarContratoSAPResponse" message="tns:IDataAgroServices_ActualizarContratoSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarCupoSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarCupoSAP" message="tns:IDataAgroServices_ActualizarCupoSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarCupoSAPResponse" message="tns:IDataAgroServices_ActualizarCupoSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AltaCupoSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/AltaCupoSAP" message="tns:IDataAgroServices_AltaCupoSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/AltaCupoSAPResponse" message="tns:IDataAgroServices_AltaCupoSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AnularContratoSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/AnularContratoSAP" message="tns:IDataAgroServices_AnularContratoSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/AnularContratoSAPResponse" message="tns:IDataAgroServices_AnularContratoSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidarProveedorComercial">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ValidarProveedorComercial" message="tns:IDataAgroServices_ValidarProveedorComercial_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ValidarProveedorComercialResponse" message="tns:IDataAgroServices_ValidarProveedorComercial_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AltaContratoSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/AltaContratoSAP" message="tns:IDataAgroServices_AltaContratoSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/AltaContratoSAPResponse" message="tns:IDataAgroServices_AltaContratoSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarFijacionSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarFijacionSAP" message="tns:IDataAgroServices_ActualizarFijacionSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarFijacionSAPResponse" message="tns:IDataAgroServices_ActualizarFijacionSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AltaFijacionSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/AltaFijacionSAP" message="tns:IDataAgroServices_AltaFijacionSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/AltaFijacionSAPResponse" message="tns:IDataAgroServices_AltaFijacionSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AnularFijacionSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/AnularFijacionSAP" message="tns:IDataAgroServices_AnularFijacionSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/AnularFijacionSAPResponse" message="tns:IDataAgroServices_AnularFijacionSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AnulaFijacionVirtualSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/AnulaFijacionVirtualSAP" message="tns:IDataAgroServices_AnulaFijacionVirtualSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/AnulaFijacionVirtualSAPResponse" message="tns:IDataAgroServices_AnulaFijacionVirtualSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProveedorApocrifo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ProveedorApocrifo" message="tns:IDataAgroServices_ProveedorApocrifo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ProveedorApocrifoResponse" message="tns:IDataAgroServices_ProveedorApocrifo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TraerTipoDeCambio">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/TraerTipoDeCambio" message="tns:IDataAgroServices_TraerTipoDeCambio_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/TraerTipoDeCambioResponse" message="tns:IDataAgroServices_TraerTipoDeCambio_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarCesionContratoSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarCesionContratoSAP" message="tns:IDataAgroServices_ActualizarCesionContratoSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ActualizarCesionContratoSAPResponse" message="tns:IDataAgroServices_ActualizarCesionContratoSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AltaCampoSustentable">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/AltaCampoSustentable" message="tns:IDataAgroServices_AltaCampoSustentable_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/AltaCampoSustentableResponse" message="tns:IDataAgroServices_AltaCampoSustentable_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BuscarProveedorEnSisa">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/BuscarProveedorEnSisa" message="tns:IDataAgroServices_BuscarProveedorEnSisa_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/BuscarProveedorEnSisaResponse" message="tns:IDataAgroServices_BuscarProveedorEnSisa_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmarFijacionSAP">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ConfirmarFijacionSAP" message="tns:IDataAgroServices_ConfirmarFijacionSAP_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ConfirmarFijacionSAPResponse" message="tns:IDataAgroServices_ConfirmarFijacionSAP_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarApoderadosPorProveedor">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/ListarApoderadosPorProveedor" message="tns:IDataAgroServices_ListarApoderadosPorProveedor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/ListarApoderadosPorProveedorResponse" message="tns:IDataAgroServices_ListarApoderadosPorProveedor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DatosCupoSap">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDataAgroServices/DatosCupoSap" message="tns:IDataAgroServices_DatosCupoSap_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDataAgroServices/DatosCupoSapResponse" message="tns:IDataAgroServices_DatosCupoSap_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IDataAgroServices" type="tns:IDataAgroServices">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IDataAgroServices_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Ping">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/Ping" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GrabarRiesgoComercial">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/GrabarRiesgoComercial" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GrabarCampaniaActual">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/GrabarCampaniaActual" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarCampaniaMaterial">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ActualizarCampaniaMaterial" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarEstadoComercial">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ActualizarEstadoComercial" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarContratoSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ActualizarContratoSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarCupoSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ActualizarCupoSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AltaCupoSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/AltaCupoSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnularContratoSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/AnularContratoSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidarProveedorComercial">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ValidarProveedorComercial" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AltaContratoSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/AltaContratoSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarFijacionSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ActualizarFijacionSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AltaFijacionSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/AltaFijacionSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnularFijacionSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/AnularFijacionSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnulaFijacionVirtualSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/AnulaFijacionVirtualSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProveedorApocrifo">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ProveedorApocrifo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TraerTipoDeCambio">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/TraerTipoDeCambio" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarCesionContratoSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ActualizarCesionContratoSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AltaCampoSustentable">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/AltaCampoSustentable" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BuscarProveedorEnSisa">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/BuscarProveedorEnSisa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmarFijacionSAP">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ConfirmarFijacionSAP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarApoderadosPorProveedor">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/ListarApoderadosPorProveedor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosCupoSap">
+      <soap:operation soapAction="http://tempuri.org/IDataAgroServices/DatosCupoSap" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DataAgroServices">
+    <wsdl:port name="BasicHttpBinding_IDataAgroServices" binding="tns:BasicHttpBinding_IDataAgroServices">
+      <soap:address location="http://test.dataagro.com.ar/services/DataAgroServices.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

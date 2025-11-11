@@ -21,5 +21,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Centro Centro { get; set; }
         public virtual bool Activo { get; set; }
         public virtual bool PendienteNoGranos { get; set; }
+        public virtual bool AplicaConsultaCupoDataAgro { get; set; }
     }
 }

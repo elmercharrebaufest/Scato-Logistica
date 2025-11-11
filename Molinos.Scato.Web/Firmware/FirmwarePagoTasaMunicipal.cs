@@ -1,9 +1,9 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Servicios.Orquestador;
@@ -48,7 +48,7 @@ namespace Molinos.Scato.Web.Firmware
                                 comandos.Ejecutar(new ModificarComoDevolucionPagosTasaMunicipal
                                 {
                                     PagoId = pago.Id,
-                                    InstanceId = recorrido.InstanciaWorkflow,      
+                                    InstanceId = recorrido.InstanciaWorkflow,
                                 });
                             }
                         }

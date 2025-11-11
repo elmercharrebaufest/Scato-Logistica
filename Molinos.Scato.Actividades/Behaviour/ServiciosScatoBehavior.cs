@@ -33,6 +33,7 @@ namespace Molinos.Scato.Actividades.Behaviour
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<IServicioNotificarUsuario>());
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<IFirmaProvider>());
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<IServicioSapAsincronico>());
+                host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<IServicioHangfireQueue>());
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<ZSDWS_SCATO>());
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<WaybillManagementPODv2>());
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<DatosPort>());
@@ -40,8 +41,6 @@ namespace Molinos.Scato.Actividades.Behaviour
                 host.WorkflowExtensions.Add(() => ServiceProvider.Current.Get<ILogger>());
             }
         }
-
-
 
         public virtual void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {

@@ -48,6 +48,7 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
         {
             StartJobsForAutomatismos();
             StartJobsForMOAPay();
+            StartJobsForVisec();
         }
 
         private static void StartJobsForAutomatismos()
@@ -68,14 +69,23 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
             if (isEnabledSincronizarMOAPayCPE)
                 RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.SincronizarMOAPayCPE, x => x.SincronizarMOAPayCPE(), "0 30 * * * *");
         }
+
+        private static void StartJobsForVisec()
+        {
+            var cronExpressionForSincronizarEstadoTransmisionVisec = ConfigurationManager.AppSettings["Hangfire.CronExpressionFor.SincronizarEstadoTransmisionVisec"];
+            if (string.IsNullOrWhiteSpace(cronExpressionForSincronizarEstadoTransmisionVisec))
+                cronExpressionForSincronizarEstadoTransmisionVisec = "0 * * * *";
+
+            bool.TryParse(ConfigurationManager.AppSettings["Hangfire.IsEnabled.SincronizarEstadoTransmisionVisec"], out bool isEnabledSincronizarEstadoTransmisionVisec);
+            if (isEnabledSincronizarEstadoTransmisionVisec)
+                RecurringJob.AddOrUpdate<IServicioSincronizacionVisec>(Constantes.Job.SincronizarEstadoTransmisionVisec, x => x.SincronizarEstadoTransmision(), cronExpressionForSincronizarEstadoTransmisionVisec);
+        }
     }
 
     public class HangfireDashboardAuthorizationFilter : IDashboardAuthorizationFilter
     {
         public bool Authorize([NotNull] DashboardContext context)
         {
-            //var owinContext = new OwinContext(context.GetOwinEnvironment
-            //owinContext.Authentication.User.Identity.IsAuthenticated;
             return true;
         }
     }

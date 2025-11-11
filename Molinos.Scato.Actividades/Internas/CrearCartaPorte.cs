@@ -1,3 +1,4 @@
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -53,9 +54,17 @@ namespace Molinos.Scato.Actividades.Internas
             try
             {
                 var servicioComandos = context.GetExtension<IServicioComandos>();
-                var srvRepositorio = context.GetExtension<IServicioRepositorio>();
-                var titularCartaPorteCodigoSap = srvRepositorio.ObtenerProveedor(orden.TitularCartaPorteId)?.CodigoSap;
-                var tipoMaterialPorVariedad = srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, titularCartaPorteCodigoSap, orden.CodEstab);
+                var servicioRepositorio = context.GetExtension<IServicioRepositorio>();
+                var titularCartaPorteCodigoSap = servicioRepositorio.ObtenerProveedor(orden.TitularCartaPorteId)?.CodigoSap;
+                var esEpa = orden.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA;
+                var esEudr = orden.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR;
+                if (orden.TipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR)
+                {
+                    esEpa = true;
+                    esEudr = true;
+                }
+                
+                var tipoMaterialPorVariedad = servicioRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, titularCartaPorteCodigoSap, orden.CodEstab, esEpa, esEudr);
                 var resultadoCartaPorte = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte
                 {
                     Orden = orden,
@@ -69,10 +78,11 @@ namespace Molinos.Scato.Actividades.Internas
                 }) as ResultadoCrear;
                 resultado.Id = resultadoCartaPorte.Id;
 
-                var ordenDto = srvRepositorio.ObtenerCartaPorte(resultado.Id);
+                var ordenDto = servicioRepositorio.ObtenerCartaPorte(resultado.Id);
                 if (ordenDto != null)
                 {
                     ordenDto.VehiculoDemorado = orden.VehiculoDemorado;
+                    ordenDto.TipoVariedadCodigo = orden.TipoVariedadCodigo;
                     if(orden.CupoSalida != null)
                     {
                         ordenDto.CupoSalida = orden.CupoSalida;

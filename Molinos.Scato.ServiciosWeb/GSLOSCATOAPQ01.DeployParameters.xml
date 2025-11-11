@@ -11,6 +11,7 @@
 	<setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
 	<setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
 	<setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws-qaext.afip.gob.ar/wscpe/services/soap" />
+	<setParameter name="DataAgroServices Service Endpoint Address" value="http://test.dataagro.com.ar/Services/DataAgroServices.svc" />
 	<setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
 	<setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
 	<setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
@@ -21,6 +22,10 @@
 	<setParameter name="UrlNotificacionesWeb Config" value="http://localhost/Scato.web/ServicioHub/ServicioSuscriptor.svc" />
 	<setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
 	<setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
+
+	<setParameter name="DataAgroServiceUsername Config" value="molinosagro\DATAAGROP" />
+	<setParameter name="DataAgroServicePassword Config" value="J1c1E3jOwPIrGPUrSbE2MA==" />
+	
 	<setParameter name="FotosPath Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\" />
 	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\Testing\" />
 	<setParameter name="MailSettings Smtp From" value="scatoQAMOA@molinosagro.com.ar" />
@@ -33,10 +38,12 @@
 	<setParameter name="SimularTurnoActivoCircular Config" value="true" />
 	<setParameter name="PdfCpeDpiX Config" value="300" />
 	<setParameter name="PdfCpeDpiY Config" value="300" />
-	<setParameter name="UrlBaseWebAPI Config" value="https://localhost/Scato.WebApiCore/" />
+	<setParameter name="UrlBaseWebAPI Config" value="http://localhost/Scato.WebApiCore/" />
 	<setParameter name="URLOperacionesAPI Config" value="http://qabaufest.moaoperaciones.com.ar/externalApi/external/api/" />
 	<setParameter name="APITokenOperacionesAPI Config" value="prueba" />
 	<setParameter name="LogCountAfterMinutes Config" value="5" />
 	<setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoServicios.log" />
 	<setParameter name="ActivarHangFire Config" value="true" />
+	<setParameter name="Hangfire.CronExpressionFor.SincronizarEstadoTransmisionVisec Config" value="0 * * * *" />
+	<setParameter name="Hangfire.IsEnabled.SincronizarEstadoTransmisionVisec Config" value="true" />
 </parameters>

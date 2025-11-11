@@ -138,6 +138,7 @@
     <Compile Include="ConsultasEF\ObtenerStock.cs" />
     <Compile Include="ConsultasEF\ObtenerTransmisionASap.cs" />
     <Compile Include="ConsultasEF\ToneladasPorRangoDeDiasConsulta.cs" />
+    <Compile Include="ConsultasEF\TransmisionAVisecConsulta.cs" />
     <Compile Include="ConsultasEF\TransmisionesCuposErrorConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMuestraEnvioACamaraIntactaParaArchivoConsulta.cs" />
     <Compile Include="ConsultasEF\ListarLibroMovimientosExistenciaDeGranos.cs" />
@@ -193,6 +194,7 @@
   <ItemGroup>
     <Content Include="App_Readme\Elmah.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

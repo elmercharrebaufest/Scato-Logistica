@@ -938,4 +938,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Balanza_Id" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="1b47f317-dda3-42bb-8239-6eb5c92c0c84" ChangeDateTime="05/08/2025 14:13:55">
+    <Property Name="ElementName" Value="[dbo].[VisecStock].[FechaActualizacion]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VisecStock]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FechaModificacion" />
+  </Operation>
 </Operations>

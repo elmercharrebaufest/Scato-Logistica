@@ -1,6 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Seguridad;
@@ -588,6 +587,16 @@ namespace Molinos.Scato.Web.Controllers
             var transporstistas = servicio.BuscarTransportistas(term);
             log.Info("Finaliza la búsqueda de Transportistas");
             return Json(transporstistas.Select(s => new { label = s.Cuit + " - " + s.RazonSocial, value = s.Id }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult BuscarCodigosRENSPAPorProveedor(int proveedorId, string term)
+        {
+            var renspas = servicio.ListarRENSPAPorProveedorYTerm(proveedorId, term);
+            var resultados = renspas.Select(x => new {
+                label = x.CodigoRENSPA,
+                value = x.CodigoRENSPA
+            });
+            return Json(resultados, JsonRequestBehavior.AllowGet);
         }
     }
 }

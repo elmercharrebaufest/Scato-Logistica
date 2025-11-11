@@ -79,6 +79,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         cargaDecupoPorCartaDePorte.Recorrido = recorrido;
                         cargaDecupoPorCartaDePorte.Numero = comando.Numero;
                         cargaDecupoPorCartaDePorte.Material = recorrido.Material;
+                        cargaDecupoPorCartaDePorte.CPE = recorrido.Vehiculo.CartaPorte.Cpe.HasValue && recorrido.Vehiculo.CartaPorte.Cpe.Value;
                     }
                     if (cargaDecupo != null && cargaDecupoPorCartaDePorte !=null)
                     {

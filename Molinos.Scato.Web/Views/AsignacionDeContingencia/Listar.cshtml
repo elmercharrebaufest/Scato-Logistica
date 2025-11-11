@@ -351,7 +351,7 @@
                     <div class="span4">
                         <label class="switch">
                             <input type="checkbox" id="no-granos" @(ViewBag.ContingenciaNoGranos ? "checked" : "unchecked")>
-                            <span data-id="@puestoNoGranos.Id" data-granos="false" data-contingencia="habilitarGranos" class="slider round"></span>
+                            <span data-id="" data-granos="false" data-contingencia="habilitarGranos" class="slider round"></span>
                         </label>
                     </div>
                 </div>
@@ -405,6 +405,30 @@
                                 </div>
                             </div>
                         }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tabla-contingencia" href="#visec">
+                Visec
+            </a>
+        </div>
+        <div id="visec" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>Deshabilitar consulta de stock</h6>
+                        <small>Se deshabilita la consulta de stock en visec.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" id="consulta-stock" @(ViewBag.ContingenciaVisecStock ? "checked" : "unchecked")>
+                            <span data-id="" data-granos="false" data-contingencia="deshabilitarConsultaStock" class="slider round"></span>
+                        </label>
                     </div>
                 </div>
             </div>

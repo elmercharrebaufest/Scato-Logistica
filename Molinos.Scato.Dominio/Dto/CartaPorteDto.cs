@@ -551,5 +551,10 @@ namespace Molinos.Scato.Dominio.Dto
 
         public string CupoSalida { get; set; }
         public AdicionalesCartaPorteByPassDto CartaPorteByPass { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Establecimiento_CodigoRENSPA")]
+        [RegularExpression(@"^\d{2}\.\d{3}\.\d\.\d{5}/\d{2}$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Establecimiento_Error_FormatoCodigoRENSPA")]
+        public string CodigoRENSPA { get; set; }
+        public string TipoVariedadCodigo { get; set; }
     }
 }

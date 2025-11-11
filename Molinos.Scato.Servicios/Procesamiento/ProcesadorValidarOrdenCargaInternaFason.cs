@@ -14,7 +14,6 @@ using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
@@ -36,7 +35,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             this.resultado = new ResultadoOrdenFason();
             this.servicioOperaciones = servicioOperaciones;
         }
-
 
         /// <summary>
         /// Ejecuta la validación de la orden de carga interna fason.
@@ -98,7 +96,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             try
             {
-
                 var ordenCargaInterna = new OrdenCargaInternaFasonDto();
                 string workflowDescripcion = ordenOperaciones.FleteMOA
                     ? Constantes.WorkFlow.workflowFason
@@ -187,7 +184,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     ordenCargaInterna.PagadorFleteId = null;
                 }
 
-
                 ordenCargaInterna.Id = 0;
                 ordenCargaInterna.NumeroOrden = servicio.ObtenerNuevoNumeroDeOrdenFason();
                 ordenCargaInterna.FechaEmision = DateTime.Now;
@@ -226,7 +222,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     ordenCargaInterna.Destinatario = string.Empty;
                     ordenCargaInterna.DestinatarioId = 0;
-                }               
+                }
                 if (intermediarioFlete != null)
                 {
                     ordenCargaInterna.IntermediarioFleteId = intermediarioFlete.Id;
@@ -283,7 +279,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 return new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario };
             }
-
         }
 
         private bool ValidarDummyActivo()
@@ -312,13 +307,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     this.resultado.Error("1", Textos.DatosOrdenInvalidos);
                     return this.resultado;
-                };
+                }
+                ;
 
                 // Validación para verificar si KmARecorrer o localidad están vacíos
                 if (orden.DerivadoGranarioHabilitado && string.IsNullOrEmpty(orden.KmARecorrer) || (!int.TryParse(orden.KmARecorrer, out int km) || km <= 0))
                 {
                     this.resultado.Error("2", "KmARecorrer no pueden estar vacío o estar en cero.");
-                    return this.resultado; 
+                    return this.resultado;
                 }
 
                 var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;
@@ -339,7 +335,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 if (orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
                 {
-
                     if (!orden.PlantaDGDestino.HasValue)
                     {
                         resultado.Error("1", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
@@ -351,7 +346,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         resultado.Error("1", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
                         return resultado;
                     }
-                          
+
                     if (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0)
                     {
                         resultado.Error("1", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
@@ -430,7 +425,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 foreach (var error in validationResult.Errors)
                 {
-                    // Agregar los errores al resultado 
+                    // Agregar los errores al resultado
                     resultado.Error(error.PropertyName, error.ErrorMessage);
                 }
 
@@ -614,7 +609,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private ResultadoCartaPorteElectronicaDummy EjecutarAutorizarCpeDGDummy(OrdenCargaInternaFasonDto orden, int idCentro)
         {
-
             var dominios = new List<string> { orden.PatenteCamion };
             if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
             {
@@ -664,12 +658,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             // Obtener código SAP del material que llega de carga de cupo
             var materialCodigoSap = Repositorio.ObtenerProyeccion<Material, string>(x => x.Id == materialId, x => x.CodigoSAP);
-            
+
             // Obtener todas las órdenes para la patente
             var ordenesOperaciones = servicioOperaciones.ObtenerOrdenesDeCarga(patente);
 
             // Filtrar por el código SAP del material que viene de operaciones
-            var ordenesFiltradas = ordenesOperaciones.Where(x => x.CodigoProducto == materialCodigoSap).ToList();        
+            var ordenesFiltradas = ordenesOperaciones.Where(x => x.CodigoProducto == materialCodigoSap).ToList();
 
             if (!ordenesFiltradas.Any())
                 throw new OrdenCargaInternaException(nameof(OrdenDeCargaDto.Id), Textos.OrdenesFasonNoEncontradas);
@@ -678,7 +672,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var clientesDistintos = ordenesFiltradas.Select(o => o.CUITCliente).Distinct().Count();
             if (clientesDistintos > 1)
             {
-                throw new OrdenCargaInternaException("ValidacionFason",Textos.Multiples_Clientes_Mismo_Material);
+                throw new OrdenCargaInternaException("ValidacionFason", Textos.Multiples_Clientes_Mismo_Material);
             }
 
             //Ordenar por la mas antigua por el Id de la orden

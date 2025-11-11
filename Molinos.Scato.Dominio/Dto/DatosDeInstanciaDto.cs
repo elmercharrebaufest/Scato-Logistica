@@ -11,5 +11,6 @@ namespace Molinos.Scato.Dominio.Dto
 
         public string DatosProximaActividad { get; set; }
         public TipoVehiculo TipoVehiculo { get; set; }
+        public string TipoVariedadCodigo { get; set; }
     }
 }

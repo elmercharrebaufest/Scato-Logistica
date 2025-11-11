@@ -1,4 +1,6 @@
-﻿namespace Molinos.Scato.Dominio
+﻿using System.Dynamic;
+
+namespace Molinos.Scato.Dominio
 {
     public static class Constantes
     {
@@ -92,6 +94,7 @@
                 public const string ServicioSap = "ServicioSap";
                 public const string ServicioOperaciones = "ServicioOperaciones";
                 public const string PagoTasaMunicipal = "PagoTasaMunicipal";
+                public const string ConsultaDataAgroVisec = "ConsultaDataAgroVisec";
             }
 
             public struct ContingenciaPesosExcedidos
@@ -184,6 +187,13 @@
                 public const string OperacionesDummyResponse = "OperacionesDummyResponse";
                 public const string SapDummy = "SapDummy";
                 public const string SapDummyResponse = "SapDummyResponse";
+            }
+
+            public struct ConsultaDataAgroVisec
+            {
+                public const string Activo = "Activo";
+                public const string DummyActivo = "DummyActivo";
+                public const string DummyDatosCupoSapRespose = "DummyDatosCupoSapRespose";
             }
         }
 
@@ -293,6 +303,7 @@
             public const string LlamarAutomatismoNoGrano = "JobLlamarLlamadoAutomaticoNoGranos";
             public const string SincronizarMOAPayEstadoDePagos = "SincronizarMOAPayEstadoDePagos";
             public const string SincronizarMOAPayCPE = "SincronizarMOAPayCPE";
+            public const string SincronizarEstadoTransmisionVisec = "SincronizarEstadoTransmisionVisec";
             public const string DefaultCronExpressionForSincronizarMOAPayEstadoDePagos = "0 */30 * * * *"; //cada 30 minutos
         }
 
@@ -311,6 +322,7 @@
             public const string workflowVentaFas = "SLO.EgresoPorVentasFAS";
             public const string workflowExportacionFCA = "1029-EgresoPorExportacionFCA";
             public const string workflowIngresoImportacion = "1029-IngresoPorImpoGranos";
+            public const string workflowRedespacho = "1029-IngresoPorRedespachoDeGranosCaladaExterna";
         }
 
         public struct Excepciones
@@ -339,6 +351,11 @@
         {
             public const string CartaPorteUrenport = "1";
             public const string CertificacionHojaDeRutaCartaPorte = "2";
+        }
+
+        public struct Contingencia
+        {
+            public const string VisecCaido = "VisecCaido";
         }
 
         public static class MOAPay

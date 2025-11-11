@@ -10,6 +10,7 @@
     <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
     <setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
     <setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws.afip.gob.ar/wscpe/services/soap" />
+    <setParameter name="DataAgroServices Service Endpoint Address" value="https://www.dataagro.com.ar/Services/DataAgroServices.svc" />
     <setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
     <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
     <setParameter name="SapServicePassword Config" value="ipiYlSviW3QB7BjrHn+7vw==" />
@@ -20,6 +21,8 @@
     <setParameter name="UrlNotificacionesWeb Config" value="http://scato.molinosagro.com.ar/Scato.web/ServicioHub/ServicioSuscriptor.svc" />
     <setParameter name="MonsantoServiceUsername Config" value="ws_molinos" />
     <setParameter name="MonsantoServicePassword Config" value="n41TwPC/D/iYU4ye1PAF7Q==" />
+    <setParameter name="DataAgroServiceUsername Config" value="molinosagro\DATAAGROP" />
+	<setParameter name="DataAgroServicePassword Config" value="J1c1E3jOwPIrGPUrSbE2MA==" />
     <setParameter name="FotosPath Config" value="\\GVICFSPRD00\Scato\ScatoPuerto\ScatoFotos\" />
     <setParameter name="ArchivosPath Config" value="\\GVICFSPRD00\Scato\ScatoPuerto\" />
     <setParameter name="MailSettings Smtp From" value="scatoprodMOA@molinosagro.com.ar" />

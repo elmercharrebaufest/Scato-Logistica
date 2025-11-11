@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Dominio.Entidades
 {
@@ -65,5 +62,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual double TarifaReferencia { get; set; }
         public virtual DateTime? FechaCacheado { get; set; }
         public virtual bool? NoEncontradaAFIP { get; set; }
+        public virtual string NroRenspa { get; set; }
     }
 }

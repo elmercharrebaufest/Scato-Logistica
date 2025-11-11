@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.ServiceModel;
-using Molinos.Scato.Dominio;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
@@ -16,6 +8,12 @@ using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.Conversiones;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net;
+using System.ServiceModel;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -215,8 +213,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             tarifaSpecified = !(comando?.Dto?.TarifaTonelada is null),
                             cuitIntermediarioFlete = Convert.ToInt64(comando?.Dto?.IntermediarioFleteCuil?.Replace("-", "")),
                             cuitIntermediarioFleteSpecified = !string.IsNullOrEmpty(comando?.Dto?.IntermediarioFleteCuil),
-                            cuitPagadorFlete = Convert.ToInt64(comando?.Dto?.PagadorFleteCuil?.Replace("-", "")),
-                            cuitPagadorFleteSpecified = !string.IsNullOrEmpty(comando?.Dto?.PagadorFleteCuil)
+                            cuitPagadorFlete = Convert.ToInt64(comando?.Dto?.PagadorFleteCuil?.Replace("-", ""))
                         },
                         observaciones = comando?.Dto?.Observacion
                     }
@@ -748,6 +745,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Domicilio = responseCp.respuesta.origen.domicilio,
                         PlantaOrigen = responseCp.respuesta.origen.planta,
                         CuitOrigen = responseCp.respuesta.origen.cuit,
+                        NroRenspa = responseCp.respuesta.origen.nroRenspa,
 
                         //correspondeRetiroProductor
                         RetiroProductor = responseCp.respuesta.correspondeRetiroProductor,

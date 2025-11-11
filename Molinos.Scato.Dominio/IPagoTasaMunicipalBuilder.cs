@@ -1,4 +1,4 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 
 namespace Molinos.Scato.Dominio
 {

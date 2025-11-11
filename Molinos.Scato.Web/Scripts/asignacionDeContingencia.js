@@ -108,6 +108,25 @@
         });
     });
 
+    $(document).on('click', '.deshabilitarConsultaStock', function () {
+        if (ValidarMotivo()) { return false; }
+
+        BlockUI();
+        $.getJSON(urlContingenciaVisec, {
+            motivo: $("#motivo").val()
+        }, function (data) {
+            if (data !== "") {
+                MostrarAlertaError(data.value);
+
+            } else {
+                MostrarAlertaExitosa();
+            }
+        }).complete(function () {
+            $.unblockUI();
+            $("#contingenciaModal").modal("hide");
+        });
+    });
+
     $(document).on('click', '.slider', function () {
         $("#elemento-id").val($(this)[0].getAttribute('data-id'));
         $("#elemento-grano").val($(this)[0].getAttribute('data-granos'));
@@ -123,6 +142,7 @@
     });
 
     $(document).on('click', '#cancelar', function () {
+        LimpiarMensajesError();
         var contingencia = $("#elemento-contingencia").val();
         var id = $("#elemento-id").val();
         var inputs = [];
@@ -135,17 +155,21 @@
         $("#contingenciaModal").modal("hide");
     });
     function ValidarMotivo() {
-        $("#error-requerido").hide();
-        $("#error-largo").hide(); 
+        LimpiarMensajesError();
         var motivo = $("#motivo").val();
         if (motivo == "") {
-            $("#error-requerido").show();
+            document.getElementById("error-motivo-requerido").classList.remove("oculto");
             return true;
         }
         if (motivo.length < 10) {
-            $("#error-largo").show();
+            document.getElementById("error-motivo-largo").classList.remove("oculto");
             return true;
         }
         return false;
+    }
+
+    function LimpiarMensajesError() {
+        document.getElementById("error-motivo-requerido").classList.add("oculto");
+        document.getElementById("error-motivo-largo").classList.add("oculto");
     }
 });

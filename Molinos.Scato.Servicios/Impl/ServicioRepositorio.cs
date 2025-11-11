@@ -28,9 +28,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Management.Instrumentation;
 using System.Printing;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
+using System.Text.RegularExpressions;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
 namespace Molinos.Scato.Servicios.Impl
@@ -1439,7 +1441,8 @@ namespace Molinos.Scato.Servicios.Impl
                                                                                              x.WorkflowDefinicion.Id,
                                                                                      WorkflowId = x.Workflow.Id,
                                                                                      DatosProximaActividad = x.DatosProximaActividad,
-                                                                                     TipoVehiculo = x.TipoVehiculo
+                                                                                     TipoVehiculo = x.TipoVehiculo,
+                                                                                     TipoVariedadCodigo = x.TipoVariedad != null ? x.TipoVariedad.Codigo : string.Empty,
                                                                                  });
         }
 
@@ -3514,6 +3517,7 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ListarConsultaPaginada(consulta);
         }
 
+
         public ListaPaginada<TransmisionBajaCtgDefinitivaDto> ListarRetransmisionCtgDefinitiva(FiltroPanelDeBajaCtgDefinitivaDto filtro, Paginacion paginacion)
         {
             SetearFiltro(filtro);
@@ -3548,6 +3552,45 @@ namespace Molinos.Scato.Servicios.Impl
             filtro.NumeroDocumentoIngreso = filtro.NumeroDocumentoIngreso ?? string.Empty;
             filtro.Patente = filtro.Patente ?? string.Empty;
         }
+
+        public ListaPaginada<VisecTransmisionDto> ListarTransmisionesAVisec(FiltroPanelDeTransaccionesVisecDto filtro, Paginacion paginacion)
+        {
+            var consulta = new TransmisionAVisecConsulta(filtro, paginacion);
+            ListaPaginada<VisecTransmisionDto> resultado = repositorio.ListarConsultaPaginada(consulta);
+            return resultado;
+        }
+
+        public VisecTransmisionDto ObtenerTransmisionAVisec(int id)
+        {
+            var transmisionAVisec = repositorio.ObtenerProyeccion<VisecTransmision, VisecTransmisionDto>(
+                q => q.Id == id,
+                x => new VisecTransmisionDto
+                {
+                    Id = x.Id,
+                    CUITEmpresa = x.CUITEmpresa,
+                    NumeroProceso = x.NumeroProceso,
+                    FechaTransaccion = x.FechaTransaccion,
+                    DetalleTransaccion = x.DetalleTransaccion,
+                    HistorialProcesos = x.HistorialProcesos,
+                    Estado = (EstadoTransmisionAVisec)x.Estado,
+                    FechaHoraMovimiento = x.FechaHoraMovimiento,
+                    FechaCPE = x.FechaCPE,
+                    NumeroCPE = x.NumeroCPE,
+                    NumeroCTG = x.NumeroCTG,
+                    CUITTitular = x.CUITTitular,
+                    NumeroRUCAOrigen = x.NumeroRUCAOrigen,
+                    CUITDestinatario = x.CUITDestinatario,
+                    CUITDestino = x.CUITDestino,
+                    NumeroRUCADestino = x.NumeroRUCADestino,
+                    Producto = x.Producto,
+                    Campania = x.Campania,
+                    PesoNetoCargaKg = x.PesoNetoCargaKg,
+                    StockKg = x.StockKg
+                });
+
+            return transmisionAVisec;
+        }
+
 
         public IList<BajaCTGRetransmisionDto> ObtenerBajasCtgDefinitivas(int[] ids)
         {
@@ -6114,7 +6157,8 @@ namespace Molinos.Scato.Servicios.Impl
                 Establecimientos =
                         proveedor != null
                             ? Listar<Establecimiento, EstablecimientoDto>(x => x.Proveedor.Id == proveedor.Id && !x.Anulado)
-                            : new List<EstablecimientoDto>()
+                            : new List<EstablecimientoDto>(),
+                TipoVariedadCodigo = recorrido.TipoVariedadCodigo,
             };
         }
 
@@ -10728,29 +10772,31 @@ namespace Molinos.Scato.Servicios.Impl
             return infoCalle;
         }
 
-        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esSustentable = false, bool esEUDR = false)
+        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esEUDR = false, bool esSustentable = false)
         {
             var variedadesPorMaterial = repositorio.Listar<TipoVariedadPorMaterial>(x => x.MaterialId == materialId).Select(x => x.TipoVariedad);
 
-            if (!string.IsNullOrEmpty(codigoSAPtitularCP) 
-                && (codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapTPR 
-                    || (codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapACA 
+            var tipoMaterial = Constantes.TipoVariedadMaterial.Estandar;
+
+            if (!string.IsNullOrEmpty(codigoSAPtitularCP)
+                && (codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapTPR
+                    || (codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapACA
                         && !string.IsNullOrEmpty(codigoEstablecimiento) && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA)))
-                return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Importacion)).Select(x => x.Id).FirstOrDefault();
-
-            if (esEpa && esEUDR)
-                return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.EPAyEUDR)).Select(x => x.Id).FirstOrDefault();
-
-            if (esEUDR)
-                return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.EUDR)).Select(x => x.Id).FirstOrDefault();
-
-            if (esEpa)
-                return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.EPA)).Select(x => x.Id).FirstOrDefault();
+                tipoMaterial = Constantes.TipoVariedadMaterial.Importacion;
 
             if (esSustentable)
-                return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Sustentable)).Select(x => x.Id).FirstOrDefault();
+                tipoMaterial = Constantes.TipoVariedadMaterial.Sustentable;
 
-            return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Estandar)).Select(x => x.Id).FirstOrDefault();
+            if (esEUDR)
+                tipoMaterial = Constantes.TipoVariedadMaterial.EUDR;
+
+            if (esEpa)
+                tipoMaterial = Constantes.TipoVariedadMaterial.EPA;
+            
+            if (esEpa && esEUDR)
+                tipoMaterial = Constantes.TipoVariedadMaterial.EPAyEUDR;
+
+            return variedadesPorMaterial.Where(c => c.Codigo.Equals(tipoMaterial)).Select(x => x.Id).FirstOrDefault();
         }
 
         private List<TipoVariedadDto> ObtenerRelacionVariedadPorMaterial(int idMaterial)
@@ -11529,6 +11575,31 @@ namespace Molinos.Scato.Servicios.Impl
             }
 
             return query;
+        }
+
+        public IList<ProveedorRENSPADto> ListarRENSPAPorProveedorYTerm(int proveedorId, string term)
+        {
+            var match = Regex.Match(term, @"^([0-9]+(?:\.[0-9]+)*)");
+            if (match.Success)
+                term = match.Value;
+
+            return Listar<Establecimiento, ProveedorRENSPADto>(x => x.Proveedor.Id == proveedorId && x.EPA && x.EsEUDR && x.CodigoRENSPA.StartsWith(term));
+        }
+
+        public List<VisecTransmisionDto> ListarVisecTransmisionPorEstado(EstadoTransmisionAVisec estado)
+        {
+            return Listar<VisecTransmision, VisecTransmisionDto>(x => x.Estado == (int)estado).ToList();
+        }
+
+        public bool TieneContingenciaPorTipo(string tipoContingencia)
+        {
+            var contingencia = repositorio.ObtenerMasReciente<Contingencia>(x => x.TipoContingencia == tipoContingencia, x => x.Fecha);
+            return contingencia != null && contingencia.Activado;
+        }
+
+        public TipoVariedadDto ObtenerTipoVariedadPorCodigo(string codigo)
+        {
+            return Obtener<TipoVariedad, TipoVariedadDto>(x => x.Codigo == codigo);
         }
     }
 }

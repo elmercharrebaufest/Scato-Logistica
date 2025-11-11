@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
@@ -15,9 +10,12 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -28,6 +26,7 @@ namespace Molinos.Scato.Web.Controllers
         private ILogger log;
         private IListaDeWorkflows servicioWorkflows;
         private readonly IServicioComandos comandos;
+
         public AsignacionDeEstablecimientoController(ILogger log, IServicioActividadFactory<IAsignacionDeEstablecimientoService> factory, IServicioRepositorio servicio, IListaDeWorkflows servicioWorkflows, IServicioComandos comandos)
             : base(servicio)
         {
@@ -36,6 +35,7 @@ namespace Molinos.Scato.Web.Controllers
             this.servicioWorkflows = servicioWorkflows;
             this.comandos = comandos;
         }
+
         public ActionResult Index(Guid id)
         {
             ViewBag.HayErrores = false;
@@ -57,15 +57,10 @@ namespace Molinos.Scato.Web.Controllers
                     NombreUsuario = datosUsuario.NombreUsuario
                 };
 
-                int? establecimiento;
+                int? establecimiento = null;
                 if (model.EstablecimientoId > 0)
-                {
                     establecimiento = model.EstablecimientoId;
-                }
-                else
-                {
-                    establecimiento = null;
-                }
+
                 var accesoService = factory.CrearServicio(model.WorkflowDefinicionId);
                 if (model.TipoVehiculo == TipoVehiculo.Tren)
                 {
@@ -110,7 +105,6 @@ namespace Molinos.Scato.Web.Controllers
             return View(model);
         }
 
-
         private AsignacionDeEstablecimientoDto SetearVista(Guid instanceId)
         {
             var model = servicio.ObtenerAsignacionDeEstablecimiento(instanceId);
@@ -153,7 +147,7 @@ namespace Molinos.Scato.Web.Controllers
                         errorMessage = string.Empty
                     }, JsonRequestBehavior.AllowGet);
                 }
-            }            
+            }
 
             if (establecimientoId != "-1" && !String.IsNullOrEmpty(establecimientoId) && cartaPorte != null && establecimiento != null)
             {
@@ -205,6 +199,7 @@ namespace Molinos.Scato.Web.Controllers
             ModelState.AgregarErrores(resultado);
             return RedirectToAction("Index", new { id = controlRecorrido.WorkflowInstanceId });
         }
+
         [DatosUsuario]
         public ActionResult Demorar(int workflowDefinicionId, Guid workflowInstanceId, DatosUsuario datosUsuario)
         {
@@ -212,6 +207,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.WorkflowInstanceId = workflowInstanceId;
             return View("_VehiculoDemorado");
         }
+
         [DatosUsuario]
         public ActionResult Pendiente(int workflowDefinicionId, Guid instanceId, string comentario, DatosUsuario datosUsuario)
         {

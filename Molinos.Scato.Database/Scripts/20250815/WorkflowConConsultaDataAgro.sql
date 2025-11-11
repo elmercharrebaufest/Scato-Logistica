@@ -1,0 +1,1 @@
+﻿UPDATE Workflow SET AplicaConsultaCupoDataAgro = 1 WHERE Id IN (225, 226, 182, 246, 260, 248, 261, 263, 270, 279)

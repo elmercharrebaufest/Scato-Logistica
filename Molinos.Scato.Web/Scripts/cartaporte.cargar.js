@@ -307,6 +307,9 @@ function LlenarCartaPorteRedespacho(cartaPorte) {
         $('#RepresentanteRecibidor').val(cartaPorte.RepresentanteRecibidor);
         $('#RepresentanteRecibidor').addClass("italic");
     }
+
+    $('#CodigoRENSPA').val(cartaPorte.CodigoRENSPA);
+    $("#TipoVariedadCodigo").val(cartaPorte.TipoVariedadCodigo);
 }
 
 function LimpiarCartaPorte() {
@@ -361,6 +364,8 @@ function LimpiarCartaPorte() {
     $('#checkSinCupo').prop('checked', false);
     $('#tipoVehiculoDropdown').get(0).selectedIndex = 0;
     $('#Sucursal').val('');
+    $("#CodigoRENSPA").val('');
+    $("#TipoVariedadCodigo").val('');
     MostrarAnexo();
     MostrarTecnologia();
 }

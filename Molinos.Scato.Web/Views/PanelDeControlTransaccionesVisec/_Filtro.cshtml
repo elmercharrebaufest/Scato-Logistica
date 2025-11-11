@@ -1,0 +1,43 @@
+﻿@model Molinos.Scato.Dominio.Dto.FiltroPanelDeTransaccionesVisecDto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+}
+<div class="accordion-inner">
+    <div class="row-fluid">
+        <div class="span2 sinBorde">
+            @Html.Label(Textos.Estado)
+        </div>
+        <div class="span3 sinBorde">
+            @Html.EnumDropDownListFor(model => model.EstadoTransmisionAVisec, Textos.Default_Transmision)
+        </div>
+
+        <div class="span2 sinBorde">
+            @Html.Label(Textos.Pesada_NumeroDocumento)
+        </div>
+        <div class="span3 sinBorde">
+            @Html.TextBoxFor(m => m.NumeroDocumento, new { @Class = "control input-medium", Autocomplete = "off", Style = "width:89%", @Name = "NumeroDocumento" })
+        </div>
+    </div>
+    <div class="row-fluid" style="margin-top: 10px;">
+        <div class="span2">
+            @Html.Label(Textos.FechaDesde2)
+        </div>
+        <div class="span2">
+            @Html.EditorFor(m => m.FechaDesde, Model.FechaDesde != null ? Model.FechaDesde.Value.FormattedFixed() : string.Empty, "FechaDesde")
+        </div>
+
+        <div class="span2">
+            @Html.Label(Textos.FechaHasta2)
+        </div>
+        <div class="span2">
+            @Html.EditorFor(m => m.FechaHasta, Model.FechaHasta != null ? Model.FechaHasta.Value.FormattedFixed() : string.Empty, "FechaHasta")
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12 text-right" style="margin-right: 20px;">
+            <button id="btnBuscar" type="submit" class="btn">@Textos.Buscar</button>
+        </div>
+    </div>
+</div>

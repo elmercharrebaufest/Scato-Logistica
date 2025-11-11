@@ -203,8 +203,7 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
                 <br />
                 <div class="control-group sinMargen">
                     <div id="avance-cpe-check" style="width: 260px;" hidden>
-                        @Html.Label(@Textos.ContingenciaAvanceCpe, new { @class = "control-label inline" })
-                        @Html.CheckBox("AvanceCpe", avanzaAutomatico, new { id = "avanceCpe" })
+                        @Html.Hidden("AvanceCpe", avanzaAutomatico, new { id = "avanceCpe" })
                     </div>
                     <div style="width: 260px; display: inline-flex;">
                         <div style="width: 160px;">
@@ -249,12 +248,13 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
                     <div class="controls menosAncho">
                         @Html.TextBoxFor(model => model.NumeroCartaPorte, new { @class = "control input-medium uppercase ctgRequerido", data_toggle = "tooltip", maxlength = 12 })
                         @Html.ValidationMessageFor(model => model.NumeroCartaPorte)
-
                         @Html.HiddenFor(model => model.CTG)
                         @Html.HiddenFor(model => model.CodEstab)
                         @Html.HiddenFor(model => model.RtteComercialCodigoSap)
                         @Html.HiddenFor(model => model.TitularCartaPorteCodigoSap)
-
+                        @Html.HiddenFor(model => model.CodigoRENSPA)
+                        @Html.HiddenFor(model => model.Cosecha)
+                        @Html.HiddenFor(model => model.PesoNetoOrigen)
                     </div>
                 </div>
                 <div class="control-group sinMargen">

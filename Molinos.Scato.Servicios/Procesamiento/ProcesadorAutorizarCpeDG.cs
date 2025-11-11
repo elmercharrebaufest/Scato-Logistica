@@ -176,6 +176,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             cuit = orden.DestinoCuit,
                             planta = orden.DestinoPlanta,
+                            plantaSpecified = true,
                             domicilioDestino = new DomicilioPUC
                             {
                                 tipo = orden.DestinoDomicilioTipo,

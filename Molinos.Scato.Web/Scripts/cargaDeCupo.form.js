@@ -276,6 +276,10 @@ $(document).ready(function () {
                             } else {
                                 MostrarAlertaAdvertencia("Vehiculo sin acoplado");
                             }
+
+                            if (data.Cpe.Vehiculos[0]["PesoNetoOrigen"]) {
+                                $("#PesoNetoOrigen").val(data.Cpe.Vehiculos[0]["PesoNetoOrigen"]);
+                            }
                         }
                         if (data.Cpe.MaterialId != "" || data.Cpe.MaterialId != null || data.Cpe.MaterialId != undefined) {
                             $("#MaterialId").val(data.Cpe.MaterialId);
@@ -289,9 +293,9 @@ $(document).ready(function () {
                         if (!data.Cpe.TitularCartaPorteCodigoSap == null || !data.Cpe.TitularCartaPorteCodigoSap == '') {
                             $("#TitularCartaPorteCodigoSap").val(data.Cpe.TitularCartaPorteCodigoSap);
                         }
-                        if (data.Cpe.CodEstab != "" && data.Cpe.CodEstab != null && data.Cpe.CodEstab != undefined) {
-                            $("#CodEstab").val(data.Cpe.CodEstab);
-                        }
+                        $("#CodEstab").val(data.Cpe.CodEstab);
+                        $("#CodigoRENSPA").val(data.Cpe.CodigoRENSPA);
+                        $("#Cosecha").val(data.Cpe.Cosecha);
                     }
 
                     if (data.CodigoDeError == 4) {
@@ -436,6 +440,9 @@ function cargarCP(data) {
         if (data.CartaPorte.Vehiculos[0]["PatenteAcoplado"]) {
             $("#PatenteAcoplado").val(data.CartaPorte.Vehiculos[0]["PatenteAcoplado"]);
         }
+        if (data.CartaPorte.Vehiculos[0]["PesoNetoOrigen"]) {
+            $("#PesoNetoOrigen").val(data.CartaPorte.Vehiculos[0]["PesoNetoOrigen"]);
+        }
     }
 
     $("#CTG").val(data.CartaPorte.CTG);
@@ -443,6 +450,8 @@ function cargarCP(data) {
     $("#RtteComercialCodigoSap").val(data.CartaPorte.RtteComercialCodigoSap);
     $("#TitularCartaPorteCodigoSap").val(data.CartaPorte.TitularCartaPorteCodigoSap);
     $("#MaterialId").val(data.CartaPorte.MaterialId);
+    $("#CodigoRENSPA").val(data.CartaPorte.CodigoRENSPA);
+    $("#Cosecha").val(data.CartaPorte.Cosecha);
     $('#checkSinCupo').prop('checked', false);
     $("#btnAceptar").focus();
 }
@@ -632,6 +641,9 @@ function ConfiguracionNoGranosActiva() {
     $('#Patente').prop('readonly', false);
     $("#Patente").val("");
     $('#CodEstab').val("");
+    $('#Cosecha').val("");
+    $('#CodigoRENSPA').val("");
+    $('#PesoNetoOrigen').val("");
     $('#RtteComercialCodigoSap').val("");
     $('#Patente').focus();
     $("#PatenteAcoplado").val("");

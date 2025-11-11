@@ -20,6 +20,7 @@ namespace Molinos.Scato.Dependencias
             this.BindChannelFactory<IServicioComandos>("ServicioComandos");
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<IServicioSapAsincronico>("ServicioSapAsincronico");
+            this.BindChannelFactory<IServicioHangfireQueue>("ServicioHangfireQueue");
 
             this.BindChannelFactory<ZSDWS_SCATO>("ZSDWS_SCATO", "SapServiceUsername", "SapServicePassword");
 

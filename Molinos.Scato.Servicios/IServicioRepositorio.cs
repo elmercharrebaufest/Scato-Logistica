@@ -933,6 +933,12 @@ namespace Molinos.Scato.Servicios
         ListaPaginada<EnvioUrenportDto> ListarEnvioUrenport(FiltroPanelDeBajaCtgDefinitivaDto filtro, Paginacion paginacion);
 
         [OperationContract]
+        ListaPaginada<VisecTransmisionDto> ListarTransmisionesAVisec(FiltroPanelDeTransaccionesVisecDto filtro, Paginacion paginacion);
+
+        [OperationContract]
+        VisecTransmisionDto ObtenerTransmisionAVisec(int id);
+
+        [OperationContract]
         IList<AlmacenDto> ListarAlmacenesPorMaterial(int centroId, int materialId);
 
         [OperationContract]
@@ -2914,7 +2920,7 @@ namespace Molinos.Scato.Servicios
         TipoVariedadDto[] ObtenerVariedadPorTipoMaterial(int idMaterial);
 
         [OperationContract]
-        int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esSustentable = false, bool esEUDR = false);
+        int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esEUDR = false, bool esSustentable = false);
 
         [OperationContract]
         IList<AutomatismoGranoDto> ListarAutomatismoGrano();
@@ -3116,6 +3122,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool DebeImprimirReciboMunicipal(string patente, Guid instanceId);
+        
         [OperationContract]
         bool ExistePagoReciboMunicipal(string patente, string ctg);
         
@@ -3136,5 +3143,17 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool EsUltimaActividadEnControlRecorrido(Guid workflowId, string actividad);
+        
+        [OperationContract]
+        IList<ProveedorRENSPADto> ListarRENSPAPorProveedorYTerm(int proveedorId, string term);
+
+        [OperationContract]
+        List<VisecTransmisionDto> ListarVisecTransmisionPorEstado(EstadoTransmisionAVisec estado);
+
+        [OperationContract]
+        bool TieneContingenciaPorTipo(string tipoContingencia);
+
+        [OperationContract]
+        TipoVariedadDto ObtenerTipoVariedadPorCodigo(string codigo);
     }
 }
