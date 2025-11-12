@@ -32,11 +32,11 @@
     CargarGrilla(function () { $("#gridContainer").unblock(); });
 
 
-    var intervalo = Autorefresco(null);
-    $('#modoDeRefresco').change(function () {
-        CargarGrilla();
-        intervalo = Autorefresco(intervalo);
-    });
+    //var intervalo = Autorefresco(null);
+    //$('#modoDeRefresco').change(function () {
+    //    CargarGrilla();
+    //    intervalo = Autorefresco(intervalo);
+    //});
 
 
     $('#DropDownColumnas').bind('hide', function () {
@@ -95,14 +95,14 @@ function CargarGrilla() {
         columnas = columnas.slice(0, -1);
 
     //Agrego filtros
-    url = UpdateQueryString("Columnas", columnas, url);
-    url = UpdateQueryString("TipoDocumentoDeIngreso", $("#filtroTipoDocumentoDeIngreso").val(), url);
-    url = UpdateQueryString("NumeroDocumentoDeIngreso", $("#filtroNumeroDocumentoDeIngreso").val(), url);
-    url = UpdateQueryString("Patente", $("#filtroPatente").val(), url);
+    //url = UpdateQueryString("Columnas", columnas, url);
+    //url = UpdateQueryString("TipoDocumentoDeIngreso", $("#filtroTipoDocumentoDeIngreso").val(), url);
+    //url = UpdateQueryString("NumeroDocumentoDeIngreso", $("#filtroNumeroDocumentoDeIngreso").val(), url);
+    //url = UpdateQueryString("Patente", $("#filtroPatente").val(), url);
 
-    url = UpdateQueryString("Workflow", $("#filtroWorkflow").val(), url);
-    url = UpdateQueryString("TipoComercialId", $("#filtroTipoComercialId").val(), url);
-    url = UpdateQueryString("MaterialId", $("#filtroMaterialId").val(), url);
+    //url = UpdateQueryString("Workflow", $("#filtroWorkflow").val(), url);
+    //url = UpdateQueryString("TipoComercialId", $("#filtroTipoComercialId").val(), url);
+    //url = UpdateQueryString("MaterialId", $("#filtroMaterialId").val(), url);
     
     $.get(url, function (data) {
         container.html(data);
@@ -176,12 +176,12 @@ function UpdateQueryString(key, value, url) {
 //}
 
 
-function editarRepuestaFormulario(respuesta) {
-    if (respuesta == window.ajaxEditSuccess) {
-        CargarGrilla();
-        $('#dialogo-editar').modal('hide');
-        MostrarAlertaExitosa();        
-    } else {
-        cargarDialogoEditar(respuesta);
-    }
-}
+//function editarRepuestaFormulario(respuesta) {
+//    if (respuesta == window.ajaxEditSuccess) {
+//        CargarGrilla();
+//        $('#dialogo-editar').modal('hide');
+//        MostrarAlertaExitosa();        
+//    } else {
+//        cargarDialogoEditar(respuesta);
+//    }
+//}

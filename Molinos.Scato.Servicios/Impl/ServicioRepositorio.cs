@@ -3,6 +3,7 @@ using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Dto.HealthCheck;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
@@ -4259,13 +4260,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         public ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso,
                                                              string patente, TipoImpresion? tipoImpresion,
-                                                             Paginacion paginacion,int centroId)
+                                                             Paginacion paginacion, int centroId)
         {
             try
             {
                 return
                 repositorio.ListarConsultaPaginada(new ListarImpresiones(tipo, numeroDocumentoIngreso, patente, tipoImpresion,
-                                                                         paginacion,centroId));
+                                                                         paginacion, centroId));
             }
             catch (Exception e)
             {
@@ -5294,7 +5295,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public DatosRecorridoDto ObtenerDatosRecorridoActivo(string patente, IList<string> lecturasTarjetaDeAcceso)
         {
-            var datosRecorrido =  repositorio.ObtenerProyeccion<Recorrido, DatosRecorridoDto>(
+            var datosRecorrido = repositorio.ObtenerProyeccion<Recorrido, DatosRecorridoDto>(
                 x =>
                 (patente == null || patente == x.Patente) && x.TarjetaDeAcceso != null && !x.Terminado &&
                 lecturasTarjetaDeAcceso.Contains(x.TarjetaDeAcceso),
@@ -7809,9 +7810,9 @@ namespace Molinos.Scato.Servicios.Impl
         /// <summary>
         /// Valida que sea un cupo genérico (MOL1111/11111111) o que exista en la base de datos en CargaDeCupo para un centro y código específico.
         /// Si no existe cupo, entonces no es válido y se indicará que el cupo no existe en su mensaje de error.
-        /// Si existe cupo y tiene un recorrido asociado que no haya sido rechazado, entonces se lo considera como ya asignado 
+        /// Si existe cupo y tiene un recorrido asociado que no haya sido rechazado, entonces se lo considera como ya asignado
         /// y se indicará esto en su mensaje de error.
-        /// Si existe y tiene un recorrido asociado rechazado, se devolverá una instancia de CargaDeCupoDto, para ser reingresado. 
+        /// Si existe y tiene un recorrido asociado rechazado, se devolverá una instancia de CargaDeCupoDto, para ser reingresado.
         /// </summary>
         /// <param name="cupo"></param>
         /// <param name="centroId"></param>
@@ -9624,7 +9625,7 @@ namespace Molinos.Scato.Servicios.Impl
                     EsSojaEPAyEUDR = item.EsSojaEPAyEUDR,
                     ColorFondo = item.EsSojaEPAyEUDR ? Constantes.ValoresPorDefecto.ColorFondoSojaEPAyEUDR
                                     : item.EsSojaEUDR == true ? Constantes.ValoresPorDefecto.ColorFondoSojaEUDR
-                                    : item.EsSojaEPA == true ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA 
+                                    : item.EsSojaEPA == true ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA
                                     : item.EsSojaIMPO == true ? Constantes.ValoresPorDefecto.ColorFondoSojaIMPO
                                     : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
                     ColorTexto = item.EsSojaEPAyEUDR ? Constantes.ValoresPorDefecto.ColorTextoSojaEPAyEUDR
@@ -9632,8 +9633,11 @@ namespace Molinos.Scato.Servicios.Impl
                                     : item.EsSojaEPA == true ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA
                                     : item.EsSojaIMPO == true ? Constantes.ValoresPorDefecto.ColorTextoSojaIMPO
                                     : (item.MaterialColorTexto ?? item.CargaCupoColorTexto),
-                    EsDemorado = item.TipoCalle == TipoCalle.NoGranos && item.EsDemorado,
-                    RecorridoId = item.IdRecorrido
+                    EsDemorado = (item.TipoCalle == TipoCalle.NoGranos || item.TipoCalle == TipoCalle.PreCalado || item.TipoCalle == TipoCalle.PostCalado || item.TipoCalle == TipoCalle.RechazadosDemorados) && item.EsDemorado ,
+                    RecorridoId = item.IdRecorrido,
+                    PagoTasaMunicipalAdeudado = item.PagoTasaMunicipalAdeudado,
+                    ColorTextoDemoradoPorTasaMunicipal = Constantes.ValoresPorDefecto.ColorTextoDemoradoTasaMunicipal,
+
                 };
 
                 resultado.Add(callePorRecorrido);
@@ -10995,7 +10999,7 @@ namespace Molinos.Scato.Servicios.Impl
 
             var idsRecorridos = primerosCamionesPorCalle?.OrderBy(x => x?.FechaIngresoMasAntigua)?.Select(x => x.Recorrido_Id);
 
-            var recorridos =  Listar<Recorrido, RecorridoDto>(x => idsRecorridos.Contains(x.Id));
+            var recorridos = Listar<Recorrido, RecorridoDto>(x => idsRecorridos.Contains(x.Id));
 
             return recorridos;
         }
@@ -11180,10 +11184,9 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 throw new FaultException(Textos.RespuestaOperacionesVariasOrdenes, new FaultCode("NotSingle"));
             }
-
         }
 
-        public string ObtenerNuevoNumeroDeOrdenFason() 
+        public string ObtenerNuevoNumeroDeOrdenFason()
         {
             string lastOrderNumber = repositorio.ObtenerMayor<OrdenCargaInternaFason, string, string>(
             o => true, // No hay filtro específico
@@ -11193,12 +11196,10 @@ namespace Molinos.Scato.Servicios.Impl
 
             int nextOrderNumber = int.Parse(lastOrderNumber) + 1;
             return nextOrderNumber.ToString("D8");
-
         }
 
         public bool ExisteOrdenCargaFason(string ordenExterno)
         {
-
             var ordenCarga = repositorio.ObtenerMayor<OrdenCargaInternaFason, int>(
                                 x => x.NumeroOrdenExterno == ordenExterno,
                                 f => f.Id);
@@ -11233,9 +11234,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IEnumerable<ChoferDto> ObtenerChoferesPorCuits(List<string> cuils)
         {
-
-           return  Listar<Chofer, ChoferDto>(x => cuils.Contains(x.Cuil));
-
+            return Listar<Chofer, ChoferDto>(x => cuils.Contains(x.Cuil));
         }
 
         public MaterialDto ObtenerMaterialPorId(int id)
@@ -11278,7 +11277,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             bool EsCuitNesle = false;
 
-            var recorrido = ObtenerRecorrido(idRecorrido);           
+            var recorrido = ObtenerRecorrido(idRecorrido);
 
             switch (recorrido?.Workflow?.Codigo)
             {
@@ -11300,14 +11299,13 @@ namespace Molinos.Scato.Servicios.Impl
                         return EsCuitNesle;
                     }
                     break;
-            }            
+            }
 
             return EsCuitNesle;
         }
 
         public ListaPaginada<HuellaDigitalOrdenDto> ListarHuellaDigital(string filtro, Paginacion paginacion, bool esHistorico)
         {
-
             filtro = filtro?.Trim();
 
             var query = GnerarQueryHuellaDigital(filtro, esHistorico).ToList();
@@ -11356,12 +11354,10 @@ namespace Molinos.Scato.Servicios.Impl
                 var fechaLimite = DateTime.Now.AddMonths(-12);
                 var huellaDigital = ObtenerUltimo<HuellaDigital, HuellaDigitalDto>(c => c.Patente.Equals(patente) && c.FechaHoraPesaje >= fechaLimite && c.Estado == estado && c.Acoplado.Equals(acoplado) && c.IdTransportista == transportista, c => c.Id);
 
-
                 return huellaDigital;
             }
             catch (Exception ex)
             {
-
                 throw new ApplicationException("Error al obtener la huella digital con los filtros proporcionados.", ex);
             }
         }
@@ -11377,14 +11373,12 @@ namespace Molinos.Scato.Servicios.Impl
             }
             catch (Exception ex)
             {
-
                 throw new ApplicationException("Error al obtener la huella digital con los filtros proporcionados.", ex);
             }
         }
 
         public IList<HuellaDigitalOrdenDto> ListarHuellaDigitalSinPaginacion(string filtro, bool esHistorico)
         {
-
             filtro = filtro?.Trim();
 
             var huellas = GnerarQueryHuellaDigital(filtro, esHistorico).ToList();
@@ -11409,8 +11403,6 @@ namespace Molinos.Scato.Servicios.Impl
 
             query = query.Where(x => x.Orden == 1);
 
-
-
             var huella = query.FirstOrDefault();
 
             return huella;
@@ -11430,7 +11422,7 @@ namespace Molinos.Scato.Servicios.Impl
             var materialPagoRealizado = !string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor) ? configuracionMaterialPagoRealizado.Valor.Split(',').ToList() : new List<string>();
             if (materialPagoRealizado.Contains(codigoSap))
             {
-                tienePagoRealizado=  ExistePagoRealizado(patente);
+                tienePagoRealizado = ExistePagoRealizado(patente);
             }
 
             return tienePagoRealizado;
@@ -11451,7 +11443,6 @@ namespace Molinos.Scato.Servicios.Impl
         {
             string patente = string.Empty;
 
-
             switch (tipoDocumento)
 
             {
@@ -11470,6 +11461,7 @@ namespace Molinos.Scato.Servicios.Impl
                 case TipoDocumentoIngreso.OrdenDeDescargaFason:
                     patente = repositorio.ObtenerProyeccion<OrdenDeDescargaFason, string>(x => x.Recorrido.Id == idRecorrido, x => x.PatenteAcoplado);
                     break;
+
                 case TipoDocumentoIngreso.Remito:
                     patente = repositorio.ObtenerProyeccion<Remito, string>(x => x.Recorrido.Id == idRecorrido, x => x.PatenteAcoplado);
                     break;
@@ -11477,7 +11469,7 @@ namespace Molinos.Scato.Servicios.Impl
                 default:
                     break;
             }
-         return patente;
+            return patente;
         }
 
         public string ObtenerWorkflowPorTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento)
@@ -11536,12 +11528,12 @@ namespace Molinos.Scato.Servicios.Impl
 
         public TipoVehiculo ObtenerTipodVehiculoPorPesoBruto(int pesoBruto, int centroId)
         {
-           var tipoVehiculo =  repositorio.ObtenerMenor<PesoMaximoPorTipoVehiculo, int, TipoVehiculo>(
-                                                    c => c.PesoMaxIngreso >= pesoBruto &&
-                                                    c.Activo &&
-                                                    c.Centro.Id == centroId,
-                                                    x => x.PesoMaxIngreso,
-                                                    p=> p.TipoVehiculo);
+            var tipoVehiculo = repositorio.ObtenerMenor<PesoMaximoPorTipoVehiculo, int, TipoVehiculo>(
+                                                     c => c.PesoMaxIngreso >= pesoBruto &&
+                                                     c.Activo &&
+                                                     c.Centro.Id == centroId,
+                                                     x => x.PesoMaxIngreso,
+                                                     p => p.TipoVehiculo);
             return tipoVehiculo;
         }
 
@@ -11555,7 +11547,32 @@ namespace Molinos.Scato.Servicios.Impl
             var controles = repositorio.Listar<ControlRecorrido>(x => x.WorkflowInstanceId == workflowId).OrderByDescending(o => o.Id);
             return controles.FirstOrDefault().ActividadXaml.Equals(actividad) ? true : false;
         }
+            
+        public RegistroJobEjecucionDto ObtenerRegistroJobEjecucionPorProceso(string proceso)
+        {
+            return Obtener<RegistroJobEjecucion, RegistroJobEjecucionDto>(x => x.NombreProceso == proceso);
+        }
 
+        public bool TieneExcepcionDeTicketMunicipal(string patente, string numeroDeDocumento, string codigoWorkflow)
+        {
+            return repositorio.Existe<ExceptuadosTicketMunicipal>(x => x.Patente == patente && x.NumeroDocumentoIngreso == numeroDeDocumento && x.WorkflowCodigo == codigoWorkflow);
+        }
+        
+        public MonitoreoServicioExternoDto ObtenerMonitoreoServicioExternoPorJob(string job)
+        {
+            return Obtener<MonitoreoServicioExterno, MonitoreoServicioExternoDto>(x => x.KeyJob == job);
+        }
+
+        public IList<MonitoreoServicioExternoDto> ListarMonitoreoServicioExterno()
+        {
+            return Listar<MonitoreoServicioExterno, MonitoreoServicioExternoDto>();
+        }
+
+        public bool TieneContingenciaPorTipo(string tipoContingencia)
+        {
+            var contingencia = repositorio.ObtenerMasReciente<Contingencia>(x => x.TipoContingencia == tipoContingencia, x => x.Fecha);
+            return contingencia != null && contingencia.Activado;
+        }
         private IEnumerable<HuellaDigitalOrdenDto> GnerarQueryHuellaDigital(string filtro, bool esHistorico)
         {
             var query = repositorio
@@ -11589,12 +11606,6 @@ namespace Molinos.Scato.Servicios.Impl
         public List<VisecTransmisionDto> ListarVisecTransmisionPorEstado(EstadoTransmisionAVisec estado)
         {
             return Listar<VisecTransmision, VisecTransmisionDto>(x => x.Estado == (int)estado).ToList();
-        }
-
-        public bool TieneContingenciaPorTipo(string tipoContingencia)
-        {
-            var contingencia = repositorio.ObtenerMasReciente<Contingencia>(x => x.TipoContingencia == tipoContingencia, x => x.Fecha);
-            return contingencia != null && contingencia.Activado;
         }
 
         public TipoVariedadDto ObtenerTipoVariedadPorCodigo(string codigo)

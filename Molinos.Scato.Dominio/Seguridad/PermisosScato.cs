@@ -780,7 +780,6 @@ namespace Molinos.Scato.Dominio.Seguridad
 
         [Display(ResourceType = typeof(Textos), Name = "ActPesadaBrutoExportacion")]
         PesadaBrutoExportacion = 707,
-
         [Display(ResourceType = typeof(Textos), Name = "ActPesadaTaraExportacion")]
         PesadaTaraExportacion = 708,
 
@@ -789,5 +788,8 @@ namespace Molinos.Scato.Dominio.Seguridad
 
         [Display(ResourceType = typeof(Textos), Name = "ActImportacionEgresoVisec")]
         ActividadImportacionEgresoVisec = 712,
+        
+        [Display(ResourceType = typeof(Textos), Name = "MonitoreoServicioExterno")]
+        MonitoreoServicioExterno = 713,
     }
 }

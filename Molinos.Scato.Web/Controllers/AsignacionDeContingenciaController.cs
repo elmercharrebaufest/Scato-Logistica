@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Dominio;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -16,6 +12,10 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -60,6 +60,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.ContingenciaGranos = servicio.EsPuestoEnContingencia(puestoGranos!=null?puestoGranos.Id:0, true);
             ViewBag.ContingenciaNoGranos = servicio.EsPuestoEnContingencia(puestoNoGranos!=null?puestoNoGranos.Id:0, false);
             ViewBag.ContingenciaVisecStock = servicio.TieneContingenciaPorTipo(Constantes.Contingencia.VisecCaido);
+            ViewBag.ContingenciaPay = servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido);
         }
 
         [DatosUsuario]
@@ -544,6 +545,21 @@ namespace Molinos.Scato.Web.Controllers
             {
                 bool tieneContingencia = servicio.TieneContingenciaPorTipo(Constantes.Contingencia.VisecCaido);
                 RegistracionContingencia(Constantes.Contingencia.VisecCaido, datosUsuario.NombreUsuario, !tieneContingencia, motivo);
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(Textos.Error_ActualizarGenerico, JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        [DatosUsuario]
+        public JsonResult ContingenciaPay(DatosUsuario datosUsuario, string motivo)
+        {
+            try
+            {
+                bool tieneContingencia = servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido);
+                RegistracionContingencia(Constantes.Contingencia.PayCaido, datosUsuario.NombreUsuario, !tieneContingencia, motivo);
                 return Json("", JsonRequestBehavior.AllowGet);
             }
             catch

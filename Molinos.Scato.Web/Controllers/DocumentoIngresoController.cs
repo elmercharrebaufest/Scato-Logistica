@@ -150,7 +150,8 @@ namespace Molinos.Scato.Web.Controllers
                     CentroId = centroId,
                     TipoVehiculo = tipoVehiculo,
                     CodigoEstablecimiento = codigoEstablecimiento,
-                    TipoOrigenDeValidacion = TipoOrigenDeValidacion.FormularioWorkflow
+                    TipoOrigenDeValidacion = TipoOrigenDeValidacion.FormularioWorkflow,
+                    Demorado = esDemorado
 
                 }) as ResultadoConsultarPagoTasaMunicipal;
 
@@ -186,5 +187,53 @@ namespace Molinos.Scato.Web.Controllers
 
         }
 
+        protected void ActualizarExcepcionPorPatenteYDocumento(Guid InstanciaWorkflowId, int IdExcepcion)
+        {
+            try
+            {
+                var respuestaTasa = servicioComandos.Ejecutar(new ModificarExcepcionPagoTasaMunicipal
+                {
+                    Id = IdExcepcion,
+                    TieneRecorrido = InstanciaWorkflowId != Guid.Empty
+                });
+            }
+            catch (Exception e)
+            {
+                log.Error("Error al modificar la excepcion - {0}", e.Message);
+            }
+        }
+        protected void MarcarRecorridoComoContingencia(Guid InstanciaWorkflowId)
+        {
+            try
+            {
+                if (InstanciaWorkflowId != Guid.Empty)
+                {
+                    var respuestaTasa = servicioComandos.Ejecutar(new ModificarRecorridoPorContingenciaPay
+                    {
+                        InstanceId = InstanciaWorkflowId
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("Error al modificar la excepcion - {0}", e.Message);
+            }
+        }
+
+        protected void InformarPagoTasaMunicipal(Guid InstanciaWorkflowId)
+        {
+            try
+            {
+                var respuestaTasa = servicioComandos.Ejecutar(new ModificarInformadoPagosTasaMunicipal
+                {
+                    InstanceId = InstanciaWorkflowId
+                });
+            }
+            catch (Exception e)
+            {
+                log.Error("Error al informar Pago Tasa Municipal - {0}", e.Message);
+            }
+
+        }
     }
 }

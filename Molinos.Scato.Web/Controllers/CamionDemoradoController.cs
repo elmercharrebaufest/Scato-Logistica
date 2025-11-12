@@ -167,8 +167,22 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoService = demoraService.CamionDemorado(controlRecorrido, id, false);
                 if (!resultado.HayErrores && !resultadoService.HayErrores)
                 {
-                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
-                        ActualizarTasaMunicipal(id, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                    if (ResultadoPagoTasaMunicipal != null)
+                    {
+                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
+                            ActualizarTasaMunicipal(id, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
+                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                        {
+                            InformarPagoTasaMunicipal(id);
+                            ActualizarExcepcionPorPatenteYDocumento(id, ResultadoPagoTasaMunicipal.IdExcepcion);
+                        }
+                    }
+                        
+                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                    {
+                        MarcarRecorridoComoContingencia(id);
+                    }
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -314,8 +328,23 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoService = demoraService.CamionDemorado(controlRecorrido, WorkflowId, orden.Rechazado);
                 if (!resultadoService.HayErrores)
                 {
-                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
-                        ActualizarTasaMunicipal(WorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                    if (ResultadoPagoTasaMunicipal != null)
+                    {
+                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
+                            ActualizarTasaMunicipal(WorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
+
+                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                        {
+                            ActualizarExcepcionPorPatenteYDocumento(WorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
+                            InformarPagoTasaMunicipal(WorkflowId);
+                        }
+                    }
+                       
+                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                    {
+                        MarcarRecorridoComoContingencia(WorkflowId);
+                    }
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -418,8 +447,22 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoActividad = demoraService.CamionDemorado(controlRecorrido, recorrido.InstanciaWorkflow, model.Rechazado);
                 if (!resultadoActividad.HayErrores)
                 {
-                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
-                        ActualizarTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                    if (ResultadoPagoTasaMunicipal != null)
+                    {
+                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
+                            ActualizarTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
+                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                        {
+                            InformarPagoTasaMunicipal(recorrido.InstanciaWorkflow);
+                            ActualizarExcepcionPorPatenteYDocumento(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
+                        }
+                    }
+
+                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                    {
+                        MarcarRecorridoComoContingencia(recorrido.InstanciaWorkflow);
+                    }
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -583,8 +626,22 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoActividad = demoraService.CamionDemorado(controlRecorrido, recorrido.InstanciaWorkflow, orden.Rechazado);
                 if (!resultadoActividad.HayErrores)
                 {
-                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
-                        ActualizarTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                    if (ResultadoPagoTasaMunicipal != null)
+                    {
+                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
+                            ActualizarTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
+                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                        {
+                            InformarPagoTasaMunicipal(recorrido.InstanciaWorkflow);
+                            ActualizarExcepcionPorPatenteYDocumento(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
+
+                        }
+                    }
+                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                    {
+                        MarcarRecorridoComoContingencia(recorrido.InstanciaWorkflow);
+                    }
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }

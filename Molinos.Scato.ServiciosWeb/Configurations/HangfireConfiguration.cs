@@ -49,6 +49,7 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
             StartJobsForAutomatismos();
             StartJobsForMOAPay();
             StartJobsForVisec();
+            StartJobsHealthChecks();
         }
 
         private static void StartJobsForAutomatismos()
@@ -63,11 +64,42 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
             if (string.IsNullOrWhiteSpace(cronExpressionForSincronizarMOAPayEstadoDePagos))
                 cronExpressionForSincronizarMOAPayEstadoDePagos = Constantes.Job.DefaultCronExpressionForSincronizarMOAPayEstadoDePagos;
 
-            RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.SincronizarMOAPayEstadoDePagos, x => x.SincronizarMOAPayEstadoDePagos(), cronExpressionForSincronizarMOAPayEstadoDePagos);
+            RecurringJob.AddOrUpdate<IServicioSincronizacionPay>(Constantes.Job.SincronizarMOAPayEstadoDePagos, x => x.SincronizarMOAPayEstadoDePagos(), cronExpressionForSincronizarMOAPayEstadoDePagos);
 
-            bool.TryParse(ConfigurationManager.AppSettings["Hangfire.IsEnabled.SincronizarMOAPayCPE"], out bool isEnabledSincronizarMOAPayCPE);
-            if (isEnabledSincronizarMOAPayCPE)
-                RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.SincronizarMOAPayCPE, x => x.SincronizarMOAPayCPE(), "0 30 * * * *");
+            if (ValidarEncendidoJob("Hangfire.IsEnabled.SincronizarMOAPayCPE"))
+            {
+                var cronExpressionForSincronizarMOAPayCPE = ObtenerCronJob("Hangfire.CronExpressionFor.SincronizarMOAPayCPE");
+                RecurringJob.AddOrUpdate<IServicioSincronizacionPay>(Constantes.Job.SincronizarMOAPayCPE, x => x.SincronizarMOAPayCPE(), cronExpressionForSincronizarMOAPayCPE);
+            }
+
+            if (ValidarEncendidoJob("Hangfire.IsEnabled.SincronizarMOAPayOperacionesFason"))
+            {
+                var cronExpressionForSincronizarMOAPayOperacionesFason = ObtenerCronJob("Hangfire.CronExpressionFor.SincronizarMOAPayOperacionesFason");
+                RecurringJob.AddOrUpdate<IServicioSincronizacionPay>(Constantes.Job.SincronizarMOAPayOperacionesFason, x => x.SincronizarMOAPayOperacionesFason(), cronExpressionForSincronizarMOAPayOperacionesFason);
+            }
+
+            if (ValidarEncendidoJob("Hangfire.IsEnabled.SincronizarMOAPayOperacionesFas"))
+            {
+                var cronExpressionForSincronizarMOAPayOperacionesFas = ObtenerCronJob("Hangfire.CronExpressionFor.SincronizarMOAPayOperacionesFas");
+                RecurringJob.AddOrUpdate<IServicioSincronizacionPay>(Constantes.Job.SincronizarMOAPayOperacionesFas, x => x.SincronizarMOAPayOperacionesFas(), cronExpressionForSincronizarMOAPayOperacionesFas);
+            }
+
+            if (ValidarEncendidoJob("Hangfire.IsEnabled.SincronizarMOAPayOperacionesResiduos"))
+            {
+                var cronExpressionForSincronizarMOAPayOperacionesResiduos = ObtenerCronJob("Hangfire.CronExpressionFor.SincronizarMOAPayOperacionesResiduos");
+                RecurringJob.AddOrUpdate<IServicioSincronizacionPay>(Constantes.Job.SincronizarMOAPayOperacionesResiduos, x => x.SincronizarMOAPayOperacionesResiduos(), cronExpressionForSincronizarMOAPayOperacionesResiduos);
+            }
+        }
+
+        private static bool ValidarEncendidoJob(string configEnabled)
+        {
+            return bool.TryParse(ConfigurationManager.AppSettings[configEnabled], out bool isEnabled) && isEnabled;
+        }
+
+        private static string ObtenerCronJob(string configCron)
+        {
+            var cronExpression = ConfigurationManager.AppSettings[configCron];
+            return string.IsNullOrWhiteSpace(cronExpression) ? Constantes.Job.DefaultCronExpressionForSincronizarMOAPayEstadoDePagos : cronExpression;
         }
 
         private static void StartJobsForVisec()
@@ -80,6 +112,16 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
             if (isEnabledSincronizarEstadoTransmisionVisec)
                 RecurringJob.AddOrUpdate<IServicioSincronizacionVisec>(Constantes.Job.SincronizarEstadoTransmisionVisec, x => x.SincronizarEstadoTransmision(), cronExpressionForSincronizarEstadoTransmisionVisec);
         }
+        
+        private static void StartJobsHealthChecks()
+        {
+            var cronForHealthChecks = ConfigurationManager.AppSettings["Hangfire.CronExpressionFor.HealthCheck.MOAPay"];
+            if (string.IsNullOrWhiteSpace(cronForHealthChecks))
+                cronForHealthChecks = Constantes.Job.DefaultCronExpressionForSincronizarMOAPayEstadoDePagos;
+
+            RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.VerificarHealthCheckMOAPayHealth, x => x.EjecutarHealthCheckAsync(Constantes.Job.VerificarHealthCheckMOAPayHealth), cronForHealthChecks);
+        }
+        
     }
 
     public class HangfireDashboardAuthorizationFilter : IDashboardAuthorizationFilter

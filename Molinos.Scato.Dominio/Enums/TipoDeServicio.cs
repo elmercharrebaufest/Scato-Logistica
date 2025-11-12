@@ -12,5 +12,7 @@ namespace Molinos.Scato.Dominio.Enums
         Monsanto = 1,
         [Display(ResourceType = typeof(Textos), Name = "PanelDeControlTransaccionesSapCupo")]
         Cupo = 2,
+        [Display(ResourceType = typeof(Textos), Name = "PanelDeControlExcepcionPagoMunicipal")]
+        PanelDeControlPagoMunicipal = 3,
     }
 }

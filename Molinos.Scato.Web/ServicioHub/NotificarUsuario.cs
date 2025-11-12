@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Dto;
 
 namespace Molinos.Scato.Web.ServicioHub
@@ -20,6 +21,14 @@ namespace Molinos.Scato.Web.ServicioHub
             foreach (var groupName in groupNames.Split(','))
             {
                 Groups.Add(Context.ConnectionId, groupName.ToLower());
+            }
+        }
+
+        public void NotificarEstadoServicioExterno(NotificacionDto notificacion)
+        {
+            if (Clients != null)
+            {
+                Clients.Group(Constantes.NotificacionGrupos.EstadoServicioExterno.ToLower()).actualizarEstadoServicioExterno(notificacion);
             }
         }
     }

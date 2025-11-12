@@ -11,10 +11,13 @@ namespace Molinos.Scato.Dominio.Comandos.ResultadoServicio
        public int? IdDiferenciaDePago { get;  set; } 
        public bool EsPagoAbonado { get;  set; }
        public bool EjecutaWorkFlow { get;  set; }
-        public int IdPay { get; set; }
-        public int IdPayComplemento { get; set; }
+       public int IdPay { get; set; }
+       public int IdPayComplemento { get; set; }
+       public int IdExcepcion { get; set; }
+       public bool TieneConfiguracionDeBloqueoDeIngreso { get; set; }
+       public bool TieneDiferenciaDePago { get; set; }   
         public ResultadoConsultarPagoTasaMunicipal()
-        {
+       {
             TipoAlerta = TipoAlerta.Error;
             MensajeAlerta = string.Empty;
             SeLevantaBarrera = true;
@@ -22,6 +25,6 @@ namespace Molinos.Scato.Dominio.Comandos.ResultadoServicio
             IdDiferenciaDePago = null;
             EsPagoAbonado = false;
             EjecutaWorkFlow = true;
-        }
+       }
     }
 }

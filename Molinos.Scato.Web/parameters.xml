@@ -243,11 +243,6 @@
 					    match="/configuration/appSettings/add[@key='FotosPathLogALPR']
                             /@value" />
     </parameter>
-    <parameter name="ActivarHangFire Config">
-        <parameterEntry kind="XmlFile" scope="Web.config"
-					    match="/configuration/appSettings/add[@key='ActivarHangFire']
-                            /@value" />
-    </parameter>
     <parameter name="URLOperacionesAPI Config">
         <parameterEntry kind="XmlFile" scope="Web.config"
 					    match="/configuration/appSettings/add[@key='URLOperacionesAPI']

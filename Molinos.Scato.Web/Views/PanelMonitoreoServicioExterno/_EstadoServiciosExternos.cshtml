@@ -1,0 +1,57 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Dto.HealthCheck
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+
+
+@model IEnumerable<MonitoreoServicioExternoDto>
+
+<link href="~/Styles/area/shared/card.css" rel="stylesheet" />
+<link href="~/Styles/area/PanelMonitoreoServicioExterno/panelMonitoreoServicioExterno.css" rel="stylesheet" />
+
+<div id ="linksMonitoreoServicioExterno"    
+     data-url-actualizar-todos-servicios-externos ="@Url.Action("ActualizarTodosServiciosExternos", "PanelMonitoreoServicioExterno")"
+     data-url-actualizar-unico-servicio-externo = "@Url.Action("ActualizarServicioExterno", "PanelMonitoreoServicioExterno")"
+ >
+</div>
+
+<div class="panel-servicios__container">
+    <div class="panel-servicios__header">
+        <h2>Panel de Servicios Web</h2>
+        @if (PermisosHelper.Is(PermisosScato.MonitoreoServicioExterno))
+        {
+            <button id="btnActualizarServiciosExternos" class="btn btn-primary">⟳ Actualizar todo</button>
+        }
+    </div>
+
+    <div id="panel-servicios__list" class="panel-list">
+        <div class="cards__grid" role="list">
+            @foreach (var svc in Model)
+            {
+                var semaforoClass = svc.UltimoEstado == HealthCheckStatus.Conectado ? "semaforo--success" : svc.UltimoEstado == HealthCheckStatus.Desconectado ? "semaforo--error" : "semaforo--default";
+                <div class="card__container" role="listitem" data-key="@svc.KeyJob">
+                    <div class="card__header">
+                        <span>@svc.Nombre</span>
+                        @if (PermisosHelper.Is(PermisosScato.MonitoreoServicioExterno))
+                        {
+                            <button class="btn--refresh-servicio-externo btn-refresh" data-key="@svc.KeyJob" title="Actualizar">⟳</button>
+                        }
+                    </div>
+                    <div class="card__body">
+                        <div class="semaforo__container @semaforoClass">
+                            <i class="fas fa-circle" aria-hidden="true"></i>
+                            <span class="healthCheckEstado">@svc.UltimoEstado</span>
+                        </div>
+                        <div class="ultima-verificacion">Última verificación: <span id="healthCheckFecha">@svc.UltimaVerificacion</span></div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Script("~/Scripts/panelMonitoreoServicioExterno.js")"></script>
+<script src="@Url.Script("~/Scripts/panelMonitoreoServicioExternoHubClient.js")"></script>

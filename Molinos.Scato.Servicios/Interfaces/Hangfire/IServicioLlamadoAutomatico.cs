@@ -1,5 +1,7 @@
-﻿using System.ServiceModel;
+﻿using Molinos.Scato.Dominio.Dto.HealthCheck;
 using Molinos.Scato.Dominio.Enums;
+using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace Molinos.Scato.Servicios
 {
@@ -14,5 +16,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         void SincronizarMOAPayCPE();
+
+        [OperationContract]
+        Task<HealthCheckResult> EjecutarHealthCheckAsync(string jobName);
     }
 }

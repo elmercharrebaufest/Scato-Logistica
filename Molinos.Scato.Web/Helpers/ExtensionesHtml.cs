@@ -211,5 +211,29 @@ namespace Molinos.Scato.Web.Helpers
             return displayText;
         }
 
+        public static MvcHtmlString BotonModalLink(this HtmlHelper helper, string textoBoton, string action, string controller, Object parameters, string style = "btn", string icono = "", string idModal = "", string data = "", bool ocultarTexto = false, bool nuevaPestana = false)
+        {
+            var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
+            var url = urlHelper.Action(action, controller, parameters);
+            var html = new StringBuilder();
+            html.Append($"<a href=#{idModal}");
+            html.Append(" title = \"" + textoBoton + "\"");
+            html.Append(" class = \"" + style + "\"");     
+            html.Append($" {data}");
+
+            if (nuevaPestana)
+            {
+                html.Append(" target = \"_blank\"");
+            }
+
+            html.Append(">");
+            html.Append("<i class=\"" + icono + "\"></i>");
+            if (!ocultarTexto)
+            {
+                html.Append(textoBoton);
+            }
+            html.Append("</a>");
+            return MvcHtmlString.Create(html.ToString());
+        }
     }
 }

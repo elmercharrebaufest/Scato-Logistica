@@ -27,6 +27,7 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IServicioActividadFactory<IIngresarOrdenCargaFasService> factory;
         private readonly IListaDeWorkflows workflows;
         private readonly ZSDWS_SCATO servicioSap;
+        private Guid InstanciaWorkflowId;
 
         public IngresarOrdenCargaFasController(ILogger log, IServicioRepositorio servicio, IServicioActividadFactory<IIngresarOrdenCargaFasService> factory, IServicioComandos servicioComandos, IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap)
             : base(log, servicio, servicioComandos)
@@ -94,6 +95,19 @@ namespace Molinos.Scato.Web.Controllers
                     };
                     ViewBag.AceptaPendiente = true;
                     return View(ordenDemorada);
+                }
+                if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
+                    ActualizarTasaMunicipal(InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
+                if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                {
+                    InformarPagoTasaMunicipal(InstanciaWorkflowId);
+                    ActualizarExcepcionPorPatenteYDocumento(InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
+                }
+
+                if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                {
+                    MarcarRecorridoComoContingencia(InstanciaWorkflowId);
                 }
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
@@ -210,8 +224,22 @@ namespace Molinos.Scato.Web.Controllers
             
             if (!resultadoActividad.HayErrores)
             {
-                if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
-                    ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                if (ResultadoPagoTasaMunicipal != null)
+                {
+                    if(ResultadoPagoTasaMunicipal.IdPago != 0)
+                        ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
+                    if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                    {
+                        InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
+                        ActualizarExcepcionPorPatenteYDocumento(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
+                    }
+                }
+
+                if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                {
+                    MarcarRecorridoComoContingencia(resultadoActividad.InstanciaWorkflowId);
+                }
 
                 return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
             }
@@ -338,9 +366,10 @@ namespace Molinos.Scato.Web.Controllers
             orden.VehiculoDemorado = true;
             var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflowObj.Codigo);
             var servicioWf = factory.CrearServicio(workflowDefinicionId);
-            var resultadoActividad = servicioWf.IngresarOrdenCargaFas(orden, datosUsuario.CentroId, workflowObj.Codigo, workflowDefinicionId, orden.ValidaCompliance, datosUsuario.NombreUsuario, controlRecorrido);
-            if (!resultadoActividad.HayErrores)
+            var resultadoActividad = servicioWf.IngresarOrdenCargaFas(orden, datosUsuario.CentroId, workflowObj.Codigo, workflowDefinicionId, orden.ValidaCompliance, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
+            if (resultadoActividad != null && !resultadoActividad.HayErrores)
             {
+                this.InstanciaWorkflowId = resultadoActividad.InstanciaWorkflowId;
                 return resultado;
             }
 

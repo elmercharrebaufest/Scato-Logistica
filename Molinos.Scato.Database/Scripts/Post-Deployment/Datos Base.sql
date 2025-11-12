@@ -430,7 +430,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 707) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 708) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow],[NombreActividad]) VALUES ('Pesada Tara Exportacion', 1, 708, 'PesadaTaraExportacion','Pesada Tara Exportacion'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 711) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Panel de control transacciones visec', 0, 711, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 712) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Importación Egreso Visec', 1, 712, 'ImportacionEgresoVisec'); END
-
+IF NOT EXISTS (select 1 from Permiso where Codigo = 713) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Monitoreo Servicio Externo', 0, 713, NULL); END
 
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Extraviada') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Extraviada', 'Extrav.'); END
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Rota') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Rota', 'Rota'); END
@@ -1626,6 +1626,13 @@ IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'ConsultaData
 BEGIN 
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('ConsultaDataAgroVisec', 'DummyDatosCupoSapRespose', '<CupoSapTerceroDto> <CUIT>30685141694</CUIT> <Calidad>Fabrica</Calidad> <Centro>La Cautiva</Centro> <ComercialAsignado>Vargas Federico</ComercialAsignado> <ComercialCreador>Rinaldi Flavio</ComercialCreador> <ConDescarga>false</ConDescarga> <ContratoSap/> <CupoSap>MOL0565/06082025</CupoSap> <CupoStop>0</CupoStop> <EPA>false</EPA> <EUDR>false</EUDR> <EstadoCupo>Disponible</EstadoCupo> <Fason>false</Fason> <FechaGeneracion>6/8/2025 12:52:43</FechaGeneracion> <FechaIngreso>6/8/2025 00:00:00</FechaIngreso> <FleteProcedencia>false</FleteProcedencia> <IdDataAgro>1239035</IdDataAgro> <Material>Soja</Material> <OrigenDeCupo>Extraordinaria</OrigenDeCupo> <RazonSocial>FEDEA S A</RazonSocial> <Sustentable>false</Sustentable> <TipoDeCupo>Común</TipoDeCupo> <TipoNegocio>ESPACIO DINAMICO</TipoNegocio> <ZonaCupo>ORIG INTERIOR SUR</ZonaCupo> </CupoSapTerceroDto>', NULL, GETDATE(), 'SCATO')
 END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'PagoTasaMunicipal' AND  Nombre = 'PermitirBloqueoDeIngreso' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('PagoTasaMunicipal', 'PermitirBloqueoDeIngreso', 'false', NULL, GETDATE(), 'SCATO')   
+END
+
+
 
 --Equivalencias de Característica de Calidad
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 

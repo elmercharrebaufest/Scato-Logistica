@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Molinos.Scato.Dominio;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Dto.HealthCheck;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios.Behavior;
+using Molinos.Scato.Servicios.Interfaces;
 using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Servicios.Impl
@@ -19,13 +23,17 @@ namespace Molinos.Scato.Servicios.Impl
         private readonly ILogger log;
         private readonly IServicioComandos comandos;
         private readonly IServicioOrquestador orquestador;
+        private readonly IServicioHealthCheck healthCheckService;
+        private readonly IServicioNotificarUsuario notificarUsuario;
 
-        public ServicioLlamadoAutomatico(IServicioRepositorio repositorio, ILogger log, IServicioComandos comandos, IServicioOrquestador orquestador)
+        public ServicioLlamadoAutomatico(IServicioRepositorio repositorio, ILogger log, IServicioComandos comandos, IServicioOrquestador orquestador, IServicioHealthCheck healthCheckService, IServicioNotificarUsuario notificarUsuario)
         {
             this.repositorio = repositorio;
             this.log = log;
             this.comandos = comandos;
             this.orquestador = orquestador;
+            this.healthCheckService = healthCheckService;
+            this.notificarUsuario = notificarUsuario;
         }
 
         public void Llamar(LlamadoAutomatico tipoLlamadoAutomatico)
@@ -71,6 +79,49 @@ namespace Molinos.Scato.Servicios.Impl
                     CuitInterviniente = cpe.CuitTransportista.ToString()
                 });
             }
+        }
+
+        public async Task<HealthCheckResult> EjecutarHealthCheckAsync(string jobName)
+        {
+            var result = new HealthCheckResult();
+            try
+            {
+                var servicioExterno = repositorio.ObtenerMonitoreoServicioExternoPorJob(jobName);
+                if (servicioExterno == null)
+                {
+                    result.Message = $"No se encontro ExternalService configurado para {jobName}";
+                    return result;
+                }
+
+                result = await healthCheckService.CheckAsync(servicioExterno, CancellationToken.None);
+                var comando = new ModificarMonitoreoServicioExterno
+                {
+                    Id = servicioExterno.Id,
+                    UltimoEstado = result.Status,
+                    UltimaVerificacion = DateTime.Now,
+                };
+                comandos.Ejecutar(comando);
+
+                var payload = new
+                {
+                    key = servicioExterno.KeyJob,
+                    status = result.Status.ToString(),
+                    ultimaVerificacion = comando.UltimaVerificacion.ToString(),
+                };
+                var notificacion = new NotificacionDto
+                {
+                    Hora = DateTime.Now,
+                    Grupo = Constantes.NotificacionGrupos.EstadoServicioExterno,
+                    Mensaje = Newtonsoft.Json.JsonConvert.SerializeObject(payload),
+                    TipoAlerta = TipoAlerta.NotificacionEstadoWeb
+                };
+                notificarUsuario.NotificarEstadoServicioExterno(notificacion);
+            }
+            catch (Exception ex)
+            {
+                result.Message = ex.Message;
+            }
+            return result;
         }
 
         private void LlamarAutomaticoGranos()
@@ -428,6 +479,7 @@ namespace Molinos.Scato.Servicios.Impl
                 case TipoVehiculo.CamiónD:
                 case TipoVehiculo.CamiónE:
                     return MOAPay.TipoDeVehiculo.ESCALABLE;
+
                 default:
                     return MOAPay.TipoDeVehiculo.COMUN;
             }

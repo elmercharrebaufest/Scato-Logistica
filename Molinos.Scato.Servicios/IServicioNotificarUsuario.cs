@@ -8,7 +8,12 @@ namespace Molinos.Scato.Servicios
     {
         [OperationContract]
         void Notificar(NotificacionDto notificaciones);
+
         [OperationContract]
         void NotificarLectura(LecturaCpeDto notificaciones);
+
+
+        [OperationContract]
+        void NotificarEstadoServicioExterno(NotificacionDto notificacion);
     }
 }

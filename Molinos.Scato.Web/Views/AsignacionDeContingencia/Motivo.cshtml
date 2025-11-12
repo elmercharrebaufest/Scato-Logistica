@@ -20,10 +20,8 @@
                     @Html.TextArea("Motivo", new { id = "motivo", @class = "form-control", style = "width:350px;" })
                 </div>
             </div>
-            
                 <span id="error-motivo-requerido" style="color:rgb(185, 74, 72);" class="oculto">@string.Format(Textos.Error_Requerido, "Motivo")</span>
                 <span id="error-motivo-largo" style="color:rgb(185, 74, 72);" class="oculto">@string.Format(Textos.Error_LargoMensaje, "Motivo","10")</span>
-           
             @Html.Hidden("elemento-id")
             @Html.Hidden("elemento-grano")
             @Html.Hidden("elemento-contingencia")

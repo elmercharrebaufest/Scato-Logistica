@@ -154,5 +154,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string TipoVariedadDescripcion { get; set; }
         public string TipoVariedadCodigo { get; set; }
         public string MotivoDemora { get; set; }
+        public bool IngresoContingenciaPagoMunicipal { get; set; }
+        public bool PagoTasaMunicipalInformado { get; set; }
     }
 }

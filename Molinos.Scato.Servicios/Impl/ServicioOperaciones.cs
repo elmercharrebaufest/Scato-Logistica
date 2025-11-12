@@ -42,8 +42,8 @@ namespace Molinos.Scato.Servicios.Impl
         /// <returns>La lista de órdenes de FASON.</returns>
         public IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente)
         {
-            if (string.IsNullOrWhiteSpace(patente))
-                throw externalServiceException.ThrowException("La patente no puede estar vacía.");
+            //if (string.IsNullOrWhiteSpace(patente))
+            //    throw externalServiceException.ThrowException("La patente no puede estar vacía.");
 
             IEnumerable<OrdenDeCargaDto> ordenes = null;
             const string RECURSO = "ObtenerOrdenesDeCarga";
@@ -120,8 +120,8 @@ namespace Molinos.Scato.Servicios.Impl
         /// <returns>La lista de órdenes de Residuos/Insumos.</returns>
         public IEnumerable<OrdenResiduosDto> ObtenerOrdenesResiduos(string patente)
         {
-            if (string.IsNullOrWhiteSpace(patente))
-                throw externalServiceException.ThrowException("La patente no puede estar vacía.");
+            //if (string.IsNullOrWhiteSpace(patente))
+            //    throw externalServiceException.ThrowException("La patente no puede estar vacía.");
 
             IEnumerable<OrdenResiduosDto> ordenes = null;
             const string RECURSO = "OrdenesResiduos";
@@ -195,8 +195,8 @@ namespace Molinos.Scato.Servicios.Impl
         /// <returns>La lista de órdenes de FAS.</returns>
         public IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCargaFas(string patente)
         {
-            if (string.IsNullOrWhiteSpace(patente))
-                throw externalServiceException.ThrowException("La patente no puede estar vacía.");
+            //if (string.IsNullOrWhiteSpace(patente))
+            //    throw externalServiceException.ThrowException("La patente no puede estar vacía.");
 
             IEnumerable<OrdenDeCargaDto> ordenes = null;
             const string RECURSO = "ObtenerOrdenesDeCarga";

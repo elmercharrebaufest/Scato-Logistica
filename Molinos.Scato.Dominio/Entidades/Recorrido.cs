@@ -96,5 +96,7 @@ namespace Molinos.Scato.Dominio.Entidades
         [Column("TipoVariedad_Id")]
         public virtual int? TipoVariedadId { get; set; }
         public virtual TipoVariedad TipoVariedad { get; set; }
+        public virtual bool IngresoContingenciaPagoMunicipal { get; set; }
+        public virtual bool PagoTasaMunicipalInformado { get; set; }
     }
 }

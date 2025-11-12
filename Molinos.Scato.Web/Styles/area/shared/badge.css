@@ -1,0 +1,20 @@
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.badge-success {
+    background-color: #19a54a;
+}
+
+.badge-error {
+    background-color: #e53935;
+}
+
+.badge-default {
+    background-color: #b0b0b0;
+}

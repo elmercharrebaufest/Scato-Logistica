@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto.WebAPI;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
@@ -24,13 +25,34 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             try
             {
-                var requestBody = GenerarRequestBody(comando);
+                var requestBody = new { comando.Id, comando.Disponible };
 
-                var responseWebAPI = EnviarRequest(requestBody);
+                var client = WebAPIRestClientFactory.GenerarClienteWebAPI();
+                var request = new RestRequest(RecursoWebAPI.MOAPAY.InformarPagoComoConsumido, Method.POST);
+                request.AddJsonBody(requestBody);
+                var responseWebAPI = client.Execute(request);
 
                 if (responseWebAPI.IsSuccessful)
                 {
-                    ProcesarRespuestaExitosa(responseWebAPI, resultado);
+                    var response = JsonConvert.DeserializeObject<ResponseWebAPIDto<ResultadoMOAPayInformarPagoComoConsumido>>(responseWebAPI.Content);
+
+                    if (!response.IsValid)
+                    {
+                        var firstMessage = response.Messages != null && response.Messages.Count > 0 ? response.Messages[0].Message : null;
+                        Log.Error(firstMessage);
+                        resultado.Errores.Add("Error", firstMessage);
+                    }
+
+                    if (!resultado.HayErrores)
+                    {
+                        Log.Info($"MOAPayInformarPagoComoConsumido procesado correctamente para Id: {comando.Id}");
+                        var recorrido = Repositorio.Obtener<Recorrido>(p => p.InstanciaWorkflow == comando.IdIntance);
+                        if (recorrido != null)
+                        {
+                            recorrido.PagoTasaMunicipalInformado = true;
+                            Repositorio.GuardarCambios();
+                        }
+                    }
                 }
                 else
                 {
@@ -47,34 +69,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             Repositorio.GuardarCambios();
             return resultado;
-        }
-
-        private object GenerarRequestBody(MOAPayInformarPagoComoConsumido comando)
-        {
-            return new
-            {
-                comando.Id,
-                comando.Disponible
-            };
-        }
-
-        private IRestResponse EnviarRequest(object requestBody)
-        {
-            var client = WebAPIRestClientFactory.GenerarClienteWebAPI();
-            var request = new RestRequest(RecursoWebAPI.MOAPAY.InformarPagoComoConsumido, Method.POST);
-            request.AddJsonBody(requestBody);
-            return client.Execute(request);
-        }
-
-        private void ProcesarRespuestaExitosa(IRestResponse responseWebAPI, Resultado resultado)
-        {
-            var response = JsonConvert.DeserializeObject<ResponseWebAPIDto<ResultadoMOAPayInformarPagoComoConsumido>>(responseWebAPI.Content);
-
-            if (!response.IsValid)
-            {
-                Log.Error(response.Messages.FirstOrDefault()?.Message);
-                resultado.Errores.Add("Error", response.Messages.FirstOrDefault()?.Message);
-            }
         }
     }
 }

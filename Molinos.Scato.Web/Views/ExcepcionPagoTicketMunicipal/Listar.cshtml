@@ -1,0 +1,40 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FiltroExcepcionPagoTasaMunicipal
+
+@{
+    Layout = null;
+    ViewBag.Title = "Listar";
+
+    var items = (ListaPaginada<ExceptuadosTicketMunicipalDto>)ViewBag.Items;
+
+    var grid = new WebGrid();
+    var columnas = new List<WebGridColumn>();
+
+    columnas.Add(grid.ColumnaModificarExcepcionPagoTasaMunicipal(Html, "ExcepcionPagoTicketMunicipal"));
+
+    columnas.Add(grid.Columna("Patente", Textos.Camion_Patente));
+   
+    columnas.Add(grid.Columna("NumeroDocumentoIngreso", Textos.NumeroDocumentoIngreso));
+
+    columnas.Add(grid.Columna("FechaCreacionExcepcion", Textos.Workflow_FechaCreacion, x => FormattingHtmlHelper.FormattedTime(x.FechaCreacionExcepcion)));
+   
+    columnas.Add(grid.Columna("WorkflowDescripcion", Textos.Workflow));
+
+
+    Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
+}
+
+<script>
+    $(document).ready(
+        function () {
+            $("tr td a.modificado").parent().parent().addClass("estado-asignado");
+        });
+</script>
+<div class="controls">
+    @Html.Grilla(items,columnasFunc)
+</div>

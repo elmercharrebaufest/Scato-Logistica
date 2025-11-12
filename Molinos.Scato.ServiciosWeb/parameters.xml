@@ -183,4 +183,9 @@
                            /endpoint[@name='DataAgroServices']
                            /@address" />
 	</parameter>
+	<parameter name="ActivarHangFire Config">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+					    match="/configuration/appSettings/add[@key='ActivarHangFire']
+                            /@value" />
+	</parameter>
 </parameters>

@@ -399,18 +399,32 @@ namespace Molinos.Scato.Web.Controllers
                         }
                     }
                 }
-
+                    
                 var controlRecorrido = GenerarControlRecorrido(datosUsuario);
                 var resultadoActividad = servicioWf.CargarCartaPorte(orden, vehiculo, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
                 if (resultadoActividad.HayErrores)
                 {
-                    ModelState.AgregarErrores(resultadoActividad);
-                    SetearVista(workflowObj, datosUsuario.CentroId);
-                    return View(orden);
+                     ModelState.AgregarErrores(resultadoActividad);
+                     SetearVista(workflowObj, datosUsuario.CentroId);
+                     return View(orden);
+                }
+                   
+                if (ResultadoPagoTasaMunicipal != null)
+                {
+                    if(ResultadoPagoTasaMunicipal.IdPago != 0)
+                       ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
+                     if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                     {
+                         ActualizarExcepcionPorPatenteYDocumento(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
+                         InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
+                     }
                 }
 
-                if (ResultadoPagoTasaMunicipal != null && ResultadoPagoTasaMunicipal.IdPago != 0)
-                    ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                {
+                    MarcarRecorridoComoContingencia(resultadoActividad.InstanciaWorkflowId);
+                }
 
                 if (datosUsuario.CentroId != Constantes.Centro.IdSanLorenzo)
                 {
@@ -424,7 +438,7 @@ namespace Molinos.Scato.Web.Controllers
                 orden.Id = resultadoActividad.Id;
                 instanceIds.Add(resultadoActividad.InstanciaWorkflowId);
             }
-
+            
             ViewBag.Headers = new Dictionary<string, string> { { "WFInstanceIds", string.Join(",", instanceIds) } };
 
             if (orden.VehiculoDemorado)

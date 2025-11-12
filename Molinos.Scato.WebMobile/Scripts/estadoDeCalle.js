@@ -175,7 +175,7 @@ function Camion(item, calle) {
     self.UltimoDeLaFila = item.UltimoDeLaFila;
     self.AsignadoEnPuestoComando = item.AsignadoEnPuestoComando;
     self.ColorFondo = item.ColorFondo;
-    self.ColorTexto = item.ColorTexto;
+    self.ColorTexto = item.EsDemorado && item.PagoTasaMunicipalAdeudado ? item.ColorTextoDemoradoPorTasaMunicipal : item.ColorTexto;
     self.EsSojaEPA = item.EsSojaEPA;
     self.EsSojaIMPO = item.EsSojaIMPO;
     self.EsSojaEUDR = item.EsSojaEUDR;
@@ -183,7 +183,7 @@ function Camion(item, calle) {
     self.Calle = calle;
     self.TiempoEnCola = null;
     self.TiempoEnColaEnMinutos = 0;
-
+    self.ColorBordeDemoradoPorTasaMunicipal = item.EsDemorado && item.PagoTasaMunicipalAdeudado ? '1px 1px 0 white, -1px 1px 0 white, 1px -1px 0 white, -1px -1px 0 white' : '';
     if (item.FechaIngeso) {
         var fechaActual = Date.now();
         var fechaInicioDeCola = new Date(parseInt(item.FechaIngeso.substr(6)));

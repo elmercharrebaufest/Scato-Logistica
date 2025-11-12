@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Molinos.Scato.Dominio.Dto
 {

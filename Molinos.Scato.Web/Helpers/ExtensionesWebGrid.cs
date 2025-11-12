@@ -2,6 +2,7 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -400,6 +401,24 @@ namespace Molinos.Scato.Web.Helpers
                     "<span>" +
                     html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString() +
                     
+                    "</span>"
+                    )
+                    , "editar-borrar-columna", false);
+
+        }
+
+        public static WebGridColumn ColumnaModificarExcepcionPagoTasaMunicipal(this WebGrid grid, HtmlHelper html, string controller, string style = "")
+        {
+            string modalModificar = $"{"#modal-editar"}";
+            string modalBorrar = $"{"#modal-borrar"}";
+            return grid.Column("Modificar", "", f =>
+
+                    html.Raw((f.PermiteAcciones) ?
+                    "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.No_EditableLargo + "\" >" + Textos.No_Editable + "</span>" :
+                    "<span>" +
+                    html.BotonModalLink(Textos.Modificar, "Modificar", controller, new { f.id}, style + "abrirModal", "icon-edit", modalModificar, $"data-id = \"{f.id}\" data-patente = \"{f.patente}\" data-numeroDocumento = \"{f.numeroDocumentoIngreso}\" data-workflowCodigo = \"{f.workflowCodigo}\" data-workflowDescripcion = \"{f.workflowDescripcion}\"", true).ToHtmlString() +
+                    html.BotonModalLink(Textos.Modificar, "Borrar", controller, new { f.id }, style + "abrirModalBorrar", "icon-trash", modalBorrar, $"data-id = \"{f.id}\"", true).ToHtmlString() +
+
                     "</span>"
                     )
                     , "editar-borrar-columna", false);

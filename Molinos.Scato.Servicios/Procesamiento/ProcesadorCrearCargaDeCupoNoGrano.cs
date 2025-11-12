@@ -11,9 +11,11 @@ using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Helpers;
 using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Web.ModelBinding;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -44,7 +46,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (comando.Dto.ImprimeTarjetaDeAcceso)
                     ImprimirTarjetaDeAcceso(nuevoCupo.Numero, nuevoCupo.Centro.Id, nuevoCupo.PuestoDeTrabajo.Id);
 
-                var resultadoConsultarTasa = ConsultarPagoTasaMunicipal(comando.Dto); 
+                var resultadoConsultarTasa = ConsultarPagoTasaMunicipal(comando.Dto);
 
                 if (!comando.Dto.NoAsignaCalleEnGaritaEntrada) {
                     if (nuevoCupo.Material != null)
@@ -74,6 +76,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.MensajeTasaMunicipal = resultadoConsultarTasa.MensajeAlerta ?? string.Empty;
                 resultado.tipoAlerta = resultadoConsultarTasa.TipoAlerta;
                 resultado.ErroresOExcepcionesConsultaTasaMunicipal = resultadoConsultarTasa.HayErrores || !resultadoConsultarTasa.EjecutaWorkFlow;
+                resultado.IdExcepcionPagoMunicipal = resultadoConsultarTasa.IdExcepcion;
 
                 resultado.Id = nuevoCupo.Id;
                 if (comando.Dto.TipoOrdenCargaNoGranos.HasValue && 

@@ -22,6 +22,7 @@ namespace Molinos.Scato.Dominio
             public const string CodigoSapTPR = "70809606";
             public const string CodigoSapACA = "50012088";
             public const string EstablecimientoACA = "21145";
+            public const string ColorTextoDemoradoTasaMunicipal = "#FF2900";
         }
 
         public struct IntercomunicadorDireccion
@@ -35,6 +36,7 @@ namespace Molinos.Scato.Dominio
             public const string Intercomunicador = "Intercomunicador";
             public const string SensoresBarreraHidraulica = "SensoresBarreraHidraulica";
             public const string NotificacionAplicacion = "NotificacionAplicacion";
+            public const string EstadoServicioExterno = "EstadoServicioExterno";
         }
 
         public struct Entidad
@@ -174,6 +176,7 @@ namespace Molinos.Scato.Dominio
             public struct PagoTasaMunicipal
             {
                 public const string NumeroDiasParaInicioBusqueda = "NumeroDiasParaInicioBusqueda";
+                public const string PermitirBloqueoDeIngreso = "PermitirBloqueoDeIngreso";
             }
 
             public struct CargaDeCupo
@@ -304,7 +307,12 @@ namespace Molinos.Scato.Dominio
             public const string SincronizarMOAPayEstadoDePagos = "SincronizarMOAPayEstadoDePagos";
             public const string SincronizarMOAPayCPE = "SincronizarMOAPayCPE";
             public const string SincronizarEstadoTransmisionVisec = "SincronizarEstadoTransmisionVisec";
+            public const string SincronizarMOAPayOperacionesFason = "SincronizarMOAPayOperacionesFason";
+            public const string SincronizarMOAPayOperacionesFas = "SincronizarMOAPayOperacionesFas";
+            public const string SincronizarMOAPayOperacionesResiduos = "SincronizarMOAPayOperacionesResiduos";
+
             public const string DefaultCronExpressionForSincronizarMOAPayEstadoDePagos = "0 */30 * * * *"; //cada 30 minutos
+            public const string VerificarHealthCheckMOAPayHealth = "VerificarHealthCheckMOAPayHealth";
         }
 
         public struct AutomatismoTipoLlamado
@@ -356,6 +364,7 @@ namespace Molinos.Scato.Dominio
         public struct Contingencia
         {
             public const string VisecCaido = "VisecCaido";
+            public const string PayCaido = "PayCaido";
         }
 
         public static class MOAPay
@@ -379,6 +388,13 @@ namespace Molinos.Scato.Dominio
             {
                 public const string COMUN = "C";
                 public const string ESCALABLE = "E";
+            }
+
+            public static class TipoDeRemito
+            {
+                public const string Fason = "F";
+                public const string Fas = "S";
+                public const string Residuos = "I";
             }
 
             public static class Codigos

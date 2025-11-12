@@ -10699,7 +10699,7 @@
   </data>
   <data name="Multiples_Clientes_Mismo_Material" xml:space="preserve">
     <value>Existen múltiples órdenes de diferentes clientes para esta patente y material.</value>
-  </data> 
+  </data>
   <data name="Digital" xml:space="preserve">
     <value>Digital</value>
   </data>
@@ -10759,5 +10759,11 @@
   </data>
   <data name="ActImportacionEgresoVisec" xml:space="preserve">
     <value>Importación Egreso Visec</value>
+  </data>   
+  <data name="MonitoreoServicioExterno" xml:space="preserve">
+    <value>Monitoreo Servicio Externo</value>
+  </data>
+  <data name="PanelDeControlExcepcionPagoMunicipal" xml:space="preserve">
+    <value>Panel de control pago municipal</value>
   </data>
 </root>

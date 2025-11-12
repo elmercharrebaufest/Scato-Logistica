@@ -1,0 +1,80 @@
+.panel-servicios__container {
+    padding: 24px;
+}
+
+.panel-servicios__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+    .panel-servicios__header h2 {
+        margin: 0;
+        font-size: 28px;
+    }
+
+.panel-servicios__list {
+    margin-top: 8px;
+}
+
+.ultima-verificacion {
+    color: #8a8a8a;
+    font-size: 13px;
+}
+
+/* Semaforo */
+.semaforo__container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.semaforo {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(0,0,0,0.02) inset;
+}
+
+.semaforo--success {
+    color: #16a34a;
+}
+
+.semaforo--error {
+    color: #ef4444;
+}
+
+.semaforo--default {
+    color: #909090;
+}
+
+/* Buttons */
+
+#btnActualizarServiciosExternos {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn--refresh-servicio-externo {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+#btnModalMonitoreoServicioExterno {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 10px 15px 10px; 
+    color: gray; 
+    border: none; 
+    background: transparent; 
+    font-size: .75em;
+}

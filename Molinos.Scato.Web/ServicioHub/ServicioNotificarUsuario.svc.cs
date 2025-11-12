@@ -50,6 +50,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 log.Error(e, "Error al enviar notificación: {0}", notificacion.Mensaje);
             }
         }
+
         public void NotificarLectura(LecturaCpeDto notificacion)
         {
             try
@@ -63,6 +64,22 @@ namespace Molinos.Scato.Web.ServicioHub
             catch (Exception e)
             {
                 log.Error(e, "Error al enviar notificación: {0}", notificacion.NroCtg);
+            }
+        }
+
+        public void NotificarEstadoServicioExterno(NotificacionDto notificacion)
+        {
+            try
+            {
+                log.Debug("Iniciando- NotificarMensaje usuario: {0}, mensaje: {1}", notificacion.Grupo, notificacion.Mensaje);
+                notificacion.Hora = DateTime.Now;
+                hubClientNotificar.Invoke("NotificarEstadoServicioExterno", notificacion);
+
+                log.Debug("Fin- Mensaje enviado a usuario: {0} exitosamente", notificacion.Grupo);
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "Error al enviar notificación: {0}", notificacion.Mensaje);
             }
         }
     }

@@ -20,5 +20,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public TipoAlerta tipoAlerta { get; set; }
         public int? IdPagoMunicipal { get; set; }
         public bool ErroresOExcepcionesConsultaTasaMunicipal { get; set; }
+        public int? IdExcepcionPagoMunicipal { get; set; }
     }
 }

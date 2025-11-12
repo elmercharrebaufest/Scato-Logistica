@@ -392,6 +392,7 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\ExcepcionPagoTicketMunicipalController.cs" />
     <Compile Include="Controllers\CargarCartaPorteByPassController.cs" />
     <Compile Include="Controllers\ComercialController.cs" />
     <Compile Include="Controllers\BajaCTGDGController.cs" />
@@ -415,6 +416,8 @@
     <Compile Include="Controllers\EtiquetaPuertoController.cs" />
     <Compile Include="Controllers\CamionesPendientesNoGranosController.cs" />
     <Compile Include="Controllers\PanelDeControlTransaccionesVisecController.cs" />
+    <Compile Include="Controllers\PanelDeControlPagoMunicipalController.cs" />
+    <Compile Include="Controllers\PanelMonitoreoServicioExternoController.cs" />
     <Compile Include="Controllers\PuestoComandoPuertoController.cs" />
     <Compile Include="Controllers\RegistroInactividadController.cs" />
     <Compile Include="Controllers\SalidaDeCentroPlayaController.cs" />
@@ -886,6 +889,7 @@
     <Content Include="Scripts\area\visteo\index.js" />
     <Content Include="Scripts\altaCTGDG.js" />
     <Content Include="Scripts\asignarPuerto.js" />
+    <Content Include="Scripts\excepcionTicketMunicipal.index.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
     <Content Include="Scripts\barrera.js" />
     <Content Include="Scripts\camion.bypass.js" />
@@ -900,6 +904,9 @@
     <Content Include="Scripts\excepcionAlControlProveedor.js" />
     <Content Include="Scripts\huellaDigital.js" />
     <Content Include="Scripts\listarHuellaDigital.js" />
+    <Content Include="Scripts\panelDePagoMunicipal.index.js" />
+    <Content Include="Scripts\panelDePagoMunicipal.listar.js" />
+    <Content Include="Scripts\panelMonitoreoServicioExternoHubClient.js" />
     <Content Include="Scripts\notificacionAplicacion.js" />
     <Content Include="Scripts\devolucionDeReciboMunicipal.js" />
     <Content Include="Scripts\documentoExterno.js" />
@@ -916,6 +923,7 @@
     <Content Include="Scripts\Chart.bundle.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
+    <Content Include="Scripts\panelMonitoreoServicioExterno.js" />
     <Content Include="Scripts\popUpMotivoInactividad.js" />
     <Content Include="Scripts\puestoComandoPuerto.js" />
     <Content Include="Scripts\reglaDeAnalisisObligatorio.js" />
@@ -1134,7 +1142,10 @@
     </Content>
     <Content Include="Styles\area\listaDeCamiones\filtroDeCamiones.css" />
     <Content Include="Styles\area\enEsperaHB4\index.css" />
+    <Content Include="Styles\area\PanelMonitoreoServicioExterno\panelMonitoreoServicioExterno.css" />
     <Content Include="Styles\area\pesada\pesada.css" />
+    <Content Include="Styles\area\shared\badge.css" />
+    <Content Include="Styles\area\shared\card.css" />
     <Content Include="Styles\area\shared\dialogModal.css" />
     <Content Include="Styles\area\shared\inputs.css" />
     <Content Include="Styles\area\shared\intercomunicador.css" />
@@ -2498,6 +2509,17 @@
     <Content Include="Views\PanelDeControlTransaccionesVisec\_Listar.cshtml" />
     <Content Include="Views\PanelDeControlTransaccionesVisec\_Filtro.cshtml" />
     <Content Include="Views\ImportacionEgresoVisec\Index.cshtml" />
+    <Content Include="Views\ExcepcionPagoTicketMunicipal\_CrearModificar.cshtml" />
+    <Content Include="Views\ExcepcionPagoTicketMunicipal\Index.cshtml" />
+    <Content Include="Views\ExcepcionPagoTicketMunicipal\Listar.cshtml" />
+    <Content Include="Views\ExcepcionPagoTicketMunicipal\Modificar.cshtml" />
+    <Content Include="Views\ExcepcionPagoTicketMunicipal\_Borrar.cshtml" />
+    <Content Include="Views\PanelMonitoreoServicioExterno\Index.cshtml" />
+    <Content Include="Views\PanelMonitoreoServicioExterno\_EstadoServiciosExternos.cshtml" />
+   	<Content Include="Views\PanelDeControlPagoMunicipal\_CrearModificar.cshtml" />
+    <Content Include="Views\PanelDeControlPagoMunicipal\Index.cshtml" />
+    <Content Include="Views\PanelDeControlPagoMunicipal\Listar.cshtml" />
+    <Content Include="Views\PanelDeControlPagoMunicipal\Modificar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

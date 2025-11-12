@@ -1,6 +1,7 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Dto.HealthCheck;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
@@ -3155,5 +3156,17 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         TipoVariedadDto ObtenerTipoVariedadPorCodigo(string codigo);
+
+        [OperationContract]
+        bool TieneExcepcionDeTicketMunicipal(string patente, string numeroDeDocumento, string codigoWorkflow);
+        
+        [OperationContract]
+        MonitoreoServicioExternoDto ObtenerMonitoreoServicioExternoPorJob(string nombre);
+
+        [OperationContract]
+        IList<MonitoreoServicioExternoDto> ListarMonitoreoServicioExterno();
+        
+        [OperationContract] 
+        RegistroJobEjecucionDto ObtenerRegistroJobEjecucionPorProceso(string proceso);
     }
 }

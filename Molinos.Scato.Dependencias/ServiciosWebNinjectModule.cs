@@ -15,7 +15,9 @@ using Molinos.Scato.Servicios.DataAgroService;
 using Molinos.Scato.Servicios.Dummy;
 using Molinos.Scato.Servicios.Estrategias;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
+using Molinos.Scato.Servicios.Imp;
 using Molinos.Scato.Servicios.Impl;
+using Molinos.Scato.Servicios.Interfaces;
 using Molinos.Scato.Servicios.Impl.Hangfire;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.Procesamiento;
@@ -57,6 +59,7 @@ namespace Molinos.Scato.Dependencias
             Bind<ICache, Cache>().To<Cache>().InSingletonScope();
             Bind<IServicioLlamadoAutomatico, ServicioLlamadoAutomatico>().To<ServicioLlamadoAutomatico>().InScope(ctx => OperationContext.Current);
             Bind<IServicioSincronizacionVisec, ServicioSincronizacionVisec>().To<ServicioSincronizacionVisec>().InScope(ctx => OperationContext.Current);
+            Bind<IServicioSincronizacionPay, ServicioSincronizacionPay>().To<ServicioSincronizacionPay>().InScope(ctx => OperationContext.Current);
             Bind<IServicioOperaciones, ServicioOperaciones>().To<ServicioOperaciones>();
             Bind<IValidatorEntity<OrdenCargaInternaFasonDto>>().To<OrdenCargaInternaFasonValidator>();
             Bind<IExternalServiceException, ExternalServiceException>().To<ExternalServiceException>();
@@ -68,6 +71,7 @@ namespace Molinos.Scato.Dependencias
             Bind<IHangfireQueue, HangfireQueue>().To<HangfireQueue>().InScope(ctx => OperationContext.Current);
 
             
+            Bind<IServicioHealthCheck, ServicioHealthCheck>().To<ServicioHealthCheck>().InScope(ctx => OperationContext.Current);
 
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<LoginCMS>("LoginCms");
@@ -90,9 +94,6 @@ namespace Molinos.Scato.Dependencias
             Bind<IReglaTasaMunicipal>().To<ReglaTasaMunicipalGranos>();
             Bind<IReglaTasaMunicipal>().To<ReglaTasaMunicipalNoGranos>();
             Bind<IReglaTasaMunicipal>().To<ReglaTasaMunicipalAmbos>();
-            Bind<IReglaPago24HrsTasaMunicipal>().To<ReglaExcepcionCalesita>();
-            Bind<IReglaExcepcionTasaMunicipal>().To<ReglaExcepcionSojaImpo>();
-            Bind<IReglaExcepcionTasaMunicipal>().To<ReglaExcepcionRecorrido>();
             Bind<IProcesadorComando>().To<ProcesadorVerificarPagoTasaMunicipal>().InSingletonScope();
             var servicioRepositorio = Kernel.Get<IServicioRepositorio>();
             ConfigurarServicioDataAgro(servicioRepositorio);

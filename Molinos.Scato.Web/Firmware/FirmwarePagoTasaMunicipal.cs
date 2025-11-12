@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
@@ -39,19 +40,26 @@ namespace Molinos.Scato.Web.Firmware
                     log.Info($"Recorrido encontrado para el puesto de trabajo: {lecturaPuestoDeTrabajo.PuestoDeTrabajoId}, InstanceId: {recorrido.InstanciaWorkflow}");
                     if (recorrido.Rechazado)
                     {
-                        var pagos = servicio.ObtenerPagosDigitalesPorInstanceId(recorrido.InstanciaWorkflow);
-                        if (pagos.Count() > 0)
+                        var configuracionIngreso = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.PagoTasaMunicipal, Constantes.ConfiguracionGeneral.PagoTasaMunicipal.PermitirBloqueoDeIngreso);
+                        bool.TryParse(configuracionIngreso?.Valor, out bool tieneBloqueoDeIngreso);
+                        if(!tieneBloqueoDeIngreso)
                         {
-                            log.Info($"El recorrido {recorrido.InstanciaWorkflow} tiene pagos digitales asociados.");
-                            foreach (var pago in pagos)
+                            log.Info($"El recorrido {recorrido.InstanciaWorkflow} ya se encuentra rechazado y no tiene el bloqueo de ingreso.");
+                            var pagos = servicio.ObtenerPagosDigitalesPorInstanceId(recorrido.InstanciaWorkflow);
+                            if (pagos.Count() > 0)
                             {
-                                comandos.Ejecutar(new ModificarComoDevolucionPagosTasaMunicipal
+                                log.Info($"El recorrido {recorrido.InstanciaWorkflow} tiene pagos digitales asociados.");
+                                foreach (var pago in pagos)
                                 {
-                                    PagoId = pago.Id,
-                                    InstanceId = recorrido.InstanciaWorkflow,
-                                });
+                                    comandos.Ejecutar(new ModificarComoDevolucionPagosTasaMunicipal
+                                    {
+                                        PagoId = pago.Id,
+                                        InstanceId = recorrido.InstanciaWorkflow,
+                                    });
+                                }
                             }
                         }
+
                         lecturaPuestoDeTrabajo.MensajeError = "CAMION RECHAZADO";
                         lecturaPuestoDeTrabajo.TipoAlerta = TipoAlerta.Error;
                         lecturaPuestoDeTrabajo.Rechazado = true;
@@ -89,7 +97,7 @@ namespace Molinos.Scato.Web.Firmware
                         var verificacionPago = resultado as ResultadoConsultarPagoTasaMunicipal;
                         log.Info($"Pago de tasa municipal procesado exitosamente para el puesto de trabajo: {lecturaPuestoDeTrabajo.PuestoDeTrabajoId}");
                         lecturaPuestoDeTrabajo.TipoAlerta = verificacionPago.TipoAlerta;
-                        lecturaPuestoDeTrabajo.MensajeAlerta = verificacionPago.MensajeAlerta;
+                        lecturaPuestoDeTrabajo.MensajeAlerta =verificacionPago.TipoAlerta == TipoAlerta.Error ? "TASA ADEUDADA" : verificacionPago.MensajeAlerta;
 
                         if (verificacionPago.EjecutaWorkFlow && verificacionPago.TipoAlerta == TipoAlerta.Exito)
                         {

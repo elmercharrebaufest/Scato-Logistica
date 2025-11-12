@@ -126,6 +126,26 @@
             $("#contingenciaModal").modal("hide");
         });
     });
+    
+    
+    $(document).on('click', '.excepcionPagoTasaMunicipal', function () {
+        if (ValidarMotivo()) { return false; }
+
+        BlockUI();
+        $.getJSON(urlContingenciaPay, {
+            motivo: $("#motivo").val()
+        }, function (data) {
+            if (data !== "") {
+                MostrarAlertaError(data.value);
+
+            } else {
+                MostrarAlertaExitosa();
+            }
+        }).complete(function () {
+            $.unblockUI();
+            $("#contingenciaModal").modal("hide");
+        });
+    });
 
     $(document).on('click', '.slider', function () {
         $("#elemento-id").val($(this)[0].getAttribute('data-id'));

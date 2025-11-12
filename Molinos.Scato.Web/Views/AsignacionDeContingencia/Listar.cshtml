@@ -126,13 +126,32 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <hr />
+
+                                        <div class="row-fluid">
+                                            <div class="span8">
+                                                <h6>Excepción general de Pago de Impuesto Municipal</h6>
+                                                <small>Se exceptua la validacion del pago de impuesto municipal</small>
+                                            </div>
+                                            <div class="span4">
+                                                <label class="switch">
+                                                    <input type="checkbox" @(ViewBag.ContingenciaPay ? "checked" : "unchecked")>
+                                                    <span data-contingencia="excepcionPagoTasaMunicipal" class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    
                                 </div>
                             </div>
+                          
                         }
                     </div>
                 </div>
             </div>
         </div>
+
+       
+
     </div>
     <div class="accordion-group">
         <div class="accordion-heading">

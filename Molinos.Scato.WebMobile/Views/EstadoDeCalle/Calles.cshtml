@@ -115,8 +115,9 @@
                                 </p>
                                 <div class="row borde-grafico" data-bind="css: { 'bg-success': Bloqueada() && TipoCalle != @((int)TipoCalle.Circular), 'bg-primary':  Bloqueada() && TipoCalle == @((int)TipoCalle.Circular) }">
                                     <div class="col" data-bind="foreach: Posiciones">
-                                        <div class="card" style="max-width: 100%; padding-top:4px; padding-bottom:4px;" data-bind="css: { 'parpadeo' : AsignadoEnPuestoComando }, style: { 'background-color': ColorFondo, 'color': ColorTexto }">
+                                        <div class="card" style="max-width: 100%; padding-top:4px; padding-bottom:4px;" data-bind="css: { 'parpadeo' : AsignadoEnPuestoComando }, style: { 'background-color': ColorFondo, 'color': ColorTexto , 'textShadow' : ColorBordeDemoradoPorTasaMunicipal}">
                                             <div class="card-header text-center" style="padding: 0px 5px; height: 18px; display: flex; justify-content: space-between; align-items: center;">
+                
                                                 <div style="display: flex; font-size: 0.7rem;">
                                                     <i data-bind="attr: {'class': Escalable}" style="margin-right: 2px;"></i>
                                                     <i data-bind="attr: {'class': Icon}" style="margin-right: 2px;"></i>

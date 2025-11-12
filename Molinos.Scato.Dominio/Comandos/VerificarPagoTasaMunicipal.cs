@@ -16,6 +16,6 @@ namespace Molinos.Scato.Dominio.Comandos
        public int CargaDeCupoId { get; set; }
        public string CodigoEstablecimiento { get; set; }
        public TipoOrigenDeValidacion TipoOrigenDeValidacion { get; set; }
-
+       public bool Demorado { get; set; }
     }
 }

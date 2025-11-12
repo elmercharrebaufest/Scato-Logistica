@@ -22010,6 +22010,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monitoreo Servicio Externo.
+        /// </summary>
+        public static string MonitoreoServicioExterno {
+            get {
+                return ResourceManager.GetString("MonitoreoServicioExterno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error en el procedimiento del servicio Monsanto.
         /// </summary>
         public static string Monsanto_ErrorEnLaCarga {
@@ -24481,6 +24490,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PanelBajaCtgDefinitiva {
             get {
                 return ResourceManager.GetString("PanelBajaCtgDefinitiva", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Panel de control pago municipal.
+        /// </summary>
+        public static string PanelDeControlExcepcionPagoMunicipal {
+            get {
+                return ResourceManager.GetString("PanelDeControlExcepcionPagoMunicipal", resourceCulture);
             }
         }
         

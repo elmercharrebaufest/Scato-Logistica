@@ -45,7 +45,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("Error", errorMessage);
             }
 
-            Repositorio.GuardarCambios();
             return resultado;
         }
 

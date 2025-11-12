@@ -23,7 +23,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
             var listadoCamiones = new List<CallePorRecorridoListadoCamionesDto>();
             listadoCamiones = contexto.Set<CallePorRecorrido>()
-                              .Where(x => x.FechaEgreso.Equals(null))
+                              .Where(x => x.FechaEgreso == null)
                               .Select(x => new CallePorRecorridoListadoCamionesDto
                               {
                                   Id = x.Id,
@@ -49,16 +49,64 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   CargaCupoColorTexto = x.CargaDeCupo.Material.ColorTexto,
                                   RecorridoCodigoSAP =  x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap,
                                   CargaDeCupoCodigoSAP = x.CargaDeCupo.TitularCartaPorteCodigoSap,
-                                  EsDemorado = x.Recorrido != null && x.Recorrido.VehiculoDemorado,
+                                  EsDemorado = x.Recorrido != null ?  x.Recorrido.VehiculoDemorado : (x.CargaDeCupo.Recorrido != null && x.CargaDeCupo.Recorrido.VehiculoDemorado),
                                   EsSojaEUDR = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EUDR,
                                   EsSojaIMPO = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.Importacion,
                                   EsSojaEPAyEUDR = x.Recorrido != null && x.Recorrido.TipoVariedad != null && x.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR,
                                   IdRecorrido = x.Recorrido != null ? x.Recorrido.Id : (int?)null,
+                                  PagoTasaMunicipalAdeudado = x.Recorrido != null
+                                      ? !x.Recorrido.PagoTasaMunicipalInformado && !x.Recorrido.IngresoContingenciaPagoMunicipal
+                                      : (x.CargaDeCupo.Recorrido != null 
+                                          && !x.CargaDeCupo.Recorrido.PagoTasaMunicipalInformado
+                                          && !x.CargaDeCupo.Recorrido.IngresoContingenciaPagoMunicipal),
+                                  InstanceId = x.Recorrido != null ? x.Recorrido.InstanciaWorkflow : x.CargaDeCupo.Recorrido != null  ?  x.CargaDeCupo.Recorrido.InstanciaWorkflow : Guid.Empty
+
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();
 
-            return listadoCamiones;
+            var listadoPagos = contexto.Set<PagosTasaMunicipal>().ToList();
+
+            var resultado = from cpr in listadoCamiones
+                            join pago in listadoPagos
+                                on cpr.InstanceId equals pago.IdInstance
+                                into pagosGroup
+                            from pago in pagosGroup.DefaultIfEmpty()
+                            select new CallePorRecorridoListadoCamionesDto
+                            {
+                                Id = cpr.Id,
+                                Calidad = cpr.Calidad,
+                                RecorridoMaterialId = cpr.RecorridoMaterialId,
+                                CargaCupoMaterialId = cpr.CargaCupoMaterialId,
+                                RecorridoMaterialDescripcion = cpr.RecorridoMaterialDescripcion,
+                                CargaCupoMaterialDescripcion = cpr.CargaCupoMaterialDescripcion,
+                                RecorridoPatente = cpr.RecorridoPatente,
+                                CargaDeCupoPatente = cpr.CargaDeCupoPatente,
+                                CargaDeCupoRecorridoPatente = cpr.CargaDeCupoRecorridoPatente,
+                                CalleId = cpr.CalleId,
+                                FechaIngreso = cpr.FechaIngreso,
+                                UltimoDeLaFila = cpr.UltimoDeLaFila,
+                                Rechazado = cpr.Rechazado,
+                                AsignadoEnPuestoComando =cpr.AsignadoEnPuestoComando,
+                                TipoCalle = cpr.TipoCalle,
+                                TipoVehiculo = cpr.TipoVehiculo,
+                                EsSojaEPA = cpr.EsSojaEPA,
+                                MaterialColorFondo = cpr.MaterialColorFondo,
+                                MaterialColorTexto = cpr.MaterialColorTexto,
+                                CargaCupoColorFondo = cpr.CargaCupoColorFondo,
+                                CargaCupoColorTexto = cpr.CargaCupoColorTexto,
+                                RecorridoCodigoSAP = cpr.RecorridoCodigoSAP,
+                                CargaDeCupoCodigoSAP = cpr.CargaDeCupoCodigoSAP,
+                                EsDemorado = cpr.EsDemorado,
+                                EsSojaEUDR = cpr.EsSojaEUDR,
+                                EsSojaIMPO = cpr.EsSojaIMPO,
+                                EsSojaEPAyEUDR = cpr.EsSojaEPAyEUDR,
+                                IdRecorrido = cpr.IdRecorrido,
+                                PagoTasaMunicipalAdeudado = pago == null ? true : false,
+                                InstanceId = cpr.InstanceId
+
+                            };
+            return resultado.OrderBy(q => q.FechaIngreso).ToList();
         }
 
         public virtual List<CallePorRecorridoListadoCamionesDto> Ejecutar(DbContext contexto)

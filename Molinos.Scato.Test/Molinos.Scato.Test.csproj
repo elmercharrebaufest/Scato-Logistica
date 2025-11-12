@@ -549,6 +549,7 @@
     <Compile Include="Procesamiento\ProcesadorImprimirAsigRecorrCtrolCalidTest.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirMuestraInaseTest.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarClienteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMonitoreoServicioExternoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorPagarMercadoPagoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcaladoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorRetransmitirTransmisionASapTest.cs" />
@@ -924,6 +925,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\ServicioHealthCheckTests.cs" />
     <Compile Include="Servicios\CalculadoraDescuentoTest.cs" />
     <Compile Include="Servicios\ServicioComandosTest.cs" />
     <Compile Include="Servicios\ServicioOperacionesTest.cs" />

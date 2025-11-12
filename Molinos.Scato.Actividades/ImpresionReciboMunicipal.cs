@@ -55,7 +55,7 @@ namespace Molinos.Scato.Actividades
                 CrearLogActividad(servicio, parametros.WorkflowId, log, "Validar impresion Recibo Municipal");
                 var documento = ObtenerDocumentoDeImpresion(repositorio, parametros, log);
                 var recorrido = ObtenerYValidarRecorrido(repositorio, parametros.WorkflowId, log);
-                var aplicaPago = DeterminarSiAplicaPago(repositorio, recorrido);
+                var aplicaPago = DeterminarSiAplicaPago(repositorio, recorrido, parametros);
                 log.Info($"Recorrido obtenido: {recorrido.Id}, Patente: {recorrido.Patente}, Aplica pago: {aplicaPago}.");
 
                 var datosRecorrido = repositorio.ObtenerRecorridoImpresionReciboMunicipal(parametros.WorkflowId);
@@ -81,7 +81,8 @@ namespace Molinos.Scato.Actividades
                     log.Info("No es pago Digital, se imprime recibo normal.");
                     var ticket = ObtenerNumeroDeTicket(repositorio, aplicaPago, parametros, datosRecorrido, log);
                     log.Info($"Número de puesto de trabajo: {parametros.PuestoDeTrabajoId}, Número de ticket: {ticket}.");
-                    ImprimirRecibo(servicio, documento, datosRecorrido, parametros, aplicaPago, ticket, log, repositorio);
+                    if(!repositorio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                        ImprimirRecibo(servicio, documento, datosRecorrido, parametros, aplicaPago, ticket, log, repositorio);
                 }
                 CrearLogActividad(servicio, parametros.WorkflowId, log, "Impresion Recibo Municipal");
                 FinalizarActividad(servicio, parametros.WorkflowId, parametros.PuestoDeTrabajoId, log);
@@ -146,7 +147,7 @@ namespace Molinos.Scato.Actividades
             log.Info($"Recorrido OK: Id {recorrido.Id}, Patente {recorrido.Patente}");
             return recorrido;
         }
-        private bool DeterminarSiAplicaPago(IServicioRepositorio repo, RecorridoDto recorrido)
+        private bool DeterminarSiAplicaPago(IServicioRepositorio repo, RecorridoDto recorrido, ParametrosDeImpresion parametros)
         {
             var cartaPorte = repo.ObtenerCartaDePortePorrecorrido(recorrido.Id);
             bool esIngresoImportacion = recorrido.Workflow.Codigo == Constantes.WorkFlow.workflowIngresoImportacion;
@@ -166,13 +167,19 @@ namespace Molinos.Scato.Actividades
             {
                 return false;
             }
+
+            if (repo.TieneExcepcionDeTicketMunicipal(recorrido.Patente, recorrido.NumeroDocumentoIngreso, recorrido.Workflow.Codigo))
+            {
+                parametros.TieneExcepcion = true;
+                return false;
+            }
             return true;
         }
         private string ObtenerNumeroDeTicket(IServicioRepositorio repo, bool aplicaPago, ParametrosDeImpresion parametros, ImpresionReciboMunicipalRecorridoDto recorrido, ILogger log)
         {
 
             log.Debug($"Obteniendo número de ticket para la Patente: {recorrido.Patente}, aplica pago: {aplicaPago}.");
-            if (!aplicaPago) return "Tasa abonada dentro del día";
+            if (!aplicaPago) return parametros.TieneExcepcion ? "Tasa abonada por excepción" : "Tasa abonada dentro del día";
 
             var numGarita = repo.ObtenerNumGaritaEntrada(parametros.PuestoDeTrabajoId)?.PadLeft(4, '0') ?? throw new Exception($"Garita no encontrada para puesto {parametros.PuestoDeTrabajoId}");
 
@@ -184,7 +191,7 @@ namespace Molinos.Scato.Actividades
         private string ObtenerNumeroDeTicketDigital(IServicioRepositorio repo, bool aplicaPago, ParametrosDeImpresion parametros, ImpresionReciboMunicipalRecorridoDto recorrido, ILogger log, int idPago)
         {
             log.Debug($"Obteniendo número de ticket para la Patente: {recorrido.Patente}, aplica pago: {aplicaPago}.");
-            if (!aplicaPago) return "Tasa abonada dentro del día";
+            if (!aplicaPago) return parametros.TieneExcepcion ? "Tasa abonada por excepción" : "Tasa abonada dentro del día";
 
             var numGarita = repo.ObtenerNumGaritaEntrada(parametros.PuestoDeTrabajoId)?.PadLeft(4, '0') ?? throw new Exception($"Garita no encontrada para puesto {parametros.PuestoDeTrabajoId}");
 
@@ -269,7 +276,8 @@ namespace Molinos.Scato.Actividades
         public Guid WorkflowId { get; set; }
         public int PuestoDeTrabajoId { get; set; }
         public int CantCopias { get; set; }
-    }
+        public bool TieneExcepcion { get; set; }
+     }
 }
 
 

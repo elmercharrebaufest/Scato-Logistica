@@ -75,6 +75,7 @@
     <Compile Include="ComandosEF\BalanzasPuerto\ObtenerUltimoIdValidoBalanza.cs" />
     <Compile Include="ComandosEF\CrearArchivoDeMovimientos.cs" />
     <Compile Include="ComandosEF\CrearLoteAuditoria.cs" />
+    <Compile Include="ConsultasEF\PanelPagoMunicipalConsulta.cs" />
     <Compile Include="ConsultasEF\ConsultarEstadosWorkflows.cs" />
     <Compile Include="ConsultasEF\ConsultarAutomatismoGranoActivoDisponible.cs" />
     <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInternaFason.cs" />

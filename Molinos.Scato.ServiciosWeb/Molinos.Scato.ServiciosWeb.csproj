@@ -198,6 +198,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ServicioLlamadoAutomatico.svc" />
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

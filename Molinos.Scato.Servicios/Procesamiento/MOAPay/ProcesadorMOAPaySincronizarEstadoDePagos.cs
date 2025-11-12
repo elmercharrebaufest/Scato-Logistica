@@ -103,7 +103,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
                 else
                 {
-                    var tipoDocumento = (!string.IsNullOrEmpty(item.NumeroDocumento) && item.NumeroDocumento.Contains("R"))
+                    var tipoDocumento = (!string.IsNullOrEmpty(item.NumeroDocumento) 
+                        && (item.NumeroDocumento.EndsWith("R") || item.NumeroDocumento.EndsWith("I") || item.NumeroDocumento.EndsWith("F") || item.NumeroDocumento.EndsWith("S")))
                      ? Constantes.MOAPay.TipoDocumento.REMITO
                      : Constantes.MOAPay.TipoDocumento.CTG;
 

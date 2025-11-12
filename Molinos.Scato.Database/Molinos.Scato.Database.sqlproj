@@ -90,6 +90,7 @@
     <Folder Include="Scripts\20151030" />
     <Folder Include="Scripts\20160524 - Configuracion de Workflows" />
     <Folder Include="Scripts\20200512 - Credenciales MercadoPago" />
+    <Folder Include="Scripts\20250905 - MOA PAY Semaforo" />
     <Folder Include="Scripts\20250815" />
   </ItemGroup>
   <ItemGroup>
@@ -547,9 +548,13 @@
     <Build Include="dbo\Views\HuellaDigitalUnion.sql" />
     <Build Include="dbo\Views\HuellaDigitalOrden.sql" />
     <Build Include="dbo\Tables\PagosTasaMunicipal.sql" />
+    <Build Include="dbo\Tables\RegistroJobEjecucion.sql" />
     <Build Include="dbo\Stored Procedures\sp_ObtenerEstadoPagosTasaMunicipal.sql" />
     <Build Include="dbo\Tables\VisecTransmision.sql" />
     <Build Include="dbo\Tables\VisecTransmisionMovimiento.sql" />
+    <Build Include="dbo\Tables\ExceptuadosTicketMunicipal.sql" />
+    <None Include="Scripts\20250905 - MOA PAY Semaforo\Inserciones External Services.sql" />
+    <Build Include="dbo\Tables\MonitoreoServicioExterno.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

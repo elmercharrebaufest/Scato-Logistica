@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Enums;
+using System;
 
 namespace Molinos.Scato.Dominio.Entidades
 {

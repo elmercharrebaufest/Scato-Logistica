@@ -1,0 +1,19 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.TransmisionSapAModificarDto
+
+@using (Ajax.BeginForm("Modificar", "PanelDeControlTransaccionesSap", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Transmision_Modificar, data_dialogo_extraclass = "dialog-grande", id = "formEditar" }))
+{
+        @Html.ValidationMessage("")
+        foreach (var campo in Model.Campos)
+        {
+            <div class="control-group">
+        @Html.Label(campo.Key, new {@class = "control-label"})
+                <div class="controls">
+                    <input type="text" name="@("Model.Campos[" + campo.Key + "]")" value="@campo.Value" />
+                </div>
+                @Html.ValidationMessage(campo.Key)
+        </div>
+        }
+        <input type="hidden" name="@("Model.Id")" value="@Model.Id" />  
+}
+

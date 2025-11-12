@@ -24,7 +24,6 @@
 @Html.Hidden("gestionarBarrera", gestionarBarrera)
 @Html.Hidden("centroId", centroId)
 
-
 @Scripts.Render("~/bundles/blockUI")
 <script>
     //Se cierra el diálogo cuando se presiona ESC
@@ -35,6 +34,9 @@
     });
     var grupos = "@Html.Raw(ViewBag.Grupos)";
 </script>
+
+<link href="~/Styles/area/PanelMonitoreoServicioExterno/panelMonitoreoServicioExterno.css" rel="stylesheet" />
+<link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
 
 <script type="text/javascript" src="@Url.Script("~/scripts/_menu.js")"></script>
 
@@ -509,6 +511,27 @@
                             </ul>
                         </li>
                         <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pagos Municipales</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AsignacionTicketMunicipal))
+                                {
+                                    <li>@Html.ActionLink(Textos.AsignacionTicketMunicipal, "Index", "ExcepcionPagoTicketMunicipal")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PagoDeReciboMunicipal))
+                                {
+                                    <li>@Html.ActionLink(Textos.CobroImpuestoMunicipal_Titulo, "Index", "PagoDeReciboMunicipal")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.DevolucionDeReciboMunicipal))
+                                {
+                                    <li>@Html.ActionLink(Textos.DevolucionImpuestoMunicipal_Titulo, "Index", "DevolucionDeReciboMunicipal")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.DevolucionDeReciboMunicipal))
+                                {
+                                    <li>@Html.ActionLink("Panel de control pagos municipales", "Index", "PanelDeControlPagoMunicipal")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_SistemaIndustria</a>
                             <ul class="dropdown-menu">
                                 @if (PermisosHelper.Is(PermisosScato.AbmTecnologia))
@@ -615,18 +638,6 @@
                                 @if (PermisosHelper.Is(PermisosScato.MotivoQuiebreBarrera))
                                 {
                                     <li>@Html.ActionLink(Textos.MotivoQuiebreBarrera_Titulo, "Index", "MotivoQuiebreBarrera")</li>
-                                }
-                                @if (PermisosHelper.Is(PermisosScato.AsignacionTicketMunicipal))
-                                {
-                                    <li>@Html.ActionLink(Textos.AsignacionTicketMunicipal, "Index", "AsignarTicketMunicipal")</li>
-                                }
-                                @if (PermisosHelper.Is(PermisosScato.PagoDeReciboMunicipal))
-                                {
-                                    <li>@Html.ActionLink(Textos.CobroImpuestoMunicipal_Titulo, "Index", "PagoDeReciboMunicipal")</li>
-                                }
-                                @if (PermisosHelper.Is(PermisosScato.DevolucionDeReciboMunicipal))
-                                {
-                                    <li>@Html.ActionLink(Textos.DevolucionImpuestoMunicipal_Titulo, "Index", "DevolucionDeReciboMunicipal")</li>
                                 }
                                 @if (PermisosHelper.Is(PermisosScato.DocumentoExterno))
                                 {
@@ -1118,6 +1129,12 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 10px 4px 10px;"><i class="icon-plus-sign"></i><b class="caret"></b></a>
                     </li>
                 }
+                <li>
+                    <button id="btnModalMonitoreoServicioExterno" onclick="panelMonitoreoServicioExternoModal.showModal()">
+                        <i id="semaforoGeneralHealthCheckServiciosExternos" class="fas fa-circle"></i>
+                        Servicios Web
+                    </button>
+                </li>
             </ul>
 
 
@@ -1347,3 +1364,12 @@
         <a data-dismiss="modal" aria-hidden="true" href="#" id="cancelar" class="btn close">Cancelar </a>
     </div>
 </div>
+
+<dialog id="panelMonitoreoServicioExternoModal" class="dialogModal">
+    <div class="dialogModal__descripcion">
+        @{ Html.RenderAction("EstadoServiciosPartial", "PanelMonitoreoServicioExterno"); }
+    </div>
+    <div class="dialogModal__botones">
+        <button class="btn" type="button" onClick="panelMonitoreoServicioExternoModal.close()">Cerrar</button>
+    </div>
+</dialog>
