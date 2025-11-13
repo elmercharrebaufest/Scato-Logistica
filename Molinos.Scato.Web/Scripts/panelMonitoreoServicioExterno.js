@@ -73,12 +73,12 @@ function computeHealthcheckSemaforo() {
         const els = document.querySelectorAll('.card__container .healthCheckEstado');
         let statuses = [];
         els.forEach(function (el) {
-            var txt = (el.textContent || '').trim().toLowerCase();
+            var txt = (el.textContent || '');
             if (txt) statuses.push(txt);
         });
 
-        const desconectado = statuses.some(function (s) { return s === 'desconectado'; });
-        const conectado = statuses.every(function (s) { return s === 'conectado'; });
+        const desconectado = statuses.some(function (s) { return s === 'Desconectado'; });
+        const conectado = statuses.every(function (s) { return s === 'Conectado'; });
         
         if (desconectado) {
             elIcon.style.color = 'red';

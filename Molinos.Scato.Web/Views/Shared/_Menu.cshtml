@@ -515,7 +515,7 @@
                             <ul class="dropdown-menu">
                                 @if (PermisosHelper.Is(PermisosScato.AsignacionTicketMunicipal))
                                 {
-                                    <li>@Html.ActionLink(Textos.AsignacionTicketMunicipal, "Index", "ExcepcionPagoTicketMunicipal")</li>
+                                    <li>@Html.ActionLink(Textos.AsignacionTicketMunicipal, "Index", "AsignarTicketMunicipal")</li>
                                 }
                                 @if (PermisosHelper.Is(PermisosScato.PagoDeReciboMunicipal))
                                 {
@@ -527,7 +527,7 @@
                                 }
                                 @if (PermisosHelper.Is(PermisosScato.DevolucionDeReciboMunicipal))
                                 {
-                                    <li>@Html.ActionLink("Panel de control pagos municipales", "Index", "PanelDeControlPagoMunicipal")</li>
+                                    <li>@Html.ActionLink("Gestión de Reprocesos por Contingencia", "Index", "PanelDeControlPagoMunicipal")</li>
                                 }
                             </ul>
                         </li>
@@ -768,9 +768,9 @@
                                 {
                                     <li>@Html.ActionLink(Textos.PanelServerAppPool, "Index", "PanelServerAppPool")</li>
                                 }
-                                @if (PermisosHelper.Is(PermisosScato.PanelServerAppPool))
+                                @if (PermisosHelper.Is(PermisosScato.MonitoreoServicioExterno))
                                 {
-                                    <li>@Html.ActionLink(Textos.PanelServiciosWeb, "Index", "PanelServiciosWeb")</li>
+                                    <li>@Html.ActionLink("Monitor de Servicios", "Index", "PanelMonitoreoServicioExterno")</li>
                                 }
                                 @if (PermisosHelper.Is(PermisosScato.PanelDeControlTransaccionesVisec))
                                 {

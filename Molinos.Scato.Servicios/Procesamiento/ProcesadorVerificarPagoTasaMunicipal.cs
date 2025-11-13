@@ -162,8 +162,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     recorrido.PagoTasaMunicipalInformado = true;
                     Repositorio.GuardarCambios();
                 }
-            }
 
+                if(datosExcepcion.InstanceId != Guid.Empty)
+                {
+                    var excepcion = Repositorio.Obtener<ExceptuadosTicketMunicipal>(r => r.Patente == datosExcepcion.Patente && r.Activo);
+                    if (excepcion != null)
+                    {
+                        resultado.IdExcepcion = excepcion.Id;
+                        excepcion.Activo = false;
+                        Repositorio.GuardarCambios();
+                    }
+                }
+            }
             return tieneExcepcion;
         }
 
@@ -313,7 +323,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             tieneExcepcion = ValidarExcepcionMaterialPorCentro(datos);
             if (tieneExcepcion) return tieneExcepcion;
 
-            tieneExcepcion = ValidarExcepcionPorPatenteYDocumento(datos, resultado);
+            tieneExcepcion = ValidarExcepcionPorPatente(datos, resultado);
+            if (tieneExcepcion) return tieneExcepcion;
+
+            tieneExcepcion = ValidarExcpecionPorPatenteYDocumento(datos);
             if (tieneExcepcion) return tieneExcepcion;
 
             tieneExcepcion = ValidarExcepcionEsSojaImpo(datos);
@@ -336,19 +349,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
            return tieneExcepcion;
         }
 
-        private bool ValidarExcepcionPorPatenteYDocumento(DatosExcepcionTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado)
+        private bool ValidarExcepcionPorPatente(DatosExcepcionTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado)
         {
             bool tieneExcepcion = false;
             if (datos.EsValidacionAlIngreso)
-                tieneExcepcion = Repositorio.Existe<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.NumeroDocumentoIngreso == datos.Ctg && r.Activo);
+                tieneExcepcion = Repositorio.Existe<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.Activo);
             else
             {
-                tieneExcepcion = Repositorio.Existe<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.NumeroDocumentoIngreso == datos.Ctg && r.Activo);
+                tieneExcepcion = Repositorio.Existe<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente  && r.Activo);
                 if (tieneExcepcion)
                 {
                     if (datos.InstanceId != Guid.Empty)
                     {
-                        var excepcion = Repositorio.Obtener<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.NumeroDocumentoIngreso == datos.Ctg && r.Activo);
+                        var excepcion = Repositorio.Obtener<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.Activo);
                         if (excepcion != null)
                         {
                             resultado.IdExcepcion = excepcion.Id;
@@ -357,6 +370,22 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         }
                     }
                 }
+            }
+            return tieneExcepcion;
+        }
+
+        private bool ValidarExcpecionPorPatenteYDocumento(DatosExcepcionTasaMunicipal datos)
+        {
+            bool tieneExcepcion = false;
+            if (datos.EsValidacionAlIngreso)
+            {
+               tieneExcepcion = Repositorio.Existe<LogExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.Material.Id == datos.MaterialId && r.PagaTicketMunicipal == false && r.NumeroDocumentoIngreso == datos.Ctg);
+            }
+            else
+            {
+                Log.Info($"Validando excepcion de recorrido para InstanceId: {datos.InstanceId}");
+                tieneExcepcion = Repositorio.Existe<LogExceptuadosTicketMunicipal>(x => x.WorkflowInstanceId == datos.InstanceId && x.PagaTicketMunicipal == false);
+                Log.Info($"Tiene excepcion de recorrido: {tieneExcepcion} para InstanceId: {datos.InstanceId}");
             }
             return tieneExcepcion;
         }

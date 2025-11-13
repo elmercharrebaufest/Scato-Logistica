@@ -7,7 +7,7 @@ $(document).ready(function () {
             if (notificacion.TipoAlerta == 8) {
                 let payload = JSON.parse(notificacion.Mensaje);
                 let key = payload.key;
-                let status = payload.status.trim().toLowerCase();
+                let status = payload.status;
                 let ultima = payload.ultimaVerificacion;
                 let card = document.querySelector('.card__container[data-key="' + key + '"]');
                 if (card) {
@@ -21,9 +21,9 @@ $(document).ready(function () {
                     if (semaforoContainer) {
                         semaforoContainer.classList.remove('semaforo--success', 'semaforo--error', 'semaforo--default');
                         
-                        if (status === 'conectado') {
+                        if (status === 'Conectado') {
                             semaforoContainer.classList.add('semaforo--success');
-                        } else if (status === 'desconectado') {
+                        } else if (status === 'Desconectado') {
                             semaforoContainer.classList.add('semaforo--error');
                         } else {
                             semaforoContainer.classList.add('semaforo--default');

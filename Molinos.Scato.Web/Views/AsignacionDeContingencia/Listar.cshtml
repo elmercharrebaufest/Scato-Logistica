@@ -127,24 +127,31 @@
                                         </div>
                                     </div>
                                     <hr />
-
-                                        <div class="row-fluid">
-                                            <div class="span8">
-                                                <h6>Excepción general de Pago de Impuesto Municipal</h6>
-                                                <small>Se exceptua la validacion del pago de impuesto municipal</small>
-                                            </div>
-                                            <div class="span4">
-                                                <label class="switch">
-                                                    <input type="checkbox" @(ViewBag.ContingenciaPay ? "checked" : "unchecked")>
-                                                    <span data-contingencia="excepcionPagoTasaMunicipal" class="slider round"></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    
                                 </div>
                             </div>
-                          
+
                         }
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#garita-ingreso-pe-collapse" href="#collapse-moa-pay">
+                                MOA PAY
+                            </a>
+                        </div>
+                        <div id="collapse-moa-pay" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                                <div class="row-fluid">
+                                    <div class="span8">
+                                        <h6>Excepción general de Pago de Impuesto Municipal</h6>
+                                        <small>Se exceptua la validacion del pago de impuesto municipal</small>
+                                    </div>
+                                    <div class="span4">
+                                        <label class="switch">
+                                            <input type="checkbox" @(ViewBag.ContingenciaPay ? "checked" : "unchecked")>
+                                            <span data-contingencia="excepcionPagoTasaMunicipal" class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
                     </div>
                 </div>
             </div>

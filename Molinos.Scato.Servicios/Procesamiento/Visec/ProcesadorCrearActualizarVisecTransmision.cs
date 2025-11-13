@@ -34,7 +34,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         FechaTransaccion = DateTime.Now,
                         VisecTransmisionMovimientos = comando.Dto.VisecTransmisionMovimientos
                                         .Select(x => ObtenerVisecTransmisionMovimiento(x, id))
-                                        .ToList()
+                                        .ToList(),
+                        StockKg = comando.Dto.StockKg,
                     };
                     Repositorio.Agregar(entidad);
                 }
@@ -55,7 +56,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 entidad.Producto = comando.Dto.Producto;
                 entidad.Campania = comando.Dto.Campania;
                 entidad.PesoNetoCargaKg = comando.Dto.PesoNetoCargaKg;
-                entidad.StockKg = comando.Dto.StockKg;
                 Repositorio.GuardarCambios();
                 resultado.Id = entidad.Id;
                 Log.Debug("Entidad VisecTransmision actualizada con Id: {Id}", resultado.Id);
