@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
+﻿using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
@@ -43,102 +41,102 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
                              where muestra.Lote.Id == loteId
                              select new MuestraEnvioACamaraDto
-                                 {
-                                     Id = muestra.Id,
-                                     NombreUsuario = muestra.NombreUsuario,
-                                     CaladoId = muestra.Calado.Id,
-                                     CamaraId = muestra.Camara.Id,
-                                     NroMuestra = muestra.NroMuestra,
-                                     NroMuestraTerceros = muestra.NroMuestraTerceros,
-                                     NroCartaPorte = muestra.CartaPorte != null ? muestra.CartaPorte.NroCartaPorte : remito.OrdenRemito,
-                                     FechaDescarga = muestra.FechaDescarga,
-                                     PesoNeto  = (rec.PesoBruto ?? 0) - (rec.PesoTara ?? 0),
-                                     CentroId = muestra.Centro.Id,
-                                     Localidad = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.Descripcion : remito.Procedencia.Descripcion,
-                                     Patente = rec.Patente,
-                                     WorkflowInstanceId = rec.InstanciaWorkflow,
-                                     EstadoMuestra = muestra.EstadoMuestra,
-                                     TieneAnalisisInterno = muestra.TieneAnalisisInterno,
-                                     TipoDocumento = rec.TipoDocumentoIngreso,
-                                     NroDocumento = muestra.NroMuestra,
+                             {
+                                 Id = muestra.Id,
+                                 NombreUsuario = muestra.NombreUsuario,
+                                 CaladoId = muestra.Calado.Id,
+                                 CamaraId = muestra.Camara.Id,
+                                 NroMuestra = muestra.NroMuestra,
+                                 NroMuestraTerceros = muestra.NroMuestraTerceros,
+                                 NroCartaPorte = muestra.CartaPorte != null ? muestra.CartaPorte.NroCartaPorte : remito.OrdenRemito,
+                                 FechaDescarga = muestra.FechaDescarga,
+                                 PesoNeto = (rec.PesoBruto ?? 0) - (rec.PesoTara ?? 0),
+                                 CentroId = muestra.Centro.Id,
+                                 Localidad = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.Descripcion : remito.Procedencia.Descripcion,
+                                 Patente = rec.Patente,
+                                 WorkflowInstanceId = rec.InstanciaWorkflow,
+                                 EstadoMuestra = muestra.EstadoMuestra,
+                                 TieneAnalisisInterno = muestra.TieneAnalisisInterno,
+                                 TipoDocumento = rec.TipoDocumentoIngreso,
+                                 NroDocumento = muestra.NroMuestra,
 
-                                     Material = rec.Material.Descripcion,
-                                     Vendedor = muestra.CartaPorte.Destinatario.Descripcion,
-                                     Corredor = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Descripcion : null,
-                                     Proveedor = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Descripcion : remito.ProveedorOrigen.Descripcion,
-                                     ProveedorCodigoSap = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.CodigoSap : remito.ProveedorOrigen.CodigoSap,
-                                     FechaCartaPorte = muestra.CartaPorte != null ? muestra.CartaPorte.FechaCP : (remito != null ? remito.FechaOD : rec.FechaEgreso.Value),
-                                     
-                                     MaterialCodigoCamara = conversionMaterial.CodigoCamara,
-                                     TitularCartaPorteCuil = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Cuil : (remito.ProveedorOrigen != null ? remito.ProveedorOrigen.Cuil :empresa.Cuil),
-                                     TitularCartaPorteMail = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Mail : (remito.ProveedorOrigen != null ? remito.ProveedorOrigen.Mail : empresa.Mail),
-                                     TitularCartaPorte = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Descripcion : (remito.ProveedorOrigen != null ? remito.ProveedorOrigen.Descripcion : empresa.Descripcion),
+                                 Material = rec.Material.Descripcion,
+                                 MaterialCodigoSAP = rec.Material.CodigoSAP,
+                                 Vendedor = muestra.CartaPorte.Destinatario.Descripcion,
+                                 Corredor = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Descripcion : null,
+                                 Proveedor = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Descripcion : remito.ProveedorOrigen.Descripcion,
+                                 ProveedorCodigoSap = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.CodigoSap : remito.ProveedorOrigen.CodigoSap,
+                                 FechaCartaPorte = muestra.CartaPorte != null ? muestra.CartaPorte.FechaCP : (remito != null ? remito.FechaOD : rec.FechaEgreso.Value),
 
-                                     DestinatarioId = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Id : (remito != null ? empresa.Id : 0),
-                                     Destinatario = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Descripcion : empresa.Descripcion,
-                                     DestinatarioCodigoSap = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.CodigoSap : empresa.CodigoSap,
-                                     DestinatarioCuil = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Cuil : empresa.Cuil,
-                                     DestinatarioMail = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Mail : empresa.Mail,
-                                     
-                                     CorredorCuil = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Cuil : null,
-                                     CorredorId = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Id : 0,
+                                 MaterialCodigoCamara = conversionMaterial.CodigoCamara,
+                                 TitularCartaPorteCuil = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Cuil : (remito.ProveedorOrigen != null ? remito.ProveedorOrigen.Cuil : empresa.Cuil),
+                                 TitularCartaPorteMail = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Mail : (remito.ProveedorOrigen != null ? remito.ProveedorOrigen.Mail : empresa.Mail),
+                                 TitularCartaPorte = muestra.CartaPorte != null ? muestra.CartaPorte.TitularCartaPorte.Descripcion : (remito.ProveedorOrigen != null ? remito.ProveedorOrigen.Descripcion : empresa.Descripcion),
 
-                                     RtteComercial = muestra.CartaPorte.RtteComercial.Descripcion,
-                                     RtteComercialCuit = muestra.CartaPorte.RtteComercial.Cuil,
-                                     RtteComercialId = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercial.Id : 0,
-                                     RtteComercialMail = muestra.CartaPorte.RtteComercial.Mail,
-                                     
-                                     Caratula = muestra.CartaPorte != null && muestra.CartaPorte.Caratula.HasValue ? muestra.CartaPorte.Caratula.Value : 0,
+                                 DestinatarioId = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Id : (remito != null ? empresa.Id : 0),
+                                 Destinatario = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Descripcion : empresa.Descripcion,
+                                 DestinatarioCodigoSap = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.CodigoSap : empresa.CodigoSap,
+                                 DestinatarioCuil = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Cuil : empresa.Cuil,
+                                 DestinatarioMail = muestra.CartaPorte != null ? muestra.CartaPorte.Destinatario.Mail : empresa.Mail,
 
-                                     CentroCodigoPostal = rec.Centro.CodigoPostal,
-                                     CentroCodigoCamara = conversionCentro.CodigoCamara,
-                                     CodigoTecnologia = muestra.CartaPorte != null && muestra.CartaPorte.Tecnologia != null ? muestra.CartaPorte.Tecnologia.Codigo : "00",
-                                     GrupoCodigoCamara = conversionGrupo.CodigoSegunCamara,
-                                     Sucursal = muestra.CartaPorte.Sucursal,
-                                     CPE = muestra.CartaPorte != null ? muestra.CartaPorte.Cpe == (bool?)true : false,
-                                     CTG = muestra.CartaPorte != null ? muestra.CartaPorte.CTG : "0",
-                                     CodEstab = muestra.CartaPorte != null ? muestra.CartaPorte.CodEstab : remito.CodEstab,
-                                     Direccion = rec.Centro.Direccion,
-                                     Procedencia = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.Descripcion : remito.Procedencia.Descripcion,
-                                     ProcedenciaCodigoSap = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.CodigoAfip : remito.Procedencia.CodigoAfip,
-                                     LocalidadCodigoSap = rec.Centro.Localidad.CodigoAfip,
-                                     PesoNetoFecha = muestra.FechaDescarga ?? muestra.Calado.FechaCreacion ?? rec.FechaInicio,
-                                     TipoVehiculo = rec.TipoVehiculo,
-                                     CantidadVehiculos = muestra.CartaPorte != null ?  muestra.CartaPorte.Vehiculos.Count : 0,
-                                     NumeroVehiculo = rec.Vehiculo != null ? rec.Vehiculo.NumeroVehiculo : 0,
-                                     CentroDestinoCodigoEstablecimiento = rec.Centro.CodigoEstablecimiento,
-                                     Entregador = muestra.CartaPorte.Entregador.RazonSocial,
-                                     Intermediario = muestra.CartaPorte != null ? muestra.CartaPorte.Intermediario != null ? muestra.CartaPorte.Intermediario.Descripcion : null : null,
-                                     IntermediarioCuit = muestra.CartaPorte != null ? muestra.CartaPorte.Intermediario != null ? muestra.CartaPorte.Intermediario.Cuil : null : null,
-                                     Cosecha = muestra.CartaPorte != null ? muestra.CartaPorte.Cosecha : remito.Cosecha,
-                                     ProcedenciaCodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.CodigoPostal : remito.Procedencia.CodigoPostal != null ? remito.Procedencia.CodigoPostal : 0 ,
-                                     ProcedenciaSubcodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.SubcodigoPostal : remito.Procedencia.SubcodigoPostal != null ? remito.Procedencia.SubcodigoPostal : 0,
-                                     EsPreLote = muestra.EsPreLote,
-                                     Caracteristicas =
+                                 CorredorCuil = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Cuil : null,
+                                 CorredorId = (muestra != null && muestra.CartaPorte != null && muestra.CartaPorte.CorredorVendedorSecundario != null) ? muestra.CartaPorte.CorredorVendedorSecundario.Id : 0,
+
+                                 RtteComercial = muestra.CartaPorte.RtteComercial.Descripcion,
+                                 RtteComercialCuit = muestra.CartaPorte.RtteComercial.Cuil,
+                                 RtteComercialId = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercial.Id : 0,
+                                 RtteComercialMail = muestra.CartaPorte.RtteComercial.Mail,
+
+                                 Caratula = muestra.CartaPorte != null && muestra.CartaPorte.Caratula.HasValue ? muestra.CartaPorte.Caratula.Value : 0,
+
+                                 CentroCodigoPostal = rec.Centro.CodigoPostal,
+                                 CentroCodigoCamara = conversionCentro.CodigoCamara,
+                                 CodigoTecnologia = muestra.CartaPorte != null && muestra.CartaPorte.Tecnologia != null ? muestra.CartaPorte.Tecnologia.Codigo : "00",
+                                 GrupoCodigoCamara = conversionGrupo.CodigoSegunCamara,
+                                 Sucursal = muestra.CartaPorte.Sucursal,
+                                 CPE = muestra.CartaPorte != null ? muestra.CartaPorte.Cpe == (bool?)true : false,
+                                 CTG = muestra.CartaPorte != null ? muestra.CartaPorte.CTG : "0",
+                                 CodEstab = muestra.CartaPorte != null ? muestra.CartaPorte.CodEstab : remito.CodEstab,
+                                 Direccion = rec.Centro.Direccion,
+                                 Procedencia = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.Descripcion : remito.Procedencia.Descripcion,
+                                 ProcedenciaCodigoSap = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.CodigoAfip : remito.Procedencia.CodigoAfip,
+                                 LocalidadCodigoSap = rec.Centro.Localidad.CodigoAfip,
+                                 PesoNetoFecha = muestra.FechaDescarga ?? muestra.Calado.FechaCreacion ?? rec.FechaInicio,
+                                 TipoVehiculo = rec.TipoVehiculo,
+                                 CantidadVehiculos = muestra.CartaPorte != null ? muestra.CartaPorte.Vehiculos.Count : 0,
+                                 NumeroVehiculo = rec.Vehiculo != null ? rec.Vehiculo.NumeroVehiculo : 0,
+                                 CentroDestinoCodigoEstablecimiento = rec.Centro.CodigoEstablecimiento,
+                                 Entregador = muestra.CartaPorte.Entregador.RazonSocial,
+                                 Intermediario = muestra.CartaPorte != null ? muestra.CartaPorte.Intermediario != null ? muestra.CartaPorte.Intermediario.Descripcion : null : null,
+                                 IntermediarioCuit = muestra.CartaPorte != null ? muestra.CartaPorte.Intermediario != null ? muestra.CartaPorte.Intermediario.Cuil : null : null,
+                                 Cosecha = muestra.CartaPorte != null ? muestra.CartaPorte.Cosecha : remito.Cosecha,
+                                 ProcedenciaCodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.CodigoPostal : remito.Procedencia.CodigoPostal != null ? remito.Procedencia.CodigoPostal : 0,
+                                 ProcedenciaSubcodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.SubcodigoPostal : remito.Procedencia.SubcodigoPostal != null ? remito.Procedencia.SubcodigoPostal : 0,
+                                 EsPreLote = muestra.EsPreLote,
+                                 Caracteristicas =
                                          muestra.CaracteristicasDeCalidad.Select(
                                              x =>
                                              new CaracteristicaDeCalidadDto
-                                                 {
-                                                     Descripcion = x.CaracteristicaDeCalidadMaestro.Descripcion,
-                                                     Ensayo = x.Ensayo,
-                                                     Id = x.Id,
-                                                     CodigoCamara = contexto.Set<ConversionCaracteristica>().Where(y => y.Camara.Id == muestra.Camara.Id && y.Caracteristica.Id == x.Id).Select(y => y.CodigoCamara).FirstOrDefault()
-                                                 }),
-                                     RtteComercialVentaSecundariaCuit = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria.Cuil : null,
-                                     RtteComercialVentaSecundaria = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria.Descripcion : null,
-                                     RtteComercialVentaSecundaria2Cuit = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria2.Cuil : null,
-                                     RtteComercialVentaSecundaria2 = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria2.Descripcion : null,
-                                     MercadoATerminoCuit = muestra.CartaPorte != null ? muestra.CartaPorte.AgenteCompras.Cuil : null,
-                                     MercadoATermino = muestra.CartaPorte != null ? muestra.CartaPorte.AgenteCompras.Descripcion : null,
-                                     CorredorVentaSecundariaCuit = muestra.CartaPorte != null ? muestra.CartaPorte.CorredorVendedorSecundario.Cuil : null,
-                                     CorredorVentaSecundaria = muestra.CartaPorte != null ? muestra.CartaPorte.CorredorVendedorSecundario.Descripcion : null,
-                                     RepresentanteRecibidorCuit = muestra.CartaPorte != null ? muestra.CartaPorte.RepresentanteRecibidor.Cuil : null,
-                                     RepresentanteRecibidor = muestra.CartaPorte != null ? muestra.CartaPorte.RepresentanteRecibidor.DescripcionCorta : null,
-                                     DestinoCuit = muestra.CartaPorte != null ? muestra.CartaPorte.CentroDestino.Cuit : null,
-                                     Destino = muestra.CartaPorte != null ? muestra.CartaPorte.CentroDestino.Descripcion : null
+                                             {
+                                                 Descripcion = x.CaracteristicaDeCalidadMaestro.Descripcion,
+                                                 Ensayo = x.Ensayo,
+                                                 Id = x.Id,
+                                                 CodigoCamara = contexto.Set<ConversionCaracteristica>().Where(y => y.Camara.Id == muestra.Camara.Id && y.Caracteristica.Id == x.Id).Select(y => y.CodigoCamara).FirstOrDefault()
+                                             }),
+                                 RtteComercialVentaSecundariaCuit = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria.Cuil : null,
+                                 RtteComercialVentaSecundaria = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria.Descripcion : null,
+                                 RtteComercialVentaSecundaria2Cuit = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria2.Cuil : null,
+                                 RtteComercialVentaSecundaria2 = muestra.CartaPorte != null ? muestra.CartaPorte.RtteComercialVentaSecundaria2.Descripcion : null,
+                                 MercadoATerminoCuit = muestra.CartaPorte != null ? muestra.CartaPorte.AgenteCompras.Cuil : null,
+                                 MercadoATermino = muestra.CartaPorte != null ? muestra.CartaPorte.AgenteCompras.Descripcion : null,
+                                 CorredorVentaSecundariaCuit = muestra.CartaPorte != null ? muestra.CartaPorte.CorredorVendedorSecundario.Cuil : null,
+                                 CorredorVentaSecundaria = muestra.CartaPorte != null ? muestra.CartaPorte.CorredorVendedorSecundario.Descripcion : null,
+                                 RepresentanteRecibidorCuit = muestra.CartaPorte != null ? muestra.CartaPorte.RepresentanteRecibidor.Cuil : null,
+                                 RepresentanteRecibidor = muestra.CartaPorte != null ? muestra.CartaPorte.RepresentanteRecibidor.DescripcionCorta : null,
+                                 DestinoCuit = muestra.CartaPorte != null ? muestra.CartaPorte.CentroDestino.Cuit : null,
+                                 Destino = muestra.CartaPorte != null ? muestra.CartaPorte.CentroDestino.Descripcion : null
                              });
 
-    
             return resultado.ToList();
         }
     }

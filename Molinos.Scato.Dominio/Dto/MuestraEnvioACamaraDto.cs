@@ -41,6 +41,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Actividad { get; set; }
 
         public string Material { get; set; }
+        public string MaterialCodigoSAP { get; set; }
         public string Vendedor { get; set; }
         public string Corredor { get; set; }
         public string Proveedor { get; set; }

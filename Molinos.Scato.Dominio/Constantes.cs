@@ -279,6 +279,11 @@ namespace Molinos.Scato.Dominio
             public const int IdSanLorenzo = 5;
         }
 
+        public struct CodigosSAP
+        {
+            public const string Girasol = "19908018";
+        }
+
         public struct PuestoComandoPuerto
         {
             public const int ValorPorDefectoCalle = 3;

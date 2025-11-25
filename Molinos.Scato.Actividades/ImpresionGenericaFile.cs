@@ -18,10 +18,13 @@ namespace Molinos.Scato.Actividades
     {
         [RequiredArgument]
         public InArgument<Guid> WorkflowId { get; set; }
+
         public InArgument<string> NumeroDeDocumentoDeIngreso { get; set; }
         public InArgument<int?> CantCopias { get; set; }
+
         [RequiredArgument]
         public InArgument<string> CodigoDeImpresion { get; set; }
+
         [RequiredArgument]
         public InArgument<int> PuestoDeTrabajoId { get; set; }
 
@@ -35,7 +38,7 @@ namespace Molinos.Scato.Actividades
             var resultado = new ResultadoCrear();
 
             var workflowId = WorkflowId.Get<Guid>(context);
-            var numeroDeDocumentoDeIngreso = NumeroDeDocumentoDeIngreso.Get<string>(context);            
+            var numeroDeDocumentoDeIngreso = NumeroDeDocumentoDeIngreso.Get<string>(context);
             var cantCopias = CantCopias.Get<int?>(context) ?? 1;
             var codigo = CodigoDeImpresion.Get<string>(context);
             var centroId = CentroId.Get<int>(context);
@@ -50,15 +53,15 @@ namespace Molinos.Scato.Actividades
                     WorkflowInstanceId = workflowId,
                     Fecha = DateTime.Now
                 };
-                resultado = servicio.Ejecutar(new CrearLogActividad { 
-                    Dto = logActividad 
+                resultado = servicio.Ejecutar(new CrearLogActividad
+                {
+                    Dto = logActividad
                 }) as ResultadoCrear;
             }
             catch (Exception)
             {
                 resultado.Errores.Add("", Textos.LogActividad_ErrorEnLaCarga);
             }
-
 
             try
             {
@@ -74,12 +77,13 @@ namespace Molinos.Scato.Actividades
                     var recorrido = repositorio.ObtenerRecorridoPorGuid(workflowId);
                     var cartaporteElectronica = repositorio.ObtenerCartaPorteElectronicaPorCTG(recorrido?.NumeroDocumentoIngreso);
 
-                    if(!(cartaporteElectronica is null))
+                    if (!(cartaporteElectronica is null))
                     {
                         ImprimirFileGenerico(servicio, cartaporteElectronica.Pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
                         LoggerHelper.WriteLine("Lentitud Impresora - ImpresionGenericaFile CPE Fin");
                     }
-                } else if (Enum.GetName(typeof(TipoImpresion), TipoImpresion.CartaPorteElectronicaDerivadoGranario) == documento.CodigoDocumentoImpresion)
+                }
+                else if (Enum.GetName(typeof(TipoImpresion), TipoImpresion.CartaPorteElectronicaDerivadoGranario) == documento.CodigoDocumentoImpresion)
                 {
                     var cartaporteElectronica = repositorio.ObtenerCartaPorteDerivadoGranarioPorGuid(workflowId);
                     if (cartaporteElectronica != null && !string.IsNullOrEmpty(cartaporteElectronica.RutaFotoCPEDG) && File.Exists(cartaporteElectronica.RutaFotoCPEDG))
@@ -101,14 +105,14 @@ namespace Molinos.Scato.Actividades
                         ImprimirFileGenerico(servicio, pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
                         LoggerHelper.WriteLine("Lentitud Impresora - ImpresionGenericaFile CPEDG Fin");
                     }
-                }              
+                }
             }
             catch (Exception e)
             {
                 resultado.Errores.Add("1", e.Message);
             }
 
-            if(resultado.HayErrores)
+            if (resultado.HayErrores)
             {
                 servicio.Ejecutar(new CrearControlRecorrido
                 {
@@ -137,18 +141,18 @@ namespace Molinos.Scato.Actividades
 
         private void ImprimirFileGenerico(IServicioComandos servicioComando, byte[] pdf, int cantidadCopias, string impresora, string codigoDocumentoImpresion, Guid worfklowInstance, ResultadoCrear resultado)
         {
-            if(!(pdf is null))
+            if (!(pdf is null))
             {
-                resultado = servicioComando.Ejecutar(new ImprimirFileGenerico 
-                { 
-                    CantidadCopias = cantidadCopias, 
-                    File = pdf, 
-                    Impresora = impresora ?? string.Empty, 
+                resultado = servicioComando.Ejecutar(new ImprimirFileGenerico
+                {
+                    CantidadCopias = cantidadCopias,
+                    File = pdf,
+                    Impresora = impresora ?? string.Empty,
                     CodigoDocumentoImpresion = codigoDocumentoImpresion
                 }) as ResultadoCrear;
             }
 
-            if(pdf is null && ConfigurationManager.AppSettings["LoguearRequestsSap"] == "1")
+            if (pdf is null && ConfigurationManager.AppSettings["LoguearRequestsSap"] == "1")
             {
                 servicioComando.Ejecutar(new CrearControlRecorrido
                 {

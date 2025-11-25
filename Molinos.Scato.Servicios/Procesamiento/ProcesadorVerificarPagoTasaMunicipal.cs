@@ -7,8 +7,6 @@ using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
-using Molinos.Scato.Servicios.GestionarCartasDePortePE;
-using Molinos.Scato.Servicios.Orquestador;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using System;
@@ -471,7 +469,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 case TipoValidacionPagoTasaMunicipal.Adeudado:
                     resultado.TipoAlerta = TipoAlerta.Error;
                     resultado.MensajeAlerta = resultado.TieneConfiguracionDeBloqueoDeIngreso && !esDemorado ? "TASA ADEUDADA - PARA AVANZAR DEBE DEMORAR EL CAMIÓN" : !resultado.TieneConfiguracionDeBloqueoDeIngreso ? "TASA ADEUDADA" : "TASA ADEUDADA";
-                    resultado.SeLevantaBarrera = resultado.TieneConfiguracionDeBloqueoDeIngreso ? false : true;
+                    resultado.SeLevantaBarrera = true;
                     resultado.EsPagoAbonado = false;
                     resultado.EjecutaWorkFlow = resultado.TieneConfiguracionDeBloqueoDeIngreso ? false : true;
                     break;
@@ -479,7 +477,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 case TipoValidacionPagoTasaMunicipal.DiferenciaDePago:
                     resultado.TipoAlerta = TipoAlerta.Exito;
                     resultado.MensajeAlerta = "EXISTEN DIFERENCIAS EN EL PAGO";
-                    resultado.SeLevantaBarrera = resultado.TieneConfiguracionDeBloqueoDeIngreso ? false : true;
+                    resultado.SeLevantaBarrera = true;
                     resultado.EsPagoAbonado = false;
                     resultado.EjecutaWorkFlow = false;
                     break;

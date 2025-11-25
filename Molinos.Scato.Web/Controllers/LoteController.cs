@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -690,7 +691,7 @@ namespace Molinos.Scato.Web.Controllers
                             Lacrada = "L",
                             FechaDescarga = muestra.PesoNetoFecha,
                             CodigoGrupo = Convert.ToInt32(muestra.GrupoCodigoCamara ?? "0"),
-                            ServicioLacrado = "S",
+                            ServicioLacrado = muestra.CentroId != Constantes.Centro.IdSanLorenzo && muestra.MaterialCodigoSAP == Constantes.CodigosSAP.Girasol ? "N" : "S",
                             Patente = muestra.Patente,
                             RtteComercial = muestra.TitularCartaPorte ?? "",
                             CartaDePorte = muestra.CPE ?? false ? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : Convert.ToInt64(muestra.NroCartaPorte),

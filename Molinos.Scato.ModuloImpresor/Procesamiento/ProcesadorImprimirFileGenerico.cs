@@ -1,6 +1,4 @@
-﻿using Molinos.Scato.Dominio;
-using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.ModuloImpresor.Impresion;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Ninject.Extensions.Logging;
 using PdfiumViewer;
 using System;
@@ -20,36 +18,30 @@ namespace Molinos.Scato.ModuloImpresor.Procesamiento
         {
             var resultado = new Resultado();
 
+            Log.Debug($"Iniciando impresión de {comando?.CodigoDocumentoImpresion} en la impresora: {comando.Impresora} - Copias: {comando.CantidadCopias}");
+            if (string.IsNullOrEmpty(comando.Impresora))
+            {
+                Log.Error("Error al imprimir: Impresora no encontrado");
+                return resultado;
+            }
+
+            if (comando.CantidadCopias <= 0)
+            {
+                Log.Error("Error al imprimir: Cantidad de copias no válida");
+                return resultado;
+            }
+
             try
             {
-                if (!string.IsNullOrEmpty(comando.Impresora))
-                {
-                    try
-                    {
-                        Log.Debug($"Iniciando impresión de {comando?.CodigoDocumentoImpresion} en la impresora: " +
-                                  comando.Impresora);
-
-                        PrintPDF(comando.Impresora, comando.File, comando.CantidadCopias);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e, "Error al imprimir " + comando?.CodigoDocumentoImpresion + " en la impresora: " + comando?.Impresora);
-                        resultado.Errores.Add("1", $"Error al imprimir el documento : {comando?.CodigoDocumentoImpresion} impresora : {comando?.Impresora}");
-                    }
-                }
-                else
-                {
-                    Log.Error("Error al imprimir en la impresora: codigo de impresion no encontrado");
-                }
+                PrintPDF(comando.Impresora, comando.File, comando.CantidadCopias);
             }
             catch (Exception e)
-            {                
+            {
                 Log.Error(e, "Error al imprimir " + comando?.CodigoDocumentoImpresion + " en la impresora: " + comando?.Impresora);
-                resultado.Errores.Add("2", "Ocurrio un error al imprimir el documento.");
+                resultado.Errores.Add("1", $"Error al imprimir el documento : {comando?.CodigoDocumentoImpresion} impresora : {comando?.Impresora}");
             }
 
-            Log.Debug($"Fin impresión de {comando?.CodigoDocumentoImpresion} en la impresora: " +
-                                  comando.Impresora + " hay error: " + resultado.HayErrores);
+            Log.Debug($"Fin impresión de {comando?.CodigoDocumentoImpresion} en la impresora: {comando.Impresora} - Hay error: {resultado.HayErrores}");
             return resultado;
         }
 
