@@ -54,7 +54,7 @@ namespace Molinos.Scato.Web.Helpers
                     "</span>"
                     )
                     , "editar-borrar-columna", false);
-            
+
         }
 
         public static WebGridColumn ColumnaEliminarModificarCalles(this WebGrid grid, HtmlHelper html, string controller, string style = "")
@@ -79,7 +79,7 @@ namespace Molinos.Scato.Web.Helpers
                 html.Raw(
                 "<span>" +
                 html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString() +
-                  html.BotonLink(Textos.Listar, "Listar", controller, new { f.id }, style + " ajax-ver-link", "icon-list", true).ToHtmlString() +              
+                  html.BotonLink(Textos.Listar, "Listar", controller, new { f.id }, style + " ajax-ver-link", "icon-list", true).ToHtmlString() +
                 "</span>"
                 )
                 , "editar-borrar-columna", false);
@@ -145,26 +145,27 @@ namespace Molinos.Scato.Web.Helpers
         public static WebGridColumn ColumnaEjecutar(this WebGrid grid, HtmlHelper html, string style = "")
         {
             var pendiente = PermisosScato.CamionesPendientesMesa.DisplayText();
-            return 
+            return
                 grid.Column(
-                    "ejecutar", 
-                    "", 
+                    "ejecutar",
+                    "",
                     f => html.Raw(
                             html.BotonLink(
-                                Textos.Ejecutar, 
-                                ((string)f.ProximaAccion).Contains(pendiente) ? "EjecutarPendiente" : "Ejecutar", 
-                                "ListaDeCamiones", 
-                                new 
-                                { 
-                                    Id = ((string)f.ProximaAccion).Contains(pendiente)? f.RecorridoId : f.id, proximaAccion = (string)f.ProximaAccion, 
-                                    fletemoa = (string)f.FleteMOA, 
-                                    tipoOrdenCargaNoGranos = f.TipoOrdenCargaNoGranos 
-                                }, 
-                                style + (f.Reingreso ? " rowReingresado" : "") + (f.Rechazado ? " rowRechazado " : "") + (f.LlegoEnHorario ? " rowPrioridadCircular " : ""), 
-                                "icon-play", 
+                                Textos.Ejecutar,
+                                ((string)f.ProximaAccion).Contains(pendiente) ? "EjecutarPendiente" : "Ejecutar",
+                                "ListaDeCamiones",
+                                new
+                                {
+                                    Id = ((string)f.ProximaAccion).Contains(pendiente) ? f.RecorridoId : f.id,
+                                    proximaAccion = (string)f.ProximaAccion,
+                                    fletemoa = (string)f.FleteMOA,
+                                    tipoOrdenCargaNoGranos = f.TipoOrdenCargaNoGranos
+                                },
+                                style + (f.Reingreso ? " rowReingresado" : "") + (f.Rechazado ? " rowRechazado " : "") + (f.LlegoEnHorario ? " rowPrioridadCircular " : ""),
+                                "icon-play",
                                 true)
-                            .ToHtmlString()), 
-                    "editar-borrar-columna", 
+                            .ToHtmlString()),
+                    "editar-borrar-columna",
                     false);
         }
 
@@ -173,7 +174,6 @@ namespace Molinos.Scato.Web.Helpers
             return grid.Column("editar", "", f => html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString()),
                                                         "editar-borrar-columna", false);
         }
-
 
         public static WebGridColumn ColumnaModificar(this WebGrid grid, HtmlHelper html, string controller, Func<dynamic, bool> condition, string style = "")
         {
@@ -189,30 +189,24 @@ namespace Molinos.Scato.Web.Helpers
             "editar-borrar-columna", false);
         }
 
-
-        //public static WebGridColumn ColumnaModificar(this WebGrid grid, HtmlHelper html, string controller, Func<dynamic, object> format = null, string style = "")
-        //{
-        //    Func<dynamic, object> formatdefault = (f => true ? html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, (style + " ajax-editar-link"), "icon-edit", true).ToHtmlString()) : null);
-
-        //    return grid.Column("editar", "", formatdefault,
-        //                                                "editar-borrar-columna", false);
-        //}
-
         public static WebGridColumn ColumnaModificarCarga(this WebGrid grid, HtmlHelper html, string action, string controller, string style = "")
         {
             return grid.Column("editar", "", f => html.Raw(html.BotonLink(Textos.Modificar, action, controller, new { f.id, f.numeroBalanza }, style, "icon-edit", true).ToHtmlString()),
                                                         "editar-borrar-columna", false);
         }
+
         public static WebGridColumn ColumnaModificarCarga(this WebGrid grid, HtmlHelper html, string action, string controller, string style = "", bool activo = true)
         {
             return grid.Column("editar", "", f => html.Raw((!f.EnviadoASap) ? html.BotonLink(Textos.Modificar, action, controller, new { f.id, f.numeroBalanza }, style, "icon-edit", true).ToHtmlString() : null),
                                                         "editar-borrar-columna", false);
         }
+
         public static WebGridColumn ColumnaModificarCargaInicioFin(this WebGrid grid, HtmlHelper html, string action, string controller, string style = "")
         {
             return grid.Column("editar", "", f => html.Raw(html.BotonLink(Textos.Modificar, action, controller, new { f.id, f.numeroBalanza, f.idFin }, style, "icon-edit", true).ToHtmlString()),
                                                         "editar-borrar-columna", false);
         }
+
         public static WebGridColumn ColumnaAsignarTicketMunicipal(this WebGrid grid, HtmlHelper html, string controller, string style = "")
         {
             return grid.Column("editar", "Imprime", f => html.Raw(
@@ -385,11 +379,11 @@ namespace Molinos.Scato.Web.Helpers
 
         public static WebGridColumn ColumnaModificarClienteProvisorio(this WebGrid grid, HtmlHelper html, string controller, string style = "")
         {
-            return  grid.Column("editar", "", f => f.EsClienteProvisorio ? 
-                                                html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString()) 
-                                                :  
+            return grid.Column("editar", "", f => f.EsClienteProvisorio ?
+                                                html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString())
+                                                :
                                                 html.Raw("<span disabled></span>"), "editar-borrar-columna", false);
-                                   
+
         }
 
         public static WebGridColumn ColumnaEliminarModificarHuellaDigital(this WebGrid grid, HtmlHelper html, string controller, string style = "")
@@ -397,33 +391,32 @@ namespace Molinos.Scato.Web.Helpers
             return grid.Column("EliminarModificar", "", f =>
 
                     html.Raw((f.Tipo == (int)TipoHuellaDigital.Recorrido) ?
-                    "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.No_EditableLargo + "\" >" + Textos.No_Editable + "</span>":
+                    "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.No_EditableLargo + "\" >" + Textos.No_Editable + "</span>" :
                     "<span>" +
                     html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString() +
-                    
+
                     "</span>"
                     )
                     , "editar-borrar-columna", false);
-
         }
 
         public static WebGridColumn ColumnaModificarExcepcionPagoTasaMunicipal(this WebGrid grid, HtmlHelper html, string controller, string style = "")
         {
             string modalModificar = $"{"#modal-editar"}";
             string modalBorrar = $"{"#modal-borrar"}";
-            return grid.Column("Modificar", "", f =>
 
-                    html.Raw((f.PermiteAcciones) ?
-                    "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.No_EditableLargo + "\" >" + Textos.No_Editable + "</span>" :
-                    "<span>" +
-                    html.BotonModalLink(Textos.Modificar, "Modificar", controller, new { f.id}, style + "abrirModal", "icon-edit", modalModificar, $"data-id = \"{f.id}\" data-patente = \"{f.patente}\" data-numeroDocumento = \"{f.numeroDocumentoIngreso}\" data-workflowCodigo = \"{f.workflowCodigo}\" data-workflowDescripcion = \"{f.workflowDescripcion}\"", true).ToHtmlString() +
-                    html.BotonModalLink(Textos.Modificar, "Borrar", controller, new { f.id }, style + "abrirModalBorrar", "icon-trash", modalBorrar, $"data-id = \"{f.id}\"", true).ToHtmlString() +
-
-                    "</span>"
-                    )
-                    , "editar-borrar-columna", false);
-
+            return 
+                grid.Column(
+                    "Modificar", 
+                    "", 
+                    f => html.Raw(
+                                "<span>" +
+                                html.BotonModalLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + "abrirModal", "icon-edit", modalModificar, $"data-id = \"{f.id}\" data-patente = \"{f.patente}\"", true).ToHtmlString() +
+                                html.BotonModalLink(Textos.Eliminar, "Borrar", controller, new { f.id }, style + "abrirModalBorrar", "icon-trash", modalBorrar, $"data-id = \"{f.id}\"", true).ToHtmlString() +
+                                "</span>"
+                         ), 
+                         "editar-borrar-columna", 
+                         false);
         }
-
     }
 }

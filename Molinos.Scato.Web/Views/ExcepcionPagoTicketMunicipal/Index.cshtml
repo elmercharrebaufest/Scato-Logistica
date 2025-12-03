@@ -2,11 +2,8 @@
 @using Molinos.Scato.Web.Helpers
 @model Molinos.Scato.Dominio.Dto.FiltroExcepcionPagoTasaMunicipal
 
-
 @{
     ViewBag.Title = Textos.AsignacionTicketMunicipal;
-    var workflows = (IEnumerable<SelectListItem>)ViewBag.Workflows;
-    var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
 }
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
@@ -15,6 +12,7 @@
     <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
     <script type="text/javascript" src="@Url.Script("~/scripts/excepcionTicketMunicipal.index.js")"></script>
 }
+
 <style>
     thead {
         color: #0055a5;
@@ -23,9 +21,10 @@
     #grid .editar-borrar-columna {
         text-align: center;
     }
+
     .container-fluid-small {
-     width:60%;
-     padding-left:20%
+        width: 60%;
+        padding-left: 20%
     }
 </style>
 
@@ -33,141 +32,98 @@
 
 <div class="container-fluid-small">
     <div class="row-fluid">
-        @using (Ajax.BeginForm("Crear", "ExcepcionPagoTicketMunicipalController",
-            new AjaxOptions
-            {
-                HttpMethod = "POST",
-                InsertionMode = InsertionMode.Replace,
-                UpdateTargetId = "gridContainer",
-                OnSuccess = "onFormSuccess",
-                OnFailure = "onFormError"
-            }, new
-            {
-                @class = "form-search",
-                data_mensaje_espera = Textos.CargaDeCupo,
-                id = "crear-form-comando"
-            }))
-        {
-            <div class="span4">
+        @using (
+            Ajax.BeginForm("Crear", 
+                           "ExcepcionPagoTicketMunicipal",
+                           new AjaxOptions
+                           {
+                               HttpMethod = "POST",
+                               InsertionMode = InsertionMode.Replace,
+                               UpdateTargetId = "gridContainer",
+                               OnSuccess = "onFormSuccess",
+                               OnFailure = "onFormError"
+                           }, 
+                           new
+                           {
+                               @class = "form-search",
+                               data_mensaje_espera = "Cargando...",
+                               id = "crear-form-comando"
+                           }))
+
+         {
+            <div class="span2">
                 <div class="control-group control-group-puesto-comando">
                     @Html.LabelFor(model => model.Patente, new { @class = "wsmall" })
                     <div class="controls">
-                        @Html.TextBoxFor(model => model.Patente, new { @class = "",
-                       oninput = "this.value = this.value.toUpperCase()",
-                       style = "text-transform: uppercase;"
-                   })
-                        @if (!ViewData.ModelState.IsValid)
+                        @Html.TextBoxFor(model => model.Patente, new
                         {
-                            @Html.ValidationMessageFor(model => model.Patente, "")
-                        }
-
+                            @class = "",
+                            oninput = "this.value = this.value.toUpperCase()",
+                            style = "text-transform: uppercase;"
+                        })
                     </div>
                 </div>
             </div>
-            <div class="span4">
-                <div class="control-group control-group-puesto-comando">
-                    @Html.LabelFor(model => model.WorkflowCodigo, new { @class = "wsmall" })
-                    <div class="controls">
-                        @Html.DropDownListFor(model => model.WorkflowCodigo, workflows, Textos.Default_Workflow, new { @class = "control" })
-                        @if (!ViewData.ModelState.IsValid)
-                        {
-                            @Html.ValidationMessageFor(model => model.WorkflowCodigo, "")
-                        }
-                            @Html.Hidden("WorkflowDescripcion", "")
-                        </div>
-                </div>
-            </div>
-            <div class="span2">
-                <div class="control-group control-group-puesto-comando">
-                    @Html.LabelFor(model => model.NumeroDocumentoIngreso, new { @class = "wsmall" })
-                    <div class="controls">
-                        @Html.TextBoxFor(model => model.NumeroDocumentoIngreso, new { @class = "" })
-                        @if (!ViewData.ModelState.IsValid)
-                        {
-                            @Html.ValidationMessageFor(model => model.NumeroDocumentoIngreso, "")
-                        }
-                        </div>
-                </div>
-            </div>
-
-           // @Html.ValidationSummary(true)
             <div class="span2">
                 <div class="cajaButtons">
                     <button id="btn-submit" type="submit" class="btn" style="margin-bottom: 4px">Crear</button>
                 </div>
             </div>
-        }
+         }
     </div>
 </div>
 
 <div class="container-fluid-small content grillaPad">
-    @using (Ajax.BeginForm("Filtrar", "ExcepcionPagoTicketMunicipal",
-    new AjaxOptions
+    @using (
+        Ajax.BeginForm(
+            "Filtrar", 
+            "ExcepcionPagoTicketMunicipal",
+            new AjaxOptions
+            {
+                HttpMethod = "POST",
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "gridContainer",
+                OnSuccess = "onFormEditarSuccess",
+                OnFailure = "onFormError"
+            }, 
+            new { id = "formModal" }))
     {
-    HttpMethod = "POST",
-    InsertionMode = InsertionMode.Replace,
-    UpdateTargetId = "gridContainer",
-    OnSuccess = "onFormEditarSuccess",
-    OnFailure = "onFormError"
-    }, new { id = "formModal" }))
-    {
-
-    <div class="accordion row-fluid">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <div class="checkbox pull-right topRight">
-                    <label>
-                        <input name="checkbox" id="modoDeRefresco" type="checkbox" value="1" @*checked="checked"*@ />@Textos.ListaDeCamiones_Refrescar
-                    </label>
+        <div class="accordion row-fluid">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <div class="checkbox pull-right topRight">
+                        <label>
+                            <input name="checkbox" id="modoDeRefresco" type="checkbox" value="1" @*checked="checked"*@ />@Textos.ListaDeCamiones_Refrescar
+                        </label>
+                    </div>
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <i class="icon-chevron-down"></i>
+                        @Textos.Filtrar
+                    </a>
                 </div>
-
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                    <i class="icon-chevron-down"></i>
-                    @Textos.Filtrar
-                </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse">
-                <div class="accordion-inner">
-                    <div class="span4">
-                        <div class="control-group control-group-puesto-comando">
-                            @Html.LabelFor(model => model.Patente, new { @class = "wsmall" })
-                            <div class="controls">
-                                @Html.TextBox("FiltroPatente", Model.Patente, new { @class = "patente-internacional uppercase" })
-                               
+                <div id="collapseOne" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="span9">
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.Patente, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.TextBox("FiltroPatente", Model.Patente, new { @class = "patente-internacional uppercase" })
+                                </div>
+                            </div>
+                            @Html.ValidationSummary(true)
+                        </div>
+                        
+                        <div class="span2">
+                            <div class="cajaButtons">
+                                <button id="btn-filtrar" type="submit" class="btn" style="margin-bottom: 4px">@Textos.Filtrar</button>
                             </div>
                         </div>
                     </div>
-                    <div class="span4">
-                        <div class="control-group control-group-puesto-comando">
-                            @Html.LabelFor(model => model.WorkflowCodigo, new { @class = "wsmall" })
-                            <div class="controls">
-                                @Html.DropDownList("filtroWorkflow", workflows, Textos.Default_Workflow, new { @class = "control" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="span2">
-                        <div class="control-group control-group-puesto-comando">
-                            @Html.LabelFor(model => model.NumeroDocumentoIngreso, new { @class = "wsmall" })
-                            <div class="controls">
-                                @Html.TextBox("FiltroNumeroDocumentoDeIngreso", Model.NumeroDocumentoIngreso, new { @class = "" })
-                            </div>
-                        </div>
-                    </div>
-                    @Html.ValidationSummary(true)
-                    <div class="span2">
-                        <div class="cajaButtons">
-                            <button id="btn-filtrar" type="submit" class="btn" style="margin-bottom: 4px">@Textos.Filtrar</button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
-    </div>
-
-
     }
-    <div id="gridContainer" style="clear:both;" data-error-material="@Textos.Error_DiferentesMateriales" data-error-sustentable="@Textos.Error_DiferentesTipos" data-grid-url="@Url.Action("Index", "ExcepcionPagoTicketMunicipal")">
+    <div id="gridContainer" style="clear:both;" data-grid-url="@Url.Action("Index", "ExcepcionPagoTicketMunicipal")">
     </div>
 </div>
 
@@ -188,7 +144,3 @@
         </div>
     </div>
 </div>
-
-
-
-

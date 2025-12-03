@@ -3158,9 +3158,6 @@ namespace Molinos.Scato.Servicios
         TipoVariedadDto ObtenerTipoVariedadPorCodigo(string codigo);
 
         [OperationContract]
-        bool TieneExcepcionDeTicketMunicipal(string patente, string numeroDeDocumento, string codigoWorkflow);
-        
-        [OperationContract]
         MonitoreoServicioExternoDto ObtenerMonitoreoServicioExternoPorJob(string nombre);
 
         [OperationContract]
@@ -3168,5 +3165,14 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract] 
         RegistroJobEjecucionDto ObtenerRegistroJobEjecucionPorProceso(string proceso);
+
+        [OperationContract]
+        bool EstaDemoradoPorTasaAdeudada(Guid instanceWorkflowId);
+	
+	[OperationContract]
+        ExceptuadosTicketMunicipalDto ObtenerExcepcionDeTicketMunicipal(string patente, Guid? workflowInstanceId);
+
+        [OperationContract]
+        bool TieneExcepcionDePagoDeTasaMunicipal(string patente, Guid? workflowInstanceId);
     }
 }

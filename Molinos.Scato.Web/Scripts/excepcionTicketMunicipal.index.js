@@ -1,9 +1,7 @@
 ﻿$(document).ready(function() {
-    $('.patente-internacional').mask('?*******');
-    
-    var loading = $('#gridContainer');
-    var height = $(window).height();
-    var width = $(document).width();
+    let loading = $('#gridContainer');
+    let height = $(window).height();
+    let width = $(document).width();
 
     $.blockUI.defaults.css = {
         left: width / 2 - (loading.width() / 2),
@@ -12,10 +10,7 @@
         border: '1px solid #B94A41',
         color: '#0055A5',
         padding: 10
-
-    };
-
-   
+    };   
    
     $("#gridContainer").block({
         overlayCSS: { backgroundColor: 'white' },
@@ -27,81 +22,51 @@
 
     CargarGrilla(function () { $("#gridContainer").unblock(); });
 
-
     var intervalo = Autorefresco(null);
     $('#modoDeRefresco').change(function () {
         CargarGrilla();
         intervalo = Autorefresco(intervalo);
     });
-
   
     $(document).on('click', '.abrirModal', function (e) {
         e.preventDefault();
         
-        var id = $(this).data('id');
-        var patente = $(this).data('patente');
-        var numeroDocumentoIngreso = $(this).data('numerodocumento');
-        var workflowCodigo = $(this).data('workflowcodigo');
-        var workflowDescripcion = $(this).data('workflowdescripcion');
-        $('#FiltroEditar_Id').val(id);
-        $('#FiltroEditar_PatenteActual').val(patente);
-        $('#FiltroEditar_WorkflowCodigoActual').val(workflowCodigo);
-        $('#FiltroEditar_NumeroDocumentoIngresoActual').val(numeroDocumentoIngreso);
-        $('#FiltroEditar_WorkflowDescripcionActual').val(workflowDescripcion);
+        $('#FiltroEditar_Id').val($(this).data('id'));
+        $('#FiltroEditar_PatenteActual').val($(this).data('patente'));
         $('#modalEditar').modal('show');
-
     });
-
 
     $(document).on('click', '.abrirModalBorrar', function (e) {
         e.preventDefault();
 
-        var id = $(this).data('id');
-        $('#IdBorrar').val(id);
+        $('#idBorrar').val($(this).data('id'));
         $('#modalBorrar').modal('show');
-
     });
-
-    $('#WorkflowCodigo').change(function () {
-        var texto = $('#WorkflowCodigo option:selected').text();
-        $('#WorkflowDescripcion').val(texto);
-    })
-
-    $('#FiltroEditar_WorkflowCodigoActual').change(function () {
-        var texto = $('#FiltroEditar_WorkflowCodigoActual option:selected').text();
-        $('#FiltroEditar_WorkflowDescripcionActual').val(texto);
-    })
-
-    $('#WorkflowModal').change(function () {
-        var texto = $('#WorkflowModal option:selected').text();
-        $('#WorkflowDescripcionModal').val(texto);
-    })
-
 });
 
 function Autorefresco(intervalo) {
     if ($("#modoDeRefresco").is(':checked')) {
         return setInterval(function () {
             CargarGrilla();
-        }, 5000);
+            $('#FiltroPatente').val(null);
+        }, 25000);
     } else {
-        if (intervalo != null) clearInterval(intervalo);
+        if (intervalo != null)
+            clearInterval(intervalo);
         return null;
     }
 }
 
 function CargarGrilla() {
-    var container = $('#gridContainer');
-    //Obtengo url de la grilla
-    var url = container.data().gridUrl;
-    //Verifico si el atributo refresco no está seteado
-    url = UpdateQueryString("refresco", $("#modoDeRefresco").is(':checked'), url);
+    let container = $('#gridContainer');
 
-    $.get(url, function (data) {
-        container.html(data);
-    });
+    $.get(
+        UpdateQueryString("refresco", $("#modoDeRefresco").is(':checked'), container.data().gridUrl),
+        function (data) {
+            container.html(data);
+        }
+    );
 }
-
 
 function onFormSuccess(result) {
     LimpiarFormulario();
@@ -118,28 +83,37 @@ function onFormEditarSuccess(result) {
 
 function onFormError(xhr, status, error) {
     let mensaje = "Error al procesar la solicitud.";
-    if (xhr && xhr.responseText) {
-        mensaje += "\n" + xhr.responseText;
+
+    if (xhr) {
+        if (xhr.responseJSON && xhr.responseJSON.mensaje) {
+            mensaje += "\n" + xhr.responseJSON.mensaje;
+        } else if (xhr.responseText) {
+            mensaje += "\n" + xhr.responseText;
+        } else if (xhr.statusText) {
+            mensaje += "\n" + xhr.status + " " + xhr.statusText;
+        }
     }
+
     LimpiarFormulario();
     MostrarAlertaError(mensaje);
 }
 
 function LimpiarFormulario() {
     $('#Patente').val(null);
-    $('#WorkflowCodigo').val(null);
-    $('#NumeroDocumentoIngreso').val(null);
 }
-function UpdateQueryString(key, value, url) {
-    if (!url) url = window.location.href;
-    var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
 
-    if (re.test(url)) {
+function UpdateQueryString(key, value, url) {
+    if (!url)
+        url = window.location.href;
+
+    let regex = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
+
+    if (regex.test(url)) {
         if (typeof value !== 'undefined' && value !== null)
-            return url.replace(re, '$1' + key + "=" + value + '$2$3');
+            return url.replace(regex, '$1' + key + "=" + value + '$2$3');
         else {
-            var hash = url.split('#');
-            url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+            let hash = url.split('#');
+            url = hash[0].replace(regex, '$1$3').replace(/(&|\?)$/, '');
             if (typeof hash[1] !== 'undefined' && hash[1] !== null)
                 url += '#' + hash[1];
             return url;
@@ -147,7 +121,7 @@ function UpdateQueryString(key, value, url) {
     }
     else {
         if (typeof value !== 'undefined' && value !== null) {
-            var separator = url.indexOf('?') !== -1 ? '&' : '?', hash2 = url.split('#');
+            let separator = url.indexOf('?') !== -1 ? '&' : '?', hash2 = url.split('#');
             url = hash2[0] + separator + key + '=' + value;
             if (typeof hash2[1] !== 'undefined' && hash2[1] !== null)
                 url += '#' + hash2[1];

@@ -944,7 +944,7 @@
     <Property Name="ParentElementName" Value="[dbo].[VisecStock]" />
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="FechaModificacion" />
- </Operation>
+  </Operation>
   <Operation Name="Rename Refactor" Key="2207877d-910d-48c0-b505-1895c01a2450" ChangeDateTime="09/02/2025 05:52:48">
     <Property Name="ElementName" Value="[dbo].[LogExceptuadosTicketMunicipal].[TipoDocumentoDeIngreo]" />
     <Property Name="ElementType" Value="SqlSimpleColumn" />
@@ -965,5 +965,19 @@
     <Property Name="ParentElementName" Value="[dbo].[ExceptuadosTicketMunicipal]" />
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="WorkflowDescripcion" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1a32e196-fe91-4e29-bdeb-ac595c9740d6" ChangeDateTime="11/13/2025 16:47:08">
+    <Property Name="ElementName" Value="[dbo].[ExceptuadosTicketMunicipal].[IdWork]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ExceptuadosTicketMunicipal]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IdWorkflow" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3f35ed41-e1ce-431e-81e6-561323e7f40e" ChangeDateTime="11/13/2025 16:52:05">
+    <Property Name="ElementName" Value="[dbo].[ExceptuadosTicketMunicipal].[IdWorkflow]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ExceptuadosTicketMunicipal]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Workflow_Id" />
   </Operation>
 </Operations>

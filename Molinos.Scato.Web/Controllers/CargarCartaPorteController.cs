@@ -408,23 +408,25 @@ namespace Molinos.Scato.Web.Controllers
                      SetearVista(workflowObj, datosUsuario.CentroId);
                      return View(orden);
                 }
-                   
+
                 if (ResultadoPagoTasaMunicipal != null)
                 {
-                    if(ResultadoPagoTasaMunicipal.IdPago != 0)
-                       ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                    if (ResultadoPagoTasaMunicipal.IdPago != 0)
+                        ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
 
-                     if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
-                     {
-                         ActualizarExcepcionPorPatenteYDocumento(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
-                         InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
-                     }
+                    if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                    {
+                        ActualizarExcepcionPorPatente(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
+                        InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
+                    }
                 }
 
                 if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
                 {
                     MarcarRecorridoComoContingencia(resultadoActividad.InstanciaWorkflowId);
                 }
+
+                CrearRecorridoTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
 
                 if (datosUsuario.CentroId != Constantes.Centro.IdSanLorenzo)
                 {

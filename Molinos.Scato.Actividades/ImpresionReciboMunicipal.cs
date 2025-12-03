@@ -1,26 +1,29 @@
-﻿using Molinos.Scato.Dominio;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Impl;
 using Ninject.Extensions.Logging;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Molinos.Scato.Actividades
 {
     public class ImpresionReciboMunicipal : CodeActivity<Resultado>
     {
-
         [RequiredArgument]
         public InArgument<int> CentroId { get; set; }
+
         [RequiredArgument]
         public InArgument<string> CodigoDeImpresion { get; set; }
+        
         [RequiredArgument]
         public InArgument<Guid> WorkflowId { get; set; }
+        
         [RequiredArgument]
         public InArgument<int> PuestoDeTrabajoId { get; set; }
 
@@ -33,19 +36,10 @@ namespace Molinos.Scato.Actividades
             var log = context.GetExtension<ILogger>();
             var resultado = new Resultado();
             var centroId = CentroId.Get<int>(context);
-            var codigo = CodigoDeImpresion.Get<string>(context);
             var workflowId = WorkflowId.Get<Guid>(context);
             var puestoDeTrabajoId = PuestoDeTrabajoId.Get<int>(context);
-            var cantCopias = CantCopias.Get<int?>(context) ?? 1;
 
             log.Info($"Iniciando actividad de impresión de recibo municipal para el workflow {workflowId} en el centro {centroId} y puesto de trabajo {puestoDeTrabajoId}.");
-            var logActividad = new LogActividadDto
-            {
-                Actividad = "Impresion Recibo Municipal",
-                ActividadXaml = "ImpresionReciboMunicipal",
-                WorkflowInstanceId = workflowId,
-                Fecha = DateTime.Now
-            };
 
             try
             {
@@ -63,8 +57,9 @@ namespace Molinos.Scato.Actividades
                 {
                     throw new Exception($"No se encontraron datos de recorrido para el workflow {parametros.WorkflowId}.");
                 }
+
                 var pagos = ObtenerPagosDigitales(repositorio, parametros.WorkflowId);
-                if(pagos != null && pagos.Count > 0)
+                if (pagos != null && pagos.Count > 0)
                 {
                     CrearLogActividad(servicio, parametros.WorkflowId, log, "Pago Tasa Municipal Digital");
                     log.Info($"Se encontraron {pagos.Count} pagos digitales asociados al recorrido.");
@@ -81,7 +76,7 @@ namespace Molinos.Scato.Actividades
                     log.Info("No es pago Digital, se imprime recibo normal.");
                     var ticket = ObtenerNumeroDeTicket(repositorio, aplicaPago, parametros, datosRecorrido, log);
                     log.Info($"Número de puesto de trabajo: {parametros.PuestoDeTrabajoId}, Número de ticket: {ticket}.");
-                    if(!repositorio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                    if (!repositorio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
                         ImprimirRecibo(servicio, documento, datosRecorrido, parametros, aplicaPago, ticket, log, repositorio);
                 }
                 CrearLogActividad(servicio, parametros.WorkflowId, log, "Impresion Recibo Municipal");
@@ -94,6 +89,7 @@ namespace Molinos.Scato.Actividades
             }
             return resultado;
         }
+
         private ParametrosDeImpresion ObtenerParametros(CodeActivityContext context)
         {
             var centroId = CentroId.Get<int>(context);
@@ -116,6 +112,7 @@ namespace Molinos.Scato.Actividades
                 CantCopias = cantCopias
             };
         }
+
         private void CrearLogActividad(IServicioComandos servicio, Guid workflowId, ILogger log, string actividad)
         {
             var logActividad = new LogActividadDto
@@ -125,11 +122,13 @@ namespace Molinos.Scato.Actividades
                 WorkflowInstanceId = workflowId,
                 Fecha = DateTime.Now
             };
+
             var resultado = servicio.Ejecutar(new CrearLogActividad { Dto = logActividad });
+            
             if (!resultado.HayErrores)
                 log.Debug("Log de actividad creado correctamente.");
-
         }
+
         private DocumentoDeImpresionPorCentroDto ObtenerDocumentoDeImpresion(IServicioRepositorio repo, ParametrosDeImpresion parametros, ILogger log)
         {
             var doc = repo.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(parametros.Codigo, parametros.CentroId, parametros.PuestoDeTrabajoId);
@@ -137,67 +136,100 @@ namespace Molinos.Scato.Actividades
             log.Debug($"Documento obtenido: {doc.Id} - {doc.DocumentoDeImpresionDescripcion}");
             return doc;
         }
+
         private RecorridoDto ObtenerYValidarRecorrido(IServicioRepositorio repo, Guid workflowId, ILogger log)
         {
             var recorrido = repo.ObtenerRecorridoPorGuid(workflowId);
+            
             if (recorrido?.Workflow == null || string.IsNullOrEmpty(recorrido.Patente) || recorrido.Id <= 0)
                 throw new Exception("Recorrido inválido.");
+            
             if (recorrido.Material == null)
                 throw new Exception("Material inválido en el recorrido.");
+            
             log.Info($"Recorrido OK: Id {recorrido.Id}, Patente {recorrido.Patente}");
+            
             return recorrido;
         }
-        private bool DeterminarSiAplicaPago(IServicioRepositorio repo, RecorridoDto recorrido, ParametrosDeImpresion parametros)
+
+        /// <summary>
+        /// Valida si aplica el pago de la tasa municipal o si está exceptuado según si es ACA o si ya existe un pago realizado 
+        /// durante el día o si cargaron una excepción.
+        /// </summary>
+        /// <returns>true si aplica pago, false si está exceptuado de pagar</returns>
+        private bool DeterminarSiAplicaPago(IServicioRepositorio servicioRepositorio, RecorridoDto recorrido, ParametrosDeImpresion parametros)
         {
-            var cartaPorte = repo.ObtenerCartaDePortePorrecorrido(recorrido.Id);
+            bool aplicaPago = !this.DeterminarSiEsACA(servicioRepositorio, recorrido);
+
+            if (aplicaPago)
+                aplicaPago = !this.DeterminarSiExistePagoRealizadoEnElDia(servicioRepositorio, recorrido);
+
+            if (aplicaPago)
+            {
+                parametros.TieneExcepcion = this.DeterminarSiTieneExcepcionDePagoDeTasaMunicipal(servicioRepositorio, recorrido);
+                aplicaPago = !parametros.TieneExcepcion;
+            }
+
+            return aplicaPago;
+        }
+
+        private bool DeterminarSiEsACA(IServicioRepositorio servicioRepositorio, RecorridoDto recorrido)
+        {
+            var cartaPorte = servicioRepositorio.ObtenerCartaDePortePorrecorrido(recorrido.Id);
             bool esIngresoImportacion = recorrido.Workflow.Codigo == Constantes.WorkFlow.workflowIngresoImportacion;
             bool esTitularACA = cartaPorte?.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA;
             bool esEstablecimientoACA = cartaPorte?.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA;
-        
-            if (esIngresoImportacion && esTitularACA && esEstablecimientoACA)
-            {
-                return false;
-            }
-            var config = repo.ObtenerConfiguracionGeneral(
+
+            return esIngresoImportacion && esTitularACA && esEstablecimientoACA;
+        }
+
+        private bool DeterminarSiExistePagoRealizadoEnElDia(IServicioRepositorio servicioRepositorio, RecorridoDto recorrido)
+        {
+            var config = servicioRepositorio.ObtenerConfiguracionGeneral(
                 Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad,
                 Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado
             );
-            var materialesConPago = config?.Valor?.Split(',').Select(x => x.Trim()).ToList() ?? new List<string>();
-            if (materialesConPago.Contains(recorrido.Material.CodigoSAP) && repo.ExistePagoRealizado(recorrido.Patente))
-            {
-                return false;
-            }
 
-            if (repo.TieneExcepcionDeTicketMunicipal(recorrido.Patente, recorrido.NumeroDocumentoIngreso, recorrido.Workflow.Codigo))
-            {
-                parametros.TieneExcepcion = true;
-                return false;
-            }
-            return true;
+            var materialesConPago = config?.Valor?.Split(',').Select(x => x.Trim()).ToList() ?? new List<string>();
+
+            return
+                materialesConPago.Contains(recorrido.Material.CodigoSAP) &&
+                servicioRepositorio.ExistePagoRealizado(recorrido.Patente);
         }
+
+        private bool DeterminarSiTieneExcepcionDePagoDeTasaMunicipal(IServicioRepositorio servicioRepositorio, RecorridoDto recorrido)
+        {
+            return servicioRepositorio.TieneExcepcionDePagoDeTasaMunicipal(recorrido.Patente, recorrido.InstanciaWorkflow);
+        }
+
         private string ObtenerNumeroDeTicket(IServicioRepositorio repo, bool aplicaPago, ParametrosDeImpresion parametros, ImpresionReciboMunicipalRecorridoDto recorrido, ILogger log)
         {
-
             log.Debug($"Obteniendo número de ticket para la Patente: {recorrido.Patente}, aplica pago: {aplicaPago}.");
-            if (!aplicaPago) return parametros.TieneExcepcion ? "Tasa abonada por excepción" : "Tasa abonada dentro del día";
+            if (!aplicaPago) 
+                return parametros.TieneExcepcion ? "Tasa abonada por excepción" : "Tasa abonada dentro del día";
 
-            var numGarita = repo.ObtenerNumGaritaEntrada(parametros.PuestoDeTrabajoId)?.PadLeft(4, '0') ?? throw new Exception($"Garita no encontrada para puesto {parametros.PuestoDeTrabajoId}");
+            var numGarita = 
+                repo.ObtenerNumGaritaEntrada(parametros.PuestoDeTrabajoId)?.PadLeft(4, '0') ?? 
+                throw new Exception($"Garita no encontrada para puesto {parametros.PuestoDeTrabajoId}");
 
             var ticket = repo.ObtenerNumeroDeTicketGenerado(parametros.PuestoDeTrabajoId, recorrido.PagoConMercadoPago).ToString().PadLeft(7, '0');
-                return $"1{numGarita.Substring(1)}-{$"{ticket}"}";
-  
+            return $"1{numGarita.Substring(1)}-{$"{ticket}"}";
         }
 
         private string ObtenerNumeroDeTicketDigital(IServicioRepositorio repo, bool aplicaPago, ParametrosDeImpresion parametros, ImpresionReciboMunicipalRecorridoDto recorrido, ILogger log, int idPago)
         {
             log.Debug($"Obteniendo número de ticket para la Patente: {recorrido.Patente}, aplica pago: {aplicaPago}.");
-            if (!aplicaPago) return parametros.TieneExcepcion ? "Tasa abonada por excepción" : "Tasa abonada dentro del día";
+            if (!aplicaPago) 
+                return parametros.TieneExcepcion ? "Tasa abonada por excepción" : "Tasa abonada dentro del día";
 
-            var numGarita = repo.ObtenerNumGaritaEntrada(parametros.PuestoDeTrabajoId)?.PadLeft(4, '0') ?? throw new Exception($"Garita no encontrada para puesto {parametros.PuestoDeTrabajoId}");
+            var numGarita = 
+                repo.ObtenerNumGaritaEntrada(parametros.PuestoDeTrabajoId)?.PadLeft(4, '0') ?? 
+                throw new Exception($"Garita no encontrada para puesto {parametros.PuestoDeTrabajoId}");
 
             var ticket = idPago.ToString().PadLeft(7, '0');
             return $"2{numGarita.Substring(1)}-{$"{ticket}"}";
         }
+
         private void ImprimirRecibo(IServicioComandos servicio, DocumentoDeImpresionPorCentroDto documento, ImpresionReciboMunicipalRecorridoDto recorrido, ParametrosDeImpresion parametros, bool aplicaPago, string ticket, ILogger log, IServicioRepositorio repositorio)
         {
             var dto = new ImpReciboMunicipalDto
@@ -235,10 +267,11 @@ namespace Molinos.Scato.Actividades
                 NroDocumentoLegal = ObtenerDocumentoLegal(recorrido)
             };
             log.Debug($"Imprimiendo {parametros.CantCopias} copia(s).");
-            var resultado = servicio.Ejecutar(new ImprimirReciboMunicipal { Dto = dto, CantidadCopias = parametros.CantCopias, IdPagoDigital = idPago});
+            var resultado = servicio.Ejecutar(new ImprimirReciboMunicipal { Dto = dto, CantidadCopias = parametros.CantCopias, IdPagoDigital = idPago });
             if (resultado.HayErrores)
                 throw new Exception("Error al imprimir recibo: " + string.Join(", ", resultado.Errores.Select(e => $"{e.Key}: {e.Value}")));
         }
+
         private string ObtenerDocumentoLegal(ImpresionReciboMunicipalRecorridoDto recorrido)
         {
             if (recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.Remito)
@@ -252,6 +285,7 @@ namespace Molinos.Scato.Actividades
             }
             return "";
         }
+
         private void FinalizarActividad(IServicioComandos servicio, Guid workflowId, int puestoId, ILogger log)
         {
             var resultado = servicio.Ejecutar(new FinDeActividad
@@ -263,6 +297,7 @@ namespace Molinos.Scato.Actividades
             if (resultado.HayErrores)
                 throw new Exception("Error al finalizar actividad: " + string.Join(", ", resultado.Errores.Select(e => $"{e.Key}: {e.Value}")));
         }
+
         private List<PagosTasaMunicipal> ObtenerPagosDigitales(IServicioRepositorio repo, Guid workflowId)
         {
             var pagos = repo.ObtenerPagosDigitalesPorInstanceId(workflowId).ToList();
@@ -277,8 +312,5 @@ namespace Molinos.Scato.Actividades
         public int PuestoDeTrabajoId { get; set; }
         public int CantCopias { get; set; }
         public bool TieneExcepcion { get; set; }
-     }
+    }
 }
-
-
-    

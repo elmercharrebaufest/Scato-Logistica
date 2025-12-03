@@ -39,6 +39,7 @@
 @Html.Hidden("RechazoCamion", Url.Action("Rechazar"))
 @Html.Hidden("Index", Url.Action("Index", "ListaDeCamiones"))
 
+
 @if (!string.IsNullOrEmpty(ViewBag.MotivoDemora))
 {
     <div class="alert alert-warning" style="width:95%; margin:15px 0;">
@@ -53,6 +54,7 @@
             @Html.ValidationSummary(true)
         </div>
     }
+    @Html.HiddenFor(x => x.InstanciaWorkflow)
     @Html.Hidden("cartaPorteId", Model.Id)
     @Html.Partial("~/Views/CargarCartaPorte/_Orden.cshtml", Model)
 }

@@ -95,6 +95,7 @@
     <Compile Include="ActualizarMuestraEnvioACamara.cs" />
     <Compile Include="ActualizarCupo.cs" />
     <Compile Include="ActualizarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="ValidarRecorridoDemoradoTasaAdeuda.cs" />
     <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="InformarOrdenInsumosOperaciones.cs" />
     <Compile Include="Interfaces\ICargarCartaPorteByPassService.cs" />

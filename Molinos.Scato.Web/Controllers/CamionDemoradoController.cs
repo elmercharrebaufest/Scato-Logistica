@@ -95,6 +95,7 @@ namespace Molinos.Scato.Web.Controllers
             documentoDeIngresoAux.TipoDeWorkflow = recorrido.Workflow.TipoDeWorkflow;
             documentoDeIngresoAux.LeerCPDeFoto = centro.LeerCPDeFoto;
             documentoDeIngresoAux.TomarFotoEnMesa = centro.TomarFotoEnMesa;
+            documentoDeIngresoAux.InstanciaWorkflow = recorrido.InstanciaWorkflow;
             var documentoDeIngreso = documentoDeIngresoAux;
             var foto = servicio.ObtenerFotoCPDeCartaDePortePorrecorrido(recorrido.InstanciaWorkflow);
             if (foto.Fotos.Any())
@@ -115,15 +116,14 @@ namespace Molinos.Scato.Web.Controllers
         [HttpPost]
         [DatosUsuario]
         [ViewBagToResponseHeader]
-        public ActionResult Index(string workflow, CartaPorteDto orden, DatosUsuario datosUsuario, int cartaPorteId, Guid id)
+        public ActionResult Index(string workflow, CartaPorteDto orden, DatosUsuario datosUsuario, int cartaPorteId)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var vehiculos = orden.Vehiculos;
-            orden.InstanciaWorkflow = id;
             orden.Id = cartaPorteId;
             ModelState.Remove("Id");
             
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.Patente, null, orden.NroCartaPorte, orden.TipoVehiculo, orden.CodEstab, false , orden.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.Patente, null, orden.NroCartaPorte, orden.TipoVehiculo, orden.CodEstab, false , orden.MaterialId, orden.InstanciaWorkflow);
 
             if (ModelState.IsValid && vehiculos != null && vehiculos.Count() != 0)
             {
@@ -154,35 +154,37 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 var resultado = servicioComandos.Ejecutar(new ModificarCartaPorte { Orden = orden, NombreUsuario = datosUsuario.NombreUsuario });
 
-                var recorrido = servicio.ObtenerDatosDeInstanciaPorGuid(id);
+                var recorrido = servicio.ObtenerDatosDeInstanciaPorGuid(orden.InstanciaWorkflow);
                 var demoraService = actividadFactory.CrearServicio(recorrido.WorkflowDefinicionId);
                 var controlRecorrido = new ControlRecorridoDto
                 {
                     Actividad = Textos.CamionDemorado,
                     ActividadXaml = "CamionDemorado",
-                    WorkflowInstanceId = id,
+                    WorkflowInstanceId = orden.InstanciaWorkflow,
                     PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
                     NombreUsuario = datosUsuario.NombreUsuario
                 };
-                var resultadoService = demoraService.CamionDemorado(controlRecorrido, id, false);
+                var resultadoService = demoraService.CamionDemorado(controlRecorrido, orden.InstanciaWorkflow, false);
                 if (!resultado.HayErrores && !resultadoService.HayErrores)
                 {
                     if (ResultadoPagoTasaMunicipal != null)
                     {
                         if (ResultadoPagoTasaMunicipal.IdPago != 0)
-                            ActualizarTasaMunicipal(id, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                            ActualizarTasaMunicipal(orden.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
 
                         if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
                         {
-                            InformarPagoTasaMunicipal(id);
-                            ActualizarExcepcionPorPatenteYDocumento(id, ResultadoPagoTasaMunicipal.IdExcepcion);
+                            InformarPagoTasaMunicipal(orden.InstanciaWorkflow);
+                            ActualizarExcepcionPorPatente(orden.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
                         }
                     }
                         
                     if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
                     {
-                        MarcarRecorridoComoContingencia(id);
+                        MarcarRecorridoComoContingencia(orden.InstanciaWorkflow);
                     }
+
+                    CrearRecorridoTasaMunicipal(orden.InstanciaWorkflow, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -212,7 +214,7 @@ namespace Molinos.Scato.Web.Controllers
             log.Debug($"Camion no granos demorado {orden.PatenteCamion}, con orden nro {orden.NumeroOrden} ({WorkflowId})");
             var workflowObjt = servicio.ObtenerWorkflowPorCodigo(workflow);
 
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, false, orden.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, false, orden.MaterialId, WorkflowId);
             Validar(orden);
             if (!ModelState.IsValid)
             {
@@ -336,7 +338,7 @@ namespace Molinos.Scato.Web.Controllers
 
                         if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
                         {
-                            ActualizarExcepcionPorPatenteYDocumento(WorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
+                            ActualizarExcepcionPorPatente(WorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
                             InformarPagoTasaMunicipal(WorkflowId);
                         }
                     }
@@ -345,6 +347,8 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         MarcarRecorridoComoContingencia(WorkflowId);
                     }
+
+                    CrearRecorridoTasaMunicipal(WorkflowId, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -385,7 +389,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var recorrido = servicio.ObtenerRecorrido(model.RecorridoId);
 
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, model.PatenteCamion, model.PatenteAcoplado, null, model.TipoVehiculo, string.Empty, false, model.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, model.PatenteCamion, model.PatenteAcoplado, null, model.TipoVehiculo, string.Empty, false, model.MaterialId, recorrido.InstanciaWorkflow);
 
             if (ModelState.IsValid)
             {
@@ -455,7 +459,7 @@ namespace Molinos.Scato.Web.Controllers
                         if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
                         {
                             InformarPagoTasaMunicipal(recorrido.InstanciaWorkflow);
-                            ActualizarExcepcionPorPatenteYDocumento(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
+                            ActualizarExcepcionPorPatente(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
                         }
                     }
 
@@ -463,6 +467,8 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         MarcarRecorridoComoContingencia(recorrido.InstanciaWorkflow);
                     }
+
+                    CrearRecorridoTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -479,7 +485,7 @@ namespace Molinos.Scato.Web.Controllers
             var recorrido = servicio.ObtenerRecorrido(orden.RecorridoId);
             var workflowObje = recorrido.Workflow;
 
-            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, false, orden.MaterialId);
+            ConsultarPagoTasaMunicipal(datosUsuario.CentroId, orden.PatenteCamion, orden.PatenteAcoplado, null, orden.TipoVehiculo, string.Empty, false, orden.MaterialId, recorrido.InstanciaWorkflow);
 
             var material = servicio.ObtenerMaterial(orden.MaterialId);
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
@@ -634,8 +640,7 @@ namespace Molinos.Scato.Web.Controllers
                         if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
                         {
                             InformarPagoTasaMunicipal(recorrido.InstanciaWorkflow);
-                            ActualizarExcepcionPorPatenteYDocumento(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
-
+                            ActualizarExcepcionPorPatente(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
                         }
                     }
                     if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
@@ -643,6 +648,7 @@ namespace Molinos.Scato.Web.Controllers
                         MarcarRecorridoComoContingencia(recorrido.InstanciaWorkflow);
                     }
 
+                    CrearRecorridoTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
 

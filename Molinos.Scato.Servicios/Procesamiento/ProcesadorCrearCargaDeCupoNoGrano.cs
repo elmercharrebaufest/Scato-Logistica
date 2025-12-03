@@ -77,6 +77,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.tipoAlerta = resultadoConsultarTasa.TipoAlerta;
                 resultado.ErroresOExcepcionesConsultaTasaMunicipal = resultadoConsultarTasa.HayErrores || !resultadoConsultarTasa.EjecutaWorkFlow;
                 resultado.IdExcepcionPagoMunicipal = resultadoConsultarTasa.IdExcepcion;
+                resultado.TieneExcepcionTasaMunicipal = resultadoConsultarTasa.TieneExcepcion;
+                resultado.MotivoExcepcionTasaMunicipal = resultadoConsultarTasa.MotivoExcepcion;
 
                 resultado.Id = nuevoCupo.Id;
                 if (comando.Dto.TipoOrdenCargaNoGranos.HasValue && 

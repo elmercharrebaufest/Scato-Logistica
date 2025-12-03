@@ -731,9 +731,8 @@
             {
                 <div class="botones-carta-porte centered">
                     <button id="aceptar" class="btn btn-primary aceptar-carga-porte" type="button">@Textos.Aceptar</button>
-                    @if (aceptaPendiente)
+                    @if (aceptaPendiente && workflow != Molinos.Scato.Dominio.Constantes.WorkFlow.workflowRedespacho)
                     {
-
                         <button id="pendiente" class="btn btn-warning" type="button">@Textos.Demorar</button>
                     }
                     @if (aceptaRechazar)

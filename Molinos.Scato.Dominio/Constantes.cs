@@ -406,6 +406,15 @@ namespace Molinos.Scato.Dominio
             {
                 public const string CodigoDiferenciaDePago = "DP";
             }
+
+            public static class MotivosDeExcepciones
+            {
+                public const string ExcepcionPorMaterialYCentro = "EXCEPCIÓN POR MATERIAL Y CENTRO";
+                public const string ExcepcionPorPatente = "EXCEPCIÓN POR PATENTE";
+                public const string ExcepcionPorPatenteYDocumento = "EXCEPCIÓN POR PATENTE Y DOCUMENTO";
+                public const string ExcepcionPorSojaImpo = "EXCEPCIÓN POR SOJA IMPO";
+                public const string ExcepcionPorPago24Hrs = "EXCEPCIÓN POR PAGO 24 HRS";
+            }
         }
     }
 }

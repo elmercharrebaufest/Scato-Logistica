@@ -8200,5 +8200,47 @@ namespace Molinos.Scato.Test.Servicios
             // Assert
             Assert.IsTrue(resultado);
         }
+
+        [Test]
+        public void EstaDemoradoPorTasaAdeudada_CuandoRecorridoEstaDemoradoSinPago_RetornaTrue()
+        {
+            var instanceId = Guid.NewGuid();
+            repositorioMock.Setup(r => r.Existe(It.IsAny<Expression<Func<Recorrido, bool>>>()))
+                .Returns(true);
+            repositorioMock.Setup(r => r.Existe(It.IsAny<Expression<Func<PagosTasaMunicipal, bool>>>()))
+                .Returns(false);
+
+            var resultado = target.EstaDemoradoPorTasaAdeudada(instanceId);
+         
+            Assert.IsTrue(resultado);
+        }
+
+        [Test]
+        public void EstaDemoradoPorTasaAdeudada_CuandoRecorridoEstaDemoradoConPago_RetornaFalse()
+        {
+            var instanceId = Guid.NewGuid();
+            repositorioMock.Setup(r => r.Existe(It.IsAny<Expression<Func<Recorrido, bool>>>()))
+                .Returns(true);
+            repositorioMock.Setup(r => r.Existe(It.IsAny<Expression<Func<PagosTasaMunicipal, bool>>>()))
+                .Returns(true);
+            
+            var resultado = target.EstaDemoradoPorTasaAdeudada(instanceId);
+
+            Assert.IsFalse(resultado);
+        }
+
+        [Test]
+        public void EstaDemoradoPorTasaAdeudada_CuandoRecorridoNoEstaDemorado_RetornaFalse()
+        {
+            var instanceId = Guid.NewGuid();
+            repositorioMock.Setup(r => r.Existe(It.IsAny<Expression<Func<Recorrido, bool>>>()))
+                .Returns(false);
+            repositorioMock.Setup(r => r.Existe(It.IsAny<Expression<Func<PagosTasaMunicipal, bool>>>()))
+                .Returns(false);
+
+            var resultado = target.EstaDemoradoPorTasaAdeudada(instanceId);
+
+            Assert.IsFalse(resultado);
+        }
     }
 }

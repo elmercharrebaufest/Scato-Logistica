@@ -29,7 +29,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Management.Instrumentation;
 using System.Printing;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
@@ -11553,11 +11552,6 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<RegistroJobEjecucion, RegistroJobEjecucionDto>(x => x.NombreProceso == proceso);
         }
 
-        public bool TieneExcepcionDeTicketMunicipal(string patente, string numeroDeDocumento, string codigoWorkflow)
-        {
-            return repositorio.Existe<ExceptuadosTicketMunicipal>(x => x.Patente == patente && x.NumeroDocumentoIngreso == numeroDeDocumento && x.WorkflowCodigo == codigoWorkflow);
-        }
-        
         public MonitoreoServicioExternoDto ObtenerMonitoreoServicioExternoPorJob(string job)
         {
             return Obtener<MonitoreoServicioExterno, MonitoreoServicioExternoDto>(x => x.KeyJob == job);
@@ -11611,6 +11605,49 @@ namespace Molinos.Scato.Servicios.Impl
         public TipoVariedadDto ObtenerTipoVariedadPorCodigo(string codigo)
         {
             return Obtener<TipoVariedad, TipoVariedadDto>(x => x.Codigo == codigo);
+        }
+
+        public bool EstaDemoradoPorTasaAdeudada(Guid instanciaWorkflow)
+        {
+            var estaDemorado = repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == instanciaWorkflow && x.VehiculoDemorado && !x.IngresoContingenciaPagoMunicipal && x.RecorridoTasaMunicipal != null && !x.RecorridoTasaMunicipal.Exceptuado);
+            var tienePago = repositorio.Existe<PagosTasaMunicipal>(x => x.IdInstance == instanciaWorkflow);
+            return estaDemorado && !tienePago;
+        }
+	
+	public ExceptuadosTicketMunicipalDto ObtenerExcepcionDeTicketMunicipal(string patente, Guid? workflowInstanceId)
+        {
+            ExceptuadosTicketMunicipalDto excepcion = null;
+            if (workflowInstanceId.HasValue && workflowInstanceId != Guid.Empty)
+            {
+                excepcion = Obtener<ExceptuadosTicketMunicipal, ExceptuadosTicketMunicipalDto>(x => x.WorkflowInstanceId == workflowInstanceId.Value);
+                if (excepcion == null)
+                    excepcion = Obtener<ExceptuadosTicketMunicipal, ExceptuadosTicketMunicipalDto>(x => !x.WorkflowInstanceId.HasValue && x.Patente == patente);
+            }
+            else
+            {
+                excepcion = Obtener<ExceptuadosTicketMunicipal, ExceptuadosTicketMunicipalDto>(x => !x.WorkflowInstanceId.HasValue && x.Patente == patente);
+            }
+            return excepcion;
+        }
+
+        public bool TieneExcepcionDePagoDeTasaMunicipal(string patente, Guid? workflowInstanceId)
+        {
+            // Tendría que buscar una excepción cargada:
+            // - activa para la patente del recorrido sin workflowInstanceId asignado o
+            // - que sea la del workflow actual asignada
+
+            var tieneExcepcion = false;
+            if (workflowInstanceId.HasValue && workflowInstanceId != Guid.Empty)
+            {
+                tieneExcepcion = repositorio.Existe<ExceptuadosTicketMunicipal>(x => x.WorkflowInstanceId == workflowInstanceId.Value);
+                if (!tieneExcepcion)
+                    tieneExcepcion = repositorio.Existe<ExceptuadosTicketMunicipal>(x => !x.WorkflowInstanceId.HasValue && x.Patente == patente);
+            } 
+            else
+            {
+                tieneExcepcion = repositorio.Existe<ExceptuadosTicketMunicipal>(x => !x.WorkflowInstanceId.HasValue && x.Patente == patente);
+            }
+            return tieneExcepcion;
         }
     }
 }

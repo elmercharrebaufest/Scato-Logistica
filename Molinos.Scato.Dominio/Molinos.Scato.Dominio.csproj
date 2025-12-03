@@ -93,6 +93,7 @@
     <Compile Include="Comandos\ConsultarCategoriaVehiculoGranos.cs" />
     <Compile Include="Comandos\Consultas\ConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarExcepcionPagoTicketMunicipal.cs" />
+    <Compile Include="Comandos\CrearModificarRecorridoTasaMunicipal.cs" />
     <Compile Include="Comandos\DatosExcepcionTasaMunicipal.cs" />
     <Compile Include="Comandos\DatosTasaMunicipal.cs" />
     <Compile Include="Comandos\EliminarExcepcionPagoTasaMunicipal.cs" />
@@ -1150,6 +1151,7 @@
     <Compile Include="Dto\LogExceptuadosTicketMunicipalDto.cs" />
     <Compile Include="Dto\PanelServerAppPoolDto.cs" />
     <Compile Include="Dto\MuestraEnvioACamaraYRecorridoDto.cs" />
+    <Compile Include="Entidades\RecorridoTasaMunicipal.cs" />
     <Compile Include="Entidades\EstadoPagoTasaMunicipal.cs" />
     <Compile Include="Entidades\ExceptuadosTicketMunicipal.cs" />
     <Compile Include="Entidades\MonitoreoServicioExterno.cs" />

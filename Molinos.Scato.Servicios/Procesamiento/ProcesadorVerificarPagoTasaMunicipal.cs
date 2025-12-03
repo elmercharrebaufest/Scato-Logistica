@@ -47,18 +47,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 int.TryParse(configuracion?.Valor, out int numeroDiasParaInicioBusqueda);
                 Log.Info($"Número de días para inicio de búsqueda: {numeroDiasParaInicioBusqueda}");
 
-
-                if (TieneExcepciones(comando, resultado))
-                {
-                    return resultado;
-                }
-
-                if (TienePago24Hrs(comando, resultado))
-                {
-                    return resultado;
-                }
-
-                if (FueValidadoAlIngreso(comando, resultado))
+                if (TieneExcepciones(comando, resultado) ||
+                    TienePago24Hrs(comando, resultado) ||
+                    FueValidadoAlIngreso(comando, resultado))
                 {
                     return resultado;
                 }
@@ -140,38 +131,37 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private bool TieneExcepciones(VerificarPagoTasaMunicipal comando, ResultadoConsultarPagoTasaMunicipal resultado)
         {
             var datosExcepcion = Conversor.Convertir<VerificarPagoTasaMunicipal, DatosExcepcionTasaMunicipal>(comando);
-            bool tieneExcepcion = EjecutarValidacionesDeExcepciones(datosExcepcion,resultado);
+            bool tieneExcepcion = EjecutarValidacionesDeExcepciones(datosExcepcion, resultado);
             if (tieneExcepcion)
             {
                 Log.Info($"Excepción encontrada para el comando: {JsonConvert.SerializeObject(comando)}");
                 ConstruirResultado(resultado, TipoValidacionPagoTasaMunicipal.Abonado, comando.Demorado);
                 // Si existe una excepción, se libera el pago asociado al InstanceId
-                var pago = Repositorio.Obtener<PagosTasaMunicipal>(p => p.IdInstance == datosExcepcion.InstanceId);
-                if (pago != null)
-                {
-                    pago.Disponible = true;
-                    pago.IdInstance = null;
-                    Repositorio.GuardarCambios();
-                }
 
-                var recorrido = Repositorio.Obtener<Recorrido>(p => p.InstanciaWorkflow == datosExcepcion.InstanceId);
-                if (recorrido != null)
-                {
-                    recorrido.PagoTasaMunicipalInformado = true;
-                    Repositorio.GuardarCambios();
-                }
+                var excepcion = _servicioRepositorio.ObtenerExcepcionDeTicketMunicipal(datosExcepcion.Patente, datosExcepcion.InstanceId);
+                if (excepcion != null)
+                    resultado.IdExcepcion = excepcion.Id;
 
-                if(datosExcepcion.InstanceId != Guid.Empty)
+                if (datosExcepcion.InstanceId.HasValue && datosExcepcion.InstanceId.Value != Guid.Empty)
                 {
-                    var excepcion = Repositorio.Obtener<ExceptuadosTicketMunicipal>(r => r.Patente == datosExcepcion.Patente && r.Activo);
-                    if (excepcion != null)
+                    var pago = Repositorio.Obtener<PagosTasaMunicipal>(p => p.IdInstance == datosExcepcion.InstanceId);
+                    if (pago != null)
                     {
-                        resultado.IdExcepcion = excepcion.Id;
-                        excepcion.Activo = false;
-                        Repositorio.GuardarCambios();
+                        pago.Disponible = true;
+                        pago.IdInstance = null;
                     }
+
+                    var recorrido = Repositorio.Obtener<Recorrido>(p => p.InstanciaWorkflow == datosExcepcion.InstanceId);
+                    if (recorrido != null)
+                        recorrido.PagoTasaMunicipalInformado = true;
+
+                    if (excepcion != null)
+                        excepcion.WorkflowInstanceId = datosExcepcion.InstanceId;
+
+                    Repositorio.GuardarCambios();
                 }
             }
+
             return tieneExcepcion;
         }
 
@@ -189,6 +179,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     recorrido.PagoTasaMunicipalInformado = true;
                     Repositorio.GuardarCambios();
                 }
+                resultado.TieneExcepcion = tienePago24Hrs;
+                resultado.MotivoExcepcion = Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPago24Hrs;
             }
             return tienePago24Hrs;
         }
@@ -316,21 +308,25 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public bool EjecutarValidacionesDeExcepciones(DatosExcepcionTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado)
         {
-            bool tieneExcepcion = false;
+            var reglas = new Dictionary<string, Func<bool>>()
+            {
+                { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorMaterialYCentro , () => ValidarExcepcionMaterialPorCentro(datos) },
+                { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatente , () => ValidarExcepcionPorPatente(datos) },
+                { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatenteYDocumento , () => ValidarExcepcionPorPatenteYDocumento(datos) },
+                { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorSojaImpo , () => ValidarExcepcionEsSojaImpo(datos) }
+            };
 
-            tieneExcepcion = ValidarExcepcionMaterialPorCentro(datos);
-            if (tieneExcepcion) return tieneExcepcion;
 
-            tieneExcepcion = ValidarExcepcionPorPatente(datos, resultado);
-            if (tieneExcepcion) return tieneExcepcion;
-
-            tieneExcepcion = ValidarExcpecionPorPatenteYDocumento(datos);
-            if (tieneExcepcion) return tieneExcepcion;
-
-            tieneExcepcion = ValidarExcepcionEsSojaImpo(datos);
-            if (tieneExcepcion) return tieneExcepcion;
-
-            return tieneExcepcion;
+            foreach (var regla in reglas)
+            {
+                if (regla.Value())
+                {
+                    resultado.TieneExcepcion = true;
+                    resultado.MotivoExcepcion = regla.Key;
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool ValidarExcepcionMaterialPorCentro(DatosExcepcionTasaMunicipal datos)
@@ -347,37 +343,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
            return tieneExcepcion;
         }
 
-        private bool ValidarExcepcionPorPatente(DatosExcepcionTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado)
+        private bool ValidarExcepcionPorPatente(DatosExcepcionTasaMunicipal datos)
         {
-            bool tieneExcepcion = false;
-            if (datos.EsValidacionAlIngreso)
-                tieneExcepcion = Repositorio.Existe<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.Activo);
-            else
-            {
-                tieneExcepcion = Repositorio.Existe<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente  && r.Activo);
-                if (tieneExcepcion)
-                {
-                    if (datos.InstanceId != Guid.Empty)
-                    {
-                        var excepcion = Repositorio.Obtener<ExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.Activo);
-                        if (excepcion != null)
-                        {
-                            resultado.IdExcepcion = excepcion.Id;
-                            excepcion.PermiteAcciones = false;
-                            Repositorio.GuardarCambios();
-                        }
-                    }
-                }
-            }
-            return tieneExcepcion;
+            return this._servicioRepositorio.TieneExcepcionDePagoDeTasaMunicipal(datos.Patente, datos.InstanceId);
         }
 
-        private bool ValidarExcpecionPorPatenteYDocumento(DatosExcepcionTasaMunicipal datos)
+        private bool ValidarExcepcionPorPatenteYDocumento(DatosExcepcionTasaMunicipal datos)
         {
             bool tieneExcepcion = false;
+
             if (datos.EsValidacionAlIngreso)
             {
-               tieneExcepcion = Repositorio.Existe<LogExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.Material.Id == datos.MaterialId && r.PagaTicketMunicipal == false && r.NumeroDocumentoIngreso == datos.Ctg);
+                tieneExcepcion = Repositorio.Existe<LogExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.Material.Id == datos.MaterialId && r.PagaTicketMunicipal == false && r.NumeroDocumentoIngreso == datos.Ctg);
             }
             else
             {
@@ -385,20 +362,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 tieneExcepcion = Repositorio.Existe<LogExceptuadosTicketMunicipal>(x => x.WorkflowInstanceId == datos.InstanceId && x.PagaTicketMunicipal == false);
                 Log.Info($"Tiene excepcion de recorrido: {tieneExcepcion} para InstanceId: {datos.InstanceId}");
             }
+
             return tieneExcepcion;
         }
 
         private bool ValidarExcepcionEsSojaImpo(DatosExcepcionTasaMunicipal datos)
         {
             bool tieneExcepcion = false;
+            
             if (!string.IsNullOrWhiteSpace(datos.Ctg) && !string.IsNullOrWhiteSpace(datos.CodigoEstablecimiento))
-            {
                 tieneExcepcion = ValidarSojaImpoPorCartaPorteElectronica(datos);
-            }
             else if (datos.InstanceId.HasValue && datos.InstanceId.Value != Guid.Empty)
-            {
                 tieneExcepcion = ValidarSojaImpoConRecorrido(datos);
-            }
+            
             return tieneExcepcion;
         }
 
@@ -429,19 +405,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private bool ValidarEsSojaImpo(string titularCartaPorteCodigoSap, string codEstab)
         {
-            if (!string.IsNullOrEmpty(titularCartaPorteCodigoSap)
-                           && (titularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR
-                               || (titularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA
-                                   && !string.IsNullOrEmpty(codEstab) && codEstab == Constantes.ValoresPorDefecto.EstablecimientoACA)))
-
-                return true;
-            else
-                return false;
+            return 
+                !string.IsNullOrEmpty(titularCartaPorteCodigoSap) &&
+                (titularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR ||
+                 (titularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA &&
+                  !string.IsNullOrEmpty(codEstab) && codEstab == Constantes.ValoresPorDefecto.EstablecimientoACA));
         }
 
         private bool ValidarExcepcionPago24Hrs(DatosExcepcionTasaMunicipal datos)
         {
             bool tienePago24Hrs = false;
+            
             if (datos.MaterialId.HasValue && datos.MaterialId.Value > 0)
             {
                 var material = _servicioRepositorio.ObtenerMaterialPorId(datos.MaterialId.Value);
@@ -450,13 +424,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     tienePago24Hrs = _servicioRepositorio.ExistePagoRealizadoPorListaMaterial(material.CodigoSAP, datos.Patente);
                 }
             }
+
             return tienePago24Hrs;
         }
 
-        private void ConstruirResultado(ResultadoConsultarPagoTasaMunicipal resultado, TipoValidacionPagoTasaMunicipal CondicionPago, bool esDemorado)
-        {
-       
-            switch (CondicionPago)
+        private void ConstruirResultado(ResultadoConsultarPagoTasaMunicipal resultado, TipoValidacionPagoTasaMunicipal condicionPago, bool esDemorado)
+        {       
+            switch (condicionPago)
             {
                 case TipoValidacionPagoTasaMunicipal.Abonado:
                     resultado.TipoAlerta = TipoAlerta.Exito;
@@ -533,7 +507,5 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Repositorio.GuardarCambios();
             }
         }
-    
-
     }
 }

@@ -15,7 +15,7 @@
     <AssemblyName>Molinos.Scato.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>
     </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>
@@ -34,7 +34,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>false</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -2512,11 +2513,10 @@
     <Content Include="Views\ExcepcionPagoTicketMunicipal\_CrearModificar.cshtml" />
     <Content Include="Views\ExcepcionPagoTicketMunicipal\Index.cshtml" />
     <Content Include="Views\ExcepcionPagoTicketMunicipal\Listar.cshtml" />
-    <Content Include="Views\ExcepcionPagoTicketMunicipal\Modificar.cshtml" />
     <Content Include="Views\ExcepcionPagoTicketMunicipal\_Borrar.cshtml" />
     <Content Include="Views\PanelMonitoreoServicioExterno\Index.cshtml" />
     <Content Include="Views\PanelMonitoreoServicioExterno\_EstadoServiciosExternos.cshtml" />
-   	<Content Include="Views\PanelDeControlPagoMunicipal\_CrearModificar.cshtml" />
+    <Content Include="Views\PanelDeControlPagoMunicipal\_CrearModificar.cshtml" />
     <Content Include="Views\PanelDeControlPagoMunicipal\Index.cshtml" />
     <Content Include="Views\PanelDeControlPagoMunicipal\Listar.cshtml" />
     <Content Include="Views\PanelDeControlPagoMunicipal\Modificar.cshtml" />

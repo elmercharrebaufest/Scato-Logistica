@@ -1,72 +1,51 @@
 ﻿@model Molinos.Scato.Dominio.Dto.FiltroExcepcionPagoTasaMunicipal
 @using Molinos.Scato.Dominio.Recursos
 @{
-    ViewBag.Title = Textos.AsignacionTicketMunicipal;
-    var workflows = (IEnumerable<SelectListItem>)ViewBag.Workflows;
-    var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
+    ViewBag.Title = "Editar excepción";
 }
 
 <div class="modal-header">
-    <h4 class="modal-title-editar">Editar excepcion</h4>
     <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title-editar">Editar excepción</h4>
 </div>
 
 <div class="modal-body">
-    @using (Ajax.BeginForm("Modificar", "ExcepcionPagoTicketMunicipal", 
-        new AjaxOptions
-        {
-            HttpMethod = "POST",
-            InsertionMode = InsertionMode.Replace,
-            UpdateTargetId = "gridContainer",
-            OnSuccess = "onFormEditarSuccess",
-            OnFailure = "onFormError"
-        }, new { id = "formModal" }))
+    @using (
+        Ajax.BeginForm(
+            "Modificar",
+            "ExcepcionPagoTicketMunicipal",
+            new AjaxOptions
+            {
+                HttpMethod = "POST",
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "gridContainer",
+                OnSuccess = "onFormEditarSuccess",
+                OnFailure = "onFormError"
+            }, new { id = "formModal" }))
     {
         <div class="container-fluid">
             <div class="row-fluid">
 
-                <div class="span4">
+                <div class="span6">
                     <div class="control-group control-group-puesto-comando">
                         @Html.LabelFor(model => model.FiltroEditar.PatenteActual, new { @class = "wsmall" })
                         <div class="controls">
-                            @Html.TextBoxFor(model => model.FiltroEditar.PatenteActual, new { @class = "",
-                           oninput = "this.value = this.value.toUpperCase()",
-                           style = "text-transform: uppercase;"
-                       })
+                            @Html.TextBoxFor(
+                                model => model.FiltroEditar.PatenteActual,
+                                new
+                                {
+                                    @class = "",
+                                    oninput = "this.value = this.value.toUpperCase()",
+                                    style = "text-transform: uppercase;"
+                                })
+                            
                             @if (!ViewData.ModelState.IsValid)
                             {
                                 @Html.ValidationMessageFor(model => model.FiltroEditar.PatenteActual, "")
                             }
-
                         </div>
                     </div>
                 </div>
-                <div class="span4">
-                    <div class="control-group control-group-puesto-comando">
-                        @Html.LabelFor(model => model.FiltroEditar.WorkflowCodigoActual, new { @class = "wsmall" })
-                        <div class="controls">
-                            @Html.DropDownListFor(model => model.FiltroEditar.WorkflowCodigoActual, workflows, Textos.Default_Workflow, new { @class = "control" })
-                            @if (!ViewData.ModelState.IsValid)
-                            {
-                                @Html.ValidationMessageFor(model => model.FiltroEditar.WorkflowCodigoActual, "")
-                            }
-                            @Html.HiddenFor(model => model.FiltroEditar.WorkflowDescripcionActual)
-                        </div>
-                    </div>
-                </div>
-                <div class="span4">
-                    <div class="control-group control-group-puesto-comando">
-                        @Html.LabelFor(model => model.FiltroEditar.NumeroDocumentoIngresoActual, new { @class = "wsmall" })
-                        <div class="controls">
-                            @Html.TextBoxFor(model => model.FiltroEditar.NumeroDocumentoIngresoActual, new { @class = "" })
-                            @if (!ViewData.ModelState.IsValid)
-                            {
-                                @Html.ValidationMessageFor(model => model.FiltroEditar.NumeroDocumentoIngresoActual, "")
-                            }
-                        </div>
-                    </div>
-                </div>
-
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(model => model.FiltroEditar.Id)
             </div>

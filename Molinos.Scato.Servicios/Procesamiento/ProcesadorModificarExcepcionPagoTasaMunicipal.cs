@@ -1,9 +1,9 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using System;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
-using NPOI.Util;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -16,20 +16,27 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void ModificarEntidad(ModificarExcepcionPagoTasaMunicipal comando)
         {
-            var excepcion = comando.Id > 0 ? Repositorio.Obtener<ExceptuadosTicketMunicipal>(comando.Id) : Repositorio.Obtener<ExceptuadosTicketMunicipal>(e => e.Patente == comando.PatenteActual && e.NumeroDocumentoIngreso == comando.NumeroDocumentoIngresoActual && e.WorkflowCodigo == comando.WorkflowModal);
-            excepcion.Patente = comando.PatenteActual;
-            excepcion.NumeroDocumentoIngreso = comando.NumeroDocumentoIngresoActual;
-            excepcion.WorkflowCodigo = comando.WorkflowModal;
-            excepcion.WorkflowDescripcion = comando.WorkflowDescripcionModal;
-            excepcion.PermiteAcciones = comando.TieneRecorrido;
+            var excepcion = Repositorio.Obtener<ExceptuadosTicketMunicipal>(comando.Id);
+
+            if (!string.IsNullOrWhiteSpace(comando.Patente) && excepcion.Patente != comando.Patente)
+                excepcion.Patente = comando.Patente;
+
+            if (comando.WorkflowInstanceId.HasValue &&
+                comando.WorkflowInstanceId.Value != Guid.Empty &&
+                comando.WorkflowInstanceId != excepcion.WorkflowInstanceId)
+            {
+                excepcion.WorkflowInstanceId = comando.WorkflowInstanceId.Value;
+            }
         }
 
         protected override void Validar(ModificarExcepcionPagoTasaMunicipal comando, Resultado resultado)
         {
             if (!Repositorio.Existe<ExceptuadosTicketMunicipal>(e => e.Id == comando.Id))
-            {
-                resultado.Error("Descripcion", "Excepcion no encontrada");
-            }
+                resultado.Error("ExcepcionNoEncontrada", "Excepción no encontrada");
+            else if(Repositorio.Existe<ExceptuadosTicketMunicipal>(e => e.Id == comando.Id && e.WorkflowInstanceId.HasValue))
+                resultado.Error("ExcepcionAsociadaARecorrido", "No se puede modificar una excepción con asociada a un recorrido");
+            else if (Repositorio.Existe<ExceptuadosTicketMunicipal>(e => e.Patente == comando.Patente && !e.WorkflowInstanceId.HasValue && e.Id != comando.Id))
+                resultado.Error("Patente", "Ya existe una excepción para la patente indicada");
         }
     }
 }

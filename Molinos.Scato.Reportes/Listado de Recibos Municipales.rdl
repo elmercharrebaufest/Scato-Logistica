@@ -6,10 +6,10 @@
       <am:Version>17.5.33502.453</am:Version>
     </am:CreatedBy>
     <am:UpdatedBy>
-      <am:Name>MSRB</am:Name>
-      <am:Version>15.0.20283.0</am:Version>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.36603.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-08-05T14:00:00.1827100Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-12-02T19:49:08.1680993Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -60,7 +60,10 @@ declare @FechaHastap datetime
 declare @ReciboDesdep int 
 declare @ReciboHastap int
 declare @TasaAbonadaEnElDia varchar(30) 
+declare @TasaAbonadaPorExcepcion varchar(30)
+
 SET @TasaAbonadaEnElDia = 'Tasa abonada dentro del día' 
+SET @TasaAbonadaPorExcepcion = 'Tasa abonada por excepción'
 
 set @CentroIdp = @CentroId
 set @Materialp =@Material
@@ -77,7 +80,7 @@ set @ReciboHastap = @ReciboHasta
                    ELSE TRY_CAST(TicketNro AS INT)
                END
     FROM ImpReciboMunicipal WITH(NOLOCK)
-    WHERE TicketNro &lt;&gt; @TasaAbonadaEnElDia
+    WHERE TicketNro &lt;&gt; @TasaAbonadaEnElDia AND TicketNro &lt;&gt; @TasaAbonadaPorExcepcion
 ),
 BaseRecibos AS (
     SELECT

@@ -98,5 +98,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual TipoVariedad TipoVariedad { get; set; }
         public virtual bool IngresoContingenciaPagoMunicipal { get; set; }
         public virtual bool PagoTasaMunicipalInformado { get; set; }
+
+        public virtual RecorridoTasaMunicipal RecorridoTasaMunicipal { get; set; }
     }
 }

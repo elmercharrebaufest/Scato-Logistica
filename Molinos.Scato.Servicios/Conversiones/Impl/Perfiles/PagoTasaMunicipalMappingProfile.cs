@@ -35,8 +35,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                     return TipoMaterial.Granos;
                 
                 else 
-                    return TipoMaterial.NoGranos;
-                
+                    return TipoMaterial.NoGranos;                
             }
         }
        
@@ -51,7 +50,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 
         private bool EsValidacionAlIngreso(VerificarPagoTasaMunicipal comando)
         {
-            return !comando.InstanceId.HasValue ?  true : false;
+            return !comando.InstanceId.HasValue;
         }
     }
 }

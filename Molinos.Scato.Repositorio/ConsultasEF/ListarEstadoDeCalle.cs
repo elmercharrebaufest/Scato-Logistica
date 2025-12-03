@@ -37,8 +37,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 : (Guid?)null)
                         let tienePago = contexto.Set<PagosTasaMunicipal>().Any(p => p.IdInstance.HasValue && p.IdInstance == instanceId)
                         let pagoTasaMunicipalAdeudado = cpr.Recorrido != null
-                            ? !cpr.Recorrido.PagoTasaMunicipalInformado && !cpr.Recorrido.IngresoContingenciaPagoMunicipal
-                            : (cpr.CargaDeCupo.Recorrido != null && !cpr.CargaDeCupo.Recorrido.PagoTasaMunicipalInformado && !cpr.CargaDeCupo.Recorrido.IngresoContingenciaPagoMunicipal)
+                            ? !cpr.Recorrido.IngresoContingenciaPagoMunicipal
+                            : (cpr.CargaDeCupo.Recorrido != null && !cpr.CargaDeCupo.Recorrido.IngresoContingenciaPagoMunicipal)
+                        let fueExceptuado = cpr.Recorrido != null
+                            ? (cpr.Recorrido.RecorridoTasaMunicipal != null && cpr.Recorrido.RecorridoTasaMunicipal.Exceptuado)
+                            : (cpr.CargaDeCupo.Recorrido != null 
+                                ? (cpr.CargaDeCupo.Recorrido.RecorridoTasaMunicipal != null 
+                                    && cpr.CargaDeCupo.Recorrido.RecorridoTasaMunicipal.Exceptuado) 
+                                : false)
                         select new CallePorRecorridoListadoCamionesDto
                         {
                             Id = cpr.Id,
@@ -79,7 +85,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 && cpr.Recorrido.TipoVariedad != null 
                                 && cpr.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR,
                             IdRecorrido = cpr.Recorrido != null ? cpr.Recorrido.Id : (int?)null,
-                            PagoTasaMunicipalAdeudado = pagoTasaMunicipalAdeudado && !tienePago,
+                            PagoTasaMunicipalAdeudado = pagoTasaMunicipalAdeudado && !tienePago && !fueExceptuado,
                             InstanceId = instanceId ?? Guid.Empty
                         };
 

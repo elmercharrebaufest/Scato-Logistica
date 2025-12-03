@@ -7,56 +7,34 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorCrearExcepcionPagoTasaMunicipal : ProcesadorComando<CrearExcepcionPagoTasaMunicipal>
+    public class ProcesadorCrearExcepcionPagoTasaMunicipal : ProcesadorCrear<CrearExcepcionPagoTasaMunicipal, ExceptuadosTicketMunicipal>
     {
-        public ProcesadorCrearExcepcionPagoTasaMunicipal(IRepositorio repositorio, IConversor conversor, ILogger log) : base(repositorio, conversor, log)
+        public ProcesadorCrearExcepcionPagoTasaMunicipal(IRepositorio repositorio, IConversor conversor, ILogger log) 
+            : base(repositorio, conversor, log)
         {
         }
 
-        public override Resultado Ejecutar(CrearExcepcionPagoTasaMunicipal comando)
+        protected override ExceptuadosTicketMunicipal CrearEntidad(CrearExcepcionPagoTasaMunicipal comando)
         {
-            var resultado = new ResultadoCrear();
-
-            try
+            return new ExceptuadosTicketMunicipal
             {
-                var esValido = Validar(comando, resultado);
-                if (esValido)
-                {
-                    Repositorio.Agregar(new ExceptuadosTicketMunicipal
-                    {
-                        Patente = comando.ExceptuadosTicketMunicipalDto.Patente,
-                        NumeroDocumentoIngreso = comando.ExceptuadosTicketMunicipalDto.NumeroDocumentoIngreso,
-                        FechaCreacionExcepcion = DateTime.Now,
-                        WorkflowCodigo = comando.ExceptuadosTicketMunicipalDto.WorkflowCodigo,
-                        WorkflowDescripcion = comando.ExceptuadosTicketMunicipalDto.WorkflowDescripcion,
-                        Activo = true,
-                        PermiteAcciones = true
-                    });
-                    Repositorio.GuardarCambios();
-                }
-
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Error al agregar excepcion de pago municipal");
-                resultado.Error("", e.Message);
-            }
-            return resultado;
+                Patente = comando.ExceptuadosTicketMunicipalDto.Patente,
+                NombreUsuario = comando.ExceptuadosTicketMunicipalDto.NombreUsuario,
+                FechaCreacionExcepcion = DateTime.Now,
+                WorkflowInstanceId = null
+            };
         }
 
-        private bool Validar(CrearExcepcionPagoTasaMunicipal comando, ResultadoCrear resultado)
+        protected override void Validar(CrearExcepcionPagoTasaMunicipal comando, Resultado resultado)
         {
-            bool esValido = true;
-            long numero = 0;
-            if (long.TryParse(comando.ExceptuadosTicketMunicipalDto.NumeroDocumentoIngreso, out numero))
-            {
-                if (!Repositorio.Existe<CartaPorteElectronica>(x => x.NroCTG == numero && x.Dominio == comando.ExceptuadosTicketMunicipalDto.Patente))
-                {
-                    esValido = false;
-                    resultado.Error("NumeroDocumentoIngresoActual", "No existe una carta porte para el número de documento de ingreso y la patente ingresada.");
-                }
-            }
-            return esValido;
+            // Ver que al momento de crear una nueva excepción no exista ya otra excepción activa para la patente.
+            bool existe =
+                this.Repositorio.Existe<ExceptuadosTicketMunicipal>(e =>
+                    e.Patente == comando.ExceptuadosTicketMunicipalDto.Patente &&
+                    !e.WorkflowInstanceId.HasValue);
+
+            if (existe)
+                throw new CrearException("Ya existe una excepción de pago de tasa municipal activa para la patente indicada.");
         }
     }
 }

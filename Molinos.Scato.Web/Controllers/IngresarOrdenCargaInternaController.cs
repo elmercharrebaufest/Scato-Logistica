@@ -207,13 +207,15 @@ namespace Molinos.Scato.Web.Controllers
                     if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
                     {
                         InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
-                        ActualizarExcepcionPorPatenteYDocumento(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
+                        ActualizarExcepcionPorPatente(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
                     }
+
                 }
                 if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
                 {
                     MarcarRecorridoComoContingencia(resultadoActividad.InstanciaWorkflowId);
                 }
+                CrearRecorridoTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
 
                 return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
             }

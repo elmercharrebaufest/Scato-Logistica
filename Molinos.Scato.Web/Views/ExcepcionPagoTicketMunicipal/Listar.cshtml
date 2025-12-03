@@ -19,13 +19,8 @@
 
     columnas.Add(grid.Columna("Patente", Textos.Camion_Patente));
    
-    columnas.Add(grid.Columna("NumeroDocumentoIngreso", Textos.NumeroDocumentoIngreso));
-
     columnas.Add(grid.Columna("FechaCreacionExcepcion", Textos.Workflow_FechaCreacion, x => FormattingHtmlHelper.FormattedTime(x.FechaCreacionExcepcion)));
    
-    columnas.Add(grid.Columna("WorkflowDescripcion", Textos.Workflow));
-
-
     Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
 }
 
@@ -36,5 +31,5 @@
         });
 </script>
 <div class="controls">
-    @Html.Grilla(items,columnasFunc)
+    @Html.Grilla(items, columnasFunc)
 </div>

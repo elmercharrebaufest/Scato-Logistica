@@ -15,7 +15,9 @@ namespace Molinos.Scato.Dominio.Comandos.ResultadoServicio
        public int IdPayComplemento { get; set; }
        public int IdExcepcion { get; set; }
        public bool TieneConfiguracionDeBloqueoDeIngreso { get; set; }
-       public bool TieneDiferenciaDePago { get; set; }   
+       public bool TieneDiferenciaDePago { get; set; }  
+       public bool TieneExcepcion { get; set; }
+       public string MotivoExcepcion { get; set; }
         public ResultadoConsultarPagoTasaMunicipal()
        {
             TipoAlerta = TipoAlerta.Error;

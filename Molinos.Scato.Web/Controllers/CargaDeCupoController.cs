@@ -278,7 +278,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 if (resultado.FastPassValido && !resultado.ErroresOExcepcionesConsultaTasaMunicipal)
                 {
-                    IniciarWorkflows(resultado, model, resultado.IdPagoMunicipal, resultado.IdExcepcionPagoMunicipal, datosUsuario);
+                    IniciarWorkflows(resultado, model, resultado.IdPagoMunicipal, resultado.IdExcepcionPagoMunicipal, datosUsuario, resultado.TieneExcepcionTasaMunicipal, resultado.MotivoExcepcionTasaMunicipal);
                 }
             }
             ProcesarResultadoTasaMunicipal(resultado.tipoAlerta, resultado.MensajeTasaMunicipal);
@@ -288,7 +288,7 @@ namespace Molinos.Scato.Web.Controllers
             return View("Form");
         }
 
-        private void IniciarWorkflows(ResultadoCrearCargaDeCupo resultadoCrearCupoNoGrano, CargaDeCupoDto cargaDeCupo, int? idPagoMunicipal, int? idExcepcion, DatosUsuario datosUsuario)
+        private void IniciarWorkflows(ResultadoCrearCargaDeCupo resultadoCrearCupoNoGrano, CargaDeCupoDto cargaDeCupo, int? idPagoMunicipal, int? idExcepcion, DatosUsuario datosUsuario, bool tieneExcepcionTasaMunicipal, string motivoExcepcionTasaMunicipal)
         {
             var resultadoActividad = new ResultadoCrearWorkflow();
             servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = true });
@@ -336,16 +336,17 @@ namespace Molinos.Scato.Web.Controllers
                     break;
             }
             ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, idPagoMunicipal);
-            if(idExcepcion != null && idExcepcion > 0)
+            if (idExcepcion != null && idExcepcion > 0)
             {
-                ActualizarExcepcionPorPatenteYDocumento(resultadoActividad.InstanciaWorkflowId, idExcepcion ?? 0);
+                ActualizarExcepcionPorPatente(resultadoActividad.InstanciaWorkflowId, idExcepcion ?? 0);
                 InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
             }
             if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
             {
                 MarcarRecorridoComoContingencia(resultadoActividad.InstanciaWorkflowId);
             }
-
+            CrearRecorridoTasaMunicipal(resultadoActividad.InstanciaWorkflowId, motivoExcepcionTasaMunicipal, tieneExcepcionTasaMunicipal);
+            
             servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultadoCrearCupoNoGrano.Id, EnProgresoAutomatico = false });
         }
 
@@ -1187,7 +1188,7 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (resultadoTazaMunicipal.IdExcepcion > 0)
                 {
-                    ActualizarExcepcionPorPatenteYDocumento(resultadoActividad.InstanciaWorkflowId, resultadoTazaMunicipal.IdExcepcion);
+                    ActualizarExcepcionPorPatente(resultadoActividad.InstanciaWorkflowId, resultadoTazaMunicipal.IdExcepcion);
                     InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
                 }
 
@@ -1195,16 +1196,17 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     MarcarRecorridoComoContingencia(resultadoActividad.InstanciaWorkflowId);
                 }
+
+                CrearRecorridoTasaMunicipal(resultadoActividad.InstanciaWorkflowId, resultadoTazaMunicipal.MotivoExcepcion, resultadoTazaMunicipal.TieneExcepcion);  
             }
 
             if (ModelState.IsValid) // TODO: Revisar si es necesario, ya que la linea 1127 hace lo mismo.
             {
-                    cargaDeCupo.IngresoAvanceCPEAutomatico = true;
-                    servicioComandos.Ejecutar(new ModificarCargaDeCupo { Dto = cargaDeCupo });
+                cargaDeCupo.IngresoAvanceCPEAutomatico = true;
+                servicioComandos.Ejecutar(new ModificarCargaDeCupo { Dto = cargaDeCupo });
             }
         }
         
-
         protected virtual bool Validar(CartaPorteDto orden, DatosUsuario usuario)
         {
             var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
@@ -1556,20 +1558,20 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (resultadoStockVisec.HayErrores)
                     return resultadoStockVisec;
-
             }
 
             return resultadoStockVisec;
         }
 
-        private void ActualizarExcepcionPorPatenteYDocumento(Guid InstanciaWorkflowId, int IdExcepcion)
+        private void ActualizarExcepcionPorPatente(Guid workflowInstanceId, int idExcepcion)
         {
             try
             {
-                var respuestaTasa = servicioComandos.Ejecutar(new ModificarExcepcionPagoTasaMunicipal
+                servicioComandos.Ejecutar(new ModificarExcepcionPagoTasaMunicipal
                 {
-                    Id = IdExcepcion,
-                    TieneRecorrido = InstanciaWorkflowId != Guid.Empty
+                    Id = idExcepcion,
+                    WorkflowInstanceId = workflowInstanceId,
+                    Usuario = "SCATO"
                 });
             }
             catch (Exception e)
@@ -1577,15 +1579,16 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error("Error al modificar la excepcion - {0}", e.Message);
             }
         }
+
         private void MarcarRecorridoComoContingencia(Guid InstanciaWorkflowId)
         {
             try
             {
                 if (InstanciaWorkflowId != Guid.Empty)
                 {
-                    var respuestaTasa = servicioComandos.Ejecutar(new ModificarRecorridoPorContingenciaPay
+                    servicioComandos.Ejecutar(new ModificarRecorridoPorContingenciaPay
                     {
-                       InstanceId = InstanciaWorkflowId
+                        InstanceId = InstanciaWorkflowId
                     });
                 }
             }
@@ -1595,11 +1598,11 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void InformarPagoTasaMunicipal(Guid InstanciaWorkflowId) 
+        private void InformarPagoTasaMunicipal(Guid InstanciaWorkflowId)
         {
             try
             {
-                var respuestaTasa = servicioComandos.Ejecutar(new ModificarInformadoPagosTasaMunicipal
+                servicioComandos.Ejecutar(new ModificarInformadoPagosTasaMunicipal
                 {
                     InstanceId = InstanciaWorkflowId
                 });
@@ -1608,7 +1611,24 @@ namespace Molinos.Scato.Web.Controllers
             {
                 log.Error("Error al informar Pago Tasa Municipal - {0}", e.Message);
             }
-            
+        }
+
+        private void CrearRecorridoTasaMunicipal(Guid instanceId, string motivoExcepcion, bool tieneExcepcion)
+        {
+            try
+            {
+                var idRecorrido = servicio.ObtenerRecorridoIdPorGuid(instanceId);                
+                var respuestaCrearRecorridoTasaMunicipal = servicioComandos.Ejecutar(new CrearModificarRecorridoTasaMunicipal
+                {
+                    Id = idRecorrido,
+                    MotivoExcepcion = motivoExcepcion,
+                    TieneExcepcion = tieneExcepcion
+                });
+            }
+            catch (Exception e)
+            {
+                log.Error("Error al crear Recorrido Tasa Municipal - {0}", e.Message);
+            }
         }
     } 
 }

@@ -25,8 +25,8 @@ namespace Molinos.Scato.Web.Firmware
         protected readonly IServicioComandos comandos;
         protected readonly IServicioOrquestador servicioOrquestador;
         protected readonly IServicioActividadFactory<IEjecutarService> factory;
-        private readonly HubClientNotificar hubClientNotificar;
-        private readonly IRecorridoWorkflow recorridoWorflow;
+        protected readonly IRecorridoWorkflow recorridoWorflow;
+        private readonly HubClientNotificar hubClientNotificar;   
         protected  HubClient hubClientLectura { get; private set; }
        
         public FirmwareBase(ILogger log, 
@@ -320,61 +320,6 @@ namespace Molinos.Scato.Web.Firmware
                 lecturaPuestoDeTrabajo.ReconocimientoExitoso = ((ResultadoValidarPatente)resultadoPatente).ReconocimientoExitoso;
             }
             log.Debug($"Patente leída en el puesto {lecturaPuestoDeTrabajo.PuestoDeTrabajoId}({fileName}): {resultadoConPatente.Patente}, ");
-        }
-
-        protected Resultado EjecutarWorkflow(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, DatosRecorridoDto recorrido)
-        {
-            Resultado resultado = new Resultado();
-            try
-            {
-                log.Debug("EjecutarWorkflow. Tarjeta: {0} Puesto: {1}",
-                lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
-
-                var proximaAccion = recorridoWorflow.ObtenerWorkflowProximaAccionConRecorrido(lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, recorrido);
-
-
-                if (recorrido != null && proximaAccion != null)
-                    EjecutarDispositivos(lecturaPuestoDeTrabajo, recorrido);
-
-                    var workflowId = proximaAccion.WorkflowDefinicionId;
-                    var instanceId = proximaAccion.InstanceId;
-                    var proximaActividad = proximaAccion.ProximaActividad;
-                    var puestoDeTrabajoId = proximaAccion.PuestoDeTrabajoId;
-                    
-                    log.Info("Ejecutando workflow. Tarjeta: {0} Puesto: {1} WorkflowId: {2} InstanceId: {3} ProximaActividad: {4} PuestoDeTrabajoId: {5}",
-                        lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
-
-                    var serviciowf = factory.CrearServicio(workflowId);
-                    var resultadoActividad = serviciowf.Ejecutar(instanceId, new ControlRecorridoDto
-                    {
-                        WorkflowInstanceId = instanceId,
-                        NombreUsuario = String.Empty,
-                        Actividad = Textos.ResourceManager.GetString("Act" + proximaActividad) ?? proximaActividad,
-                        ActividadXaml = proximaActividad,
-                        Decision = true,
-                        PuestoDeTrabajoId = puestoDeTrabajoId
-                    });
-
-                if (resultadoActividad != null && resultadoActividad.HayErrores)
-                {
-                    string mensajeError = $"Error al ejecutar la actividad {proximaActividad} " +
-                                          $"en el workflow: {workflowId}. " +
-                                          $"Errores: {string.Join(", ", resultadoActividad.Errores.Select(e => $"{e.Key}: {e.Value}"))}";
-
-                    resultado.Errores.Add(nameof(Resultado), mensajeError);
-                    lecturaPuestoDeTrabajo.TarjetaValida = false;
-                    lecturaPuestoDeTrabajo.MensajeError = proximaAccion.MensajeError;
-                }
-                log.Info("Workflow ejecutado exitosamente. Tarjeta: {0} Puesto: {1} WorkflowId: {2} InstanceId: {3} ProximaActividad: {4} PuestoDeTrabajoId: {5}",
-                        lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
-
-            }
-            catch (Exception e)
-            {
-                resultado.Errores.Add(nameof(Resultado),$"Error al ejecutar el workflow: {e.Message}");
-            }
-
-            return resultado;
         }
 
         protected virtual void InvokeNotificarLectura(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)

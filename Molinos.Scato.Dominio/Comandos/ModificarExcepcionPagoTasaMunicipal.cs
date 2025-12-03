@@ -1,4 +1,4 @@
-﻿using Molinos.Scato.Dominio.Dto;
+﻿using System;
 using Molinos.Scato.Dominio.Filtros;
 
 namespace Molinos.Scato.Dominio.Comandos
@@ -7,11 +7,9 @@ namespace Molinos.Scato.Dominio.Comandos
     public class ModificarExcepcionPagoTasaMunicipal : Comando
     { 
         public int Id { get; set; }
-        public string PatenteActual { get; set; }
-        public string WorkflowModal { get; set; }
-        public string WorkflowDescripcionModal { get; set; }
-        public string NumeroDocumentoIngresoActual { get; set; }
-        public string NombreUsuario { get; set; }
-        public bool TieneRecorrido { get; set; } = false;
+
+        public string Patente { get; set; }
+        
+        public Guid? WorkflowInstanceId { get; set; }
     }
 }

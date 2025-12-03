@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32014.148
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11217.181 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.Web", "Molinos.Scato.Web\Molinos.Scato.Web.csproj", "{FA51B713-73F4-40C3-ACA3-8F2210400E08}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -255,8 +255,6 @@ Global
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.DebugLocal|x86.Build.0 = DebugLocal
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.DebugLocal|x86.Deploy.0 = DebugLocal
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|Any CPU.ActiveCfg = Release
-		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|Any CPU.Build.0 = Release
-		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|Any CPU.Deploy.0 = Release
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Jenkins|x86.ActiveCfg = Release
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Release|Any CPU.ActiveCfg = Release
 		{416634D1-1E09-4757-9DE1-FD195A01FCAB}.Release|Any CPU.Build.0 = Release
@@ -289,7 +287,6 @@ Global
 		{35076AD8-47E4-455E-B5B2-F4104D28BB72}.DebugLocal|x86.ActiveCfg = Debug|Any CPU
 		{35076AD8-47E4-455E-B5B2-F4104D28BB72}.DebugLocal|x86.Build.0 = Debug|Any CPU
 		{35076AD8-47E4-455E-B5B2-F4104D28BB72}.Jenkins|Any CPU.ActiveCfg = Release|Any CPU
-		{35076AD8-47E4-455E-B5B2-F4104D28BB72}.Jenkins|Any CPU.Build.0 = Release|Any CPU
 		{35076AD8-47E4-455E-B5B2-F4104D28BB72}.Jenkins|x86.ActiveCfg = Release|Any CPU
 		{35076AD8-47E4-455E-B5B2-F4104D28BB72}.Jenkins|x86.Build.0 = Release|Any CPU
 		{35076AD8-47E4-455E-B5B2-F4104D28BB72}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -305,7 +302,6 @@ Global
 		{2F6BF7C0-1FB5-404D-9741-00B79893822C}.DebugLocal|x86.ActiveCfg = Debug|Any CPU
 		{2F6BF7C0-1FB5-404D-9741-00B79893822C}.DebugLocal|x86.Build.0 = Debug|Any CPU
 		{2F6BF7C0-1FB5-404D-9741-00B79893822C}.Jenkins|Any CPU.ActiveCfg = Release|Any CPU
-		{2F6BF7C0-1FB5-404D-9741-00B79893822C}.Jenkins|Any CPU.Build.0 = Release|Any CPU
 		{2F6BF7C0-1FB5-404D-9741-00B79893822C}.Jenkins|x86.ActiveCfg = Release|Any CPU
 		{2F6BF7C0-1FB5-404D-9741-00B79893822C}.Jenkins|x86.Build.0 = Release|Any CPU
 		{2F6BF7C0-1FB5-404D-9741-00B79893822C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -337,7 +333,6 @@ Global
 		{8E2C1119-037D-4A06-9BF3-0DAD1682EC67}.DebugLocal|x86.ActiveCfg = Debug|Any CPU
 		{8E2C1119-037D-4A06-9BF3-0DAD1682EC67}.DebugLocal|x86.Build.0 = Debug|Any CPU
 		{8E2C1119-037D-4A06-9BF3-0DAD1682EC67}.Jenkins|Any CPU.ActiveCfg = Jenkins|Any CPU
-		{8E2C1119-037D-4A06-9BF3-0DAD1682EC67}.Jenkins|Any CPU.Build.0 = Jenkins|Any CPU
 		{8E2C1119-037D-4A06-9BF3-0DAD1682EC67}.Jenkins|x86.ActiveCfg = Jenkins|Any CPU
 		{8E2C1119-037D-4A06-9BF3-0DAD1682EC67}.Jenkins|x86.Build.0 = Jenkins|Any CPU
 		{8E2C1119-037D-4A06-9BF3-0DAD1682EC67}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -385,7 +380,6 @@ Global
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.DebugLocal|x86.ActiveCfg = Debug|Any CPU
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.DebugLocal|x86.Build.0 = Debug|Any CPU
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.Jenkins|Any CPU.ActiveCfg = Jenkins|Any CPU
-		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.Jenkins|Any CPU.Build.0 = Jenkins|Any CPU
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.Jenkins|x86.ActiveCfg = Debug|Any CPU
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.Jenkins|x86.Build.0 = Debug|Any CPU
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -401,7 +395,6 @@ Global
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.DebugLocal|x86.ActiveCfg = Debug|Any CPU
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.DebugLocal|x86.Build.0 = Debug|Any CPU
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.Jenkins|Any CPU.ActiveCfg = Debug|Any CPU
-		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.Jenkins|Any CPU.Build.0 = Debug|Any CPU
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.Jenkins|x86.ActiveCfg = Debug|Any CPU
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.Jenkins|x86.Build.0 = Debug|Any CPU
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -457,7 +450,7 @@ Global
 		{2A13F03D-A296-4CE5-859F-A3A26B884E0D} = {58F35E93-C5AB-4C5B-9D31-C336376F6903}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9DDEFB12-34EF-487C-AD39-BE59400A56B5}
 		RESX_NeutralResourcesLanguage = es-AR
+		SolutionGuid = {9DDEFB12-34EF-487C-AD39-BE59400A56B5}
 	EndGlobalSection
 EndGlobal
