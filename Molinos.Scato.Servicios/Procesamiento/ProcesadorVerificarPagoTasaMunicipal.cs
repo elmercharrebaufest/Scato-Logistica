@@ -144,11 +144,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 if (datosExcepcion.InstanceId.HasValue && datosExcepcion.InstanceId.Value != Guid.Empty)
                 {
-                    var pago = Repositorio.Obtener<PagosTasaMunicipal>(p => p.IdInstance == datosExcepcion.InstanceId);
-                    if (pago != null)
+                    var pagos = Repositorio.Listar<PagosTasaMunicipal>(p => p.IdInstance == datosExcepcion.InstanceId);
+                    if (pagos != null)
                     {
-                        pago.Disponible = true;
-                        pago.IdInstance = null;
+                        foreach (var pago in pagos)
+                        {
+                            pago.Disponible = true;
+                            pago.IdInstance = null;
+                        }
                     }
 
                     var recorrido = Repositorio.Obtener<Recorrido>(p => p.InstanciaWorkflow == datosExcepcion.InstanceId);
