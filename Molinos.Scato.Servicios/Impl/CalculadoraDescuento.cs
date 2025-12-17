@@ -59,9 +59,17 @@ namespace Molinos.Scato.Servicios.Impl
             return EnviaACamara(obj.CaracteristicaDeCalidad, obj.ValorAnalisis ?? obj.ValorCalado ?? 0, instanceId);
         }
 
-
         private bool EnviaACamara(CaracteristicaDeCalidad caracteristica, decimal valorMedicion, Guid instanceId)
         {
+            var recorrido = repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == instanceId);
+            
+            if (recorrido.Vehiculo.CartaPorte.RtteComercial != null && 
+                repositorio.Existe<ExcepcionEnvioCamara>(x => x.CaracteristicaMaterial.Id == caracteristica.Id && x.Material.Id == recorrido.Material.Id && x.TipoComercial.Id == recorrido.TipoComercial.Id && x.Proveedor.Id == recorrido.Vehiculo.CartaPorte.RtteComercial.Id))
+                return false;
+
+            if (repositorio.Existe<ExcepcionEnvioCamara>(x => x.CaracteristicaMaterial.Id == caracteristica.Id && x.Material.Id == recorrido.Material.Id && x.TipoComercial.Id == recorrido.TipoComercial.Id && x.Proveedor.Id == recorrido.Vehiculo.CartaPorte.TitularCartaPorte.Id))
+                return false;
+
             if (caracteristica.SituacionEnvioACamara == EnvioACamara.Siempre || ExisteExcepcionAlDescuento(instanceId, caracteristica.Id)) //No corresponde calcular descuento
             {
                 return true;
@@ -80,6 +88,7 @@ namespace Molinos.Scato.Servicios.Impl
                     return true;
                 }
             }
+
             return false;
         }
 

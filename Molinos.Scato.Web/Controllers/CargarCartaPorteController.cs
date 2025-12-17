@@ -409,24 +409,25 @@ namespace Molinos.Scato.Web.Controllers
                      return View(orden);
                 }
 
-                if (ResultadoPagoTasaMunicipal != null)
+                if (datosUsuario.CentroId == Constantes.Centro.IdSanLorenzo)
                 {
-                    if (ResultadoPagoTasaMunicipal.IdPago != 0)
-                        ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
-
-                    if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                    if (ResultadoPagoTasaMunicipal != null)
                     {
-                        ActualizarExcepcionPorPatente(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
-                        InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
+                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
+                            ActualizarTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+
+                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
+                        {
+                            ActualizarExcepcionPorPatente(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
+                            InformarPagoTasaMunicipal(resultadoActividad.InstanciaWorkflowId);
+                        }
+
+                        CrearRecorridoTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
                     }
-                }
 
-                if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
-                {
-                    MarcarRecorridoComoContingencia(resultadoActividad.InstanciaWorkflowId);
+                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+                        MarcarRecorridoComoContingencia(resultadoActividad.InstanciaWorkflowId);
                 }
-
-                CrearRecorridoTasaMunicipal(resultadoActividad.InstanciaWorkflowId, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
 
                 if (datosUsuario.CentroId != Constantes.Centro.IdSanLorenzo)
                 {
