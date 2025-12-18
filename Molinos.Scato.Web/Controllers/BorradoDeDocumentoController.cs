@@ -1,11 +1,14 @@
 ﻿using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -83,7 +86,27 @@ namespace Molinos.Scato.Web.Controllers
                     return Json(new { eliminado = resultadoWf.Errores.Values.First(), advertencia = texto }, JsonRequestBehavior.AllowGet);
                 }
             }
+
+            var pagos = BuscarPagosTasaMunicipalPorInstanciaDeWorkflow(instanciaWorkflow);
+
+            if (pagos.Any())
+            {
+                foreach (var pago in pagos)
+                {
+                    servicioComandos.Ejecutar(new LiberarPagoTasaMunicipal
+                    {
+                        PagoId = pago.Id,
+                        InstanceId = instanciaWorkflow
+                    });
+                }
+            }
             return Json(new { eliminado = "true", advertencia = texto }, JsonRequestBehavior.AllowGet);
         }
+
+        private IEnumerable<PagosTasaMunicipal> BuscarPagosTasaMunicipalPorInstanciaDeWorkflow(Guid instanciaWorkflow)
+        {
+            var pagos = servicio.ObtenerPagosDigitalesPorInstanceId(instanciaWorkflow);
+            return pagos;
+        }  
     }
 }

@@ -103,7 +103,7 @@
     <Compile Include="Comandos\ModificarInformadoPagosTasaMunicipal.cs" />
     <Compile Include="Comandos\ModificarRecorridoPorContingenciaPay.cs" />
     <Compile Include="Comandos\ModificarExcepcionPagoTasaMunicipal.cs" />
-    <Compile Include="Comandos\ModificarComoDevolucionPagosTasaMunicipal.cs" />
+    <Compile Include="Comandos\LiberarPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarCategoriaVehiculo.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarEstadoTransmisionVisec.cs" />
     <Compile Include="Comandos\CrearExcepcionPagoTasaMunicipal.cs" />
@@ -863,6 +863,7 @@
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaComplementarioDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaDto.cs" />
     <Compile Include="Dto\HuellaDigitalDto.cs" />
+    <Compile Include="Dto\QRCamiones\QRCamionesModels.cs" />
     <Compile Include="Dto\RespuestaEstandar\MensajeEstandarAutomatismoDto.cs" />
     <Compile Include="Dto\TipoCallePlantaDto.cs" />
     <Compile Include="Dto\ConfigSensoresDto.cs" />

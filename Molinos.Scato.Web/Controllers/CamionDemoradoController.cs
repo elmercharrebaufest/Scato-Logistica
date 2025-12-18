@@ -167,24 +167,7 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoService = demoraService.CamionDemorado(controlRecorrido, orden.InstanciaWorkflow, false);
                 if (!resultado.HayErrores && !resultadoService.HayErrores)
                 {
-                    if (ResultadoPagoTasaMunicipal != null)
-                    {
-                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
-                            ActualizarTasaMunicipal(orden.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
-
-                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
-                        {
-                            InformarPagoTasaMunicipal(orden.InstanciaWorkflow);
-                            ActualizarExcepcionPorPatente(orden.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
-                        }
-                    }
-                        
-                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
-                    {
-                        MarcarRecorridoComoContingencia(orden.InstanciaWorkflow);
-                    }
-
-                    CrearRecorridoTasaMunicipal(orden.InstanciaWorkflow, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
+                    this.EjecutarAccionesDePagoTasaMunicipalPosteriorALaCreacionDeWorkflow(datosUsuario.CentroId, orden.InstanciaWorkflow);
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -330,25 +313,7 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoService = demoraService.CamionDemorado(controlRecorrido, WorkflowId, orden.Rechazado);
                 if (!resultadoService.HayErrores)
                 {
-                    if (ResultadoPagoTasaMunicipal != null)
-                    {
-                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
-                            ActualizarTasaMunicipal(WorkflowId, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
-
-
-                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
-                        {
-                            ActualizarExcepcionPorPatente(WorkflowId, ResultadoPagoTasaMunicipal.IdExcepcion);
-                            InformarPagoTasaMunicipal(WorkflowId);
-                        }
-                    }
-                       
-                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
-                    {
-                        MarcarRecorridoComoContingencia(WorkflowId);
-                    }
-
-                    CrearRecorridoTasaMunicipal(WorkflowId, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
+                    this.EjecutarAccionesDePagoTasaMunicipalPosteriorALaCreacionDeWorkflow(datosUsuario.CentroId, WorkflowId);
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -451,24 +416,7 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoActividad = demoraService.CamionDemorado(controlRecorrido, recorrido.InstanciaWorkflow, model.Rechazado);
                 if (!resultadoActividad.HayErrores)
                 {
-                    if (ResultadoPagoTasaMunicipal != null)
-                    {
-                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
-                            ActualizarTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
-
-                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
-                        {
-                            InformarPagoTasaMunicipal(recorrido.InstanciaWorkflow);
-                            ActualizarExcepcionPorPatente(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
-                        }
-                    }
-
-                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
-                    {
-                        MarcarRecorridoComoContingencia(recorrido.InstanciaWorkflow);
-                    }
-
-                    CrearRecorridoTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
+                    this.EjecutarAccionesDePagoTasaMunicipalPosteriorALaCreacionDeWorkflow(datosUsuario.CentroId, recorrido.InstanciaWorkflow);
 
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
@@ -632,23 +580,8 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoActividad = demoraService.CamionDemorado(controlRecorrido, recorrido.InstanciaWorkflow, orden.Rechazado);
                 if (!resultadoActividad.HayErrores)
                 {
-                    if (ResultadoPagoTasaMunicipal != null)
-                    {
-                        if (ResultadoPagoTasaMunicipal.IdPago != 0)
-                            ActualizarTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdPago, ResultadoPagoTasaMunicipal.IdDiferenciaDePago ?? 0);
+                    this.EjecutarAccionesDePagoTasaMunicipalPosteriorALaCreacionDeWorkflow(datosUsuario.CentroId, recorrido.InstanciaWorkflow);
 
-                        if (ResultadoPagoTasaMunicipal.IdExcepcion > 0)
-                        {
-                            InformarPagoTasaMunicipal(recorrido.InstanciaWorkflow);
-                            ActualizarExcepcionPorPatente(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.IdExcepcion);
-                        }
-                    }
-                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
-                    {
-                        MarcarRecorridoComoContingencia(recorrido.InstanciaWorkflow);
-                    }
-
-                    CrearRecorridoTasaMunicipal(recorrido.InstanciaWorkflow, ResultadoPagoTasaMunicipal.MotivoExcepcion, ResultadoPagoTasaMunicipal.TieneExcepcion);
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
 

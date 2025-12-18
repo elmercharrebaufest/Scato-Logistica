@@ -54,7 +54,7 @@ namespace Molinos.Scato.Web.Firmware
                         log.Info($"El recorrido {recorrido.InstanciaWorkflow} tiene pagos digitales asociados.");
                         foreach (var pago in pagos)
                         {
-                            comandos.Ejecutar(new ModificarComoDevolucionPagosTasaMunicipal
+                            comandos.Ejecutar(new LiberarPagoTasaMunicipal
                             {
                                 PagoId = pago.Id,
                                 InstanceId = recorrido.InstanciaWorkflow,

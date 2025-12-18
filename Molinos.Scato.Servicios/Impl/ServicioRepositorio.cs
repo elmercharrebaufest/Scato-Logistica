@@ -1,9 +1,23 @@
-﻿using Microsoft.Web.Administration;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Objects.SqlClient;
+using System.Diagnostics;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Printing;
+using System.ServiceModel;
+using System.ServiceModel.Configuration;
+using Microsoft.Web.Administration;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.HealthCheck;
+using Molinos.Scato.Dominio.Dto.QRCamiones;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
@@ -19,19 +33,6 @@ using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Objects.SqlClient;
-using System.Diagnostics;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Printing;
-using System.ServiceModel;
-using System.ServiceModel.Configuration;
 using System.Text.RegularExpressions;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
@@ -2973,14 +2974,17 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<CartaPorte, CartaPorteDto>(id);
         }
-
+        
         public CartaPorteDto ObtenerCartaPortePorCentroYNumero(string numero, int centroId)
         {
             var cp =
                 repositorio.ObtenerMayor<Recorrido, DateTime, CartaPorte>(
                     x =>
-                    x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && x.NumeroDocumentoIngreso == numero &&
-                    x.Centro.Id == centroId, x => x.FechaInicio, x => x.Vehiculo.CartaPorte);
+                        x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && 
+                        x.NumeroDocumentoIngreso == numero &&
+                        x.Centro.Id == centroId, 
+                    x => x.FechaInicio, 
+                    x => x.Vehiculo.CartaPorte);
             return conversor.Convertir<CartaPorte, CartaPorteDto>(cp);
         }
 
@@ -9632,7 +9636,7 @@ namespace Molinos.Scato.Servicios.Impl
                                     : item.EsSojaEPA == true ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA
                                     : item.EsSojaIMPO == true ? Constantes.ValoresPorDefecto.ColorTextoSojaIMPO
                                     : (item.MaterialColorTexto ?? item.CargaCupoColorTexto),
-                    EsDemorado = (item.TipoCalle == TipoCalle.NoGranos || item.TipoCalle == TipoCalle.PreCalado || item.TipoCalle == TipoCalle.PostCalado || item.TipoCalle == TipoCalle.RechazadosDemorados) && item.EsDemorado ,
+                    EsDemorado = (item.TipoCalle == TipoCalle.NoGranos || item.TipoCalle == TipoCalle.PreCalado || item.TipoCalle == TipoCalle.PostCalado || item.TipoCalle == TipoCalle.RechazadosDemorados) && item.EsDemorado,
                     RecorridoId = item.IdRecorrido,
                     PagoTasaMunicipalAdeudado = item.PagoTasaMunicipalAdeudado,
                     ColorTextoDemoradoPorTasaMunicipal = Constantes.ValoresPorDefecto.ColorTextoDemoradoTasaMunicipal,
@@ -10795,7 +10799,7 @@ namespace Molinos.Scato.Servicios.Impl
 
             if (esEpa)
                 tipoMaterial = Constantes.TipoVariedadMaterial.EPA;
-            
+
             if (esEpa && esEUDR)
                 tipoMaterial = Constantes.TipoVariedadMaterial.EPAyEUDR;
 
@@ -11416,15 +11420,38 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ExistePagoRealizadoPorListaMaterial(string codigoSap, string patente)
         {
-            bool tienePagoRealizado = false;
-            var configuracionMaterialPagoRealizado = ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad, Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado);
-            var materialPagoRealizado = !string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor) ? configuracionMaterialPagoRealizado.Valor.Split(',').ToList() : new List<string>();
-            if (materialPagoRealizado.Contains(codigoSap))
-            {
-                tienePagoRealizado = ExistePagoRealizado(patente);
-            }
+            var configuracionMaterialPagoRealizado = ObtenerConfiguracionGeneral(
+                Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad,
+                Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado);
 
-            return tienePagoRealizado;
+            if (string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor))
+                return false;
+
+            var materialPagoRealizado = configuracionMaterialPagoRealizado.Valor.Split(',');
+
+            if (!materialPagoRealizado.Contains(codigoSap))
+                return false;
+
+            var hoy = DateTime.Today;
+            var mañana = hoy.AddDays(1);
+
+            var materialId = repositorio.ObtenerProyeccion<Material, int>(
+                x => x.CodigoSAP == codigoSap,
+                x => x.Id);
+
+            var recorrido = repositorio.Obtener<Recorrido>(
+                x => x.Patente == patente &&
+                     x.Material.Id == materialId &&
+                     x.FechaInicio >= hoy &&
+                     x.FechaInicio < mañana &&
+                     (x.Terminado || x.Rechazado));
+
+            if (recorrido == null)
+                return false;
+
+            return repositorio.Existe<PagosTasaMunicipal>(
+                x => x.Dominio == patente && x.IdInstance == recorrido.InstanciaWorkflow)
+                || ExistePagoRealizado(patente);
         }
 
         public int ObtenerIdPagoDigitalPorInstanceId(Guid instanceId)
@@ -11546,7 +11573,7 @@ namespace Molinos.Scato.Servicios.Impl
             var controles = repositorio.Listar<ControlRecorrido>(x => x.WorkflowInstanceId == workflowId).OrderByDescending(o => o.Id);
             return controles.FirstOrDefault().ActividadXaml.Equals(actividad) ? true : false;
         }
-            
+
         public RegistroJobEjecucionDto ObtenerRegistroJobEjecucionPorProceso(string proceso)
         {
             return Obtener<RegistroJobEjecucion, RegistroJobEjecucionDto>(x => x.NombreProceso == proceso);
@@ -11613,8 +11640,8 @@ namespace Molinos.Scato.Servicios.Impl
             var tienePago = repositorio.Existe<PagosTasaMunicipal>(x => x.IdInstance == instanciaWorkflow);
             return estaDemorado && !tienePago;
         }
-	
-	public ExceptuadosTicketMunicipalDto ObtenerExcepcionDeTicketMunicipal(string patente, Guid? workflowInstanceId)
+
+        public ExceptuadosTicketMunicipalDto ObtenerExcepcionDeTicketMunicipal(string patente, Guid? workflowInstanceId)
         {
             ExceptuadosTicketMunicipalDto excepcion = null;
             if (workflowInstanceId.HasValue && workflowInstanceId != Guid.Empty)
@@ -11642,12 +11669,180 @@ namespace Molinos.Scato.Servicios.Impl
                 tieneExcepcion = repositorio.Existe<ExceptuadosTicketMunicipal>(x => x.WorkflowInstanceId == workflowInstanceId.Value);
                 if (!tieneExcepcion)
                     tieneExcepcion = repositorio.Existe<ExceptuadosTicketMunicipal>(x => !x.WorkflowInstanceId.HasValue && x.Patente == patente);
-            } 
+            }
             else
             {
                 tieneExcepcion = repositorio.Existe<ExceptuadosTicketMunicipal>(x => !x.WorkflowInstanceId.HasValue && x.Patente == patente);
             }
             return tieneExcepcion;
         }
-    }
+        
+		#region QR Camiones
+
+		public TrackingDataQRCamiones ObtenerTrackingData(string numeroCTG, string patente)
+        {
+            TrackingDataQRCamiones trackingData = null;
+
+            // Obtengo el recorrido por CTG y patente
+            //var recorrido = repositorio.Obtener<Recorrido>(r => r.NumeroDocumentoIngreso == numeroCTG && r.Patente == numeroPatente);
+            IEnumerable<RecorridoDto> recorridos =
+                this.ListarRecorridosPorDocumentoYPatente(TipoDocumentoIngreso.CartaPorte.ToString(), numeroCTG, patente.ToUpperInvariant())
+                    .Where(r => r.Centro.Id == Constantes.Centro.IdSanLorenzo);
+
+            CartaPorteDto cartaPorteDto = null;
+
+            if (recorridos != null && recorridos.Any())
+            {
+                // Se obtiene el último recorrido siempre, sin importar si está terminado, rechazado o en progreso
+                var recorrido = recorridos.OrderByDescending(r => r.FechaInicio).First();
+                var calidadRecorrido = repositorio.Obtener<Recorrido>(x => x.Id == recorrido.Id)?.CaracteristicasAnalizadas?.Calidad;
+
+                //cartaPorteDto = this.ObtenerCartaPortePorCentroYNumero(recorrido.NumeroDocumentoIngreso, recorrido.Centro.Id);
+                //cartaPorteDto = this.ObtenerCartaPortePorInstanceId(recorrido.InstanciaWorkflow);
+                cartaPorteDto = this.ObtenerCartaDePortePorrecorrido(recorrido.Id);
+
+                trackingData = new TrackingDataQRCamiones
+                {
+                    Workflow = recorrido.Workflow.Descripcion,
+                    CTG = recorrido.NumeroDocumentoIngreso,
+                    FechaHoraIngreso = recorrido.FechaInicio,
+
+                    TitularCartaPorte = cartaPorteDto?.TitularCartaPorte ?? string.Empty, // revisar bien porque pueden haber diferencias
+					RemitenteComercialProd = cartaPorteDto?.Intermediario ?? string.Empty, // revisar bien porque pueden haber diferencias
+                    RemitenteComercialVtaPrim = cartaPorteDto?.RtteComercial ?? string.Empty,
+                    Entregador = cartaPorteDto?.Entregador ?? string.Empty, // revisar bien porque pueden haber diferencias
+                    Transportista = cartaPorteDto?.Transportista ?? string.Empty, // revisar bien porque pueden haber diferencias
+
+                    Material = recorrido.Material.Descripcion,
+                    Rechazado = recorrido.Rechazado,
+                    Camion = new CamionQRCamiones
+                    {
+                        Patente = recorrido.Vehiculo.Patente,
+                        PatenteAcoplado = recorrido.Vehiculo.PatenteAcoplado
+                    },
+                    Chofer = new ChoferQRCamiones
+                    {
+                        CUIL = recorrido.Chofer.Cuil,
+                        TipoDocumento = recorrido.Chofer.TipoDocumentoIdentidadDescripcion, //Hay una campo de DescripcionCorta
+                        NumeroDocumento = recorrido.Chofer.NumeroDeDocumento,
+                        Extranjero = cartaPorteDto.EsExtranjero,
+                        NombreApellido = recorrido.Chofer.NombreCompleto
+                    },
+                    DatosAdicionales = new DatosAdicionalesQRCamiones
+                    {
+                        PreCaladoFila =
+                            repositorio.Obtener<CallePorRecorrido>(cxr =>
+                                cxr.Recorrido.Id == recorrido.Id &&
+                                (cxr.Calle.TipoCalle == TipoCalle.PreCalado || cxr.Calle.TipoCalle == TipoCalle.Circular))?.Calle?.Nombre,
+
+                        PostCaladoFila = // Pueden haber pasado por PostCalado => Recalado => PostCalado
+                            repositorio.ObtenerMasReciente<CallePorRecorrido>(
+                                cxr =>
+                                    cxr.Recorrido.Id == recorrido.Id &&
+                                    (cxr.Calle.TipoCalle == TipoCalle.PostCalado ||
+                                     cxr.Calle.TipoCalle == TipoCalle.ReCalado ||
+                                     cxr.Calle.TipoCalle == TipoCalle.RechazadosDemorados),
+                                cxr => cxr.FechaIngeso)?.Calle?.Nombre,
+                        CaladoEstado = ObtenerDescripcionCalidad(calidadRecorrido),
+						PesadaBruto = recorrido.PesoBruto,
+                        PesadaTara = recorrido.PesoTara,
+                        PesadaDescargado =
+                            (recorrido.PesoBruto.HasValue && recorrido.PesoTara.HasValue) ?
+                                (recorrido.PesoBruto.Value - recorrido.PesoTara.Value) : (int?)null
+                    }
+                };
+
+                trackingData.Etapas =
+                    this.ConsultaControlRecorridoLogActividad(recorrido.InstanciaWorkflow)
+                        .Select(crla => new EtapaQRCamiones
+                        {
+                            Nombre = crla.Actividad,
+                            Fecha = crla.Fecha,
+                            NombreTabla = crla.Tabla
+                        }).ToList();
+            }
+            else // Recorrido no existe aún
+            {
+                var cargaDeCupoDto = //this.ObtenerCargaDeCupoPorCTG(numeroCTG);
+                    this.Obtener<CargaDeCupo, CargaDeCupoDto>(
+                        x => x.Recorrido == null &&
+                                x.Centro.Id == Constantes.Centro.IdSanLorenzo &&
+                                x.Fecha > DateTime.Now.AddDays(-1) &&
+                                x.Cupo != null &&
+                                x.Numero != null &&
+                                !x.EnProgresoAutomatico &&
+                                x.CTG == numeroCTG /*&&
+                        x.Patente = patente.ToUpperInvariant(),*/
+                    );
+
+                if (cargaDeCupoDto != null)
+                {
+                    //if (cargaDeCupoDto.Patente.ToUpperInvariant() == patente.ToUpperInvariant() /* && 
+                    //    cargaDeCupoDto.CentroId == Constantes.Centro.IdSanLorenzo*/)
+                    //{
+                    trackingData = new TrackingDataQRCamiones
+                    {
+                        Workflow = string.Empty,
+                        CTG = cargaDeCupoDto.CTG,
+                        FechaHoraIngreso = cargaDeCupoDto.Fecha,
+
+                        TitularCartaPorte = cartaPorteDto?.TitularCartaPorte ?? string.Empty,
+						RemitenteComercialProd = cartaPorteDto?.Intermediario ?? string.Empty,
+						RemitenteComercialVtaPrim = cartaPorteDto?.RtteComercial ?? string.Empty,
+						Entregador = cartaPorteDto?.Entregador ?? string.Empty,
+                        Transportista = cartaPorteDto?.Transportista ?? string.Empty,
+
+                        Material = cargaDeCupoDto.MaterialDescripcion,
+                        Rechazado = false,
+
+                        Camion = new CamionQRCamiones
+                        {
+                            Patente = cargaDeCupoDto.Patente,
+                            PatenteAcoplado = cargaDeCupoDto.PatenteAcoplado
+                        },
+                        Chofer = new ChoferQRCamiones
+                        {
+                            //CUIL = cargaDeCupoDto..Chofer.Cuil,
+                            //TipoDocumento = recorrido.Chofer.TipoDocumentoIdentidadDescripcion, //Hay una campo de DescripcionCorta
+                            //NumeroDocumento = recorrido.Chofer.NumeroDeDocumento,
+                            //Extranjero = cartaPorteDto.EsExtranjero,
+                            //NombreApellido = recorrido.Chofer.NombreCompleto
+                        },
+                        DatosAdicionales = new DatosAdicionalesQRCamiones()
+                        {
+                            PreCaladoFila = repositorio.Obtener<CallePorRecorrido>(cxr => cxr.CargaDeCupo.Id == cargaDeCupoDto.Id)?.Calle?.Nombre,
+                            PostCaladoFila = null,
+                            CaladoEstado = null,
+                            PesadaBruto = null,
+                            PesadaTara = null,
+                            PesadaDescargado = null
+                        },
+                        Etapas = new List<EtapaQRCamiones>()
+                    };
+                    //}
+                }
+            }
+
+            return trackingData;
+        }
+
+		private string ObtenerDescripcionCalidad(TipoCalidad? calidad)
+		{
+			if (!calidad.HasValue) return "";
+
+			switch (calidad.Value)
+			{
+				case TipoCalidad.Conforme:
+					return "Conforme";
+				case TipoCalidad.Humedo:
+					return "Humedo";
+				case TipoCalidad.Analisis:
+					return "En Analisis";
+				default:
+					return "";
+			}
+		}
+
+        #endregion
+	}
 }

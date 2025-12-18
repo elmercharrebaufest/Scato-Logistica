@@ -213,60 +213,70 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public void ValidarPago(string patente, EstadoPagoTasaMunicipal pago, DatosTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado, bool esDemorado)
         {
-            TipoValidacionPagoTasaMunicipal tipoValidacion;
-            switch (pago.CondicionDePago)
+            var condicionDePago = pago.CondicionDePago;
+
+            switch (condicionDePago)
             {
                 case TipoValidacionPagoTasaMunicipal.Abonado:
                     Log.Debug($"Pago normal encontrado para la patente: {patente}, documento: {pago.NumeroDocumento}, importe: {pago.ImporteNormal}");
+
                     resultado.IdPago = pago.IdPagoNormal;
                     resultado.IdPay = pago.IdPayPagoNormal;
-                    if (pago.IdDiferenciaPago.HasValue && pago.IdDiferenciaPago.Value > 0)
+
+                    var idDiferenciaPago = pago.IdDiferenciaPago;
+                    var idPayDiferenciaPago = pago.IdPayDiferenciaPago;
+
+                    if (idDiferenciaPago.HasValue && idDiferenciaPago.Value > 0)
                     {
                         Log.Debug($"Pago de diferencia encontrado para la patente: {patente}, documento: {pago.NumeroDocumento}, importe DP: {pago.ImporteDP}, total pagado {pago.TotalPagado}");
-                        resultado.IdDiferenciaDePago = pago.IdDiferenciaPago.Value;
-                        resultado.IdPayComplemento =pago.IdPayDiferenciaPago.Value;
+                        resultado.IdDiferenciaDePago = idDiferenciaPago.Value;
+                        if (idPayDiferenciaPago.HasValue)
+                        {
+                            resultado.IdPayComplemento = idPayDiferenciaPago.Value;
+                        }
                     }
                     else
                     {
                         Log.Debug($"No se encontró un pago de diferencia para la patente: {patente} y documento: {pago.NumeroDocumento}");
                     }
 
-                    Log.Info($"Aplica actualizacion interna: {datos.AplicaActualizacionInterna}");
-                    if (datos.AplicaActualizacionInterna)
+                    var aplicaActualizacionInterna = datos.AplicaActualizacionInterna;
+                    Log.Info($"Aplica actualizacion interna: {aplicaActualizacionInterna}");
+
+                    if (aplicaActualizacionInterna)
                     {
-                        Log.Debug($"Actualizando estado del pago con ID: {pago.IdPagoNormal} y InstanceId: {datos.InstanceId}, IdDiferenciaPago: {pago.IdDiferenciaPago}");
-                        ActualizarEstadoDePago(pago.IdPagoNormal, datos.InstanceId, pago.IdDiferenciaPago ?? 0);
-                        InformarPago(pago.IdPayPagoNormal, datos.InstanceId);
-                        if (pago.IdPayDiferenciaPago.HasValue && pago.IdPayDiferenciaPago.Value > 0)
-                            InformarPago(pago.IdPayDiferenciaPago.Value, datos.InstanceId);
+                        var instanceId = datos.InstanceId;
+                        var idPagoNormal = pago.IdPagoNormal;
+
+                        Log.Debug($"Actualizando estado del pago con ID: {idPagoNormal} y InstanceId: {instanceId}, IdDiferenciaPago: {idDiferenciaPago}");
+
+                        ActualizarEstadoDePago(idPagoNormal, instanceId, idDiferenciaPago ?? 0);
+                        InformarPago(pago.IdPayPagoNormal, instanceId);
+
+                        if (idPayDiferenciaPago.HasValue && idPayDiferenciaPago.Value > 0)
+                        {
+                            InformarPago(idPayDiferenciaPago.Value, instanceId);
+                        }
                     }
+
                     Log.Info($"Pago abonado correctamente para la Patente: {pago.Dominio}, pago con Id: {pago.IdPagoNormal}, pago con Id diferencia: {pago.IdDiferenciaPago}");
-                    tipoValidacion = TipoValidacionPagoTasaMunicipal.Abonado;
+                    condicionDePago = TipoValidacionPagoTasaMunicipal.Abonado;
                     break;
 
                 case TipoValidacionPagoTasaMunicipal.DiferenciaDePago:
                     Log.Debug($"Pago con diferencia encontrado para la patente: {patente}, documento: {pago.NumeroDocumento}, importe: {pago.ImporteNormal}, importe requerido: {pago.TarifaTipoVehiculo}");
-                    tipoValidacion = TipoValidacionPagoTasaMunicipal.DiferenciaDePago;
-                    resultado.TieneDiferenciaDePago = true;
+                    condicionDePago = ValidarIngresoPorContingencia(datos.InstanceId, TipoValidacionPagoTasaMunicipal.DiferenciaDePago);
+                    resultado.TieneDiferenciaDePago = condicionDePago == TipoValidacionPagoTasaMunicipal.DiferenciaDePago;
                     break;
 
                 default:
                     Log.Warn($"Pago no encontrado para la patente: {patente}, documento: {pago.NumeroDocumento}");
-                    if(_servicioRepositorio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
-                    {
-                        if(datos.InstanceId != Guid.Empty)
-                        {
-                            MarcarRecorridoComoIngresoEnContingencia(datos.InstanceId);
-                        }
-                        Log.Info($"Contingencia activa, se permite el ingreso.");
-                        tipoValidacion = TipoValidacionPagoTasaMunicipal.Abonado;
-                    }
-                    else
-                        tipoValidacion = TipoValidacionPagoTasaMunicipal.Adeudado;
+                    condicionDePago = ValidarIngresoPorContingencia(datos.InstanceId, TipoValidacionPagoTasaMunicipal.Adeudado);
                     break;
             }
-            Log.Debug($"Validación del pago: {tipoValidacion} para patente: {patente} y pago con ID: {pago.IdPagoNormal}");
-            ConstruirResultado(resultado, tipoValidacion, esDemorado);
+
+            Log.Debug($"Validación del pago: {condicionDePago} para patente: {patente} y pago con ID: {pago.IdPagoNormal}");
+            ConstruirResultado(resultado, condicionDePago, esDemorado);
         }
 
         private EstadoPagoTasaMunicipal ObtenerPago(DatosTasaMunicipal datos, TipoCategoriaVehiculo tipoCategoria, int numeroDiasDeConsulta)
@@ -311,25 +321,46 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public bool EjecutarValidacionesDeExcepciones(DatosExcepcionTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado)
         {
-            var reglas = new Dictionary<string, Func<bool>>()
+            if (datos.InstanceId.HasValue)
             {
-                { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorMaterialYCentro , () => ValidarExcepcionMaterialPorCentro(datos) },
-                { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatente , () => ValidarExcepcionPorPatente(datos) },
-                { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatenteYDocumento , () => ValidarExcepcionPorPatenteYDocumento(datos) },
-                { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorSojaImpo , () => ValidarExcepcionEsSojaImpo(datos) }
-            };
+                var recorridoTasaMunicipal = 
+                    this.Repositorio.Obtener<RecorridoTasaMunicipal>(
+                        x => x.Recorrido.InstanciaWorkflow == datos.InstanceId.Value);
 
-
-            foreach (var regla in reglas)
-            {
-                if (regla.Value())
+                if (recorridoTasaMunicipal != null)
                 {
-                    resultado.TieneExcepcion = true;
-                    resultado.MotivoExcepcion = regla.Key;
-                    return true;
+                    Log.Info($"Se encontró RecorridoTasaMunicipal para InstanceId: {datos.InstanceId} - " + 
+                        (recorridoTasaMunicipal.Exceptuado ? "Está exceptuado" : "No está exceptuado"));
+                    resultado.TieneExcepcion = recorridoTasaMunicipal.Exceptuado;
+                    resultado.MotivoExcepcion = recorridoTasaMunicipal.MotivoExceptuado;
                 }
             }
-            return false;
+
+            //Si no tiene excepción a la entrada se revalida los tipos de excepción
+            if (!resultado.TieneExcepcion)
+            {
+                var reglas = new Dictionary<string, Func<bool>>()
+                {
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorMaterialYCentro , () => ValidarExcepcionMaterialPorCentro(datos) },
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatente , () => ValidarExcepcionPorPatente(datos) },
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatenteYDocumento , () => ValidarExcepcionPorPatenteYDocumento(datos) },
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorSojaImpo , () => ValidarExcepcionEsSojaImpo(datos) }
+                };
+
+                foreach (var regla in reglas)
+                {
+                    var tieneExcepcion = regla.Value();
+
+                    if (tieneExcepcion)
+                    {
+                        resultado.TieneExcepcion = tieneExcepcion;
+                        resultado.MotivoExcepcion = regla.Key;
+                        break;
+                    }
+                }
+            }
+
+            return resultado.TieneExcepcion;
         }
 
         private bool ValidarExcepcionMaterialPorCentro(DatosExcepcionTasaMunicipal datos)
@@ -509,6 +540,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 recorrido.IngresoContingenciaPagoMunicipal = true;
                 Repositorio.GuardarCambios();
             }
+        }
+
+        private TipoValidacionPagoTasaMunicipal ValidarIngresoPorContingencia(Guid instanceId, TipoValidacionPagoTasaMunicipal tipoValidacion)
+        {
+            if (_servicioRepositorio.TieneContingenciaPorTipo(Constantes.Contingencia.PayCaido))
+            {
+                if (instanceId != Guid.Empty)
+                {
+                    MarcarRecorridoComoIngresoEnContingencia(instanceId);
+                }
+                Log.Info($"Contingencia activa, se permite el ingreso.");
+                tipoValidacion = TipoValidacionPagoTasaMunicipal.Abonado;
+            }
+            return tipoValidacion;
         }
     }
 }

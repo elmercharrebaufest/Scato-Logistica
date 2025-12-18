@@ -617,7 +617,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarInformadoPagosTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoPorContingenciaPay.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarExcepcionPagoTasaMunicipal.cs" />
-    <Compile Include="Procesamiento\ProcesadorModificarComoDevolucionPagosTasaMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorLiberarPagoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoPagaTicketMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarMonitoreoServicioExterno.cs" />
     <Compile Include="Procesamiento\ProcesadorReprocesarPagoTasaMunicipal.cs" />

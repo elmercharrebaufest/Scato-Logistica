@@ -143,7 +143,6 @@ namespace Molinos.Scato.Web.Controllers
             filtro.NroDocumento = string.Empty;
             filtro.Patente = string.Empty;
             filtro.Workflow = string.Empty;
-            filtro.PagoConsumido = null;
 
             if (System.Web.HttpContext.Current != null)
             {
@@ -153,7 +152,6 @@ namespace Molinos.Scato.Web.Controllers
                 var nroDocumento = System.Web.HttpContext.Current.Request.Cookies["nroDocumento"];
                 var patente = System.Web.HttpContext.Current.Request.Cookies["patente"];
                 var workflow = System.Web.HttpContext.Current.Request.Cookies["workflow"];
-                var pagoConsumido = System.Web.HttpContext.Current.Request.Cookies["pagoConsumido"];
 
                 if (fechaDesde != null)
                     filtro.IngresoDesde = DateTime.Parse(fechaDesde.Value);
@@ -169,9 +167,6 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (workflow != null)
                     filtro.Workflow = workflow.Value;
-
-                if (pagoConsumido != null)
-                    filtro.PagoConsumido = string.IsNullOrEmpty(pagoConsumido.Value) ? (bool?)null : bool.Parse(pagoConsumido.Value);
             }
 
             return filtro;
@@ -186,7 +181,6 @@ namespace Molinos.Scato.Web.Controllers
                 System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("nroDocumento", filtro.NroDocumento ?? string.Empty));
                 System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("patente", filtro.Patente ?? string.Empty));
                 System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("workflow", filtro.Workflow ?? string.Empty));
-                System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("pagoConsumido", filtro.PagoConsumido.HasValue ? filtro.PagoConsumido.Value.ToString() : string.Empty));
             }
         }
 

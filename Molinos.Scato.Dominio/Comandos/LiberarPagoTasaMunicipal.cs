@@ -4,7 +4,7 @@ using System;
 namespace Molinos.Scato.Dominio.Comandos
 {
     [LoguearEntidad]
-    public class ModificarComoDevolucionPagosTasaMunicipal : Comando
+    public class LiberarPagoTasaMunicipal : Comando
     {
         public int PagoId { get; set; }   
         public int DiferenciaPagoId { get; set; }

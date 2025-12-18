@@ -23,24 +23,24 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
 
             var query = from rec in contexto.Set<Recorrido>()
+                        join rtm in contexto.Set<RecorridoTasaMunicipal>()
+                            on rec.Id equals rtm.Id
                         join pago in contexto.Set<PagosTasaMunicipal>()
                             on rec.InstanciaWorkflow equals pago.IdInstance into pagosGroup
                         from pago in pagosGroup.DefaultIfEmpty() // Left join
                         where
-
                             // Filtra por rango de fechas de ingreso
                             filtro.IngresoDesde <= rec.FechaInicio && rec.FechaInicio <= filtro.IngresoHasta
                             // Filtra por número de documento si se especifica
                             && (string.IsNullOrEmpty(filtro.NroDocumento) || rec.NumeroDocumentoIngreso == filtro.NroDocumento)
                             // Filtra por patente si se especifica
                             && (string.IsNullOrEmpty(filtro.Patente) || rec.Patente == filtro.Patente)
-                            // Filtra por pago consumido si se especifica
-                            && (!filtro.PagoConsumido.HasValue || (rec.PagoTasaMunicipalInformado == filtro.PagoConsumido))
                             // Filtra por workflow si se especifica
                             && (string.IsNullOrEmpty(filtro.WorkflowCodigo) || rec.Workflow.Codigo == filtro.WorkflowCodigo)
-                            // Excluye recorridos rechazados
-                            && rec.IngresoContingenciaPagoMunicipal
+                            && !rec.PagoTasaMunicipalInformado
+                            && !rtm.Exceptuado
                             && !rec.Rechazado
+                            && rec.Terminado
                         select new PanelPagoMunicipalDto
                         {
                             Id = rec.Id,
@@ -48,14 +48,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                             NumeroDocumento = rec.NumeroDocumentoIngreso,
                             WorkflowCodigo = rec.Workflow.Codigo,
                             WorkflowDescripcion = rec.Workflow.Descripcion,
-                            CuitInterviniente = pago.CuitInterviniente,
+                            CuitInterviniente = pago != null ? pago.CuitInterviniente : string.Empty,
                             Patente = rec.Patente,
                             TipoVehiculo = rec.TipoVehiculo,
-                            Importe = pago != null ? (decimal?)pago.Importe : null,
-                            FechaEmision = pago != null ? pago.FechaEmision : default(DateTime),
+                            Importe = pago != null ? pago.Importe : null,
+                            FechaEmision = pago != null ? pago.FechaEmision : (DateTime?)null,
                             FechaIngreso = rec.FechaInicio,
                             NumeroRecibo = pago != null ? pago.NroRecibo : null,
-                            PagoConsumido = rec.PagoTasaMunicipalInformado
+                            PagoInformado = rec.PagoTasaMunicipalInformado
                         };
 
             // Ordenación y paginación

@@ -77,20 +77,10 @@
                         </div>
 
                         <div class="row-fluid">
-                            <div class="span2" style="margin-left:99px;">
-                                @Html.LabelFor(model => model.PagoConsumido, new { @class = "control-label" })
-                            </div>
-
-                            <div class="span3 sinBorde" style="margin-left:-31px">
-                                @Html.CheckBox("PagoConsumido", new { @class = "input-large sinMargen" })
-                                @* Si quieres mostrar mensaje de error solo al enviar *@
-                                @Html.ValidationMessageFor(model => model.PagoConsumido, "", new { @class = "text-danger", style = "display:none;" })
-                            </div>
-
-                            <div class="span2" style="margin-left:-50px;">
+                            <div class="span2" style="margin-left: 99px;">
                                 @Html.LabelFor(model => model.WorkflowCodigo, new { @class = "control-label" })
                             </div>
-                            <div class="span3 sinBorde" style="margin-left:-20px">
+                            <div class="span3 sinBorde" style="margin-left: -31px">
                                 @Html.DropDownListFor(model => model.WorkflowCodigo, workflows, Textos.Default_Workflow, new { @class = "control" })
                                 @if (!ViewData.ModelState.IsValid)
                                 {

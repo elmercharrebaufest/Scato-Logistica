@@ -16,14 +16,14 @@
 @Html.Hidden("ids", Model.ToJson())
 @Html.Grilla(items,
     grilla => grilla.Columns(
-        grilla.Columna("seleccionCol", string.Empty, f => Html.CheckBox("seleccion", false, new { value = f.Id, @class = "columna-checkbox " + (f.PagoConsumido ? "hide" : "") })),
+        grilla.Columna("seleccionCol", string.Empty, f => Html.CheckBox("seleccion", false, new { value = f.Id, @class = "columna-checkbox " + (f.PagoInformado ? "hide" : "") })),
         grilla.Columna("NumeroDocumento", "Número de Documento", f => f.NumeroDocumento),
         grilla.Columna("Patente", "Patente", f => f.Patente),
         grilla.Columna("FechaIngreso", "Fecha de Ingreso", f => f.FechaIngreso.ToString("dd/MM/yyyy HH:mm")),
         grilla.Columna("Importe", "Importe", f => f.Importe),
         grilla.Columna("FechaEmision", "Fecha de Emisión", f => f.FechaEmision != null ? f.FechaEmision.ToString("dd/MM/yyyy") : string.Empty),
         grilla.Columna("NumeroRecibo", "Número de Recibo", f => f.NumeroRecibo),
-        grilla.Columna("PagoConsumido", "Pago Consumido", f => f.PagoConsumido ? "Sí" : "No"),
+        grilla.Columna("PagoConsumido", "Pago Informado", f => f.PagoInformado ? "Sí" : "No"),
         grilla.Columna("NombreUsuario", "Usuario", f => f.NombreUsuario),
         grilla.Columna("CuitInterviniente", "CUIT Interviniente", f => f.CuitInterviniente),
         grilla.Columna("TipoVehiculo", "Tipo de Vehículo", f => f.TipoVehiculo),

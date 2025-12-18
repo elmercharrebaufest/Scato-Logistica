@@ -89,7 +89,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     if (pagosVerificados != null && pagosVerificados.Count > 0)
                     {
                         var datosRecorrido = ObtenerImpresionReciboMunicipal(x => x.InstanciaWorkflow == recorrido.InstanciaWorkflow);
-                        var codigoDocumentoImpresion = Enum.GetName(typeof(TipoImpresion), TipoImpresion.ReciboMunicipal);
+                        var codigoDocumentoImpresion = Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad;
                         Log.Info($"Se encontraron {pagosVerificados.Count} pagos digitales asociados al recorrido.");
                         foreach (var pagoVerificado in pagosVerificados)
                         {
@@ -97,7 +97,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             var ticket = ObtenerNumeroDeTicketDigital(pagoVerificado.IdMOAPay, comando.PuestoDeTrabajoId);
                             Log.Info($"Número de puesto de trabajo: {comando.PuestoDeTrabajoId}, Número de ticket: {ticket}.");
                             var documento = ObtenerDocumentoDeImpresion(comando.PuestoDeTrabajoId, codigoDocumentoImpresion, recorrido.Centro.Id);
-                            ImprimirReciboPagoDigital(documento, datosRecorrido, ticket, pagoVerificado.Importe.ToString(), pagoVerificado.IdMOAPay, codigoDocumentoImpresion, recorrido.InstanciaWorkflow, 1);
+                            ImprimirReciboPagoDigital(documento, datosRecorrido, ticket, pagoVerificado.Importe.ToString(), pagoVerificado.Id, codigoDocumentoImpresion, recorrido.InstanciaWorkflow, 1);
                         }
                     }
                 }
@@ -142,7 +142,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var dto = new ImpReciboMunicipalDto
             {
-                Impresora = documento.Impresora.Direccion ?? "",
+                Impresora = documento?.Impresora?.Direccion ?? "",
                 Codigo = codigo,
                 TicketNro = ticket,
                 Ordenanza = recorrido.Ordenanza,

@@ -10,11 +10,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorConsultarPanelPagoMunicipal : ProcesadorComando<ConsultarPanelPagoMunicipal>
     {
-        private readonly IServicioComandos servicioComandos;
 
-        public ProcesadorConsultarPanelPagoMunicipal(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos, IServicioRepositorio servicioRepositorio) : base(repositorio, conversor, log)
+        public ProcesadorConsultarPanelPagoMunicipal(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioRepositorio servicioRepositorio) : base(repositorio, conversor, log)
         {
-            this.servicioComandos = servicioComandos;
         }        
 
         public override Resultado Ejecutar(ConsultarPanelPagoMunicipal comando)
@@ -30,7 +28,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             catch (Exception ex)
             {
-                Log.Error($"Error Obtener ConsultarPanelPagoMunicipal: {ex.Message}");
+                Log.Error(ex, $"Error Obtener ConsultarPanelPagoMunicipal");
                 resultado.Error(string.Empty, "Ocurrió un error al obtener LogExceptuadosTicketMunicipal.");
             }
 

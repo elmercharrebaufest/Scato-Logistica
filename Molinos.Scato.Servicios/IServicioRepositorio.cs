@@ -1,17 +1,17 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.ServiceModel;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.HealthCheck;
+using Molinos.Scato.Dominio.Dto.QRCamiones;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq.Expressions;
-using System.ServiceModel;
 
 namespace Molinos.Scato.Servicios
 {
@@ -3108,7 +3108,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ExistePagoRealizadoPorListaMaterial(string materialCodigoSap, string patente);
-        
+
         [OperationContract]
         int ObtenerIdPagoDigitalPorInstanceId(Guid instanceId);
 
@@ -3123,19 +3123,19 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool DebeImprimirReciboMunicipal(string patente, Guid instanceId);
-        
+
         [OperationContract]
         bool ExistePagoReciboMunicipal(string patente, string ctg);
-        
+
         [OperationContract]
         bool? LogPagaTicketMunicipal(Guid instanceId);
-	
+
         [OperationContract]
         IEnumerable<PagosTasaMunicipal> ObtenerPagosDigitalesPorInstanceId(Guid instanceId);
 
-	    [OperationContract]
+        [OperationContract]
         int ObtenerTipoVariedadRecorridoAnterior(string numeroCTG, int centroId);
-	
+
         [OperationContract]
         TipoVehiculo ObtenerTipodVehiculoPorPesoBruto(int pesoBruto, int centroId);
 
@@ -3144,7 +3144,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool EsUltimaActividadEnControlRecorrido(Guid workflowId, string actividad);
-        
+
         [OperationContract]
         IList<ProveedorRENSPADto> ListarRENSPAPorProveedorYTerm(int proveedorId, string term);
 
@@ -3162,17 +3162,21 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<MonitoreoServicioExternoDto> ListarMonitoreoServicioExterno();
-        
-        [OperationContract] 
+
+        [OperationContract]
         RegistroJobEjecucionDto ObtenerRegistroJobEjecucionPorProceso(string proceso);
 
         [OperationContract]
         bool EstaDemoradoPorTasaAdeudada(Guid instanceWorkflowId);
-	
-	[OperationContract]
+
+        [OperationContract]
         ExceptuadosTicketMunicipalDto ObtenerExcepcionDeTicketMunicipal(string patente, Guid? workflowInstanceId);
 
         [OperationContract]
         bool TieneExcepcionDePagoDeTasaMunicipal(string patente, Guid? workflowInstanceId);
+        
+        [OperationContract]
+        TrackingDataQRCamiones ObtenerTrackingData(string numeroCTG, string patente);
+
     }
 }

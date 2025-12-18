@@ -6,14 +6,14 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorModificarComoDevolucionPagosTasaMunicipal : ProcesadorModificar<ModificarComoDevolucionPagosTasaMunicipal>
+    public class ProcesadorLiberarPagoTasaMunicipal : ProcesadorModificar<LiberarPagoTasaMunicipal>
     {
-        public ProcesadorModificarComoDevolucionPagosTasaMunicipal(IRepositorio repositorio, IConversor conversor, ILogger log)
+        public ProcesadorLiberarPagoTasaMunicipal(IRepositorio repositorio, IConversor conversor, ILogger log)
             : base(repositorio, conversor, log)
         {
         }
 
-        protected override void ModificarEntidad(ModificarComoDevolucionPagosTasaMunicipal comando)
+        protected override void ModificarEntidad(LiberarPagoTasaMunicipal comando)
         {
             var tasaMunicipal = Repositorio.Obtener<PagosTasaMunicipal>(comando.PagoId);
 
@@ -21,7 +21,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 tasaMunicipal.Disponible = true;
         }
 
-        protected override void Validar(ModificarComoDevolucionPagosTasaMunicipal comando, Resultado resultado)
+        protected override void Validar(LiberarPagoTasaMunicipal comando, Resultado resultado)
         {
             if(!Repositorio.Existe<PagosTasaMunicipal>(c=> c.Id == comando.PagoId))
             {

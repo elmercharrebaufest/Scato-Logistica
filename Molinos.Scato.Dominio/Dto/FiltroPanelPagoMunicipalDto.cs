@@ -3,7 +3,6 @@ using Molinos.Scato.Dominio.Recursos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.UI;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -27,9 +26,6 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(Name = "Patente")]
         public string Patente { get; set; }
-
-        [Display(Name = "Pago Consumido")]
-        public bool?PagoConsumido { get; set; }
 
         public TipoDeServicio TipoDeServicio { get; set; }
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using Molinos.Scato.Dominio;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
@@ -10,6 +6,11 @@ using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Impl;
 using Ninject.Extensions.Logging;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Media.Media3D;
 
 namespace Molinos.Scato.Actividades
 {
@@ -185,16 +186,7 @@ namespace Molinos.Scato.Actividades
 
         private bool DeterminarSiExistePagoRealizadoEnElDia(IServicioRepositorio servicioRepositorio, RecorridoDto recorrido)
         {
-            var config = servicioRepositorio.ObtenerConfiguracionGeneral(
-                Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad,
-                Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado
-            );
-
-            var materialesConPago = config?.Valor?.Split(',').Select(x => x.Trim()).ToList() ?? new List<string>();
-
-            return
-                materialesConPago.Contains(recorrido.Material.CodigoSAP) &&
-                servicioRepositorio.ExistePagoRealizado(recorrido.Patente);
+           return servicioRepositorio.ExistePagoRealizadoPorListaMaterial(recorrido.Material.CodigoSAP, recorrido.Patente);
         }
 
         private bool DeterminarSiTieneExcepcionDePagoDeTasaMunicipal(IServicioRepositorio servicioRepositorio, RecorridoDto recorrido)
