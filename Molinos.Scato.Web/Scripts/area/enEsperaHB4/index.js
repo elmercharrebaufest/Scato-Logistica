@@ -34,3 +34,51 @@ function MostrarRespuestaMensajes(response) {
         }
     })
 }
+
+
+$(document).on('click', '.rechazar-boton', function () {
+    BlockUI();
+    $.get(this.href, cargarDialogoRechazar);
+    return false;
+});
+
+
+$(document).on('click', '.dialogo-rechazar-cerrar', function () {
+    $("#dialogo-rechazar").modal('hide');
+    $("#mensajeRechazar").html("");
+    return false;
+});
+
+function cargarDialogoRechazar(data) {
+    $("#mensajeRechazar").html(data);
+
+    $('#dialogo-rechazar').modal({
+        backdrop: 'static', keyboard: false
+    }).css({
+        width: function () {
+            return $('#dialogo-rechazar').outerWidth();
+        }, 'margin-left': function () {
+            return -($(this).width() / 2);
+        },
+        'top': '50%',
+        'margin-top': function () {
+            return -($(this).height() / 2);
+        }
+    });
+    $.unblockUI();
+}
+
+Mousetrap.stopCallback = function (e, element, combo) {
+    return false;
+};
+
+Mousetrap.bind('alt+1', function () {
+    $("#aceptar").click();
+});
+Mousetrap.bind('alt+2', function () {
+    BlockUI();
+    window.location.href = $("#botonCancelar").attr('href');
+});
+Mousetrap.bind('alt+3', function () {
+    $(".rechazar-boton").click();
+});

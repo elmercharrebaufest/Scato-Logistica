@@ -10,6 +10,6 @@ namespace Molinos.Scato.Actividades.Interfaces
     {
         [OperationContract]
         [return: MessageParameter(Name = "resultado")]
-        Resultado EnEsperaHB4(ControlRecorridoDto controlRecorrido, Guid instanceId);
+        Resultado EnEsperaHB4(ControlRecorridoDto controlRecorrido, Guid instanceId, bool rechazar);
     }
 }

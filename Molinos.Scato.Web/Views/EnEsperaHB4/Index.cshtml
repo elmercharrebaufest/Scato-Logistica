@@ -3,6 +3,9 @@
 @using Molinos.Scato.Web.Seguridad
 @using Molinos.Scato.Dominio.Seguridad
 @model Molinos.Scato.Dominio.Dto.RecorridoDto
+@{
+    var permiteRechazo = (bool)ViewBag.PermiteRechazo;
+}
 
 @section scripts
 {
@@ -47,14 +50,24 @@
     {
         <div>No tienes permiso para avanzar el camión</div>
     }
-    <div>
-        @if (PermisosHelper.Is(PermisosScato.EnEsperaHB4))
-        {
-            <button class="btn btn-primary" onclick="modalConfirmarPendienteHB4.showModal()">@Textos.Aceptar</button>
-        }
-        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
-    </div>
+<div>
+    @if (PermisosHelper.Is(PermisosScato.EnEsperaHB4))
+    {
+        <button class="btn btn-primary" onclick="modalConfirmarPendienteHB4.showModal()">@Textos.Aceptar</button>
+    }
+    @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+    @if (permiteRechazo)
+    {
+        @Html.ActionLink(Textos.ExcesoDePeso_Rechazar, "Rechazar", "EnEsperaHB4", new { workflowInstance = Model.InstanciaWorkflow, workflowDefinicionId = Model.WorkflowDefinicionId }, new { @class = "rechazar rechazar-boton btn btn-primary pull-right", @style = "margin-left: 4px;" })
+
+    }
 </div>
+</div>
+
+@if (ViewBag.Estado != null)
+{
+    <script type="text/javascript">$(document).ready(function () { MostrarAlertaAdvertencia('@ViewBag.Estado') });</script>
+}
 
 <dialog id="modalConfirmarPendienteHB4" class="dialogModal">
     <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>
@@ -66,3 +79,6 @@
         <button class="btn" onclick="modalConfirmarPendienteHB4.close()">Cerrar</button>
     </div>
 </dialog>
+
+<div id="mensajeRechazar">
+</div>
