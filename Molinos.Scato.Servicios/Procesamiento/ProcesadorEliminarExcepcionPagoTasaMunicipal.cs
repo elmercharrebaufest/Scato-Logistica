@@ -20,7 +20,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(EliminarExcepcionPagoTasaMunicipal comando, Resultado resultado)
         {
-
+            if (!Repositorio.Existe<ExceptuadosTicketMunicipal>(e => e.Id == comando.Id))
+                resultado.Error("ExcepcionNoEncontrada", "Excepción no encontrada");
+            else if (Repositorio.Existe<ExceptuadosTicketMunicipal>(e => e.Id == comando.Id && e.WorkflowInstanceId.HasValue))
+                resultado.Error("ExcepcionAsociadaARecorrido", "No se puede eliminar una excepción asociada a un recorrido");
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
@@ -9,9 +7,12 @@ using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.ServicioHub;
 using Ninject.Extensions.Logging;
+using System;
+using System.Linq;
 namespace Molinos.Scato.Web.Firmware
 {
     public class FirmwarePagoTasaMunicipal : FirmwareBase
@@ -44,11 +45,10 @@ namespace Molinos.Scato.Web.Firmware
             {
                 var configuracionIngreso = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.PagoTasaMunicipal, Constantes.ConfiguracionGeneral.PagoTasaMunicipal.PermitirBloqueoDeIngreso);
                 bool.TryParse(configuracionIngreso?.Valor, out bool tieneBloqueoDeIngreso);
-
+                var pagos = servicio.ObtenerPagosDigitalesPorInstanceId(recorrido.InstanciaWorkflow);
                 if (!tieneBloqueoDeIngreso)
                 {
-                    log.Info($"El recorrido {recorrido.InstanciaWorkflow} ya se encuentra rechazado y no tiene el bloqueo de ingreso.");
-                    var pagos = servicio.ObtenerPagosDigitalesPorInstanceId(recorrido.InstanciaWorkflow);
+                    log.Info($"El recorrido {recorrido.InstanciaWorkflow} ya se encuentra rechazado y no tiene el bloqueo de ingreso.");                   
                     if (pagos.Count() > 0)
                     {
                         log.Info($"El recorrido {recorrido.InstanciaWorkflow} tiene pagos digitales asociados.");
@@ -63,6 +63,18 @@ namespace Molinos.Scato.Web.Firmware
                     }
                 }
 
+                else if (pagos.Any())
+                {
+                    foreach (var pago in pagos)
+                    {
+                        comandos.Ejecutar(new MOAPayInformarPagoComoConsumido
+                        {
+                            Id = pago.Id,
+                            Disponible = "N",
+                            IdIntance = recorrido.InstanciaWorkflow
+                        });
+                    }
+                }
                 lecturaPuestoDeTrabajo.MensajeError = "CAMION RECHAZADO";
                 lecturaPuestoDeTrabajo.TipoAlerta = TipoAlerta.Error;
                 lecturaPuestoDeTrabajo.Rechazado = true;
