@@ -5,7 +5,7 @@
     <setParameter name="ScatoHangfireDb-Web.config Connection String" value="Data Source=SCATOHFAGLSPRD.molinosagro.ad;Initial Catalog=ScatoHangfire;Integrated Security=True" />
     <setParameter name="LoginCms Service Endpoint Address" value="https://wsaa.afip.gov.ar/ws/services/LoginCms" />
     <setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://serviciosjava.afip.gob.ar/wsctg/services/CTGService_v4.0" />
-    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://sapprgap.molinosagro.ad/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://vhmgkgapci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
     <setParameter name="ZSDWS_SCATO Binding Configuration" value="ZSDWS_SCATO_HTTPS" />
     <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
     <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />

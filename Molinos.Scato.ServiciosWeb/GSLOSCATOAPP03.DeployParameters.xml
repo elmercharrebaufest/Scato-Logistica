@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <parameters>
 	<setParameter name="IIS Web Application Name" value="Scato/Scato.serviciosWeb" />
 	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSPRD.molinosagro.ad;Initial Catalog=MOAScato;Integrated Security=True" />
 	<setParameter name="ScatoHangfireDb-Web.config Connection String" value="Data Source=SCATOHFAGLSPRD.molinosagro.ad;Initial Catalog=ScatoHangfire;Integrated Security=True" />
 	<setParameter name="LoginCms Service Endpoint Address" value="https://wsaa.afip.gov.ar/ws/services/LoginCms" />
 	<setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://serviciosjava.afip.gob.ar/wsctg/services/CTGService_v4.0" />
-	<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://sapprgap.molinosagro.ad/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+	<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://vhmgkgapci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
     <setParameter name="ZSDWS_SCATO Binding Configuration" value="ZSDWS_SCATO_HTTPS" />
     <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
 	<setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
@@ -22,10 +22,8 @@
 	<setParameter name="UrlNotificacionesWeb Config" value="http://scato.molinosagro.com.ar/Scato.web/ServicioHub/ServicioSuscriptor.svc" />
 	<setParameter name="MonsantoServiceUsername Config" value="ws_molinos" />
 	<setParameter name="MonsantoServicePassword Config" value="n41TwPC/D/iYU4ye1PAF7Q==" />
-
 	<setParameter name="DataAgroServiceUsername Config" value="molinosagro\DATAAGROP" />
 	<setParameter name="DataAgroServicePassword Config" value="J1c1E3jOwPIrGPUrSbE2MA==" />
-	
 	<setParameter name="FotosPath Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\" />
 	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\" />
 	<setParameter name="MailSettings Smtp From" value="scatoprodMOA@molinosagro.com.ar" />

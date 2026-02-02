@@ -8,7 +8,7 @@
     <setParameter name="FirmaProvider Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
     <setParameter name="ServicioNotificarUsuario Service Endpoint Address" value="http://localhost/Scato.web/ServicioHub/ServicioNotificarUsuario.svc" />
     <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
-    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://gviceccqa.molinosagro.ad/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://vhmgkgaqci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
     <setParameter name="ZSDWS_SCATO Binding Configuration" value="ZSDWS_SCATO_HTTPS" />
     <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
     <setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />
@@ -24,7 +24,7 @@
     <setParameter name="ReportingServices Password" value="iXJySJ0uWlj+U/7MqDH+dQ==" />
     <setParameter name="ReportingServices Domain" value="molinosagro" />
     <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
-    <setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
+    <setParameter name="SapServicePassword Config" value="NgQXU2Eua90rxLS24cwHIw==" />
     <setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
     <setParameter name="HostsServiciosWeb Config" value="http://GSLOSCATOQA01/Scato.serviciosWeb/|http://GSLOSCATOAPQ01/Scato.serviciosWeb/" />
     <setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
@@ -41,7 +41,7 @@
     <setParameter name="ICWSServerUrl Config" value="wss://gsloscatoqa01.molinosagro.ad:8889/rtc" />
     <setParameter name="FotosPathLogALPR Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\FotosLogAlpr" />
     <setParameter name="UrlBaseWebAPI Config" value="http://gsloscatoapq01.molinosagro.ad/Scato.WebApiCore/" />
-    <setParameter name="URLOperacionesAPI Config" value="http://qabaufest.moaoperaciones.com.ar/externalApi/external/api/" />
-    <setParameter name="APITokenOperacionesAPI Config" value="prueba" />
+    <setParameter name="URLOperacionesAPI Config" value="http://qacompras.moaoperaciones.com.ar/externalApi/external/api/" />
+    <setParameter name="APITokenOperacionesAPI Config" value="7cy0vWHYItVFd6phbcz1Id+qcUWVLYgwYLdJ8ZSq2xtrkxkMbQphs+oXG0/bjzgV" />
     <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoWeb.log" />
 </parameters>

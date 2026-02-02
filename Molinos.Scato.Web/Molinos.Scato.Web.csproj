@@ -776,7 +776,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Readme\Elmah.txt" />
-    <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-duallistbox.css" />
     <Content Include="Content\bootstrap-duallistbox.min.css" />
@@ -1227,10 +1226,6 @@
     <Content Include="Scripts\conversionMaterial.js" />
     <Content Include="Scripts\usuario.CrearModificar.js" />
     <Content Include="Scripts\vagon.js" />
-    <Content Include="AVVWHSCATAPP00.DeployParameters.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="GSLOSCATOAPQ01.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -459,10 +459,6 @@
     <Content Include="Scripts\_datePickerRangeValidator.js" />
     <Content Include="Scripts\_timePickerRangeValidator.js" />
     <Content Include="service-worker.js" />
-    <Content Include="AVVWHSCATM00_PRD.DeployParameters.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="SLOSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -472,10 +468,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ASVWPSCATMXX.DeployParameters.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AVVWHSCATM00.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

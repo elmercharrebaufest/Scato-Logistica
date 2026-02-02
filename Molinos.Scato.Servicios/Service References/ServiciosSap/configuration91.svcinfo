@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="9.1" CheckSum="a17rwHfMI3lpKeOTNaTAiUawVEjcSyX4WMIt2M7/ync=">
+<SavedWcfConfigurationInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="9.1" CheckSum="s/EHUiDrrUmGXHZU9gcwuCLGVn4TR1u2vnyfhynHBJg=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="customBinding" name="ZSDWS_SCATO">
       <properties>
@@ -100,7 +100,7 @@
           <serializedValue>System.ServiceModel.Configuration.HttpMessageHandlerFactoryElement</serializedValue>
         </property>
         <property path="/httpsTransport/messageHandlerFactory/handlers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.DelegatingHandlerElementCollection, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>(Collection)</serializedValue>
+          <serializedValue>(Colección)</serializedValue>
         </property>
         <property path="/httpsTransport/messageHandlerFactory/type" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -133,7 +133,7 @@
           <serializedValue>TransportSelected</serializedValue>
         </property>
         <property path="/httpsTransport/extendedProtectionPolicy/customServiceNames" isComplexType="true" isExplicitlyDefined="false" clrType="System.Security.Authentication.ExtendedProtection.Configuration.ServiceNameElementCollection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>(Collection)</serializedValue>
+          <serializedValue>(Colección)</serializedValue>
         </property>
         <property path="/httpsTransport/webSocketSettings" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.WebSocketTransportSettingsElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.WebSocketTransportSettingsElement</serializedValue>
@@ -260,7 +260,7 @@
           <serializedValue>System.ServiceModel.Configuration.HttpMessageHandlerFactoryElement</serializedValue>
         </property>
         <property path="/httpsTransport/messageHandlerFactory/handlers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.DelegatingHandlerElementCollection, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>(Collection)</serializedValue>
+          <serializedValue>(Colección)</serializedValue>
         </property>
         <property path="/httpsTransport/messageHandlerFactory/type" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -293,7 +293,7 @@
           <serializedValue>TransportSelected</serializedValue>
         </property>
         <property path="/httpsTransport/extendedProtectionPolicy/customServiceNames" isComplexType="true" isExplicitlyDefined="false" clrType="System.Security.Authentication.ExtendedProtection.Configuration.ServiceNameElementCollection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>(Collection)</serializedValue>
+          <serializedValue>(Colección)</serializedValue>
         </property>
         <property path="/httpsTransport/webSocketSettings" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.WebSocketTransportSettingsElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.WebSocketTransportSettingsElement</serializedValue>
@@ -323,10 +323,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="ZSDWS_SCATO" contract="ServiciosSap.ZSDWS_SCATO" bindingType="customBinding" address="http://gviceccqa.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" bindingConfiguration="ZSDWS_SCATO">
+    <endpoint name="ZSDWS_SCATO" contract="ServiciosSap.ZSDWS_SCATO" bindingType="customBinding" address="https://vhmgkgaqci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" bindingConfiguration="ZSDWS_SCATO">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://gviceccqa.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato</serializedValue>
+          <serializedValue>https://vhmgkgaqci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -408,10 +408,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="ZSDWS_SCATO_soap12" contract="ServiciosSap.ZSDWS_SCATO" bindingType="customBinding" address="http://gviceccqa.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" bindingConfiguration="ZSDWS_SCATO_soap12">
+    <endpoint name="ZSDWS_SCATO_soap12" contract="ServiciosSap.ZSDWS_SCATO" bindingType="customBinding" address="https://vhmgkgaqci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" bindingConfiguration="ZSDWS_SCATO_soap12">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://gviceccqa.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato</serializedValue>
+          <serializedValue>https://vhmgkgaqci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

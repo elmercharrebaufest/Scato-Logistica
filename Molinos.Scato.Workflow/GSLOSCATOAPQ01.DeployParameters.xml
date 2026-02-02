@@ -6,8 +6,8 @@
     <setParameter name="ServicioComandos Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
     <setParameter name="FirmaProvider Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
     <setParameter name="ServicioNotificarUsuario Service Endpoint Address" value="http://localhost/Scato.web/ServicioHub/ServicioNotificarUsuario.svc" />
-    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://vhmgkgaqci.sap.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
-    <setParameter name="ZSDWS_SCATO Binding Configuration" value="ZSDWS_SCATO_HTTP" />
+    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://vhmgkgaqci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+    <setParameter name="ZSDWS_SCATO Binding Configuration" value="ZSDWS_SCATO_HTTPS" />
     <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
     <setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />
     <setParameter name="Impresora Key" value="\\vicfsp02\PVicSiste010" />
@@ -17,7 +17,7 @@
     <setParameter name="MailSettings Smtp Port" value="25" />
     <setParameter name="MailSettings Smtp EnableSsl" value="false" />
     <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
-    <setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
+    <setParameter name="SapServicePassword Config" value="NgQXU2Eua90rxLS24cwHIw==" />
     <setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
     <setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
     <setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />

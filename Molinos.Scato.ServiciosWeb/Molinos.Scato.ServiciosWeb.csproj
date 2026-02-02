@@ -200,9 +200,6 @@
   <ItemGroup>
     <Content Include="ServicioLlamadoAutomatico.svc" />
     <Content Include="App_Readme\Elmah.txt" />
-    <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="AdministradorDeCalles.svc" />
     <Content Include="ServicioHangfireQueue.svc" />
     <Content Include="ServicioEstadoPuesto.svc" />
@@ -243,9 +240,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="VICSCATOUAT.DeployParameters.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AVVWHSCATAPP00.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="VICSCATOQA.DeployParameters.xml">

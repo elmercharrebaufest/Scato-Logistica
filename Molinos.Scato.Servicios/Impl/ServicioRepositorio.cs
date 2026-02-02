@@ -11427,32 +11427,32 @@ namespace Molinos.Scato.Servicios.Impl
             if (string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor))
                 return false;
 
-            var materialPagoRealizado = configuracionMaterialPagoRealizado.Valor.Split(',');
+            var materialesValidos = new HashSet<string>(
+                configuracionMaterialPagoRealizado.Valor.Split(',')
+                    .Select(m => m.Trim()),
+                StringComparer.OrdinalIgnoreCase);
 
-            if (!materialPagoRealizado.Contains(codigoSap))
+            if (!materialesValidos.Contains(codigoSap))
                 return false;
 
-            var hoy = DateTime.Today;
-            var mañana = hoy.AddDays(1);
+            var inicioDia = DateTime.Today;
+            var finDia = inicioDia.AddDays(1);
 
-            var materialId = repositorio.ObtenerProyeccion<Material, int>(
-                x => x.CodigoSAP == codigoSap,
-                x => x.Id);
+            var recorridos = repositorio.Listar<Recorrido>(
+                r => r.Patente == patente &&
+                     r.Material.CodigoSAP == codigoSap &&
+                     r.FechaInicio >= inicioDia &&
+                     r.FechaInicio < finDia &&
+                     (r.Terminado || r.Rechazado));
 
-            var recorrido = repositorio.Obtener<Recorrido>(
-                x => x.Patente == patente &&
-                     x.Material.Id == materialId &&
-                     x.FechaInicio >= hoy &&
-                     x.FechaInicio < mañana &&
-                     (x.Terminado || x.Rechazado));
+            if (recorridos.Any())
+                foreach (var recorrido in recorridos)
+                    if(repositorio.Existe<PagosTasaMunicipal>(p => p.IdInstance == recorrido.InstanciaWorkflow))
+                        return true;
 
-            if (recorrido == null)
-                return false;
-
-            return repositorio.Existe<PagosTasaMunicipal>(
-                x => x.Dominio == patente && x.IdInstance == recorrido.InstanciaWorkflow)
-                || ExistePagoRealizado(patente);
+            return ExistePagoRealizado(patente);
         }
+
 
         public int ObtenerIdPagoDigitalPorInstanceId(Guid instanceId)
         {

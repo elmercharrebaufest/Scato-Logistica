@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <parameters>
     <setParameter name="IIS Web Application Name" value="Scato/Scato.web" />
     <setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSPRD.molinosagro.ad;Initial Catalog=MOAScato;Integrated Security=True" />
@@ -8,7 +8,7 @@
     <setParameter name="FirmaProvider Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
     <setParameter name="ServicioNotificarUsuario Service Endpoint Address" value="http://localhost/Scato.web/ServicioHub/ServicioNotificarUsuario.svc" />
     <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
-    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://sapprgap.molinosagro.ad/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+    <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://vhmgkgapci.sap.molinosagro.ad:44300/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
     <setParameter name="ZSDWS_SCATO Binding Configuration" value="ZSDWS_SCATO_HTTPS" />
     <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
     <setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />

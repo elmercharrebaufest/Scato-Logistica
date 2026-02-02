@@ -1860,9 +1860,7 @@
     <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_VENTA_TRIGO_MAIZResponse1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiciosSap\zsdws_scato.wsdl">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Service References\ServiciosSap\zsdws_scato1.wsdl" />
     <None Include="Service References\Urenport\calpes.wsdl" />
     <None Include="tessdata\afr.traineddata" />
     <None Include="tessdata\amh.traineddata" />

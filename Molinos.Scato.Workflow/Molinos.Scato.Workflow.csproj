@@ -170,9 +170,6 @@
     <Compile Include="VirtualPath\WorkflowVirtualFile.cs" />
     <Compile Include="VirtualPath\WorkflowVirtualPathProvider.cs" />
     <Content Include="App_Readme\Elmah.txt" />
-    <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="SLOSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -184,9 +181,6 @@
     <Content Include="Global.asax" />
     <Content Include="ListaDeWorkflows.svc" />
     <Content Include="parameters.xml" />
-    <Content Include="AVVWHSCATAPP00.DeployParameters.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="GSLOSCATOAPQ01.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
