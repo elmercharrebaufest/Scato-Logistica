@@ -1,7 +1,8 @@
-﻿using System;
-using System.Configuration;
-using System.IdentityModel.Services;
+﻿using System.Web;
 using System.Web.Mvc;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
@@ -10,10 +11,11 @@ namespace Molinos.Scato.WebMobile.Controllers
         [AllowAnonymous]
         public void SignOut()
         {
-            var adfsLogoffUrl = ConfigurationManager.AppSettings["UrlAdfsLogoff"];
-            var authModule = FederatedAuthentication.WSFederationAuthenticationModule;
-            var signoutURL = WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl(authModule.Issuer, adfsLogoffUrl, null);
-            WSFederationAuthenticationModule.FederatedSignOut(new Uri(signoutURL), new Uri(authModule.Realm));
+            // Sign out from local cookie authentication
+            HttpContext.GetOwinContext().Authentication.SignOut(
+                CookieAuthenticationDefaults.AuthenticationType,
+                OpenIdConnectAuthenticationDefaults.AuthenticationType
+            );
         }
     }
 }

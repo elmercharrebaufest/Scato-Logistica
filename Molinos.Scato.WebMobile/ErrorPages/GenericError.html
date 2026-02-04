@@ -1,3 +1,230 @@
-﻿<div style="vertical-align: central; align-content:center;">
-    <img src="../Content/images/pageError.png" />
-</div>
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Scato</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        
+        /* Header/Top styles */
+        .navbar-menu {
+            background-color: #f8f9fa !important;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .navbar-menu a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        #logomolinos {
+            display: flex;
+            align-items: center;
+        }
+        
+        #logomolinos {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+        
+        #logoMolinos {
+            max-height: 40px;
+            width: auto;
+            display: block;
+        }
+        
+        .signout-link {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .signout-link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .signout-link svg {
+            display: block;
+        }
+        
+        /* Content container */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .error-container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .error-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .details-section {
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .details-toggle {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .details-toggle:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .details-toggle::after {
+            content: '▼';
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .details-toggle.expanded::after {
+            transform: rotate(180deg);
+        }
+        
+        .details-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+        
+        .details-content.expanded {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .details-message {
+            padding: 15px;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #d32f2f;
+        }
+        
+        .home-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #059a0f;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        
+        .home-link:hover {
+            background-color: #047a0c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top/Header Navigation -->
+    <nav class="navbar-menu">
+        <a id="logomolinos" href="../">
+            <img alt="Molinos" src="../Content/Images/Logo.png" id="logoMolinos">
+        </a>
+        <a href="../Account/SignOutDirect" class="signout-link" title="Cerrar sesión">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);">
+                <path d="M16 13v-2H7V8l-5 4 5 4v-3z"></path>
+                <path d="M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z"></path>
+            </svg>
+        </a>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <div class="error-container">
+            <img src="../Content/images/pageError.png" alt="Error" class="error-image" />
+            
+            <div class="details-section" id="detailsSection" style="display: none;">
+                <div class="details-toggle" id="detailsToggle">
+                    <strong>Detalles</strong>
+                </div>
+                <div class="details-content" id="detailsContent">
+                    <div class="details-message" id="errorMessage"></div>
+                </div>
+            </div>
+            
+            <a href="../" class="home-link">Volver al inicio</a>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ===================================================================
+            // HANDLE ERROR MESSAGE DISPLAY
+            // ===================================================================
+            // Extract message from URL query string
+            var urlParams = new URLSearchParams(window.location.search);
+            var message = urlParams.get('message');
+            
+            if (message) {
+                // Show details section
+                document.getElementById('detailsSection').style.display = 'block';
+                
+                // Decode and display message
+                document.getElementById('errorMessage').textContent = decodeURIComponent(message);
+                
+                // Toggle functionality
+                var toggle = document.getElementById('detailsToggle');
+                var content = document.getElementById('detailsContent');
+                
+                toggle.addEventListener('click', function() {
+                    var isExpanded = content.classList.contains('expanded');
+                    
+                    if (isExpanded) {
+                        content.classList.remove('expanded');
+                        toggle.classList.remove('expanded');
+                    } else {
+                        content.classList.add('expanded');
+                        toggle.classList.add('expanded');
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

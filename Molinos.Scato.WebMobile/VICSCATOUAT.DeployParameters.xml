@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
 	<setParameter name="IIS Web Application Name" value="Scato/Scato.WebMobile" />
+	
 	<setParameter name="ServicioRepositorio Service Endpoint Address" value="http://scatouat.molinosagro.com.ar/Scato.serviciosWeb/ServicioRepositorio.svc?wsdl" />
 	<setParameter name="ServicioComandos Service Endpoint Address" value="http://scatouat.molinosagro.com.ar/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
 	<setParameter name="ListaDeWorkflows Service Endpoint Address" value="http://scatouat.molinosagro.com.ar/Scato.workflow/ListaDeWorkflows.svc?wsdl" />
 	<setParameter name="FirmaProvider Service Endpoint Address" value="http://scatouat.molinosagro.com.ar/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
+
 	<setParameter name="UrlBaseWorkflow Config" value="http://scatouat.molinosagro.com.ar/Scato.workflow/xaml/" />
-	<setParameter name="FederationMetadataLocation Config" value="https://pase.molinosagro.com.ar/FederationMetadata/2007-06/FederationMetadata.xml" />
-	<setParameter name="Issuer Config" value="https://pase.molinosagro.com.ar/adfs/ls/" />
-	<setParameter name="IssuerTrust Identity Configuration" value="http://pase.molinosagro.com.ar/adfs/services/trust" />
-	<setParameter name="RealmUrl Identity Configuration" value="http://scatouat.molinosagro.com.ar/Scato.webmobile/" />
-	<setParameter name="AudienceUrl Identity Configuration" value="http://scatouat.molinosagro.com.ar/" />
-	<setParameter name="Thumbprint Identity Configuration" value="b5333d6bc845c216ba23726da9eed40466da1354" />
-	<setParameter name="UrlAdfsLogoff Config" value="https://pase.molinosagro.com.ar/adfs/ls/?wa=wsignout1.0" />
+	
 	<setParameter name="ServiciosScatoBinding Security Configuration" value="None" />
-  <setParameter name="PersistentSessionLifetime Config" value="5:0:0" />
-  <setParameter name="WSFederationAuthenticationRequireSsl" value="true" />
-  <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoMobile.log" />
+	<setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoMobile.log" />
+
+	<setParameter name="ClientId Config" value="390ccdd3-cd5d-4404-b3ca-620f0d0fc41c" />
+	<setParameter name="ClientSecret Config" value="p1Y8Q~~ewmuT06CpQZ4r3sVG9O_Ptw7zGdYmAb5p" />
+	<setParameter name="RedirectUri Config" value="https://scatouat.molinosagro.com.ar/Scato.WebMobile/signin-oidc" />
+	<setParameter name="PostLogoutRedirectUri Config" value="https://scatouat.molinosagro.com.ar/Scato.WebMobile/" />
+	<setParameter name ="Use Https Config Login" value="false" />	
 </parameters>

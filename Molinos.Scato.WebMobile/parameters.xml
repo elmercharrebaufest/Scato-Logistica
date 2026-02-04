@@ -28,40 +28,50 @@
 						match="/configuration/appSettings/add[@key='UrlBaseWorkflow']
                            /@value" />
 	</parameter>
-	<parameter name="FederationMetadataLocation Config">
+	
+	<!-- ===== Azure Entra ID (Azure AD) Configuration ===== -->
+	<parameter name="TenantId Config" defaultValue="790c9737-0b8e-4138-a0f4-819cdc1eb64b">
 		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/appSettings/add[@key='ida:FederationMetadataLocation']
+						match="/configuration/appSettings/add[@key='ida:TenantId']
                            /@value" />
 	</parameter>
-	<parameter name="Issuer Config">
+	<parameter name="ClientId Config">
 		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/appSettings/add[@key='ida:Issuer']
+						match="/configuration/appSettings/add[@key='ida:ClientId']
                            /@value" />
-		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@issuer" />
 	</parameter>
-	<parameter name="IssuerTrust Identity Configuration">
+	<parameter name="ClientSecret Config">
 		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/@name" />
-		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/validIssuers/add/@name" />
+						match="/configuration/appSettings/add[@key='ida:ClientSecret']
+                           /@value" />
 	</parameter>
-	<parameter name="RealmUrl Identity Configuration">
+	<parameter name="RedirectUri Config">
 		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@realm" />
-		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@reply" />
+						match="/configuration/appSettings/add[@key='ida:RedirectUri']
+                           /@value" />
 	</parameter>
-
-	<parameter name="AudienceUrl Identity Configuration">
+	<parameter name="PostLogoutRedirectUri Config">
 		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel/identityConfiguration/audienceUris/add/@value" />
+						match="/configuration/appSettings/add[@key='ida:PostLogoutRedirectUri']
+                           /@value" />
 	</parameter>
-
-	<parameter name="Thumbprint Identity Configuration">
+	<parameter name="Authority Config" defaultValue="https://login.microsoftonline.com/790c9737-0b8e-4138-a0f4-819cdc1eb64b/v2.0">
 		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/keys/add/@thumbprint" />
+						match="/configuration/appSettings/add[@key='ida:Authority']
+                           /@value" />
 	</parameter>
+	<parameter name="Use Https Config Login">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/appSettings/add[@key='ida:UseHttps']
+                           /@value" />
+	</parameter>
+	<parameter name="Cookie Expire Time Hours" defaultValue="120">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+						match="/configuration/appSettings/add[@key='ida:CookieExpireTimeHours']
+                           /@value" />
+	</parameter>	
+	<!-- ===== End Azure Entra ID (Azure AD) Configuration ===== -->
+	
 
 	<parameter name="ServiciosScatoBinding Security Configuration">
 		<parameterEntry kind="XmlFile" scope="Web.config"
@@ -69,33 +79,10 @@
                     /security/@mode" />
 	</parameter>
 
-	<parameter name="UrlAdfsLogoff Config">
-		<parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/appSettings/add[@key='UrlAdfsLogoff']
-                           /@value" />
-	</parameter>
-  <parameter name="PersistentSessionLifetime Config" defaultValue="0:15:0">
-    <parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel.services/federationConfiguration/cookieHandler/@persistentSessionLifetime" />
-  </parameter>
-		
-  <!-- Agrega modulo de autenticacion por ADFS para todos los entornos desplegados-->
-	<!-- <add name="WSFederationAuthenticationModule" type="Molinos.Scato.WebMobile.Seguridad.FixedWsFederationAuthenticationModule, Molinos.Scato.WebMobile" preCondition="managedHandler" /> -->
-  <parameter name="WSFederationAuthenticationModule" defaultValue="&lt;add name=&quot;WSFederationAuthenticationModule&quot; type=&quot;Molinos.Scato.WebMobile.Seguridad.FixedWsFederationAuthenticationModule, Molinos.Scato.WebMobile&quot; preCondition=&quot;managedHandler&quot; /&gt;">
-    <parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.webServer/modules" />
-  </parameter>
-
   <!-- Quita el Dummy de autenticacion al desplegar -->
   <parameter name="DummyAuthenticationModule" defaultValue="">
     <parameterEntry kind="XmlFile" scope="Web.config"
 						match="/configuration/system.webServer/modules/add[@name='DummyAuthenticationModule']" />
-  </parameter>
-
-  <!-- requireSsl -->
-  <parameter name="WSFederationAuthenticationRequireSsl" defaultValue="false">
-    <parameterEntry kind="XmlFile" scope="Web.config"
-						match="/configuration/system.identityModel.services/federationConfiguration/cookieHandler/@requireSsl" />
   </parameter>
 
   <parameter name="RollingLogFileAppenderFileValue log4net.config">
