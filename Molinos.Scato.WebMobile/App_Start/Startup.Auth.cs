@@ -422,6 +422,13 @@ namespace Molinos.Scato.WebMobile
                 return;
             }
 
+            var existingClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+            if (existingClaim != null)
+            {
+                identity.RemoveClaim(existingClaim);
+            }
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));
+
             // Roles / permisos
             var permisos = repo.ListarPermisosPorUsuario(username);
             foreach (var permiso in permisos)
