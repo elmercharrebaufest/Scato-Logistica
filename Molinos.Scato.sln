@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11217.181 d18.0
+VisualStudioVersion = 18.0.11217.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.Web", "Molinos.Scato.Web\Molinos.Scato.Web.csproj", "{FA51B713-73F4-40C3-ACA3-8F2210400E08}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -72,6 +72,20 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Testing", "Unit Testing", "{43926B9C-4CA7-42AD-9F1D-B99D4516D560}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Molinos.Scato.Database", "Molinos.Scato.Database\Molinos.Scato.Database.sqlproj", "{2A13F03D-A296-4CE5-859F-A3A26B884E0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{C8858492-C7F0-4B88-B090-5F0F2E226A44}"
+	ProjectSection(SolutionItems) = preProject
+		.github\copilot-instructions.md = .github\copilot-instructions.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{5392B85B-77EB-418B-95C2-8A80EE442763}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Molinos.Scato.WebMobile", "Molinos.Scato.WebMobile", "{B9E6BC95-CE32-486F-950A-82CE85E8D25D}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Molinos.Scato.WebMobile\AUTHENTICATION_REFACTORING.md = Documentation\Molinos.Scato.WebMobile\AUTHENTICATION_REFACTORING.md
+		Documentation\Molinos.Scato.WebMobile\ENTRA_ID_DEV_GUIDE.md = Documentation\Molinos.Scato.WebMobile\ENTRA_ID_DEV_GUIDE.md
+		Documentation\Molinos.Scato.WebMobile\ENTRA_ID_MIGRATION_PLAN.md = Documentation\Molinos.Scato.WebMobile\ENTRA_ID_MIGRATION_PLAN.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -448,9 +462,10 @@ Global
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA} = {58F35E93-C5AB-4C5B-9D31-C336376F6903}
 		{BB3AC6C1-ADF5-4782-A651-0F9D71C13A43} = {89A16219-EB00-4FE9-B70D-208BA6160019}
 		{2A13F03D-A296-4CE5-859F-A3A26B884E0D} = {58F35E93-C5AB-4C5B-9D31-C336376F6903}
+		{B9E6BC95-CE32-486F-950A-82CE85E8D25D} = {5392B85B-77EB-418B-95C2-8A80EE442763}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = es-AR
 		SolutionGuid = {9DDEFB12-34EF-487C-AD39-BE59400A56B5}
+		RESX_NeutralResourcesLanguage = es-AR
 	EndGlobalSection
 EndGlobal

@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Web.Hosting;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Helpers;
@@ -14,11 +15,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorAgregarMarcaSustentable : ProcesadorComando<AgregarMarcaSustentable>
     {
-        private readonly IConfiguracionProvider configuracion;
-        public ProcesadorAgregarMarcaSustentable(IRepositorio repositorio, IConversor conversor, ILogger log, IConfiguracionProvider configuracion)
+        private const string RutaSelloSustentable = "~/Images/sello-sustentable.jpg";
+
+        public ProcesadorAgregarMarcaSustentable(IRepositorio repositorio, IConversor conversor, ILogger log)
             : base(repositorio, conversor, log)
         {
-            this.configuracion = configuracion;
         }
 
         public override Resultado Ejecutar(AgregarMarcaSustentable comando)
@@ -26,13 +27,25 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if(comando.SoloDibujar)
             {
                 var resultadoDibujo = new ResultadoCartaPorteElectronica();
-                Bitmap imagenBitmap;
-                using (var ms = new MemoryStream(comando.PdfImage))
+                Bitmap imagenBitmap = null;
+                try
                 {
+                    using (var ms = new MemoryStream(comando.PdfImage))
+                    {
                         imagenBitmap = new Bitmap(ms);
+                    }
+                    var imagenConSelloSustentable = DibujarSustentable(imagenBitmap);
+                    resultadoDibujo.PdfImageSustentable = ImageToByte(imagenConSelloSustentable);
                 }
-                var imagenConSelloSustentable = DibujarSustentable(imagenBitmap);
-                resultadoDibujo.PdfImageSustentable = ImageToByte(imagenConSelloSustentable);
+                catch (Exception e)
+                {
+                    Log.Error(e, "Error al agregar marca sustentable en modo SoloDibujar");
+                    resultadoDibujo.Error("", e.Message);
+                }
+                finally
+                {
+                    imagenBitmap?.Dispose();
+                }
                 return resultadoDibujo;
             }
 
@@ -63,21 +76,38 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private Bitmap DibujarSustentable(Bitmap imagenCP)
         {
-            Bitmap imagenSustentable;
-            var posicionImagenSustentableX = Convert.ToInt32(ConfigurationManager.AppSettings.Get("PosicionImagenSustentableX"));
-            var posicionImagenSustentableY = Convert.ToInt32(ConfigurationManager.AppSettings.Get("PosicionImagenSustentableY"));
+            var configPosicionImagenSustentableX = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.MarcaSustentable && x.Nombre == Constantes.ConfiguracionGeneral.MarcaSustentable.PosicionImagenSustentableX);
+            var posicionImagenSustentableX = configPosicionImagenSustentableX != null && !string.IsNullOrEmpty(configPosicionImagenSustentableX.Valor) ? Convert.ToInt32(configPosicionImagenSustentableX.Valor) : 0;
 
-            using (var ms = new MemoryStream(Convert.FromBase64String(ConfigurationManager.AppSettings.Get("ImagenSustentableBase64"))))
-            {
-                imagenSustentable = new Bitmap(ms);
-            }
+            var configPosicionImagenSustentableY = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.MarcaSustentable && x.Nombre == Constantes.ConfiguracionGeneral.MarcaSustentable.PosicionImagenSustentableY);
+            var posicionImagenSustentableY = configPosicionImagenSustentableY != null && !string.IsNullOrEmpty(configPosicionImagenSustentableY.Valor) ? Convert.ToInt32(configPosicionImagenSustentableY.Valor) : 0;
+
+            Bitmap imagenSustentable = CargarImagenSello();
 
             using (Graphics graphics = Graphics.FromImage(imagenCP))
             {
                 graphics.DrawImage(imagenSustentable, posicionImagenSustentableX, posicionImagenSustentableY, 300, 150);
             }
 
+            imagenSustentable.Dispose();
+
             return imagenCP;
+        }
+
+        private Bitmap CargarImagenSello()
+        {
+            var rutaFisica = HostingEnvironment.MapPath(RutaSelloSustentable);
+
+            if (rutaFisica == null || !File.Exists(rutaFisica))
+            {
+                rutaFisica = RutaSelloSustentable.Replace("~/", "");
+                if (!File.Exists(rutaFisica))
+                {
+                    throw new FileNotFoundException("No se encontró la imagen del sello sustentable en: " + RutaSelloSustentable);
+                }
+            }
+
+            return new Bitmap(rutaFisica);
         }
 
         private static ImageCodecInfo GetEncoder(ImageFormat format)

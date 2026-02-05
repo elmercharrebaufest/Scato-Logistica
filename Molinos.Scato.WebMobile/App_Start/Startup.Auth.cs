@@ -422,6 +422,7 @@ namespace Molinos.Scato.WebMobile
                 return;
             }
 
+            //copy the username to NameIdentifier claim
             var existingClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
             if (existingClaim != null)
             {
