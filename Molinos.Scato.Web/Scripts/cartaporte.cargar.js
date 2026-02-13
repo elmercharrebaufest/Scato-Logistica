@@ -124,6 +124,7 @@ function LlenarCartaPorteRedespacho(cartaPorte) {
     $('#Intermediario').addClass("italic");
 
     //RtteComercial
+    $('#RtteComercialCuit').val(cartaPorte.RtteComercialCuit);
     $('#RtteComercialId').val(cartaPorte.RtteComercialId);
     $('#RtteComercial').val(cartaPorte.RtteComercial);
     $('#RtteComercial').addClass("italic");
@@ -329,6 +330,7 @@ function LimpiarCartaPorte() {
     $('#TitularCartaPorte').val('');
     $('#IntermediarioId').val('0');
     $('#Intermediario').val('');
+    $('#RtteComercialCuit').val('');
     $('#RtteComercialId').val('0');
     $('#RtteComercial').val('');
     $('#CorredorId').val('0');

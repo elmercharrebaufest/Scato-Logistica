@@ -213,19 +213,7 @@ namespace Molinos.Scato.Web.Controllers
             filtro.MostrarCamionesPendientes = PermisosHelper.Is(PermisosScato.CamionesPendientesMesa);
             filtro.MostrarCamionesPendientesNoGranos = PermisosHelper.Is(PermisosScato.CamionesPendientesNoGranos);
             
-
             var instancias = workflows.ListarWorkFlows(paginacion, filtro);
-
-            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
-
-            instancias.InstanciasWorkflowDto.ForEach(i =>
-            {
-                if (i.Codigo != null)
-                {
-                    i.SojaIMPO = i.Codigo.Equals(workflowImpoGranos);
-                }
-            });
-
             ViewBag.Items = instancias.InstanciasWorkflowDto;
         }
 

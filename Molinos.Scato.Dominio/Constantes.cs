@@ -9,16 +9,16 @@ namespace Molinos.Scato.Dominio
             public const string CupoGenerico = "MOL1111/11111111";
             public const long CuitMOA = 30715118773;
             public const string NumeroRemitoGenerico = "1111-11111111";
+
             public const string ColorFondoSojaEPA = "#FC4D75";
             public const string ColorTextoSojaEPA = "#FFFFFF";
-            public const string ColorFondoSojaIMPO = "#00D9D9";
-            public const string ColorTextoSojaIMPO = "#FFFFFF";
             public const string ColorFondoSojaEUDR = "#353DFF";
             public const string ColorTextoSojaEUDR = "#FFFFFF";
             public const string ColorFondoSojaEPAyEUDR = "#BC35FF";
             public const string ColorTextoSojaEPAyEUDR = "#FFFFFF";
             public const string ColorFondoSojaSustentable = "#006302";
             public const string ColorTextoSojaSustentable = "#FFFFFF";
+
             public const string CodigoSapTPR = "70809606";
             public const string CodigoSapACA = "50012088";
             public const string EstablecimientoACA = "21145";
@@ -311,6 +311,8 @@ namespace Molinos.Scato.Dominio
             public const string Estandar = "EST";
             public const string EUDR = "EUDR";
             public const string EPAyEUDR = "EPAEUDR";
+            public const string ImportacionACA = "IMPOACA";
+            public const string ImportacionTPR = "IMPOTPR";
         }
 
         public struct Job

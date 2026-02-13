@@ -38,12 +38,9 @@
                     + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty))
                     + (item.Rechazado ? " <strong style='color: #b94a48;' >" + Textos.Rechazos + "</strong>" : string.Empty)
                     + (
-                        item.SojaEPAyEUDR ? " <strong style='color: #bc35ff;' >" + Textos.Soja_EPA + "/" + Textos.Soja_EUDR + "</strong>"
-                        : item.SojaEUDR ? " <strong style='color: #353dff;' >" + Textos.Soja_EUDR + "</strong>"
-                        : item.SojaEPA ? " <strong style='color: #FC4D75;' >" + Textos.Soja_EPA + "</strong>"
-                        : item.SojaIMPO ? " <strong style='color: #00D9D9;' >" + Textos.Soja_IMPO + "</strong>"
-                        : item.EsSustentable ?  " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>"
-                        : string.Empty
+                        !string.IsNullOrEmpty(item.TipoVariedadDescripcion) 
+                            ? $" <strong style='color: {item.TipoVariedadColorTexto};' >{item.TipoVariedadDescripcion}</strong>" 
+                            : string.Empty
                       )
                     + (item.ProximaAccion.Contains("Pendiente") ? Html.BotonLink(Textos.Eliminar, "Eliminar", "CargaDeCupo", new { Id = item.RecorridoId }, " ajax-borrar-link", "icon-trash", true).ToHtmlString() : string.Empty)
                     + (item.EsEspecial && !item.CaracteristicasNoCorrenspodenEspecial ? " <strong style='color: #ffe135;' >" + Textos.CalidadEspecial + "</strong>" : string.Empty)

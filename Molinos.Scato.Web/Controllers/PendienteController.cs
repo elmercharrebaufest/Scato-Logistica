@@ -44,7 +44,8 @@ namespace Molinos.Scato.Web.Controllers
             }
             else if(cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapPuertoRosario 
                 || cargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA
-                    && cargaDeCupo.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA)
+                    && cargaDeCupo.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA
+                    && cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro)
             {
                 return RedirectToAction("Index", "IngresarCartaPorteRedespachoImportaciones", new { workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"], cargaDeCupoId = id });
             }

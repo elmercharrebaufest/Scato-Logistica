@@ -167,7 +167,11 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     Calle = x.CallePorRecorridos.Where(o => o.FechaEgreso == null).Select(y => y.Calle.Nombre).FirstOrDefault(),
                     SojaEPA = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPA,
                     SojaEUDR = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EUDR,
-                    SojaEPAyEUDR = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR
+                    SojaEPAyEUDR = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR,
+                    TipoVariedadDescripcion = x.TipoVariedad != null && x.TipoVariedad.Codigo != Constantes.TipoVariedadMaterial.Estandar ? x.TipoVariedad.Descripcion : string.Empty,
+                    TipoVariedadColorTexto = x.TipoVariedad != null && x.TipoVariedad.Codigo != Constantes.TipoVariedadMaterial.Estandar
+                        ? contexto.Set<TipoVariedadPorMaterial>().Where(v => v.TipoVariedadId == x.TipoVariedad.Id && v.MaterialId == x.Material.Id).Select(v => v.ColorFondo).FirstOrDefault() 
+                        : string.Empty,
                 }).ToList();
 
             LlenarDatosCaracteristicasAnalizadas(datos, contexto);

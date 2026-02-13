@@ -84,15 +84,12 @@ namespace Molinos.Scato.Web.Controllers
             filtro.TipoDeProteina = TipoDeProteina.Todos;
 
             var datosWorkflow = servicio.ListarWorkFlows(paginacion, filtro);
-            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
-
             foreach (var instancia in datosWorkflow.Workflows)
             {
                 if (instancia.MaterialCodigoSap == ConfigurationManager.AppSettings["CodigoSapSemillaSoja"])
                 {
                     instancia.EsSemillaSoja = true;
                 }
-                instancia.SojaIMPO = instancia.Codigo.Equals(workflowImpoGranos);
             }
 
             ViewBag.MaterialesFiltrados = datosWorkflow.Workflows

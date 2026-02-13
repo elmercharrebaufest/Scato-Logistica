@@ -6171,6 +6171,7 @@ namespace Molinos.Scato.Servicios.Impl
             var datosAnalisis = repositorio.Listar(x => new { x.CaracteristicasNoCorrenspodenEspecial, x.Recorrido.InstanciaWorkflow }, (CaracteristicasAnalizadas x) => instanceIds.Contains(x.Recorrido.InstanciaWorkflow));
             var caladoPorCaracteristica = repositorio.Listar<CaladoPorCaracteristica>(y => instanceIds.Contains(y.Calado.WorkflowInstanceId));
             var caladosPorCaracteristicaConProteina = caladoPorCaracteristica.Where(x => x.CaracteristicaDeCalidad.DescripcionCorta.ToUpper() == "PROTEINA");
+            var tipoVariedadesPorMaterial = repositorio.Listar<TipoVariedadPorMaterial>();
             var datos = repositorio.Listar<Recorrido, DatosInstanciaWorkflowDto>(
                     x =>
                     new DatosInstanciaWorkflowDto
@@ -6200,14 +6201,14 @@ namespace Molinos.Scato.Servicios.Impl
                         Proteina = "",
                         AlmacenDestino = x.Almacen.DescripcionCorta != null ? x.Almacen.DescripcionCorta : "",
                         DiferenciaPesoNeto = x.PesoTara.HasValue && x.PesoBruto.HasValue ? x.PesoBruto - x.PesoTara - (x.PesoBrutoOrigen - x.PesoTaraOrigen) : null,
-                        SojaEPA = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPA,
-                        SojaEUDR = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EUDR,
-                        SojaEPAyEUDR = x.TipoVariedad != null && x.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR
+                        TipoVariedadDescripcion = x.TipoVariedad != null && x.TipoVariedad.Codigo != Constantes.TipoVariedadMaterial.Estandar ? x.TipoVariedad.Descripcion : string.Empty,
+                        TipoVariedadId = x.TipoVariedad != null && x.TipoVariedad.Codigo != Constantes.TipoVariedadMaterial.Estandar ? x.TipoVariedadId : null,
                     }, x => instanceIds.Contains(x.InstanciaWorkflow),
                     instanceIds.Count);
             foreach (var dato in datos)
             {
-                dato.Proteina = caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault() != null ? caladosPorCaracteristicaConProteina?.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault().ValorCalado.ToString() : "";
+                dato.Proteina = caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault() != null ? caladosPorCaracteristicaConProteina?.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault().ValorCalado.ToString() : string.Empty;
+                dato.TipoVariedadColorTexto = dato.TipoVariedadId != null ? tipoVariedadesPorMaterial.Where(x => x.TipoVariedadId == dato.TipoVariedadId && x.MaterialId == dato.MaterialId).Select(t => t.ColorFondo).FirstOrDefault() : string.Empty;
             }
 
             foreach (var datoAnalisis in datosAnalisis)
@@ -9626,15 +9627,9 @@ namespace Molinos.Scato.Servicios.Impl
                     EsSojaEUDR = item.EsSojaEUDR,
                     EsSojaIMPO = item.EsSojaIMPO,
                     EsSojaEPAyEUDR = item.EsSojaEPAyEUDR,
-                    ColorFondo = item.EsSojaEPAyEUDR ? Constantes.ValoresPorDefecto.ColorFondoSojaEPAyEUDR
-                                    : item.EsSojaEUDR == true ? Constantes.ValoresPorDefecto.ColorFondoSojaEUDR
-                                    : item.EsSojaEPA == true ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA
-                                    : item.EsSojaIMPO == true ? Constantes.ValoresPorDefecto.ColorFondoSojaIMPO
+                    ColorFondo = !string.IsNullOrEmpty(item.ColorFondo) ? item.ColorFondo
                                     : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
-                    ColorTexto = item.EsSojaEPAyEUDR ? Constantes.ValoresPorDefecto.ColorTextoSojaEPAyEUDR
-                                    : item.EsSojaEUDR == true ? Constantes.ValoresPorDefecto.ColorTextoSojaEUDR
-                                    : item.EsSojaEPA == true ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA
-                                    : item.EsSojaIMPO == true ? Constantes.ValoresPorDefecto.ColorTextoSojaIMPO
+                    ColorTexto = !string.IsNullOrEmpty(item.ColorTexto) ? item.ColorTexto
                                     : (item.MaterialColorTexto ?? item.CargaCupoColorTexto),
                     EsDemorado = (item.TipoCalle == TipoCalle.NoGranos || item.TipoCalle == TipoCalle.PreCalado || item.TipoCalle == TipoCalle.PostCalado || item.TipoCalle == TipoCalle.RechazadosDemorados) && item.EsDemorado,
                     RecorridoId = item.IdRecorrido,
@@ -10779,17 +10774,20 @@ namespace Molinos.Scato.Servicios.Impl
             return infoCalle;
         }
 
-        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esEUDR = false, bool esSustentable = false)
+        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esEUDR = false, bool esSustentable = false, string remitenteComercialCuit = null)
         {
             var variedadesPorMaterial = repositorio.Listar<TipoVariedadPorMaterial>(x => x.MaterialId == materialId).Select(x => x.TipoVariedad);
 
             var tipoMaterial = Constantes.TipoVariedadMaterial.Estandar;
 
-            if (!string.IsNullOrEmpty(codigoSAPtitularCP)
-                && (codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapTPR
-                    || (codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapACA
-                        && !string.IsNullOrEmpty(codigoEstablecimiento) && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA)))
-                tipoMaterial = Constantes.TipoVariedadMaterial.Importacion;
+            if (!string.IsNullOrEmpty(codigoSAPtitularCP) && codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapTPR)
+                tipoMaterial = Constantes.TipoVariedadMaterial.ImportacionTPR;
+
+
+            if (!string.IsNullOrEmpty(codigoSAPtitularCP) && codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapACA
+                    && !string.IsNullOrEmpty(codigoEstablecimiento) && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA
+                    && !string.IsNullOrEmpty(remitenteComercialCuit) && remitenteComercialCuit == Constantes.Proveedores.CuitMolinos)
+                tipoMaterial = Constantes.TipoVariedadMaterial.ImportacionACA;
 
             if (esSustentable)
                 tipoMaterial = Constantes.TipoVariedadMaterial.Sustentable;
@@ -11517,7 +11515,8 @@ namespace Molinos.Scato.Servicios.Impl
             }
             else if (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapTPR
                 || (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA
-                    && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA))
+                    && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA
+                    && codigoSapRemitenteComercial == codigoSapMolinosAgro))
             {
                 workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
             }

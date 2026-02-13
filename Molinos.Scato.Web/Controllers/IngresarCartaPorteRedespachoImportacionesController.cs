@@ -73,7 +73,8 @@ namespace Molinos.Scato.Web.Controllers
             var codigoSapTitular = servicio.ObtenerProveedor(orden.TitularCartaPorteId).CodigoSap;
             if (codigoSapTitular != codigoSapPuertoRosario 
                 && !(codigoSapTitular == Constantes.ValoresPorDefecto.CodigoSapACA 
-                    && orden.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA))
+                    && orden.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA
+                    && orden.RtteComercialCuit == Constantes.Proveedores.CuitMolinos))
             {
                 ModelState.AddModelError("", Textos.Error_CCPPRedespacho);
                 return false;

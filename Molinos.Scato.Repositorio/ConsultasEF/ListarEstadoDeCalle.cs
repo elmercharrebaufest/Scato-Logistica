@@ -45,6 +45,11 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 ? (cpr.CargaDeCupo.Recorrido.RecorridoTasaMunicipal != null 
                                     && cpr.CargaDeCupo.Recorrido.RecorridoTasaMunicipal.Exceptuado) 
                                 : false)
+                        let tipoVariedadPorMaterial = cpr.Recorrido != null && cpr.Recorrido.TipoVariedadId.HasValue
+                            ? contexto.Set<TipoVariedadPorMaterial>().FirstOrDefault(t => t.TipoVariedadId == cpr.Recorrido.TipoVariedadId && t.MaterialId == cpr.Recorrido.Material.Id) 
+                            : (cpr.CargaDeCupo.Recorrido != null 
+                                ? contexto.Set<TipoVariedadPorMaterial>().FirstOrDefault(t => t.TipoVariedadId == cpr.CargaDeCupo.Recorrido.TipoVariedadId && t.MaterialId == cpr.CargaDeCupo.Material.Id) 
+                                : null)
                         select new CallePorRecorridoListadoCamionesDto
                         {
                             Id = cpr.Id,
@@ -86,7 +91,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 && cpr.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.EPAyEUDR,
                             IdRecorrido = cpr.Recorrido != null ? cpr.Recorrido.Id : (int?)null,
                             PagoTasaMunicipalAdeudado = pagoTasaMunicipalAdeudado && !tienePago && !fueExceptuado,
-                            InstanceId = instanceId ?? Guid.Empty
+                            InstanceId = instanceId ?? Guid.Empty,
+                            ColorFondo = tipoVariedadPorMaterial != null ? tipoVariedadPorMaterial.ColorFondo : string.Empty,
+                            ColorTexto = tipoVariedadPorMaterial != null ? tipoVariedadPorMaterial.ColorTexto : string.Empty,
                         };
 
             return query.OrderBy(x => x.FechaIngreso).ToList();

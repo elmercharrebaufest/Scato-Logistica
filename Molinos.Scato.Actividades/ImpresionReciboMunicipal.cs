@@ -180,8 +180,9 @@ namespace Molinos.Scato.Actividades
             bool esIngresoImportacion = recorrido.Workflow.Codigo == Constantes.WorkFlow.workflowIngresoImportacion;
             bool esTitularACA = cartaPorte?.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA;
             bool esEstablecimientoACA = cartaPorte?.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA;
+            bool esRemitenteComercialMOA = cartaPorte?.RtteComercialCuit == Constantes.Proveedores.CuitMolinos;
 
-            return esIngresoImportacion && esTitularACA && esEstablecimientoACA;
+            return esIngresoImportacion && esTitularACA && esEstablecimientoACA && esRemitenteComercialMOA;
         }
 
         private bool DeterminarSiExistePagoRealizadoEnElDia(IServicioRepositorio servicioRepositorio, RecorridoDto recorrido)

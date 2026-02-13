@@ -1741,6 +1741,18 @@ BEGIN
   values ('Epa/Eudr', 'EPAEUDR', 0, GETDATE(), 'SCATO');
 END
 
+IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'IMPOACA') 
+BEGIN
+  insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
+  values ('Impo ACA', 'IMPOACA', 0, GETDATE(), 'SCATO');
+END
+
+IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'IMPOTPR') 
+BEGIN
+  insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
+  values ('Impo TPR', 'IMPOTPR', 0, GETDATE(), 'SCATO');
+END
+
 --Precarga de Comerciales Moa
 IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap = '3')
 BEGIN 

@@ -157,5 +157,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool SojaEUDR { get; set; }
         public bool SojaEPAyEUDR { get; set; }
         public TipoOrdenCargaNoGranos? TipoOrdenCargaNoGranos { get; set; }
+        public string TipoVariedadDescripcion { get; set; }
+        public string TipoVariedadColorTexto { get; set; }
     }
 }

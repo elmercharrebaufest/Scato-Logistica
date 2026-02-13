@@ -199,9 +199,8 @@ namespace Molinos.Scato.Workflow
                     instanciaWorkflowDto.Proteina = dato.Proteina;
                     instanciaWorkflowDto.AlmacenDestino = dato.AlmacenDestino;
                     instanciaWorkflowDto.DiferenciaPesoNeto = dato.DiferenciaPesoNeto.HasValue ? dato.DiferenciaPesoNeto.ToString() : "";
-                    instanciaWorkflowDto.SojaEPA = dato.SojaEPA;
-                    instanciaWorkflowDto.SojaEUDR = dato.SojaEUDR;
-                    instanciaWorkflowDto.SojaEPAyEUDR = dato.SojaEPAyEUDR;
+                    instanciaWorkflowDto.TipoVariedadDescripcion = dato.TipoVariedadDescripcion;
+                    instanciaWorkflowDto.TipoVariedadColorTexto = dato.TipoVariedadColorTexto;
                 }
                 instanciaWorkflowDto.NumeroDocumentoDeIngreso = instanciaWorkflowDto.NumeroDocumentoDeIngreso is null ? instanciaWorkflowDto.CTG : instanciaWorkflowDto.NumeroDocumentoDeIngreso;
             }

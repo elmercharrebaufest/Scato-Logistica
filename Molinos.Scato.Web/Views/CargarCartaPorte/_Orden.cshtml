@@ -328,6 +328,7 @@
                         @Html.TextBoxFor(model => model.RtteComercial, new { @class = "control input-xlarge  rtteComercialValidacion ", data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_RtteComercial }) })
                         @Html.ValidationMessageFor(model => model.RtteComercial)
                         @Html.HiddenFor(model => model.RtteComercialId)
+                        @Html.HiddenFor(model => model.RtteComercialCuit)
                     </div>
                 </div>
                 <div class="control-group control-group-no-bottom">

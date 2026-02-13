@@ -20,5 +20,6 @@ namespace Molinos.Scato.Dominio.Dto
         public long? CuitTransportista { get; set; }
         public string Dominio { get; set; }
         public string NroRenspa { get; set; }
+        public long CuitRemitenteComercialVentaPrimaria { get; set; }
     }
 }
