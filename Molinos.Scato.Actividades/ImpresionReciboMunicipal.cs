@@ -162,12 +162,16 @@ namespace Molinos.Scato.Actividades
         {
             bool aplicaPago = !this.DeterminarSiEsACA(servicioRepositorio, recorrido);
 
+            if (aplicaPago) { 
+                aplicaPago = !servicioRepositorio.ValidarRecorridoExceptuado(recorrido.Id);
+            }
+
             if (aplicaPago)
-                aplicaPago = !this.DeterminarSiExistePagoRealizadoEnElDia(servicioRepositorio, recorrido);
+                aplicaPago = !this.DeterminarSiExistePagoRealizadoEnElDia(servicioRepositorio, recorrido); 
 
             if (aplicaPago)
             {
-                parametros.TieneExcepcion = this.DeterminarSiTieneExcepcionDePagoDeTasaMunicipal(servicioRepositorio, recorrido);
+                parametros.TieneExcepcion = this.DeterminarSiTieneExcepcionDePagoDeTasaMunicipal(servicioRepositorio, recorrido); 
                 aplicaPago = !parametros.TieneExcepcion;
             }
 

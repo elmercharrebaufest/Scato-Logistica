@@ -300,7 +300,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             var material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo);
                             var titular = ObtenerProveedor(cartaPorte.CuitOrigen.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true);
-                            var rtte = ObtenerProveedor(cartaPorte.CuitRemitenteComercialProductor.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true);
+                            var rtte = cartaPorte.CuitRemitenteComercialVentaPrimaria.HasValue ? ObtenerProveedor(cartaPorte.CuitRemitenteComercialVentaPrimaria.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true) : null;
                             resultado.Cpe = new CartaPorteDto
                             {
                                 NroOrden = cartaPorte.NroOrden,

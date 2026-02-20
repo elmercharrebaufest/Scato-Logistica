@@ -11436,21 +11436,21 @@ namespace Molinos.Scato.Servicios.Impl
             var inicioDia = DateTime.Today;
             var finDia = inicioDia.AddDays(1);
 
-            var recorridos = repositorio.Listar<Recorrido>(
-                r => r.Patente == patente &&
-                     r.Material.CodigoSAP == codigoSap &&
-                     r.FechaInicio >= inicioDia &&
-                     r.FechaInicio < finDia &&
-                     (r.Terminado || r.Rechazado));
+            var instancias = repositorio
+                             .Listar<Recorrido>(r =>
+                                 r.Patente == patente &&
+                                 r.Material.CodigoSAP == codigoSap &&
+                                 r.FechaInicio >= inicioDia &&
+                                 r.FechaInicio < finDia &&
+                                 (r.Terminado || r.Rechazado))
+                             .Select(r => r.InstanciaWorkflow)
+                             .ToList();
 
-            if (recorridos.Any())
-                foreach (var recorrido in recorridos)
-                    if(repositorio.Existe<PagosTasaMunicipal>(p => p.IdInstance == recorrido.InstanciaWorkflow))
-                        return true;
+            if (!instancias.Any())
+                return false;
 
-            return ExistePagoRealizado(patente);
+            return repositorio.Existe<PagosTasaMunicipal>(p => p.IdInstance.HasValue && instancias.Contains(p.IdInstance.Value));
         }
-
 
         public int ObtenerIdPagoDigitalPorInstanceId(Guid instanceId)
         {
@@ -11843,5 +11843,10 @@ namespace Molinos.Scato.Servicios.Impl
 		}
 
         #endregion
-	}
+
+        public bool ValidarRecorridoExceptuado(int idRecorrido)
+        {
+            return repositorio.Existe<RecorridoTasaMunicipal>(x => x.Id == idRecorrido && x.Exceptuado);
+        }
+    }
 }

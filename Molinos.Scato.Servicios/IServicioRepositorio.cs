@@ -3178,5 +3178,7 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         TrackingDataQRCamiones ObtenerTrackingData(string numeroCTG, string patente);
 
+        [OperationContract]
+        bool ValidarRecorridoExceptuado(int idRecorrido);
     }
 }
