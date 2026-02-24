@@ -9635,7 +9635,8 @@ namespace Molinos.Scato.Servicios.Impl
                     RecorridoId = item.IdRecorrido,
                     PagoTasaMunicipalAdeudado = item.PagoTasaMunicipalAdeudado,
                     ColorTextoDemoradoPorTasaMunicipal = Constantes.ValoresPorDefecto.ColorTextoDemoradoTasaMunicipal,
-
+                    EsSojaImportacionACA = item.EsSojaImportacionACA,
+                    EsSojaImportacionTPR = item.EsSojaImportacionTPR
                 };
 
                 resultado.Add(callePorRecorrido);
@@ -11675,7 +11676,43 @@ namespace Molinos.Scato.Servicios.Impl
             }
             return tieneExcepcion;
         }
-        
+
+        public IList<TicketPesadaDto> ObtenerDatosTicketPesada(DateTime? fechaInicio, DateTime? fechaEgreso, string cuitProveedor,
+            string cuitTransportista = null, string numeroCTG = null, string patente = null, string cuitIntermediarioFlete = null, bool esAdmin = false)
+        {
+            #region Validaciones Obligatorias
+            if (!fechaInicio.HasValue || !fechaEgreso.HasValue)
+            {
+                return null;
+            }
+
+            // Diferencia de fechas no mayor a 1 año
+            if ((fechaEgreso.Value - fechaInicio.Value).TotalDays > 365)
+            {
+                return null;
+            }
+            #endregion
+
+            if (fechaInicio.Value > fechaEgreso.Value)
+            {
+                return new List<TicketPesadaDto>();
+            }
+
+            var tiposComerciales = this.ObtenerConfiguracionGeneral(
+            Constantes.ConfiguracionGeneral.Pantalla.MOAOperacionesListadoTicketPesada,
+            Constantes.ConfiguracionGeneral.MOAOperacionesListadoTicketPesada.TiposComerciales,
+            null
+            ).Valor.Split(',')
+            .Select(int.Parse)
+            .ToList();
+
+            IList<TicketPesadaDto> tickets = repositorio.ListarConsulta(new ListarTicketPesadaOperaciones(tiposComerciales, fechaInicio.Value, fechaEgreso.Value, esAdmin, cuitTransportista, cuitProveedor,
+                cuitIntermediarioFlete, numeroCTG, patente));
+            
+            return tickets;
+		}
+		
+
 		#region QR Camiones
 
 		public TrackingDataQRCamiones ObtenerTrackingData(string numeroCTG, string patente)

@@ -1964,3 +1964,11 @@ set Firmware = 'Molinos.Scato.Web.Firmware.FirmwarePagoTasaMunicipal, Molinos.Sc
 where Id = 46
 
 PRINT N'[dbo].[PuestoDeTrabajo].[Firmware] Actualizados...';
+
+
+--Configuracion general Add key ListadoTicketPesada MOAOperaciones
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MOAOperaciones.ListadoTicketPesada' AND  Nombre = 'TiposComerciales' AND Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla, Nombre, Valor, Centro_Id, FechaCreacion, UsuarioCreacion) 
+VALUES ('MOAOperaciones.ListadoTicketPesada', 'TiposComerciales', '3,4,8', NULL, GETDATE(), 'SCATO')
+END

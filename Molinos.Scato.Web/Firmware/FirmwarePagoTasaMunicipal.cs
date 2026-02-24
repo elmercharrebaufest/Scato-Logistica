@@ -69,7 +69,7 @@ namespace Molinos.Scato.Web.Firmware
                     {
                         comandos.Ejecutar(new MOAPayInformarPagoComoConsumido
                         {
-                            Id = pago.Id,
+                            Id = pago.IdMOAPay,
                             Disponible = "N",
                             IdIntance = recorrido.InstanciaWorkflow
                         });

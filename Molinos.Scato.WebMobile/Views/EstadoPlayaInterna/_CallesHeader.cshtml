@@ -26,4 +26,10 @@
     <li class="nav-item" data-bind="visible: CantidadSojaEPAyEUDR() > 0">
         <div class="nav-link nav-material bg-SojaEPAyEUDR">Soja EPA/EUDR(<strong data-bind="text: CantidadSojaEPAyEUDR"></strong>)</div>
     </li>
+    <li class="nav-item" data-bind="visible: sumarCamionesSojaImpoACA() > 0">
+        <div class="nav-link nav-material" data-bind="style: sojaImpoACAInfo().estilo">Soja IMPO ACA(<strong data-bind="text: sojaImpoACAInfo().count"></strong>)</div>
+    </li>
+    <li class="nav-item" data-bind="visible: sumarCamionesSojaImpoTPR() > 0">
+        <div class="nav-link nav-material" data-bind="style: sojaImpoTPRInfo().estilo">Soja IMPO TPR(<strong data-bind="text: sojaImpoTPRInfo().count"></strong>)</div>
+    </li>
 </ul>

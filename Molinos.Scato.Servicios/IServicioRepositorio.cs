@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.ServiceModel;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.HealthCheck;
@@ -12,6 +8,10 @@ using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.ServiceModel;
 
 namespace Molinos.Scato.Servicios
 {
@@ -3180,5 +3180,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ValidarRecorridoExceptuado(int idRecorrido);
-    }
+    
+        [OperationContract]
+		IList<TicketPesadaDto> ObtenerDatosTicketPesada(DateTime? fechaInicio, DateTime? fechaEgreso, string cuitProveedor,
+			string cuitTransportista = null, string numeroCTG = null, string patente = null, string cuitIntermediarioFlete = null, bool esAdmin = false);
+	}
 }

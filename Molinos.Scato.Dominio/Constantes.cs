@@ -98,6 +98,7 @@ namespace Molinos.Scato.Dominio
                 public const string PagoTasaMunicipal = "PagoTasaMunicipal";
                 public const string ConsultaDataAgroVisec = "ConsultaDataAgroVisec";
                 public const string MarcaSustentable = "MarcaSustentable";
+                public const string MOAOperacionesListadoTicketPesada = "MOAOperaciones.ListadoTicketPesada";
             }
 
             public struct ContingenciaPesosExcedidos
@@ -205,6 +206,11 @@ namespace Molinos.Scato.Dominio
                 public const string ImagenSustentableBase64 = "ImagenSustentableBase64";
                 public const string PosicionImagenSustentableX = "PosicionImagenSustentableX";
                 public const string PosicionImagenSustentableY = "PosicionImagenSustentableY";
+            }
+            
+            public struct MOAOperacionesListadoTicketPesada
+            {
+                public const string TiposComerciales = "TiposComerciales";
             }
         }
 

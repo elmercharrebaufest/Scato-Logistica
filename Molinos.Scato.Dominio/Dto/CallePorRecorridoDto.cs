@@ -31,6 +31,8 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsCuitNestle { get; set; }
         public bool PagoTasaMunicipalAdeudado { get; set; }
         public string ColorTextoDemoradoPorTasaMunicipal { get; set; }
+        public bool EsSojaImportacionACA { get; set; }
+        public bool EsSojaImportacionTPR { get; set; }
     }
 
     public class CallePorRecorridoListadoCamionesDto
@@ -67,5 +69,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int? IdRecorrido { get; set; }
         public bool PagoTasaMunicipalAdeudado { get; set; }
         public Guid InstanceId { get; set; }
-     }
+        public bool EsSojaImportacionACA { get; set; }
+        public bool EsSojaImportacionTPR { get; set; }
+    }
 }

@@ -327,7 +327,9 @@ namespace Molinos.Scato.WebMobile.Controllers
                         EsSojaIMPO = camion.EsSojaIMPO,
                         EsSojaEUDR = camion.EsSojaEUDR,
                         EsSojaEPAyEUDR = camion.EsSojaEPAyEUDR,
-                        EsCuitNestle = servicio.ValidarCuitNestle(camion.RecorridoId?? 0)
+                        EsCuitNestle = servicio.ValidarCuitNestle(camion.RecorridoId?? 0),
+                        EsSojaImportacionACA = camion.EsSojaImportacionACA,
+                        EsSojaImportacionTPR = camion.EsSojaImportacionTPR
                     };
                     callePlanta.Camiones.Add(camionPlanta);
                 }

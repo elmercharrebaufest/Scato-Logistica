@@ -845,6 +845,7 @@
     <Compile Include="Dto\ExcepcionAlControlProveedorDto.cs" />
     <Compile Include="Dto\DerivadoGranario\RequestAltaCTGDGDto.cs" />
     <Compile Include="Dto\DomicilioDto.cs" />
+    <Compile Include="Dto\TicketPesadaDto.cs" />
     <Compile Include="Dto\Visec\FiltroPanelDeTransaccionesVisecDto.cs" />
     <Compile Include="Dto\HistorialMensajeCartelLedDto.cs" />
     <Compile Include="Dto\HuellaDigitalOrdenDto.cs" />

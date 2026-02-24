@@ -94,6 +94,12 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                             InstanceId = instanceId ?? Guid.Empty,
                             ColorFondo = tipoVariedadPorMaterial != null ? tipoVariedadPorMaterial.ColorFondo : string.Empty,
                             ColorTexto = tipoVariedadPorMaterial != null ? tipoVariedadPorMaterial.ColorTexto : string.Empty,
+                            EsSojaImportacionACA = cpr.Recorrido != null 
+                                && cpr.Recorrido.TipoVariedad != null 
+                                && cpr.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.ImportacionACA,
+                            EsSojaImportacionTPR = cpr.Recorrido != null 
+                                && cpr.Recorrido.TipoVariedad != null 
+                                && cpr.Recorrido.TipoVariedad.Codigo == Constantes.TipoVariedadMaterial.ImportacionTPR
                         };
 
             return query.OrderBy(x => x.FechaIngreso).ToList();
