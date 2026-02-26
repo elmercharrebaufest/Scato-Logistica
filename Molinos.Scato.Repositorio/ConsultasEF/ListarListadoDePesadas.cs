@@ -56,7 +56,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         Humedad = isnull(ltrim(rca.Humedad),''),
                         AlmacenDestino =case when w.TipoDeWorkflow = 0 then isnull( ra.Descripcion , '') else '' end,
                         AlmacenOrigen = case when w.TipoDeWorkflow = 1 then isnull( ra.Descripcion , '') else '' end,
-                        RemitoSAP =isnull( rem.OrdenRemito , isnull(ruva.NroRemito , (case when w.TipoDeWorkflow = 1 then isnull( r.NumeroDeDocumentoSap , '') else '' end ))),
+                        RemitoSAP = coalesce(cast(rem.OrdenRemito as varchar(15)), cast(ruva.NroRemito as varchar(15)), case when w.TipoDeWorkflow = 1 then cast(r.NumeroDeDocumentoSap as varchar(15)) else '' end),
                         TipoDeVehiculo = rtv.Descripcion,
                         DocumentoSap = r.DocumentoInternoSap,
                         BalanzaBruto = isnull( rbbruto.Nombre , ''),
