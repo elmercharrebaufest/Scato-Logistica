@@ -221,27 +221,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         recorrido.TipoVariedad = tipoVariedad;
                     }
 
-                    var vehiculoEntity = cartaPorte.Vehiculos.FirstOrDefault(t => t.Patente == comando.Vehiculo.Patente);
-                    var categoriaVehiculo = Repositorio.Obtener<CategoriaVehiculo>(
-                        f => f.Patente == vehiculoEntity.Patente
-                        && (f.PatenteAcoplado == vehiculoEntity.PatenteAcoplado
-                        || comando.Vehiculo.PatenteAcoplado == null)
-                        && (f.PatenteAcoplado2 == comando.Vehiculo.PatenteAcoplado2
-                        || vehiculoEntity.PatenteAcoplado2 == null)
-                    );
-                    if (categoriaVehiculo == null)
-                    {
-                        categoriaVehiculo = new CategoriaVehiculo
-                        {
-                            Id = -1,
-                            Patente = vehiculoEntity.Patente,
-                            PatenteAcoplado = vehiculoEntity.PatenteAcoplado,
-                            PatenteAcoplado2 = vehiculoEntity.PatenteAcoplado2,
-                            TipoVehiculo = (int)vehiculoEntity.TipoVehiculo
-                        };
-                        Repositorio.Agregar(categoriaVehiculo);
-                    }
-
                     Log.Info("Se procederá a crear el recorrido para el workflow {0}", comando.NombreWorkflow);
                     Log.Info("Se creó exitosamente el recorrido para el workflow {0}", comando.NombreWorkflow);
                     if (comando.Vehiculo.Primero || comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren)

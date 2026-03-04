@@ -21,5 +21,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string Dominio { get; set; }
         public string NroRenspa { get; set; }
         public long CuitRemitenteComercialVentaPrimaria { get; set; }
+        public long CuitRemitenteComercialVentaSecundaria { get; set; }
     }
 }

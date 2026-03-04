@@ -10775,7 +10775,7 @@ namespace Molinos.Scato.Servicios.Impl
             return infoCalle;
         }
 
-        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esEUDR = false, bool esSustentable = false, string remitenteComercialCuit = null)
+        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esEUDR = false, bool esSustentable = false, string remitenteComercialCuit = null, string remitenteComercialVentaSecundariaCuit = null)
         {
             var variedadesPorMaterial = repositorio.Listar<TipoVariedadPorMaterial>(x => x.MaterialId == materialId).Select(x => x.TipoVariedad);
 
@@ -10787,7 +10787,8 @@ namespace Molinos.Scato.Servicios.Impl
 
             if (!string.IsNullOrEmpty(codigoSAPtitularCP) && codigoSAPtitularCP == Constantes.ValoresPorDefecto.CodigoSapACA
                     && !string.IsNullOrEmpty(codigoEstablecimiento) && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA
-                    && !string.IsNullOrEmpty(remitenteComercialCuit) && remitenteComercialCuit == Constantes.Proveedores.CuitMolinos)
+                    && ((!string.IsNullOrEmpty(remitenteComercialCuit) && remitenteComercialCuit == Constantes.Proveedores.CuitMolinos)
+                        || (!string.IsNullOrEmpty(remitenteComercialVentaSecundariaCuit) && remitenteComercialVentaSecundariaCuit == Constantes.Proveedores.CuitMolinos)))
                 tipoMaterial = Constantes.TipoVariedadMaterial.ImportacionACA;
 
             if (esSustentable)
@@ -11497,7 +11498,7 @@ namespace Molinos.Scato.Servicios.Impl
             return patente;
         }
 
-        public string ObtenerWorkflowPorTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento)
+        public string ObtenerWorkflowPorTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento, string codigoSapRemitenteComercialVentaSecundaria = null)
         {
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
             var codigoSapMolinosAgro = firmaProvider.ObtenerFirmaSinLogo().CodigoSAP;
@@ -11517,7 +11518,7 @@ namespace Molinos.Scato.Servicios.Impl
             else if (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapTPR
                 || (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA
                     && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA
-                    && codigoSapRemitenteComercial == codigoSapMolinosAgro))
+                    && (codigoSapRemitenteComercial == codigoSapMolinosAgro || codigoSapRemitenteComercialVentaSecundaria == codigoSapMolinosAgro)))
             {
                 workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
             }

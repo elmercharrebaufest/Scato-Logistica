@@ -2921,7 +2921,7 @@ namespace Molinos.Scato.Servicios
         TipoVariedadDto[] ObtenerVariedadPorTipoMaterial(int idMaterial);
 
         [OperationContract]
-        int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esEUDR = false, bool esSustentable = false, string remitenteComercialCuit = null);
+        int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, string codigoEstablecimiento = null, bool esEpa = false, bool esEUDR = false, bool esSustentable = false, string remitenteComercialCuit = null, string remitenteComercialVentaSecundariaCuit = null);
 
         [OperationContract]
         IList<AutomatismoGranoDto> ListarAutomatismoGrano();
@@ -3119,7 +3119,7 @@ namespace Molinos.Scato.Servicios
         string ObtenerPatenteAcopladoOrdenesNoGranos(int idRecorrido, TipoDocumentoIngreso tipoDocumento);
 
         [OperationContract]
-        string ObtenerWorkflowPorTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento);
+        string ObtenerWorkflowPorTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento, string codigoSapRemitenteComercialVentaSecundaria = null);
 
         [OperationContract]
         bool DebeImprimirReciboMunicipal(string patente, Guid instanceId);

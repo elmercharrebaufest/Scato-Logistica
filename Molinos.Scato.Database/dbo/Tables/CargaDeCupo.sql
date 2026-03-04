@@ -18,6 +18,7 @@
     [CTG]                        NVARCHAR (40) NULL,
     [CodEstab]                   NVARCHAR (40) NULL,
     [RtteComercialCodigoSap]     NVARCHAR (40) NULL,
+    [RtteComercialVentaSecundariaCuit] NVARCHAR (15) NULL,
     [TitularCartaPorteCodigoSap] NVARCHAR (40) NULL,
     [Patente]                    NVARCHAR (40) NULL,
     [FotoCamionRutaDestino]      VARCHAR (200) NULL,

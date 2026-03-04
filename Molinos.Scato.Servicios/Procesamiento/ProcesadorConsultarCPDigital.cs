@@ -301,6 +301,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             var material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo);
                             var titular = ObtenerProveedor(cartaPorte.CuitOrigen.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true);
                             var rtte = cartaPorte.CuitRemitenteComercialVentaPrimaria.HasValue ? ObtenerProveedor(cartaPorte.CuitRemitenteComercialVentaPrimaria.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true) : null;
+                            var rtteVentaSecundaria = cartaPorte.CuitRemitenteComercialVentaSecundaria.HasValue ? ObtenerProveedor(cartaPorte.CuitRemitenteComercialVentaSecundaria.ToString(), resultado, Textos.CartaPorte_RtteComercialVentaSecundario, false, false, true) : null;
                             resultado.Cpe = new CartaPorteDto
                             {
                                 NroOrden = cartaPorte.NroOrden,
@@ -314,6 +315,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 EstadoCpe = cartaPorteRequest.Estado,
                                 TitularCartaPorteCodigoSap = titular.CodigoSap,
                                 RtteComercialCodigoSap = rtte?.CodigoSap,
+                                RtteComercialVentaSecundarioCuil = rtteVentaSecundaria?.Cuil,
                                 Vehiculos = new List<VehiculoDto>()
                                 {
                                     new VehiculoDto
@@ -574,6 +576,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 var material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo);
                 var rtte = cartaPorte.CuitRemitenteComercialVentaPrimaria.HasValue ? ObtenerProveedor(cartaPorte.CuitRemitenteComercialVentaPrimaria.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true) : null;
+                var rtteVentaSecundaria = cartaPorte.CuitRemitenteComercialVentaSecundaria.HasValue ? ObtenerProveedor(cartaPorte.CuitRemitenteComercialVentaSecundaria.ToString(), resultado, Textos.CartaPorte_RtteComercialVentaSecundario, false, false, true) : null;
                 var cp = new CartaPorteDto
                 {
                     NroOrden = cartaPorte.NroOrden,
@@ -598,6 +601,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     },
                     CodEstab = cartaPorte.PlantaOrigen.HasValue ? cartaPorte.PlantaOrigen.ToString() : string.Empty,
                     RtteComercialCodigoSap = rtte?.CodigoSap,
+                    RtteComercialVentaSecundarioCuil = rtteVentaSecundaria?.Cuil,
                     CodigoRENSPA = VisecHelper.ObtenerTipoOrigenCPE(cartaPorte.PlantaOrigen.GetValueOrDefault()) == TipoOrigenCPE.UnidadProductiva 
                                 ? (!string.IsNullOrWhiteSpace(cartaPorte.NroRenspa) 
                                     ? cartaPorte.NroRenspa 

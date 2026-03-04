@@ -17,6 +17,7 @@ using Moq.Protected;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Configuration;
+using Molinos.Scato.Servicios;
 
 namespace Molinos.Scato.Test.Procesamiento
 {
@@ -27,6 +28,7 @@ namespace Molinos.Scato.Test.Procesamiento
         private Mock<IRepositorio> mockRepositorio;
         private Mock<IConversor> mockConversor;
         private Mock<ILogger> mockLogger;
+        private Mock<IServicioComandos> mockServicioComandos;
         private Mock<HttpMessageHandler> mockMessageHandler;
 
         [SetUp]
@@ -38,7 +40,7 @@ namespace Molinos.Scato.Test.Procesamiento
             mockMessageHandler = new Mock<HttpMessageHandler>();
 
             var httpClient = new HttpClient(mockMessageHandler.Object);
-            target = new ProcesadorConsultarEscalables(mockRepositorio.Object, mockConversor.Object, mockLogger.Object, httpClient);
+            target = new ProcesadorConsultarEscalables(mockRepositorio.Object, mockConversor.Object, mockLogger.Object, httpClient, mockServicioComandos.Object);
         }
 
 
@@ -60,7 +62,7 @@ namespace Molinos.Scato.Test.Procesamiento
             var httpClient = new HttpClient(new MockHttpMessageHandler());
            
 
-            var servicio = new ProcesadorConsultarEscalables(mockRepositorio.Object, mockConversor.Object, mockLogger.Object, httpClient);
+            var servicio = new ProcesadorConsultarEscalables(mockRepositorio.Object, mockConversor.Object, mockLogger.Object, httpClient, mockServicioComandos.Object);
 
             var resultado = servicio.Ejecutar(comando) as ResultadoEscalables;
             

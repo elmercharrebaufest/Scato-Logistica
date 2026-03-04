@@ -60,7 +60,8 @@ namespace Molinos.Scato.Actividades
                 var cartaPorte = repositorio.ObtenerCartaDePortePorrecorrido(recorrido.RecorridoId);
                 if (cartaPorte.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA 
                     && cartaPorte.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA
-                    && cartaPorte.RtteComercialCuit == Constantes.Proveedores.CuitMolinos)
+                    && (cartaPorte.RtteComercialCuit == Constantes.Proveedores.CuitMolinos
+                        || cartaPorte.RtteComercialVentaSecundarioCuil == Constantes.Proveedores.CuitMolinos))
                 {
                     throw new Exception("No aplica impresión");
                 }

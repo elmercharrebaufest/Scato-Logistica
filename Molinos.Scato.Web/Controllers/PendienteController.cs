@@ -43,9 +43,9 @@ namespace Molinos.Scato.Web.Controllers
                 return RedirectToAction("Index", "IngresarCartaPorteRedespacho", new { workflow = ConfigurationManager.AppSettings["workflowRedespacho"], cargaDeCupoId = id });
             }
             else if(cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapPuertoRosario 
-                || cargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA
+                || (cargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA
                     && cargaDeCupo.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA
-                    && cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro)
+                    && (cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro || cargaDeCupo.RtteComercialVentaSecundariaCuit == Constantes.Proveedores.CuitMolinos)))
             {
                 return RedirectToAction("Index", "IngresarCartaPorteRedespachoImportaciones", new { workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"], cargaDeCupoId = id });
             }

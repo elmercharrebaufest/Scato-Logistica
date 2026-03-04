@@ -290,6 +290,9 @@ $(document).ready(function () {
                         if (data.Cpe.RtteComercialCodigoSap != "" && data.Cpe.RtteComercialCodigoSap != null && data.Cpe.RtteComercialCodigoSap != undefined) {
                             $("#RtteComercialCodigoSap").val(data.Cpe.RtteComercialCodigoSap);
                         }
+                        if (data.Cpe.RtteComercialVentaSecundarioCuil != "" && data.Cpe.RtteComercialVentaSecundarioCuil != null && data.Cpe.RtteComercialVentaSecundarioCuil != undefined) {
+                            $("#RtteComercialVentaSecundariaCuit").val(data.Cpe.RtteComercialVentaSecundarioCuil);
+                        }
                         if (!data.Cpe.TitularCartaPorteCodigoSap == null || !data.Cpe.TitularCartaPorteCodigoSap == '') {
                             $("#TitularCartaPorteCodigoSap").val(data.Cpe.TitularCartaPorteCodigoSap);
                         }
@@ -448,6 +451,7 @@ function cargarCP(data) {
     $("#CTG").val(data.CartaPorte.CTG);
     $("#CodEstab").val(data.CartaPorte.CodEstab);
     $("#RtteComercialCodigoSap").val(data.CartaPorte.RtteComercialCodigoSap);
+    $("#RtteComercialVentaSecundariaCuit").val(data.CartaPorte.RtteComercialVentaSecundarioCuil);
     $("#TitularCartaPorteCodigoSap").val(data.CartaPorte.TitularCartaPorteCodigoSap);
     $("#MaterialId").val(data.CartaPorte.MaterialId);
     $("#CodigoRENSPA").val(data.CartaPorte.CodigoRENSPA);
@@ -645,6 +649,7 @@ function ConfiguracionNoGranosActiva() {
     $('#CodigoRENSPA').val("");
     $('#PesoNetoOrigen').val("");
     $('#RtteComercialCodigoSap').val("");
+    $('#RtteComercialVentaSecundariaCuit').val("");
     $('#Patente').focus();
     $("#PatenteAcoplado").val("");
     $('#cpe').prop('disabled', true);

@@ -215,7 +215,7 @@ namespace Molinos.Scato.Web.Controllers
                         var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId.GetValueOrDefault());
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
 
-                        if (PermitirAsignarCalleGrano(model.TitularCartaPorteCodigoSap, model.CodEstab, model.RtteComercialCodigoSap))
+                        if (PermitirAsignarCalleGrano(model.TitularCartaPorteCodigoSap, model.CodEstab, model.RtteComercialCodigoSap, model.RtteComercialVentaSecundariaCuit))
                             AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap, resultadoConsultarTasa);
 
                         log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
@@ -964,7 +964,7 @@ namespace Molinos.Scato.Web.Controllers
         private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal, string tipoVariedadCodigo)
         {
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
-            var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo.TitularCartaPorteCodigoSap, cargaDeCupo.RtteComercialCodigoSap, cargaDeCupo.CodEstab);
+            var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo.TitularCartaPorteCodigoSap, cargaDeCupo.RtteComercialCodigoSap, cargaDeCupo.CodEstab, cargaDeCupo.RtteComercialVentaSecundariaCuit);
             var tipoComercialId = ObtenerTipoComercialSegunWorkflow(workflow);
 
             if (cargaDeCupo == null || string.IsNullOrEmpty(workflow))
@@ -1399,17 +1399,18 @@ namespace Molinos.Scato.Web.Controllers
             return esValido;
         }
 
-        private bool PermitirAsignarCalleGrano(string codigoSapTitularCartaPorte, string codigoEstablecimiento, string remitenteComercialCodigoSap = null)
+        private bool PermitirAsignarCalleGrano(string codigoSapTitularCartaPorte, string codigoEstablecimiento, string remitenteComercialCodigoSap = null, string remitenteComercialVentaSecundariaCuit = null)
         {
             var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
             var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
             return codigoSapTitularCartaPorte != codigoSapPuertoRosario
                 && !(codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA
                     && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA
-                    && !string.IsNullOrEmpty(remitenteComercialCodigoSap) && remitenteComercialCodigoSap == codigoSapMolinosAgro);
+                    && ((!string.IsNullOrEmpty(remitenteComercialCodigoSap) && remitenteComercialCodigoSap == codigoSapMolinosAgro)
+                        || (!string.IsNullOrEmpty(remitenteComercialVentaSecundariaCuit) && remitenteComercialVentaSecundariaCuit == Constantes.Proveedores.CuitMolinos)));
         }
 
-        private string ObtenerWorkflowSegunTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento)
+        private string ObtenerWorkflowSegunTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento, string remitenteComercialVentaSecundariaCuit = null)
         {
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
             var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
@@ -1429,7 +1430,7 @@ namespace Molinos.Scato.Web.Controllers
             else if (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapTPR
                 || (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA
                     && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA
-                    && codigoSapRemitenteComercial == codigoSapMolinosAgro))
+                    && (codigoSapRemitenteComercial == codigoSapMolinosAgro || remitenteComercialVentaSecundariaCuit == Constantes.Proveedores.CuitMolinos)))
             {
                 workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
             }

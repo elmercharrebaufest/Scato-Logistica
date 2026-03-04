@@ -132,6 +132,7 @@ function LlenarCartaPorteRedespacho(cartaPorte) {
     $('#RtteComercialVentaSecundarioId').val(cartaPorte.RtteComercialVentaSecundarioId);
     $('#RtteComercialVentaSecundario').val(cartaPorte.RtteComercialVentaSecundario);
     $('#RtteComercialVentaSecundario').addClass("italic");
+    $('#RtteComercialVentaSecundarioCuil').val(cartaPorte.RtteComercialVentaSecundarioCuil);
 
     //RtteComercialProductor
     $('#RtteComercialProductorid').val(cartaPorte.RtteComercialProductorId);

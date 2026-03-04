@@ -425,7 +425,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (cartaPorte == null)
                 throw new ArgumentNullException(nameof(cartaPorte), "La carta de porte no puede ser nula.");
 
-            return ValidarEsSojaImpoACA(cartaPorte?.TitularCartaPorteCodigoSap, cartaPorte?.CodEstab, cartaPorte.RtteComercialCuit);
+            return ValidarEsSojaImpoACA(cartaPorte?.TitularCartaPorteCodigoSap, cartaPorte?.CodEstab, cartaPorte.RtteComercialCuit, cartaPorte.RtteComercialVentaSecundarioCuil);
         }
 
         private bool ValidarSojaImpoPorCartaPorteElectronica(DatosExcepcionTasaMunicipal datos)
@@ -434,23 +434,30 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var cuitOrigen = cartaPorte?.CuitOrigen.ToString();
             var codigoSAPtitularCP = _servicioRepositorio.ObtenerProveedorPorCuit(ConvertirCuil(cuitOrigen), new TiposProveedor { PR = true }).CodigoSap;
             var cuitRemitente = cartaPorte.CuitRemitenteComercialVentaPrimaria;
+            var cuitRemitenteVentaSecundaria = cartaPorte.CuitRemitenteComercialVentaSecundaria;
 
             var cuitRemitenteStr = cuitRemitente > 0
                 ? ConvertirCuil(cuitRemitente.ToString())
                 : null;
 
+            var cuitRemitenteVentaSecundariaStr = cuitRemitenteVentaSecundaria > 0
+                ? ConvertirCuil(cuitRemitenteVentaSecundaria.ToString())
+                : null;
+
             return ValidarEsSojaImpoACA(
                 codigoSAPtitularCP,
                 datos.CodigoEstablecimiento,
-                cuitRemitenteStr);
+                cuitRemitenteStr,
+                cuitRemitenteVentaSecundariaStr);
         }
 
-        private bool ValidarEsSojaImpoACA(string titularCartaPorteCodigoSap, string codEstab, string remitenteComercialCuit)
+        private bool ValidarEsSojaImpoACA(string titularCartaPorteCodigoSap, string codEstab, string remitenteComercialCuit, string remitenteComercialVentaSecundariaCuit = null)
         {
             return 
                 !string.IsNullOrEmpty(titularCartaPorteCodigoSap) && titularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA &&
                 !string.IsNullOrEmpty(codEstab) && codEstab == Constantes.ValoresPorDefecto.EstablecimientoACA &&
-                !string.IsNullOrEmpty(remitenteComercialCuit) && remitenteComercialCuit == Constantes.Proveedores.CuitMolinos;
+                ((!string.IsNullOrEmpty(remitenteComercialCuit) && remitenteComercialCuit == Constantes.Proveedores.CuitMolinos)
+                    || (!string.IsNullOrEmpty(remitenteComercialVentaSecundariaCuit) && remitenteComercialVentaSecundariaCuit == Constantes.Proveedores.CuitMolinos));
         }
 
         private bool ValidarExcepcionPago24Hrs(DatosExcepcionTasaMunicipal datos)

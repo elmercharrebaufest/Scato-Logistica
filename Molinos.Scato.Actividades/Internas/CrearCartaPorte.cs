@@ -64,7 +64,7 @@ namespace Molinos.Scato.Actividades.Internas
                     esEudr = true;
                 }
 
-                var tipoMaterialPorVariedad = servicioRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, titularCartaPorteCodigoSap, orden.CodEstab, esEpa, esEudr, remitenteComercialCuit: orden.RtteComercialCuit);
+                var tipoMaterialPorVariedad = servicioRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, titularCartaPorteCodigoSap, orden.CodEstab, esEpa, esEudr, remitenteComercialCuit: orden.RtteComercialCuit, remitenteComercialVentaSecundariaCuit: orden.RtteComercialVentaSecundarioCuil);
                 var resultadoCartaPorte = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte
                 {
                     Orden = orden,

@@ -7,9 +7,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.14.36603.0</am:Version>
+      <am:Version>18.2.11415.280</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-12-02T19:49:08.1680993Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-03-03T17:15:32.4571866Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -187,6 +187,7 @@ Borrado AS (
         AND TMB.CentroId = @CentroIdp
         AND TMB.Fecha BETWEEN @FechaDesdep AND @FechaHastap
         AND LEFT(TMB.Recibo, 4) IN (@Garitas)
+        AND Recibo &lt;&gt; @TasaAbonadaEnElDia AND Recibo &lt;&gt; @TasaAbonadaPorExcepcion
 )
 
 SELECT *

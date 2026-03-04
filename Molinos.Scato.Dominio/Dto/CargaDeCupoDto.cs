@@ -59,6 +59,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string CTG { get; set; }
         public string CodEstab { get; set; }
         public string RtteComercialCodigoSap { get; set; }
+        public string RtteComercialVentaSecundariaCuit { get; set; }
         public string TitularCartaPorteCodigoSap { get; set; }
         public string CentroCodigoSap { get; set; }
         public string FotoCamionRutaDestino { get; set; }

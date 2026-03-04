@@ -26,6 +26,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string CTG { get; set; }
         public virtual string CodEstab { get; set; }
         public virtual string RtteComercialCodigoSap { get; set; }
+        public virtual string RtteComercialVentaSecundariaCuit { get; set; }
         public virtual string TitularCartaPorteCodigoSap { get; set; }
         public virtual string Patente { get; set; }
         public bool Reingresado { get; set; }
