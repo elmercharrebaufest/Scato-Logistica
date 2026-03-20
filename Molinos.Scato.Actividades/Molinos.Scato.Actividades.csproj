@@ -95,6 +95,8 @@
     <Compile Include="ActualizarMuestraEnvioACamara.cs" />
     <Compile Include="ActualizarCupo.cs" />
     <Compile Include="ActualizarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Internas\ValidarPagoTasaMunicipalDemorado.cs" />
+    <Compile Include="Internas\InformarPagoTasaMunicipal.cs" />
     <Compile Include="ValidarRecorridoDemoradoTasaAdeuda.cs" />
     <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="InformarOrdenInsumosOperaciones.cs" />
@@ -1377,6 +1379,12 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="Visec\ImportacionIngresoVisec.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CaladoV2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

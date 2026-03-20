@@ -132,9 +132,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (respuestaInformarPago == null)
                 throw new InvalidOperationException("No se pudo obtener el resultado al informar el pago.");
 
-            if (respuestaInformarPago.HayErrores)
-                throw new InvalidOperationException("No se pudo informar el pago de la tasa municipal.");
-
             return respuestaInformarPago;
         }
 

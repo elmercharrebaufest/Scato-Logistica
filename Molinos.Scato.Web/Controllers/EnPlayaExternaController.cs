@@ -3,11 +3,9 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
-using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Atributos;
@@ -15,6 +13,7 @@ using Molinos.Scato.Web.Firmware;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -60,170 +59,94 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Index(ObservacionRDto observacion, string workflow, int workflowDefinicionId, DatosUsuario datosUsuario)
         {
-            var controlRecorrido = new ControlRecorridoDto
-            {
-                Actividad = Textos.ActEnPlayaExterna,
-                ActividadXaml = "EnPlayaExterna",
-                WorkflowInstanceId = observacion.WorkflowInstanceId,
-                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                NombreUsuario = datosUsuario.NombreUsuario,
-                Decision = true,
-                Comentario = observacion.Observaciones
-            };
+            log.Info("Iniciando proceso de En Playa Externa. WorkflowInstanceId: {0}, Workflow: {1}, WorkflowDefinicionId: {2}, Usuario: {3}, CentroId: {4}, PuestoDeTrabajoId: {5}",
+                observacion.WorkflowInstanceId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, datosUsuario.CentroId, datosUsuario.PuestoDeTrabajoId);
 
-            var recorrido = servicio.ObtenerRecorridoPorGuid(observacion.WorkflowInstanceId);
-            log.Debug("Procesando En Playa Externa para el recorrido: {0}", recorrido.Id);
-            log.Debug($"Nombre Usuario: {controlRecorrido.NombreUsuario} CentroId: {datosUsuario.CentroId} PuestoId: {controlRecorrido.PuestoDeTrabajoId}");
-            if (controlRecorrido.PuestoDeTrabajoId == 0) 
+            try
             {
-                string mensajeError = "El puesto de trabajo no está asignado al usuario.";
-                log.Error(mensajeError);
-                throw new Exception(mensajeError);
-            }
-            var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajo(controlRecorrido.PuestoDeTrabajoId);
-           // var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId);
-            log.Debug("Puesto de trabajo obtenido: {0}", puestoDeTrabajo?.Id ?? 0);
-            var datosRecorrido = recorridoWorflow.ObtenerRecorrido(recorrido.TarjetaDeAcceso, puestoDeTrabajo.Id);
-            log.Debug("Datos del recorrido obtenidos para la tarjeta: {0}", recorrido.TarjetaDeAcceso);
-            var numeroDeTarjeta = recorrido.TarjetaDeAcceso;
-            
-            if (recorrido != null)
-            {
-                log.Info("Iniciando procesamiento de En Playa Externa para el recorrido: {0}", recorrido.Id);
-                if (recorrido.Rechazado)
+                var controlRecorrido = new ControlRecorridoDto
                 {
-                    var resultadoEjecutar = EjecutarWorkflow(puestoDeTrabajo, datosRecorrido);
-                    if (resultadoEjecutar.HayErrores)
-                        log.Error($"Error al ejecutar el workflow: {string.Join(", ", resultadoEjecutar.Errores.Select(e => $"{e.Key}: {e.Value}"))}");
-                }
-                else
+                    Actividad = Textos.ActEnPlayaExterna,
+                    ActividadXaml = "EnPlayaExterna",
+                    WorkflowInstanceId = observacion.WorkflowInstanceId,
+                    PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                    NombreUsuario = datosUsuario.NombreUsuario,
+                    Decision = true,
+                    Comentario = observacion.Observaciones
+                };
+
+                var recorrido = servicio.ObtenerRecorridoPorGuid(observacion.WorkflowInstanceId);
+                log.Debug("Procesando En Playa Externa para el recorrido: {0}", recorrido.Id);
+                var recorridoActivo = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { recorrido.TarjetaDeAcceso });
+                if (recorridoActivo != null && !recorridoActivo.Rechazado)
                 {
-                    log.Info("Verificando pago de tasa municipal para el recorrido: {0}", recorrido.Id);
-                    var resultado = comandos.Ejecutar(new VerificarPagoTasaMunicipal
+                    var resultadoPagoTasaMunicipal = comandos.Ejecutar(new VerificarPagoTasaMunicipal
                     {
-                        CentroId = datosRecorrido.CentroId,
-                        InstanceId = recorrido.InstanciaWorkflow,
-                        Ctg = datosRecorrido.Ctg ?? string.Empty,
-                        Patente = recorrido.Patente,
-                        PatenteAcoplado = datosRecorrido.PatenteAcoplado,
-                        MaterialId = datosRecorrido.MaterialId,
-                        TipoVehiculo = recorrido.TipoVehiculo,
+                        CentroId = recorridoActivo.CentroId,
+                        InstanceId = recorridoActivo.InstanciaWorkflow,
+                        Ctg = recorridoActivo.NumeroDocumentoIngreso ?? string.Empty,
+                        Patente = recorridoActivo.Patente,
+                        PatenteAcoplado = recorridoActivo.PatenteAcoplado,
+                        MaterialId = recorridoActivo.MaterialId,
+                        TipoVehiculo = recorridoActivo.TipoVehiculo,
                         TipoOrigenDeValidacion = TipoOrigenDeValidacion.Recorrido,
-                    });
-                    log.Info("Resultado de la verificación de pago de tasa municipal para el recorrido: {0}", recorrido.Id);
-                    if (resultado is ResultadoConsultarPagoTasaMunicipal resultadoPago && resultadoPago.HayErrores)
+                    }) as ResultadoConsultarPagoTasaMunicipal;
+                    if (resultadoPagoTasaMunicipal != null && resultadoPagoTasaMunicipal.HayErrores)
                     {
-                        string mensajeError = $"Error al verificar el pago de tasa municipal: {string.Join(", ", resultadoPago.Errores.Select(e => $"{e.Key}: {e.Value}"))}";
+                        string mensajeError = $"Error al verificar el pago de tasa municipal: {string.Join(", ", resultadoPagoTasaMunicipal.Errores.Select(e => $"{e.Key}: {e.Value}"))}";
                         log.Error(mensajeError);
-                        throw new Exception(mensajeError);
+                        return RedirectToAction("Index", "ListaDeCamiones");
                     }
 
-                    var verificacionPago = resultado as ResultadoConsultarPagoTasaMunicipal;
-                    log.Info($"Pago de tasa municipal procesado exitosamente para el puesto de trabajo: {puestoDeTrabajo.Id}");
-                   
-                    if (verificacionPago.EjecutaWorkFlow && verificacionPago.TipoAlerta == TipoAlerta.Exito)
-                    {
-                        var resultadoEjecutar = EjecutarWorkflow(puestoDeTrabajo, datosRecorrido);
-                        if (resultadoEjecutar.HayErrores)
-                        {
-                            log.Error($"Error al ejecutar el workflow: {string.Join(", ", resultadoEjecutar.Errores.Select(e => $"{e.Key}: {e.Value}"))}");
-                        }
-                    } 
+                    if (resultadoPagoTasaMunicipal != null && resultadoPagoTasaMunicipal.EjecutaWorkFlow && resultadoPagoTasaMunicipal.TipoAlerta == TipoAlerta.Exito)
+                        EjecutarWorkflow(recorridoActivo, controlRecorrido);
+                
+                    InformarPagoTasaMunicipal(recorrido.InstanciaWorkflow);
                 }
             }
+            catch (Exception ex)
+            {
+                log.Error(ex, $"Error al procesar En Playa Externa para el WorkflowInstanceId: {observacion.WorkflowInstanceId}");
+            }
+
             return RedirectToAction("Index", "ListaDeCamiones");
         }
 
-        protected Resultado EjecutarWorkflow(PuestoDeTrabajoDto puestoDeTrabajo, DatosRecorridoDto recorrido)
+        private void EjecutarWorkflow(DatosRecorridoDto datosRecorrido, ControlRecorridoDto controlRecorrido)
         {
-            Resultado resultado = new Resultado();
-            try
-            {
-                var proximaAccion = recorridoWorflow.ObtenerWorkflowProximaAccionConRecorrido(recorrido.TarjetaDeAcceso, puestoDeTrabajo.Id, recorrido);
-
-                if (recorrido != null && proximaAccion != null)
-                    EjecutarDispositivos(puestoDeTrabajo, recorrido);
-
-                var workflowId = proximaAccion.WorkflowDefinicionId;
-                var instanceId = proximaAccion.InstanceId;
-                var proximaActividad = proximaAccion.ProximaActividad;
-                var puestoDeTrabajoId = proximaAccion.PuestoDeTrabajoId;
-
-                log.Info("Ejecutando workflow. Tarjeta: {0} Puesto: {1} WorkflowId: {2} InstanceId: {3} ProximaActividad: {4} PuestoDeTrabajoId: {5}",
-                    recorrido.TarjetaDeAcceso, puestoDeTrabajo.Id, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
-
-                var serviciowf = factory.CrearServicio(workflowId);
-                var resultadoActividad = serviciowf.Ejecutar(instanceId, new ControlRecorridoDto
-                {
-                    WorkflowInstanceId = instanceId,
-                    NombreUsuario = String.Empty,
-                    Actividad = Textos.ResourceManager.GetString("Act" + proximaActividad) ?? proximaActividad,
-                    ActividadXaml = proximaActividad,
-                    Decision = true,
-                    PuestoDeTrabajoId = puestoDeTrabajoId
-                });
-
+                var serviciowf = factory.CrearServicio(datosRecorrido.WorkflowDefinicionId);
+                var resultadoActividad = serviciowf.Ejecutar(controlRecorrido.WorkflowInstanceId, controlRecorrido);
                 if (resultadoActividad != null && resultadoActividad.HayErrores)
                 {
-                    string mensajeError = $"Error al ejecutar la actividad {proximaActividad} " +
-                                          $"en el workflow: {workflowId}. " +
-                                          $"Errores: {string.Join(", ", resultadoActividad.Errores.Select(e => $"{e.Key}: {e.Value}"))}";
-
-                    resultado.Errores.Add(nameof(Resultado), mensajeError);
-                }
-                log.Info("Workflow ejecutado exitosamente. Tarjeta: {0} Puesto: {1} WorkflowId: {2} InstanceId: {3} ProximaActividad: {4} PuestoDeTrabajoId: {5}",
-                        recorrido.TarjetaDeAcceso, puestoDeTrabajo.Id, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
-
+                    string mensajeError = $"Error al ejecutar workflow Playa Externa: {string.Join(", ", resultadoActividad.Errores.Select(e => $"{e.Key}: {e.Value}"))}";
+                    log.Error(mensajeError);
             }
-            catch (Exception e)
-            {
-                resultado.Errores.Add(nameof(Resultado), $"Error al ejecutar el workflow: {e.Message}");
-            }
-
-            return resultado;
         }
 
-        protected void EjecutarDispositivos(PuestoDeTrabajoDto puestoDeTrabajo, DatosRecorridoDto recorrido)
+
+        private void InformarPagoTasaMunicipal(Guid instanciaWorkflow)
         {
-            try
+            var pagos = servicio.ObtenerPagosDigitalesPorInstanceId(instanciaWorkflow);
+            if (pagos.Any())
             {
-                log.Debug($"Validando puesto : {puestoDeTrabajo.Id}");
-                var dispositivosEntrada = puestoDeTrabajo.Entrada.Split(',');
-                if( dispositivosEntrada.Length > 0 || !string.IsNullOrEmpty(dispositivosEntrada[0]))
+                log.Debug($"El recorrido {instanciaWorkflow} tiene pagos digitales asociados.");
+                foreach (var pago in pagos)
                 {
-                    foreach (var dispositivo in dispositivosEntrada)
+                    var resultado = comandos.Ejecutar(new MOAPayInformarPagoComoConsumido
                     {
-                        log.Debug("Ejecutando Barrera de entrada {1} para el puesto: {0}", puestoDeTrabajo.Id, dispositivo);
-                        var resultado = servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera
-                        {
-                            CodigoDispositivo = dispositivo
-                        });
-
-                        if (resultado.Mensaje.Codigo != 0)
-                        {
-                            log.Error("Fallo la Apertura del dispositivo: {0}", resultado.Mensaje.Descripcion);
-                        }
-                    }
-                }
-
-                var dispositivosSalida = puestoDeTrabajo.CierreEntrada.Split(',');
-                foreach (var dispositivo in dispositivosSalida)
-                {
-                    log.Debug("Ejecutando cierre de Barrera {1} para el puesto: {0}", puestoDeTrabajo.Id, dispositivo);
-                    var resultado = servicioOrquestador.Ejecutar(new EjecutarCierreBarrera
-                    {
-                        CodigoDispositivo = dispositivo
+                        Id = pago.IdMOAPay,
+                        Disponible = "N",
+                        IdIntance = instanciaWorkflow
                     });
-
-                    if (resultado.Mensaje.Codigo != 0)
+                    if(resultado.HayErrores)
                     {
-                        log.Error("Fallo el Cierre del dispositivo: {0}", resultado.Mensaje.Descripcion);
+                        log.Error($"Error al informar el pago MOAPay como consumido para el pago {pago.IdMOAPay}: {string.Join(", ", resultado.Errores.Select(e => $"{e.Key}: {e.Value}"))}");
+                    }
+                    else
+                    {
+                        log.Debug($"Pago MOAPay informado como consumido exitosamente para el pago {pago.IdMOAPay}");
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                log.Error(e, $"Fallo la ejecucion de los dispositivos relacionados al workflow:  {recorrido.InstanciaWorkflow}");
             }
         }
     }

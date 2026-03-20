@@ -2,9 +2,9 @@
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
@@ -385,11 +385,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void ConfirmarCTGVencidos(int centroId)
         {
-            servicioComandos.Ejecutar(new ConfirmarCTGVencidas
-            {
-                CentroId = centroId,
-                TipoPerfil = TipoPerfil.Solicitante,
-            });
+            //servicioComandos.Ejecutar(new ConfirmarCTGVencidas
+            //{
+            //    CentroId = centroId,
+            //    TipoPerfil = TipoPerfil.Solicitante,
+            //});
         }
 
         private void ajustarPatentesYAcoplado(ref OrdenCargaInternaFasonDto orden)

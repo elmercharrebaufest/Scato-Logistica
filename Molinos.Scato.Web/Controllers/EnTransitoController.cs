@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -50,7 +51,7 @@ namespace Molinos.Scato.Web.Controllers
             var controlRecorrido = new ControlRecorridoDto
             {
                 Actividad = Textos.ActEnTransito,
-                ActividadXaml = "EnTransito",
+                ActividadXaml = Constantes.EtapaWorkflow.EnTransito,
                 WorkflowInstanceId = observacion.WorkflowInstanceId,
                 PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
                 NombreUsuario = datosUsuario.NombreUsuario,

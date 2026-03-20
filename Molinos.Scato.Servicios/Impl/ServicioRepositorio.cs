@@ -11637,9 +11637,8 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool EstaDemoradoPorTasaAdeudada(Guid instanciaWorkflow)
         {
-            var estaDemorado = repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == instanciaWorkflow && x.VehiculoDemorado && !x.IngresoContingenciaPagoMunicipal && x.RecorridoTasaMunicipal != null && !x.RecorridoTasaMunicipal.Exceptuado);
-            var tienePago = repositorio.Existe<PagosTasaMunicipal>(x => x.IdInstance == instanciaWorkflow);
-            return estaDemorado && !tienePago;
+            var estaDemorado = repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == instanciaWorkflow && x.VehiculoDemorado && !x.IngresoContingenciaPagoMunicipal && x.RecorridoTasaMunicipal != null && !x.RecorridoTasaMunicipal.Exceptuado && x.Centro.Id == Constantes.Centro.IdSanLorenzo);
+            return estaDemorado && !repositorio.Existe<PagosTasaMunicipal>(x => x.IdInstance == instanciaWorkflow);
         }
 
         public ExceptuadosTicketMunicipalDto ObtenerExcepcionDeTicketMunicipal(string patente, Guid? workflowInstanceId)

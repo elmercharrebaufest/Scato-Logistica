@@ -36,20 +36,44 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     var response = JsonConvert.DeserializeObject<ResponseWebAPIDto<ResultadoMOAPayInformarPagoComoConsumido>>(responseWebAPI.Content);
 
-                    if (!response.IsValid)
+                    if (!response.IsValid || response.Data == null)
                     {
                         var firstMessage = response.Messages != null && response.Messages.Count > 0 ? response.Messages[0].Message : null;
                         Log.Error(firstMessage);
                         resultado.Errores.Add("Error", firstMessage);
+                        return resultado;
+                    }
+
+                    if (!response.Data.Datos.Any())
+                    {
+                        Log.Error("No se encontraron datos en la respuesta de la API en MOAPayInformarPagoComoConsumido");
+                        resultado.Errores.Add("Error", "No se encontraron datos en la respuesta de la API");
+                        return resultado;
+                    }
+
+                    if (response.Data.Datos[0].FechaAcceso == null)
+                    {
+                        Log.Error("La fecha de acceso es nula en la respuesta de la API en MOAPayInformarPagoComoConsumido");
+                        resultado.Errores.Add("Error", "La fecha de acceso es nula en la respuesta de la API");
+                        return resultado;
+                    }
+
+                    if (response.Data.Datos[0].Id != comando.Id)
+                    {
+                        Log.Error($"El ID en la respuesta de la API ({response.Data.Datos[0].Id}) no coincide con el ID del comando ({comando.Id}) en MOAPayInformarPagoComoConsumido");
+                        resultado.Errores.Add("Error", "El ID en la respuesta de la API no coincide con el ID del comando");
+                        return resultado;
                     }
 
                     if (!resultado.HayErrores)
                     {
                         Log.Info($"MOAPayInformarPagoComoConsumido procesado correctamente para Id: {comando.Id}");
                         var recorrido = Repositorio.Obtener<Recorrido>(p => p.InstanciaWorkflow == comando.IdIntance);
-                        if (recorrido != null)
+                        var pagoTasaMunicipal = Repositorio.Obtener<PagosTasaMunicipal>(p => p.IdInstance == comando.IdIntance);
+                        if (recorrido != null && pagoTasaMunicipal != null)
                         {
                             recorrido.PagoTasaMunicipalInformado = true;
+                            pagoTasaMunicipal.FechaAcceso = DateTime.Parse(response.Data.Datos[0].FechaAcceso);
                             Repositorio.GuardarCambios();
                         }
                     }
@@ -67,7 +91,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("Error", errorMessage);
             }
 
-            Repositorio.GuardarCambios();
             return resultado;
         }
     }

@@ -436,11 +436,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void ConfirmarCTGVencidos(int centroId)
         {
-            servicioComandos.Ejecutar(new ConfirmarCTGVencidas
-            {
-                CentroId = centroId,
-                TipoPerfil = TipoPerfil.Solicitante,
-            });
+            //servicioComandos.Ejecutar(new ConfirmarCTGVencidas
+            //{
+            //    CentroId = centroId,
+            //    TipoPerfil = TipoPerfil.Solicitante,
+            //});
         }
 
         private void ajustarPatentesYAcoplado(ref OrdenCargaFasDto orden)

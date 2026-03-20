@@ -10,7 +10,9 @@ using Molinos.Scato.Servicios.Conversiones;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
@@ -48,7 +50,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Info($"Número de días para inicio de búsqueda: {numeroDiasParaInicioBusqueda}");
 
                 if (TieneExcepciones(comando, resultado) ||
-                    TienePago24Hrs(comando, resultado) ||
                     FueValidadoAlIngreso(comando, resultado))
                 {
                     return resultado;
@@ -84,7 +85,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 throw new ArgumentException("El CentroId debe ser un valor válido.");
             }
         }
-       
+
         private Resultado ActualizarEstadoDePago(int idPago, Guid instanceId, int idDiferenciaPago = 0)
         {
             Log.Info($"Actualizando estado del pago con ID: {idPago} e InstanceId: {instanceId}");
@@ -100,7 +101,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (respuestaModificacionEstadoPago.HayErrores)
             {
-                Log.Error($"Error al actualizar el pago de la tasa municipal. Error en el comando: {nameof(ModificarComoUsadoPagosTasaMunicipal)} - {string.Join(",",respuestaModificacionEstadoPago.Errores)}");
+                Log.Error($"Error al actualizar el pago de la tasa municipal. Error en el comando: {nameof(ModificarComoUsadoPagosTasaMunicipal)} - {string.Join(",", respuestaModificacionEstadoPago.Errores)}");
                 throw new InvalidOperationException($"No se pudo actualizar el pago de la tasa municipal. Error en el comando: {nameof(ModificarComoUsadoPagosTasaMunicipal)} - {respuestaModificacionEstadoPago.Errores}");
             }
             Log.Info($"Estado del pago actualizado exitosamente");
@@ -120,18 +121,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (respuestaInformarPago == null)
                 throw new InvalidOperationException("No se pudo obtener el resultado al informar el pago.");
 
-            if (respuestaInformarPago.HayErrores)
-            {
-                Log.Error($"Error al informar el pago de la tasa municipal. Error en el comando: {nameof(MOAPayInformarPagoComoConsumido)} - {string.Join(",",respuestaInformarPago.Errores)}");
-                throw new InvalidOperationException($"No se pudo informar el pago de la tasa municipal.");
-            }
             return respuestaInformarPago;
         }
 
         private bool TieneExcepciones(VerificarPagoTasaMunicipal comando, ResultadoConsultarPagoTasaMunicipal resultado)
         {
             var datosExcepcion = Conversor.Convertir<VerificarPagoTasaMunicipal, DatosExcepcionTasaMunicipal>(comando);
-            bool tieneExcepcion = EjecutarValidacionesDeExcepciones(datosExcepcion, resultado);
+            bool tieneExcepcion = EjecutarValidacionesDeExcepciones(datosExcepcion, resultado, comando.Demorado);
             if (tieneExcepcion)
             {
                 Log.Info($"Excepción encontrada para el comando: {JsonConvert.SerializeObject(comando)}");
@@ -168,22 +164,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return tieneExcepcion;
         }
 
-        private bool TienePago24Hrs(VerificarPagoTasaMunicipal comando, ResultadoConsultarPagoTasaMunicipal resultado)
+        private bool TienePago24Hrs(DatosExcepcionTasaMunicipal datosExcepcion, bool esCamionDemorado)
         {
-            var datosExcepcion = Conversor.Convertir<VerificarPagoTasaMunicipal, DatosExcepcionTasaMunicipal>(comando);
+            Log.Debug("Validando excepción por pago en las últimas 24 horas para Patente: {0}", datosExcepcion.Patente);
             bool tienePago24Hrs = ValidarExcepcionPago24Hrs(datosExcepcion);
             if (tienePago24Hrs)
             {
-                Log.Info($"Pago de 24 horas encontrado para el comando: {JsonConvert.SerializeObject(comando)}");
-                ConstruirResultado(resultado, TipoValidacionPagoTasaMunicipal.Abonado24Hrs, comando.Demorado);
+                Log.Info($"Pago de 24 horas encontrado para el comando: {JsonConvert.SerializeObject(datosExcepcion)}");
                 var recorrido = Repositorio.Obtener<Recorrido>(p => p.InstanciaWorkflow == datosExcepcion.InstanceId);
                 if (recorrido != null)
                 {
                     recorrido.PagoTasaMunicipalInformado = true;
                     Repositorio.GuardarCambios();
                 }
-                resultado.TieneExcepcion = tienePago24Hrs;
-                resultado.MotivoExcepcion = Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPago24Hrs;
             }
             return tienePago24Hrs;
         }
@@ -211,7 +204,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return validado;
         }
 
-        public void ValidarPago(string patente, EstadoPagoTasaMunicipal pago, DatosTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado, bool esDemorado)
+        private void ValidarPago(string patente, EstadoPagoTasaMunicipal pago, DatosTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado, bool esDemorado)
         {
             var condicionDePago = pago.CondicionDePago;
 
@@ -285,7 +278,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             string numeroDocumento = string.IsNullOrWhiteSpace(datos.Ctg) ? string.Empty : datos.Ctg;
             var pagos = Repositorio.ObtenerPagoTasaMunicipal<EstadoPagoTasaMunicipal>(tipoCategoria, datos.Patente, numeroDocumento, numeroDiasDeConsulta, datos.CentroId, Constantes.MOAPay.Codigos.CodigoDiferenciaDePago);
             Log.Debug($"Pagos encontrados para la patente: {datos.Patente}, total de pagos: {pagos.Count}");
-            var pago = pagos.Where(p=> p.CondicionDePago == TipoValidacionPagoTasaMunicipal.Abonado).LastOrDefault();
+            var pago = pagos.Where(p => p.CondicionDePago == TipoValidacionPagoTasaMunicipal.Abonado).LastOrDefault();
             if (pago != null)
                 return pago;
             else
@@ -319,17 +312,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return pago;
         }
 
-        public bool EjecutarValidacionesDeExcepciones(DatosExcepcionTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado)
+        private bool EjecutarValidacionesDeExcepciones(DatosExcepcionTasaMunicipal datos, ResultadoConsultarPagoTasaMunicipal resultado, bool esCamionDemorado)
         {
             if (datos.InstanceId.HasValue)
             {
-                var recorridoTasaMunicipal = 
+                var recorridoTasaMunicipal =
                     this.Repositorio.Obtener<RecorridoTasaMunicipal>(
                         x => x.Recorrido.InstanciaWorkflow == datos.InstanceId.Value);
 
                 if (recorridoTasaMunicipal != null)
                 {
-                    Log.Info($"Se encontró RecorridoTasaMunicipal para InstanceId: {datos.InstanceId} - " + 
+                    Log.Info($"Se encontró RecorridoTasaMunicipal para InstanceId: {datos.InstanceId} - " +
                         (recorridoTasaMunicipal.Exceptuado ? "Está exceptuado" : "No está exceptuado"));
                     resultado.TieneExcepcion = recorridoTasaMunicipal.Exceptuado;
                     resultado.MotivoExcepcion = recorridoTasaMunicipal.MotivoExceptuado;
@@ -339,22 +332,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
             //Si no tiene excepción a la entrada se revalida los tipos de excepción
             if (!resultado.TieneExcepcion)
             {
-                var reglas = new Dictionary<string, Func<bool>>()
+                var reglas = new OrderedDictionary
                 {
-                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorMaterialYCentro , () => ValidarExcepcionMaterialPorCentro(datos) },
-                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatente , () => ValidarExcepcionPorPatente(datos) },
-                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatenteYDocumento , () => ValidarExcepcionPorPatenteYDocumento(datos) },
-                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorSojaImpo , () => ValidarExcepcionEsSojaImpo(datos) }
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorMaterialYCentro , (Func<bool>)(() => ValidarExcepcionMaterialPorCentro(datos)) },
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorSojaImpo , (Func<bool>)(() => ValidarExcepcionEsSojaImpo(datos)) },
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorRecorridoReingreso , (Func < bool >)(() => ValidarExcepcionPorReingresoEnPlaya(datos)) },
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPago24Hrs , (Func < bool >)(() => TienePago24Hrs(datos, esCamionDemorado)) },
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatente , (Func < bool >)(() => ValidarExcepcionPorPatente(datos)) },
+                    { Constantes.MOAPay.MotivosDeExcepciones.ExcepcionPorPatenteYDocumento , (Func < bool >)(() => ValidarExcepcionPorPatenteYDocumento(datos)) }
                 };
 
-                foreach (var regla in reglas)
+                foreach (DictionaryEntry regla in reglas)
                 {
-                    var tieneExcepcion = regla.Value();
+                    var validarExcepcion = (Func<bool>)regla.Value;
 
-                    if (tieneExcepcion)
+                    if (validarExcepcion())
                     {
-                        resultado.TieneExcepcion = tieneExcepcion;
-                        resultado.MotivoExcepcion = regla.Key;
+                        resultado.TieneExcepcion = true;
+                        resultado.MotivoExcepcion = (string)regla.Key;
                         break;
                     }
                 }
@@ -365,25 +360,28 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private bool ValidarExcepcionMaterialPorCentro(DatosExcepcionTasaMunicipal datos)
         {
+            Log.Debug("Validando excepción por material y centro para MaterialId: {0} y CentroId: {1}", datos.MaterialId, datos.CentroId);
             bool tieneExcepcion = false;
-           if(datos.EsValidacionAlIngreso)
+            if (datos.EsValidacionAlIngreso)
                 tieneExcepcion = Repositorio.Existe<MaterialPorCentro>(m => m.Material.Id == datos.MaterialId && m.Centro.Id == datos.CentroId && m.ImprimeReciboMunicipal == false);
-           else
+            else
             {
                 var materialCentro = Repositorio.ObtenerProyeccion((Recorrido x) => x.InstanciaWorkflow == datos.InstanceId, x => new { MaterialId = x.Material.Id, CentroId = x.Centro.Id });
-                tieneExcepcion = Repositorio.ObtenerProyeccion<MaterialPorCentro, bool>(  x => x.Material.Id == materialCentro.MaterialId && x.Centro.Id == materialCentro.CentroId,
+                tieneExcepcion = Repositorio.ObtenerProyeccion<MaterialPorCentro, bool>(x => x.Material.Id == materialCentro.MaterialId && x.Centro.Id == materialCentro.CentroId,
                                                                                        x => !x.ImprimeReciboMunicipal);
             }
-           return tieneExcepcion;
+            return tieneExcepcion;
         }
 
         private bool ValidarExcepcionPorPatente(DatosExcepcionTasaMunicipal datos)
         {
+            Log.Debug("Validando excepción por patente para Patente: {0} y InstanceId: {1}", datos.Patente, datos.InstanceId);
             return this._servicioRepositorio.TieneExcepcionDePagoDeTasaMunicipal(datos.Patente, datos.InstanceId);
         }
 
         private bool ValidarExcepcionPorPatenteYDocumento(DatosExcepcionTasaMunicipal datos)
         {
+            Log.Debug("Validando excepción por patente y documento para Patente: {0}, CTG: {1} y InstanceId: {2}", datos.Patente, datos.Ctg, datos.InstanceId);
             bool tieneExcepcion = false;
 
             if (datos.EsValidacionAlIngreso)
@@ -391,8 +389,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 tieneExcepcion = Repositorio.Existe<LogExceptuadosTicketMunicipal>(r => r.Patente == datos.Patente && r.Material.Id == datos.MaterialId && r.PagaTicketMunicipal == false && r.NumeroDocumentoIngreso == datos.Ctg);
             }
             else
-            {
-                Log.Info($"Validando excepcion de recorrido para InstanceId: {datos.InstanceId}");
+            {;
                 tieneExcepcion = Repositorio.Existe<LogExceptuadosTicketMunicipal>(x => x.WorkflowInstanceId == datos.InstanceId && x.PagaTicketMunicipal == false);
                 Log.Info($"Tiene excepcion de recorrido: {tieneExcepcion} para InstanceId: {datos.InstanceId}");
             }
@@ -402,13 +399,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private bool ValidarExcepcionEsSojaImpo(DatosExcepcionTasaMunicipal datos)
         {
+            Log.Debug("Validando excepción por soja importada para CTG: {0} y CódigoEstablecimiento: {1}", datos.Ctg, datos.CodigoEstablecimiento);
             bool tieneExcepcion = false;
-            
+
             if (!string.IsNullOrWhiteSpace(datos.Ctg) && !string.IsNullOrWhiteSpace(datos.CodigoEstablecimiento))
                 tieneExcepcion = ValidarSojaImpoPorCartaPorteElectronica(datos);
             else if (datos.InstanceId.HasValue && datos.InstanceId.Value != Guid.Empty)
                 tieneExcepcion = ValidarSojaImpoConRecorrido(datos);
-            
+
             return tieneExcepcion;
         }
 
@@ -453,7 +451,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private bool ValidarEsSojaImpoACA(string titularCartaPorteCodigoSap, string codEstab, string remitenteComercialCuit, string remitenteComercialVentaSecundariaCuit = null)
         {
-            return 
+            return
                 !string.IsNullOrEmpty(titularCartaPorteCodigoSap) && titularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA &&
                 !string.IsNullOrEmpty(codEstab) && codEstab == Constantes.ValoresPorDefecto.EstablecimientoACA &&
                 ((!string.IsNullOrEmpty(remitenteComercialCuit) && remitenteComercialCuit == Constantes.Proveedores.CuitMolinos)
@@ -463,7 +461,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private bool ValidarExcepcionPago24Hrs(DatosExcepcionTasaMunicipal datos)
         {
             bool tienePago24Hrs = false;
-            
+
             if (datos.MaterialId.HasValue && datos.MaterialId.Value > 0)
             {
                 var material = _servicioRepositorio.ObtenerMaterialPorId(datos.MaterialId.Value);
@@ -476,8 +474,34 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return tienePago24Hrs;
         }
 
+        private bool ValidarExcepcionPorReingresoEnPlaya(DatosExcepcionTasaMunicipal datos)
+        {
+            Log.Debug("Validando excepción por reingreso en playa para CTG: {0} y CentroId: {1}", datos.Ctg, datos.CentroId);
+            var recorridosAnteriores = Repositorio.Listar<Recorrido>(
+                x => x.NumeroDocumentoIngreso == datos.Ctg
+                && x.Terminado
+                && x.Centro.Id == datos.CentroId);
+            if (!recorridosAnteriores.Any())
+                return false;
+
+            var ultimoRecorrido = recorridosAnteriores.OrderByDescending(x => x.FechaInicio).FirstOrDefault();
+            if (!ultimoRecorrido.Rechazado)
+                return false;
+
+            var pasoPorEnTransito = Repositorio.Existe<ControlRecorrido>(x => x.WorkflowInstanceId == ultimoRecorrido.InstanciaWorkflow && x.ActividadXaml == Constantes.EtapaWorkflow.EnTransito);
+            if (pasoPorEnTransito)
+                return false;
+
+            var instanciasWorkflow = recorridosAnteriores.OrderBy(x => x.FechaInicio).Select(x => x.InstanciaWorkflow).ToList();
+            var pagoConsumido = Repositorio.Existe<PagosTasaMunicipal>(p => p.IdInstance.HasValue && instanciasWorkflow.Contains(p.IdInstance.Value));
+            if (!pagoConsumido)
+                return false;
+
+            return true;
+        }
+
         private void ConstruirResultado(ResultadoConsultarPagoTasaMunicipal resultado, TipoValidacionPagoTasaMunicipal condicionPago, bool esDemorado)
-        {       
+        {
             switch (condicionPago)
             {
                 case TipoValidacionPagoTasaMunicipal.Abonado:

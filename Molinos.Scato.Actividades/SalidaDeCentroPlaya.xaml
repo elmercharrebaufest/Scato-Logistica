@@ -42,6 +42,7 @@
       </x:Property.Attributes>
     </x:Property>
     <x:Property Name="puestoDeTrabajoId" Type="OutArgument(x:Int32)" />
+    <x:Property Name="vehiculoRechazado" Type="InArgument(x:Boolean)" />
   </x:Members>
   <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
   <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.SalidaDeCentroPlaya_1</sap2010:WorkflowViewState.IdRef>
@@ -58,8 +59,14 @@
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
     <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
       <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
       <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>Ninject</AssemblyReference>
+      <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>Owin</AssemblyReference>
       <AssemblyReference>PresentationCore</AssemblyReference>
       <AssemblyReference>PresentationFramework</AssemblyReference>
       <AssemblyReference>System</AssemblyReference>
@@ -151,6 +158,24 @@
         <InArgument x:TypeArguments="msdc:Resultado" x:Key="resultado" />
       </p:SendParametersContent>
     </p:SendReply>
+    <If>
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">vehiculoRechazado</mca:CSharpValue>
+        </InArgument>
+      </If.Condition>
+      <If.Then>
+        <local:InformarPagoTasaMunicipal>
+          <local:InformarPagoTasaMunicipal.WorkflowInstanceId>
+            <InOutArgument x:TypeArguments="s:Guid">
+              <mca:CSharpReference x:TypeArguments="s:Guid">workflowId</mca:CSharpReference>
+            </InOutArgument>
+          </local:InformarPagoTasaMunicipal.WorkflowInstanceId>
+          <sap2010:WorkflowViewState.IdRef>InformarPagoTasaMunicipal_2</sap2010:WorkflowViewState.IdRef>
+        </local:InformarPagoTasaMunicipal>
+      </If.Then>
+      <sap2010:WorkflowViewState.IdRef>If_1</sap2010:WorkflowViewState.IdRef>
+    </If>
     <local:MarcarWorkflowTerminado sap2010:WorkflowViewState.IdRef="MarcarWorkflowTerminado_1">
       <local:MarcarWorkflowTerminado.InstanceId>
         <InArgument x:TypeArguments="s:Guid">
@@ -182,26 +207,46 @@
         </OutArgument>
       </local:FinDeActividad.PuestoDeTrabajoId>
     </local:FinDeActividad>
-    <sads:DebugSymbol.Symbol>d1xDOlxEZXZlbG9wXFNDVDIwMCAtIFNjYXRvIElJXFNyY1xNb2xpbm9zLlNjYXRvXE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcU2FsaWRhRGVDZW50cm8ueGFtbBdYA7oBDgIBAVwFYhoCAWpjBXMeAgFQdAWIARECAT+JAQWUAR4CAS6VAQWZARMCAS2aAQWgASUCASShAQWnARoCARuoAQW4ARwCAQJfC1/OAQIBa2sLa4UBAgFiZgtmUAIBWmMjYy8CAVlwC3BWAgFRfwt/XwIBSIUBC4UBdAIBQIwBC4wBbAIBN5EBC5EBXgIBL50BC50BUQIBJaQBC6QBywECARyrAQurAWwCAROwAQuwAV4CAQu1AQu1AWECAQM=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1FDOlxSZXBvc2l0b3Jpb3NcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xTYWxpZGFEZUNlbnRyb1BsYXlhLnhhbWwbXwPTAQ4CAQFjBWkaAwGKAWoFeh4CAW17BY8BEQIBWpABBZsBHgIBR5wBBaABEwIBRqEBBbIBCgIBMrMBBbkBJQIBKLoBBcABGgIBHsEBBdEBHAIBAmYLZtMBAwGLAXILcoUBAwGBAW0LbVACAXhqI2ovAgF3dwt3VgIBboYBC4YBXwIBZIwBC4wBdAIBW5MBC5MBbAIBUZgBC5gBXgIBSKQBC6QBWwIBM6gBCa8BKwIBPLYBC7YBUQIBKb0BC70BywECAR/EAQvEAWwCARXJAQvJAV4CAQzOAQvOAWECAQOrAQ+rAV0CAT0=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="LogActividad_1" sap:VirtualizedContainerService.HintSize="255,22" />
-      <sap2010:ViewStateData Id="NotificarUsuario_1" sap:VirtualizedContainerService.HintSize="255,22" />
-      <sap2010:ViewStateData Id="Receive_1" sap:VirtualizedContainerService.HintSize="255,86" />
-      <sap2010:ViewStateData Id="ControlRecorrido_1" sap:VirtualizedContainerService.HintSize="255,22" />
-      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255,86" />
-      <sap2010:ViewStateData Id="MarcarWorkflowTerminado_1" sap:VirtualizedContainerService.HintSize="255,22" />
-      <sap2010:ViewStateData Id="LogActividad_2" sap:VirtualizedContainerService.HintSize="255,22" />
-      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="255,22" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="277,708">
+      <sap2010:ViewStateData Id="LogActividad_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="NotificarUsuario_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Receive_1" sap:VirtualizedContainerService.HintSize="464,90.6666666666667">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.SalidaDeCentroPlaya_1" sap:VirtualizedContainerService.HintSize="317,788" />
+      <sap2010:ViewStateData Id="ControlRecorrido_1" sap:VirtualizedContainerService.HintSize="464,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="464,90.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InformarPagoTasaMunicipal_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,214.666666666667" />
+      <sap2010:ViewStateData Id="MarcarWorkflowTerminado_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="LogActividad_2" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,972">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.SalidaDeCentroPlaya_1" sap:VirtualizedContainerService.HintSize="676,1473.33333333333" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

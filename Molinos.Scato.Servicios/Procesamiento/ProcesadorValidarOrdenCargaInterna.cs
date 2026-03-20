@@ -277,11 +277,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void ValidarAltaCPEProvisoria(int centroId, OrdenResiduosDto ordenOperaciones, TipoVehiculo tipoVehiculo, int clienteDestinoId, int transportistaId, int clientePagadorFleteId)
         {
-            servicioComandos.Ejecutar(new ConfirmarCTGVencidas
-            {
-                CentroId = centroId,
-                TipoPerfil = TipoPerfil.Solicitante,
-            });
+            //servicioComandos.Ejecutar(new ConfirmarCTGVencidas
+            //{
+            //    CentroId = centroId,
+            //    TipoPerfil = TipoPerfil.Solicitante,
+            //});
 
             var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
             {

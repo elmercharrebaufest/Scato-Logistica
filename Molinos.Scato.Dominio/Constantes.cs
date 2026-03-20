@@ -223,6 +223,7 @@ namespace Molinos.Scato.Dominio
             public const string OrdenCargaInterna = "IngresarOrdenCargaInternaFason";
             public const string MaterialNoProductivo = "IngresarOrdenCargaInterna";
             public const string IngresarOrdenCargaFas = "IngresarOrdenCargaFas";
+            public const string EnTransito = "EnTransito";
         }
 
         public struct CartelTramaPare
@@ -430,7 +431,11 @@ namespace Molinos.Scato.Dominio
                 public const string ExcepcionPorPatenteYDocumento = "EXCEPCIÓN POR PATENTE Y DOCUMENTO";
                 public const string ExcepcionPorSojaImpo = "EXCEPCIÓN POR SOJA IMPO";
                 public const string ExcepcionPorPago24Hrs = "EXCEPCIÓN POR PAGO 24 HRS";
-                public const string ExcepcionPorRecorridoTasaMunicipal = "EXCEPCIÓN POR RECORRIDO TASA MUNICIPAL";
+                public const string ExcepcionPorRecorridoReingreso = "EXCEPCIÓN POR REINGRESO";
+            }
+            public static class NombreUsuario
+            {
+                public const string SistemaScato = "SistemaScato";
             }
         }
     }

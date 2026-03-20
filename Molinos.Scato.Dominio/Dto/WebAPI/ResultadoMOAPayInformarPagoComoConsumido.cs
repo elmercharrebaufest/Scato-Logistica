@@ -10,6 +10,6 @@ namespace Molinos.Scato.Dominio.Dto.WebAPI
 
         public int Registros { get; set; }
 
-        public List<string> Datos { get; set; }
+        public List<MOAPayConsultarPagosDatos> Datos { get; set; }
     }
 }

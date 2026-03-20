@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Net;
-using Molinos.Scato.Dominio.Dto;
+﻿using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
+using Molinos.Scato.Dominio.Helpers;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net;
 
 namespace Molinos.Scato.Servicios.Impl
 {
@@ -59,10 +61,12 @@ namespace Molinos.Scato.Servicios.Impl
                 request.AddParameter("fason", FASON);
                 request.AddParameter("fas", FAS);
 
+                log.Debug($"Consultando ordenes fason para {patente}.");
                 var client = clientFactory.CrearClientOperaciones();
                 restResponse = client.Get<IEnumerable<OrdenDeCargaDto>>(request);
 
                 ordenes = restResponse.Data;
+                log.Debug(ordenes.Any() ? ordenes.ToJson() : "No se encontraron ordenes de fason.");
             }
             catch (Exception ex)
             {
@@ -133,10 +137,12 @@ namespace Molinos.Scato.Servicios.Impl
                 var request = this.CrearRequest(RECURSO);
                 request.AddParameter("patenteChasis", patente);
 
+                log.Debug($"Consultando ordenes insumos para {patente}.");
                 var client = clientFactory.CrearClientOperaciones();
                 restResponse = client.Get<IEnumerable<OrdenResiduosDto>>(request);
 
                 ordenes = restResponse.Data;
+                log.Debug(ordenes.Any() ? ordenes.ToJson() : "No se encontraron ordenes de insumos.");
             }
             catch (Exception ex)
             {
