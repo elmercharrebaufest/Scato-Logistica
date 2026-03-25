@@ -181,6 +181,21 @@ namespace Molinos.Scato.Web.Firmware
                     lecturaPuestoDeTrabajo.TarjetaValida = false;
                     lecturaPuestoDeTrabajo.MensajeError = proximaAccion.MensajeError;
                 }
+                
+                var resultadoLogIngresoPorPuesto = comandos.Ejecutar(new CrearLogIngresoPorPuesto
+                {
+                    Dto = new LogIngresoPorPuestoDto
+                    {
+                        RecorridoId = recorrido.Id,
+                        PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId,
+                        TipoIngreso = lecturaPuestoDeTrabajo.TipoIngresoPorPuesto,
+                        FechaHora = DateTime.Now
+                    }
+                });
+
+                if (resultadoLogIngresoPorPuesto.HayErrores)
+                    log.Error($"Error al crear el log de ingreso por puesto para el recorrido {recorrido.Id} puesto de trabajo {lecturaPuestoDeTrabajo.PuestoDeTrabajoId}. \nError: {resultadoLogIngresoPorPuesto.Errores.Values.FirstOrDefault()}");
+
                 log.Info("Workflow ejecutado exitosamente. Tarjeta: {0} Puesto: {1} WorkflowId: {2} InstanceId: {3} ProximaActividad: {4} PuestoDeTrabajoId: {5}",
                         lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
 

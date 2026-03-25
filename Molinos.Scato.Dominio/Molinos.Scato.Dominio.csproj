@@ -104,6 +104,8 @@
     <Compile Include="Comandos\ModificarRecorridoPorContingenciaPay.cs" />
     <Compile Include="Comandos\ModificarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\LiberarPagoTasaMunicipal.cs" />
+    <Compile Include="Comandos\Validaciones\ValidarVehiculoDetectado.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoValidarVehiculoDetectado.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarCategoriaVehiculo.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarEstadoTransmisionVisec.cs" />
     <Compile Include="Comandos\CrearExcepcionPagoTasaMunicipal.cs" />
@@ -485,6 +487,7 @@
     <Compile Include="Comandos\CrearRemitoBodegaVino.cs" />
     <Compile Include="Comandos\ControlDeBalanzaComando.cs" />
     <Compile Include="Comandos\ActualizarLecturaDeTarjeta.cs" />
+    <Compile Include="Comandos\CrearLogIngresoPorPuesto.cs" />
     <Compile Include="Comandos\CargarBinesSalida.cs" />
     <Compile Include="Comandos\ActualizarCartaPorteTransporteAutomotorRegistroTransmisionAMonsanto.cs" />
     <Compile Include="Comandos\ActualizarCartaPorteVagonFerroviarioRegistroTransmisionAMonsanto.cs" />
@@ -1486,6 +1489,7 @@
     <Compile Include="Dto\ExportacionDeArchivosDto.cs" />
     <Compile Include="Dto\ImpIdentificacionMuestraAuditoriaDto.cs" />
     <Compile Include="Dto\LecturaDeTarjetaDto.cs" />
+    <Compile Include="Dto\LogIngresoPorPuestoDto.cs" />
     <Compile Include="Dto\LecturaPuestoDeTrabajoDto.cs" />
     <Compile Include="Dto\DatosDeWorkflowDto.cs" />
     <Compile Include="Dto\DatosDeWorkflowsDto.cs" />
@@ -1699,6 +1703,7 @@
     <Compile Include="Entidades\EstadoConexion.cs" />
     <Compile Include="Entidades\ImpIdentificacionMuestraAuditoria.cs" />
     <Compile Include="Entidades\LecturaDeTarjeta.cs" />
+    <Compile Include="Entidades\LogIngresoPorPuesto.cs" />
     <Compile Include="Entidades\ImpControlDeCarga.cs" />
     <Compile Include="Entidades\MotivoQuiebreBarrera.cs" />
     <Compile Include="Entidades\PuestoDeTrabajoModificacionModalidad.cs" />
@@ -1835,6 +1840,7 @@
     <Compile Include="Enums\Modalidad.cs" />
     <Compile Include="Enums\TipoAlerta.cs" />
     <Compile Include="Enums\Tipo.cs" />
+    <Compile Include="Enums\TipoIngresoPorPuesto.cs" />
     <Compile Include="Enums\TipoAcceso.cs" />
     <Compile Include="Enums\TipoDeWorkflow.cs" />
     <Compile Include="Enums\TipoPermiso.cs" />

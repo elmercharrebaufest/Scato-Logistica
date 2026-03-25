@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -26186,6 +26186,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Puesto de Trabajo no encontrado.
+        /// </summary>
+        public static string PuestoDeTrabajo_NoEncontrado {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_NoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nombre PC.
         /// </summary>
         public static string PuestoDeTrabajo_NombrePc {
@@ -26245,6 +26254,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoDeTrabajo_SensorQuiebre {
             get {
                 return ResourceManager.GetString("PuestoDeTrabajo_SensorQuiebre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Vehicular.
+        /// </summary>
+        public static string PuestoDeTrabajo_SensorVehicular {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_SensorVehicular", resourceCulture);
             }
         }
         

@@ -1,11 +1,477 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:simpleType name="TipoComunicador">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Speaker" />
-      <xs:enumeration value="Mic" />
-      <xs:enumeration value="Both" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="TipoComunicador" nillable="true" type="tns:TipoComunicador" />
+<xs:schema xmlns:tns="http://orquestador.molinos.com.ar" elementFormDefault="qualified" targetNamespace="http://orquestador.molinos.com.ar" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
+  <xs:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
+  <xs:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
+  <xs:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="Ejecutar">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" minOccurs="0" name="comando" nillable="true" type="q1:ComandoEjecutar" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EjecutarResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" minOccurs="0" name="EjecutarResult" nillable="true" type="q2:ResultadoEjecutar" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Suscribir">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" minOccurs="0" name="comando" nillable="true" type="q3:ComandoSuscribir" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SuscribirResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" minOccurs="0" name="SuscribirResult" nillable="true" type="q4:ResultadoSuscribir" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelarSuscripcion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" minOccurs="0" name="comando" nillable="true" type="q5:ComandoCancelarSuscripcion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelarSuscripcionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" minOccurs="0" name="CancelarSuscripcionResult" nillable="true" type="q6:ResultadoCancelarSuscripcion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RecargarConfiguracion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoDispositivo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RecargarConfiguracionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" minOccurs="0" name="RecargarConfiguracionResult" nillable="true" type="q7:ResultadoComando" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarLectores">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarLectoresResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarLectoresResult" nillable="true" type="q8:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarPuestoDeViandas">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarPuestoDeViandasResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarPuestoDeViandasResult" nillable="true" type="q9:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerLectorPorPantalla">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoPantalla" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerLectorPorPantallaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerLectorPorPantallaResult" nillable="true" type="q10:DispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarBalanzas">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarBalanzasResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarBalanzasResult" nillable="true" type="q11:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarBalanzasDePuerto">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarBalanzasDePuertoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarBalanzasDePuertoResult" nillable="true" type="q12:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarBarrerasSemaforos">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarBarrerasSemaforosResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarBarrerasSemaforosResult" nillable="true" type="q13:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSensores">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSensoresResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarSensoresResult" nillable="true" type="q14:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSensoresVehiculares">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSensoresVehicularesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarSensoresVehicularesResult" nillable="true" type="q15:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarHumedimetros">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarHumedimetrosResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarHumedimetrosResult" nillable="true" type="q16:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarCamaras">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarCamarasResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarCamarasResult" nillable="true" type="q17:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarEstacionMeteorologica">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarEstacionMeteorologicaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarEstacionMeteorologicaResult" nillable="true" type="q18:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarNirs">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarNirsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarNirsResult" nillable="true" type="q19:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarImpresorasHasar">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarImpresorasHasarResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarImpresorasHasarResult" nillable="true" type="q20:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarLectoresQr">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarLectoresQrResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarLectoresQrResult" nillable="true" type="q21:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarCartelesLed">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarCartelesLedResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarCartelesLedResult" nillable="true" type="q22:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarMolinetes">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarMolinetesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarMolinetesResult" nillable="true" type="q23:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarDisplays">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarDisplaysResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarDisplaysResult" nillable="true" type="q24:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarConcentradores">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarConcentradoresResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarConcentradoresResult" nillable="true" type="q25:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarJsonToIotBox">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarJsonToIotBoxResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarJsonToIotBoxResult" nillable="true" type="q26:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarJsonFromIotBox">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarJsonFromIotBoxResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarJsonFromIotBoxResult" nillable="true" type="q27:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSensoresPorConcentrador">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="concentrador" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarSensoresPorConcentradorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarSensoresPorConcentradorResult" nillable="true" type="q28:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DetenerServiceOrquestador">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="server" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DetenerServiceOrquestadorResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerEstadoServiceOrquestador">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="server" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerEstadoServiceOrquestadorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ObtenerEstadoServiceOrquestadorResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IniciarServiceOrquestador">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="server" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IniciarServiceOrquestadorResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerUrlPorCamara">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q29="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="codigo" nillable="true" type="q29:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerUrlPorCamaraResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ObtenerUrlPorCamaraResult" nillable="true" type="q30:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerCamaras">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q31="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="codigo" nillable="true" type="q31:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerCamarasResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerCamarasResult" nillable="true" type="q32:ArrayOfCamaraDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarIntercomunicadores">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarIntercomunicadoresResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarIntercomunicadoresResult" nillable="true" type="q33:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PrenderApagarDispositivo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoDispositivo" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="activar" type="xs:boolean" />
+        <xs:element minOccurs="0" name="server" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PrenderApagarDispositivoResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerIntercomunicadorPuertoDeAudio">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoDispositivo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerIntercomunicadorPuertoDeAudioResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerIntercomunicadorPuertoDeAudioResult" nillable="true" type="q34:IntercomunicadorDispositivoBaseDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarTags">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarTagsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarTagsResult" nillable="true" type="q35:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerConfiguracionGrupoBarrera">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoGrupoBarrera" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerConfiguracionGrupoBarreraResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerConfiguracionGrupoBarreraResult" nillable="true" type="q36:GrupoBarreraDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerConfiguracionGrupoBarreraPorSegundoCruce">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoSegundoCruce" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerConfiguracionGrupoBarreraPorSegundoCruceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerConfiguracionGrupoBarreraPorSegundoCruceResult" nillable="true" type="q37:ArrayOfGrupoBarreraDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarGruposBarrera">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarGruposBarreraResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarGruposBarreraResult" nillable="true" type="q38:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

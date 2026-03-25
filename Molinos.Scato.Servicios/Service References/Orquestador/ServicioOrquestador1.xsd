@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
+  <xs:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
   <xs:complexType name="ResultadoEjecutar">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ResultadoComando">
@@ -69,31 +69,32 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="ResultadoBorrarBalanzada" nillable="true" type="tns:ResultadoBorrarBalanzada" />
-  <xs:complexType name="ResultadoIntercomunicador">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:ResultadoComando">
-        <xs:sequence>
-          <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Valores" nillable="true" type="q3:ArrayOfKeyValueOfstringdecimal" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="ResultadoIntercomunicador" nillable="true" type="tns:ResultadoIntercomunicador" />
   <xs:complexType name="ResultadoEjecutarQuery">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ResultadoEjecutar">
         <xs:sequence>
-          <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="queryResult" nillable="true" type="q4:ArrayOfstring" />
+          <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="queryResult" nillable="true" type="q3:ArrayOfstring" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="ResultadoEjecutarQuery" nillable="true" type="tns:ResultadoEjecutarQuery" />
+  <xs:complexType name="ResultadoEstadoSensor">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ResultadoEjecutar">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodigoDispositivoSensor" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EstadoActivo" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ResultadoEstadoSensor" nillable="true" type="tns:ResultadoEstadoSensor" />
   <xs:complexType name="ResultadoMeteorologica">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ResultadoEjecutar">
         <xs:sequence>
-          <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="Imagenes" nillable="true" type="q5:ArrayOfMeteorologicaDto" />
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="Imagenes" nillable="true" type="q4:ArrayOfMeteorologicaDto" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

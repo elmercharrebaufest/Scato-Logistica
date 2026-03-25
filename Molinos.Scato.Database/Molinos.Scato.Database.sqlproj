@@ -556,6 +556,7 @@
     <None Include="Scripts\20250905 - MOA PAY Semaforo\Inserciones External Services.sql" />
     <Build Include="dbo\Tables\MonitoreoServicioExterno.sql" />
     <Build Include="dbo\Tables\RecorridoTasaMunicipal.sql" />
+    <Build Include="dbo\Tables\LogIngresoPorPuesto.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

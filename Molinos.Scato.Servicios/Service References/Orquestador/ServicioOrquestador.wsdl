@@ -36,7 +36,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsdl:import namespace="http://orquestador.molinos.com.ar" location="http://valhalla:8080/ServicioOrquestador?wsdl=wsdl0" />
+  <wsdl:import namespace="http://orquestador.molinos.com.ar" location="http://gsloscatoqa01:8080/ServicioOrquestador?wsdl=wsdl0" />
   <wsdl:types />
   <wsdl:binding name="BasicHttpBinding_IServicioOrquestador" type="i0:IServicioOrquestador">
     <wsp:PolicyReference URI="#BasicHttpBinding_IServicioOrquestador_policy" />
@@ -140,6 +140,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ListarSensoresVehiculares">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehiculares" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="ListarHumedimetros">
       <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetros" style="document" />
       <wsdl:input>
@@ -230,6 +239,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ListarJsonToIotBox">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonToIotBox" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarJsonFromIotBox">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonFromIotBox" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="ListarSensoresPorConcentrador">
       <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentrador" style="document" />
       <wsdl:input>
@@ -295,6 +322,51 @@
     </wsdl:operation>
     <wsdl:operation name="PrenderApagarDispositivo">
       <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerIntercomunicadorPuertoDeAudio">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPuertoDeAudio" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarTags">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarTags" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerConfiguracionGrupoBarrera">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarrera" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerConfiguracionGrupoBarreraPorSegundoCruce">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraPorSegundoCruce" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarGruposBarrera">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -405,6 +477,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ListarSensoresVehiculares">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehiculares" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="ListarHumedimetros">
       <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetros" style="document" />
       <wsdl:input>
@@ -495,6 +576,24 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ListarJsonToIotBox">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonToIotBox" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarJsonFromIotBox">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonFromIotBox" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="ListarSensoresPorConcentrador">
       <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentrador" style="document" />
       <wsdl:input>
@@ -567,17 +666,62 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ObtenerIntercomunicadorPuertoDeAudio">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPuertoDeAudio" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarTags">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarTags" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerConfiguracionGrupoBarrera">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarrera" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerConfiguracionGrupoBarreraPorSegundoCruce">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraPorSegundoCruce" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarGruposBarrera">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="ServicioOrquestador">
     <wsdl:port name="BasicHttpBinding_IServicioOrquestador" binding="tns:BasicHttpBinding_IServicioOrquestador">
-      <soap:address location="http://valhalla:8080/ServicioOrquestador" />
+      <soap:address location="http://gsloscatoqa01:8080/ServicioOrquestador" />
     </wsdl:port>
     <wsdl:port name="NetTcpBinding_IServicioOrquestador" binding="tns:NetTcpBinding_IServicioOrquestador">
-      <soap12:address location="net.tcp://valhalla:8081/ServicioOrquestador" />
+      <soap12:address location="net.tcp://gsloscatoqa01:8081/ServicioOrquestador" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.tcp://valhalla:8081/ServicioOrquestador</wsa10:Address>
+        <wsa10:Address>net.tcp://gsloscatoqa01:8081/ServicioOrquestador</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>Valhalla\AlexArdela</Upn>
+          <Upn>GScatoSRV_qa@molinosagro.ad</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

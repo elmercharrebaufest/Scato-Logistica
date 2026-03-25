@@ -1,7 +1,11 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
+using Molinos.Scato.Dominio.Comandos.Validaciones;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
@@ -58,60 +62,49 @@ namespace Molinos.Scato.Web.ServicioHub
             hubClientNotificar = hubClientFactory.GetClientNotificar("notificarUsuario");
         }
 
-        //private void LogContadores(string codigoEvento)
-        //{
-        //    try
-        //    {
-        //        var eventoCount = 0;
-        //        var countActual = cache.Existe("Contadores:" + codigoEvento) ? cache.Obtener<string>("Contadores:" + codigoEvento) : string.Empty;
-        //        if (!string.IsNullOrEmpty(countActual))
-        //        {
-        //            eventoCount = Convert.ToInt32(countActual) + 1;
-        //            cache.Remover("Contadores:" + codigoEvento);
-        //        }
-        //        cache.Agregar("Contadores:" + codigoEvento, eventoCount.ToString(), DateTimeOffset.Now.AddHours(24));
-
-        //        var horaAnteriorStr = cache.Existe("Contadores:HoraUltimoLog") ? cache.Obtener<string>("Contadores:HoraUltimoLog") : string.Empty;
-
-        //        bool guardarLog = false;
-        //        if (!string.IsNullOrEmpty(horaAnteriorStr))
-        //        {
-        //            var fechaAnterior = new DateTime();
-        //            DateTime.TryParse(horaAnteriorStr, out fechaAnterior);
-        //            if (DateTime.UtcNow > fechaAnterior.AddMinutes(10))
-        //            {
-        //                cache.Remover("HoraUltimoLog:" + codigoEvento);
-        //                guardarLog = true;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            guardarLog = true;
-        //        }
-
-        //        if (guardarLog)
-        //        {
-        //            log.Info("Request LecturaTarjetaRecibida: " + (cache.Existe("Contadores:LecturaTarjetaRecibida") ? cache.Obtener<string>("Contadores:LecturaTarjetaRecibida") : "0"));
-        //            log.Info("Request ErrorConexionDispositivo: " + (cache.Existe("Contadores:ErrorConexionDispositivo") ? cache.Obtener<string>("Contadores:ErrorConexionDispositivo") : "0"));
-        //            log.Info("Request ConexionDispositivoCorrecta: " + (cache.Existe("Contadores:ConexionDispositivoCorrecta") ? cache.Obtener<string>("Contadores:ConexionDispositivoCorrecta") : "0"));
-        //            log.Info("Request LecturaQr: " + (cache.Existe("Contadores:LecturaQr") ? cache.Obtener<string>("Contadores:LecturaQr") : "0"));
-        //            log.Info("Request EntradaActivada: " + (cache.Existe("Contadores:EntradaActivada") ? cache.Obtener<string>("Contadores:EntradaActivada") : "0"));
-        //            log.Info("Request EntradaDesactivada: " + (cache.Existe("Contadores:EntradaDesactivada") ? cache.Obtener<string>("Contadores:EntradaDesactivada") : "0"));
-        //            log.Info("Request CambioEstadoIntercomunicador: " + (cache.Existe("Contadores:CambioEstadoIntercomunicador") ? cache.Obtener<string>("Contadores:CambioEstadoIntercomunicador") : "0"));
-
-        //            cache.Agregar("Contadores:HoraUltimoLog", DateTime.UtcNow.ToString(), DateTimeOffset.Now.AddHours(24));
-        //        }
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        log.Info("No se pudo agrega valores al Contador de notificaciones: " + e.Message);
-        //    }
-
-        //}
         public void Recibir(NotificacionEvento notificacion)
         {
-            if (notificacion.CodigoEvento == "LecturaTarjetaRecibida")
+            if (notificacion.CodigoEvento == Constantes.CodigosEventos.VehiculoDetectado)
+            {
+                try
+                {
+                    var error = notificacion.Datos.ContainsKey("Error") ? notificacion.Datos["Error"] : string.Empty;
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        log.Error("Error en detección de vehículo del dispositivo: {0}. Error: {1}",
+                            notificacion.CodigoDispositivo, error);
+                        return;
+                    }
+
+                    var patente = notificacion.Datos.ContainsKey("Patente") ? notificacion.Datos["Patente"] : string.Empty;
+                    if (string.IsNullOrEmpty(patente))
+                    {
+                        log.Error("Error en detección de vehículo del dispositivo: {0}. Error: Notificación VehiculoDetectado sin patente",
+                            notificacion.CodigoDispositivo);
+                        return;
+                    }
+
+                    log.Debug("Iniciando - Notificacion VehiculoDetectado de dispositivo: {0}, Patente: {1}", notificacion.CodigoDispositivo, patente);
+                    var resultado = comandos.Ejecutar(new ValidarVehiculoDetectado { Patente = patente, CodigoDispositivo = notificacion.CodigoDispositivo } ) as ResultadoValidarVehiculoDetectado;
+                    log.Debug("Fin - Validando vehículo detectado para el dispositivo: {0}", notificacion.CodigoDispositivo);
+
+                    if (resultado.HayErrores)
+                    {
+                        log.Error("Error al validar vehículo detectado: {0}", string.Join(", ", resultado.Errores.Values));
+                        return;
+                    }
+
+                    foreach (var lecturaPuestoDeTrabajo in resultado.LecturaPuestosDeTrabajo)
+                    {
+                        ProcesarLecturaPuesto(notificacion, lecturaPuestoDeTrabajo);
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Error(e, "Error al enviar notificación VehiculoDetectado del dispositivo: {0}", notificacion.CodigoDispositivo);
+                }
+            }
+            else if (notificacion.CodigoEvento == "LecturaTarjetaRecibida")
             {
                 try
                 {
@@ -277,6 +270,36 @@ namespace Molinos.Scato.Web.ServicioHub
             {
                 log.Info("Intercomunicador - Entro a CambioEstadoIntercomunicador");
                 NotificarIntercomunicadorEstadoSignalR(notificacion);
+            }
+        }
+
+        private void ProcesarLecturaPuesto(NotificacionEvento notificacion, LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        {
+            if (!string.IsNullOrEmpty(lecturaPuestoDeTrabajo.Firmware))
+            {
+                var firmware = firmwareFactory.Firmware<IFirmware>(lecturaPuestoDeTrabajo.Firmware);
+                if (firmware != null)
+                {
+                    log.Debug($"Ejecutando firmware: {firmware}");
+                    firmware.Ejecutar(lecturaPuestoDeTrabajo);
+                    return;
+                }
+            }
+
+            if (lecturaPuestoDeTrabajo.PuestoDeTrabajoPidePantente && lecturaPuestoDeTrabajo.Automatizado)
+            {
+                EjecutarDispositivosConPatente(lecturaPuestoDeTrabajo);
+                EjecutarPuestoConPatente(lecturaPuestoDeTrabajo);
+            }
+            else if (lecturaPuestoDeTrabajo.PuestoDeTrabajoPidePantente)
+            {
+                EjecutarDispositivosConPatente(lecturaPuestoDeTrabajo);
+                NotificarPuestoConPatentePorSignalR(notificacion, lecturaPuestoDeTrabajo);
+            }
+            else
+            {
+                EjecutarPuestoSinPatente(lecturaPuestoDeTrabajo);
+                NotificarPuestoConPatentePorSignalR(notificacion, lecturaPuestoDeTrabajo);
             }
         }
 
@@ -583,6 +606,20 @@ namespace Molinos.Scato.Web.ServicioHub
                         log.Error("La ejecución de la actividad {0} terminó con errores: {1}",
                                 resultado.ProximaActividad, resultadoActividad.Errores.First().Value);
                     }
+
+                    if (resultadoActividad != null && !resultadoActividad.HayErrores)
+                    {
+                        comandos.Ejecutar(new CrearLogIngresoPorPuesto
+                        {
+                            Dto = new LogIngresoPorPuestoDto
+                            {
+                                RecorridoId = recorrido.Id,
+                                PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId,
+                                TipoIngreso = lecturaPuestoDeTrabajo.TipoIngresoPorPuesto,
+                                FechaHora = DateTime.Now
+                            }
+                        });
+                    }
                 }
                 else
                 {
@@ -652,6 +689,20 @@ namespace Molinos.Scato.Web.ServicioHub
                     {
                         log.Error("La ejecución de la actividad {0} terminó con errores: {1}",
                                 resultado.ProximaActividad, resultadoActividad.Errores.First().Value);
+                    }
+
+                    if (resultadoActividad != null && !resultadoActividad.HayErrores)
+                    {
+                        comandos.Ejecutar(new CrearLogIngresoPorPuesto
+                        {
+                            Dto = new LogIngresoPorPuestoDto
+                            {
+                                RecorridoId = recorrido.Id,
+                                PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId,
+                                TipoIngreso = lecturaPuestoDeTrabajo.TipoIngresoPorPuesto,
+                                FechaHora = DateTime.Now
+                            }
+                        });
                     }
                 }
                 else

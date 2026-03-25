@@ -620,6 +620,7 @@
     <Compile Include="Procesamiento\ProcesadorLiberarPagoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoPagaTicketMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarMonitoreoServicioExterno.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarVehiculoDetectado.cs" />
     <Compile Include="Procesamiento\ProcesadorReprocesarPagoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarRegistroJobEjecucion.cs" />
     <Compile Include="Procesamiento\ProcesadorVerificarPagoTasaMunicipal.cs" />
@@ -1024,6 +1025,7 @@
     <Compile Include="Procesamiento\ProcesadorActualizarEgresoSinFleteFazonesTransmisionASap.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarLecturaDeTarjeta.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjeta.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogIngresoPorPuesto.cs" />
     <Compile Include="Procesamiento\ProcesadorControlDeBalanza.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarAjusteDeStock.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAjusteDeStock.cs" />
@@ -1745,7 +1747,7 @@
     <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.SalidaRechazo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.CamaraDto1.datasource">
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.CamaraDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.DispositivoDto.datasource">
@@ -1769,47 +1771,27 @@
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador10.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador.wsdl" />
+    <None Include="Service References\Orquestador\ServicioOrquestador.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador11.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador1.wsdl" />
+    <None Include="Service References\Orquestador\ServicioOrquestador1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador12.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador13.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador24.wsdl" />
-    <None Include="Service References\Orquestador\ServicioOrquestador25.wsdl" />
-    <None Include="Service References\Orquestador\ServicioOrquestador3.wsdl" />
-    <None Include="Service References\Orquestador\ServicioOrquestador4.wsdl" />
-    <None Include="Service References\Orquestador\ServicioOrquestador610.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador611.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador66.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador67.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador68.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador69.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador9.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador6.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ServicioImpresion\ServicioImpresion.wsdl" />
@@ -2074,20 +2056,24 @@
   <ItemGroup>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Intacta\GestionarCartasDePortePE.XML" />
+    <None Include="Service References\Orquestador\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\Orquestador\configuration.svcinfo" />
+    <None Include="Service References\Orquestador\configuration91.svcinfo" />
     <None Include="Service References\DataAgroService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Service References\DataAgroService\configuration.svcinfo" />
     <None Include="Service References\DataAgroService\configuration91.svcinfo" />
-    <None Include="Service References\Orquestador\ServicioOrquestador1.disco" />
     <None Include="Service References\AfipCPDigitalService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Service References\AfipCPDigitalService\configuration.svcinfo" />
     <None Include="Service References\AfipCPDigitalService\configuration91.svcinfo" />
-    <None Include="Service References\Orquestador\ServicioOrquestador11.disco" />
     <None Include="Service References\Urenport\Molinos.Scato.Servicios.Urenport.ImagenResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -2299,12 +2285,6 @@
     </None>
     <None Include="Service References\AfipCTGWebService\configuration.svcinfo" />
     <None Include="Service References\AfipCTGWebService\configuration91.svcinfo" />
-    <None Include="Service References\Orquestador\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\Orquestador\configuration.svcinfo" />
-    <None Include="Service References\Orquestador\configuration91.svcinfo" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

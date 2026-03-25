@@ -10759,11 +10759,17 @@
   </data>
   <data name="ActImportacionEgresoVisec" xml:space="preserve">
     <value>Importación Egreso Visec</value>
-  </data>   
+  </data>
   <data name="MonitoreoServicioExterno" xml:space="preserve">
     <value>Monitoreo Servicio Externo</value>
   </data>
   <data name="PanelDeControlExcepcionPagoMunicipal" xml:space="preserve">
     <value>Panel de control pago municipal</value>
+  </data>
+  <data name="PuestoDeTrabajo_SensorVehicular" xml:space="preserve">
+    <value>Sensor Vehicular</value>
+  </data>
+  <data name="PuestoDeTrabajo_NoEncontrado" xml:space="preserve">
+    <value>Puesto de Trabajo no encontrado</value>
   </data>
 </root>

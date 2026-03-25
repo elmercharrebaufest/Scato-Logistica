@@ -2,13 +2,13 @@
 <wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://orquestador.molinos.com.ar" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" targetNamespace="http://orquestador.molinos.com.ar" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="http://orquestador.molinos.com.ar/Imports">
-      <xsd:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd0" namespace="http://orquestador.molinos.com.ar" />
-      <xsd:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
-      <xsd:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" />
-      <xsd:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
-      <xsd:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
+      <xsd:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd0" namespace="http://orquestador.molinos.com.ar" />
+      <xsd:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
+      <xsd:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" />
+      <xsd:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
+      <xsd:import schemaLocation="http://gsloscatoqa01:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IServicioOrquestador_Ejecutar_InputMessage">
@@ -77,6 +77,12 @@
   <wsdl:message name="IServicioOrquestador_ListarSensores_OutputMessage">
     <wsdl:part name="parameters" element="tns:ListarSensoresResponse" />
   </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarSensoresVehiculares_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarSensoresVehiculares" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarSensoresVehiculares_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarSensoresVehicularesResponse" />
+  </wsdl:message>
   <wsdl:message name="IServicioOrquestador_ListarHumedimetros_InputMessage">
     <wsdl:part name="parameters" element="tns:ListarHumedimetros" />
   </wsdl:message>
@@ -137,6 +143,18 @@
   <wsdl:message name="IServicioOrquestador_ListarConcentradores_OutputMessage">
     <wsdl:part name="parameters" element="tns:ListarConcentradoresResponse" />
   </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarJsonToIotBox_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarJsonToIotBox" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarJsonToIotBox_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarJsonToIotBoxResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarJsonFromIotBox_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarJsonFromIotBox" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarJsonFromIotBox_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarJsonFromIotBoxResponse" />
+  </wsdl:message>
   <wsdl:message name="IServicioOrquestador_ListarSensoresPorConcentrador_InputMessage">
     <wsdl:part name="parameters" element="tns:ListarSensoresPorConcentrador" />
   </wsdl:message>
@@ -185,6 +203,36 @@
   <wsdl:message name="IServicioOrquestador_PrenderApagarDispositivo_OutputMessage">
     <wsdl:part name="parameters" element="tns:PrenderApagarDispositivoResponse" />
   </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerIntercomunicadorPuertoDeAudio_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerIntercomunicadorPuertoDeAudio" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerIntercomunicadorPuertoDeAudio_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerIntercomunicadorPuertoDeAudioResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarTags_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarTags" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarTags_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarTagsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarrera" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraPorSegundoCruce" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraPorSegundoCruceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarGruposBarrera_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarGruposBarrera" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarGruposBarrera_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarGruposBarreraResponse" />
+  </wsdl:message>
   <wsdl:portType name="IServicioOrquestador">
     <wsdl:operation name="Ejecutar">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/Ejecutar" message="tns:IServicioOrquestador_Ejecutar_InputMessage" />
@@ -230,6 +278,10 @@
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensores" message="tns:IServicioOrquestador_ListarSensores_InputMessage" />
       <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresResponse" message="tns:IServicioOrquestador_ListarSensores_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="ListarSensoresVehiculares">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehiculares" message="tns:IServicioOrquestador_ListarSensoresVehiculares_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehicularesResponse" message="tns:IServicioOrquestador_ListarSensoresVehiculares_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ListarHumedimetros">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetros" message="tns:IServicioOrquestador_ListarHumedimetros_InputMessage" />
       <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetrosResponse" message="tns:IServicioOrquestador_ListarHumedimetros_OutputMessage" />
@@ -270,6 +322,14 @@
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarConcentradores" message="tns:IServicioOrquestador_ListarConcentradores_InputMessage" />
       <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarConcentradoresResponse" message="tns:IServicioOrquestador_ListarConcentradores_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="ListarJsonToIotBox">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonToIotBox" message="tns:IServicioOrquestador_ListarJsonToIotBox_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonToIotBoxResponse" message="tns:IServicioOrquestador_ListarJsonToIotBox_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarJsonFromIotBox">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonFromIotBox" message="tns:IServicioOrquestador_ListarJsonFromIotBox_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonFromIotBoxResponse" message="tns:IServicioOrquestador_ListarJsonFromIotBox_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ListarSensoresPorConcentrador">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentrador" message="tns:IServicioOrquestador_ListarSensoresPorConcentrador_InputMessage" />
       <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentradorResponse" message="tns:IServicioOrquestador_ListarSensoresPorConcentrador_OutputMessage" />
@@ -301,6 +361,26 @@
     <wsdl:operation name="PrenderApagarDispositivo">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivo" message="tns:IServicioOrquestador_PrenderApagarDispositivo_InputMessage" />
       <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivoResponse" message="tns:IServicioOrquestador_PrenderApagarDispositivo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerIntercomunicadorPuertoDeAudio">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPuertoDeAudio" message="tns:IServicioOrquestador_ObtenerIntercomunicadorPuertoDeAudio_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPuertoDeAudioResponse" message="tns:IServicioOrquestador_ObtenerIntercomunicadorPuertoDeAudio_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarTags">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarTags" message="tns:IServicioOrquestador_ListarTags_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarTagsResponse" message="tns:IServicioOrquestador_ListarTags_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerConfiguracionGrupoBarrera">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarrera" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraResponse" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerConfiguracionGrupoBarreraPorSegundoCruce">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraPorSegundoCruce" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraPorSegundoCruceResponse" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarGruposBarrera">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera" message="tns:IServicioOrquestador_ListarGruposBarrera_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarreraResponse" message="tns:IServicioOrquestador_ListarGruposBarrera_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>

@@ -2124,6 +2124,14 @@ namespace Molinos.Scato.Servicios.Orquestador {
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensores", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarSensoresAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehiculares", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehicularesR" +
+            "esponse")]
+        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarSensoresVehiculares();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehiculares", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehicularesR" +
+            "esponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarSensoresVehicularesAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetros", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetrosResponse" +
             "")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarHumedimetros();
@@ -2194,11 +2202,21 @@ namespace Molinos.Scato.Servicios.Orquestador {
             "se")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarConcentradoresAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarOffline", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarOfflineResponse")]
-        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarOffline();
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonToIotBox", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonToIotBoxResponse" +
+            "")]
+        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarJsonToIotBox();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarOffline", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarOfflineResponse")]
-        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarOfflineAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonToIotBox", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonToIotBoxResponse" +
+            "")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarJsonToIotBoxAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonFromIotBox", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonFromIotBoxRespon" +
+            "se")]
+        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarJsonFromIotBox();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonFromIotBox", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarJsonFromIotBoxRespon" +
+            "se")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarJsonFromIotBoxAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentra" +
             "dor", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentra" +
@@ -2426,6 +2444,14 @@ namespace Molinos.Scato.Servicios.Orquestador {
             return base.Channel.ListarSensoresAsync();
         }
         
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarSensoresVehiculares() {
+            return base.Channel.ListarSensoresVehiculares();
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarSensoresVehicularesAsync() {
+            return base.Channel.ListarSensoresVehicularesAsync();
+        }
+        
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarHumedimetros() {
             return base.Channel.ListarHumedimetros();
         }
@@ -2506,12 +2532,20 @@ namespace Molinos.Scato.Servicios.Orquestador {
             return base.Channel.ListarConcentradoresAsync();
         }
         
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarOffline() {
-            return base.Channel.ListarOffline();
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarJsonToIotBox() {
+            return base.Channel.ListarJsonToIotBox();
         }
         
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarOfflineAsync() {
-            return base.Channel.ListarOfflineAsync();
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarJsonToIotBoxAsync() {
+            return base.Channel.ListarJsonToIotBoxAsync();
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarJsonFromIotBox() {
+            return base.Channel.ListarJsonFromIotBox();
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarJsonFromIotBoxAsync() {
+            return base.Channel.ListarJsonFromIotBoxAsync();
         }
         
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarSensoresPorConcentrador(string concentrador) {

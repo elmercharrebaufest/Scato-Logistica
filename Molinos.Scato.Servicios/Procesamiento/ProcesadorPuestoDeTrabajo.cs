@@ -1,4 +1,5 @@
 ﻿using System;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
@@ -75,6 +76,22 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Error("SensorQuiebre", String.Format(Textos.PuestoDeTrabajo_SuscribirSensor, e.Message));
                 }
             }
+            
+            if (!string.IsNullOrEmpty(dto.SensorVehicular))
+            {
+                try
+                {
+                    Suscribir(dto.SensorVehicular, nameof(dto.SensorVehicular), Constantes.CodigosEventos.VehiculoDetectado, urlNotificacionesWeb, resultado);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "No se pudo crear la suscripción para el sensor vehicular {0}.", dto.SensorVehicular);
+                    if (!resultado.Errores.Keys.Contains(nameof(dto.SensorVehicular)))
+                    {
+                        resultado.Error(nameof(dto.SensorVehicular), String.Format(Textos.PuestoDeTrabajo_SuscribirSensor, e.Message));
+                    }
+                }
+            }
         }
 
         protected void CancelarDispositivos(PuestoDeTrabajoDto dto, Resultado resultado)
@@ -133,6 +150,26 @@ namespace Molinos.Scato.Servicios.Procesamiento
             catch (Exception e)
             {
                 Log.Error(e, "No se pudo cancelar la suscripción para el sensor {0}.", dto.SensorQuiebre);
+            }
+            
+            if (!string.IsNullOrEmpty(dto.SensorVehicular))
+            {
+                try
+                {
+                    var resultadoOrq = servicioOrquestador.CancelarSuscripcion(new ComandoCancelarSuscripcion
+                    {
+                        CodigoDispositivo = dto.SensorVehicular,
+                        RutaAccesoSuscriptor = urlNotificacionesWeb,
+                    });
+                    if (resultadoOrq.Mensaje.Codigo != 0)
+                    {
+                        Log.Error("No se pudo cancelar la suscripción para el sensor vehicular {0}. Mensaje: {1}-{2}", dto.SensorVehicular, resultadoOrq.Mensaje.Codigo, resultadoOrq.Mensaje.Descripcion);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "No se pudo cancelar la suscripción para el sensor vehicular {0}.", dto.SensorVehicular);
+                }
             }
         }
 

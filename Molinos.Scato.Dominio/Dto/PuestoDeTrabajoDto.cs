@@ -161,5 +161,8 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_RequiereComentarioGestionarBarrera")]
         public bool RequiereComentarioGestionarBarrera { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_SensorVehicular")]
+        public string SensorVehicular { get; set; }
+
     }
 }
