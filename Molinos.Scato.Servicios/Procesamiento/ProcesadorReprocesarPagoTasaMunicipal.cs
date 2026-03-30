@@ -52,7 +52,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     foreach (var item in pagos)
                     {
-                        var informarPago = InformarPago(item.IdMOAPay);
+                        var informarPago = InformarPago(item.IdMOAPay, recorrido.InstanciaWorkflow);
                         if (informarPago.HayErrores)
                         {
                             resultado.Error(string.Empty, "Ocurrió un error al informar el pago de la tasa municipal.");
@@ -120,13 +120,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
-        private Resultado InformarPago(int idPago)
+        private Resultado InformarPago(int idPago, Guid idInstance)
         {
             Log.Info($"Informar con IdPago: {idPago}");
             var respuestaInformarPago = servicioComandos.Ejecutar(new MOAPayInformarPagoComoConsumido
             {
                 Id = idPago,
-                Disponible = "N"
+                Disponible = "N",
+                IdIntance = idInstance
             });
 
             if (respuestaInformarPago == null)

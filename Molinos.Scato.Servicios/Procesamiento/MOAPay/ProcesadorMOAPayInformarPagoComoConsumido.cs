@@ -69,7 +69,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         Log.Info($"MOAPayInformarPagoComoConsumido procesado correctamente para Id: {comando.Id}");
                         var recorrido = Repositorio.Obtener<Recorrido>(p => p.InstanciaWorkflow == comando.IdIntance);
-                        var pagoTasaMunicipal = Repositorio.Obtener<PagosTasaMunicipal>(p => p.IdInstance == comando.IdIntance);
+                        var pagoTasaMunicipal = Repositorio.Obtener<PagosTasaMunicipal>(p => p.IdMOAPay == comando.Id);
                         if (recorrido != null && pagoTasaMunicipal != null)
                         {
                             recorrido.PagoTasaMunicipalInformado = true;

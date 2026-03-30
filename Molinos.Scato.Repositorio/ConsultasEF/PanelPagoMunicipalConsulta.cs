@@ -41,6 +41,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                             && !rtm.Exceptuado
                             && !rec.Rechazado
                             && rec.Terminado
+                            && rec.TipoVehiculo != Dominio.Enums.TipoVehiculo.Tren
                         select new PanelPagoMunicipalDto
                         {
                             Id = rec.Id,

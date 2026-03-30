@@ -54,7 +54,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             Log.Debug("ProcesadorConsultarCPDigital - Creo la autorizacion");
-            var auth = accesoWsCtg.ObtenerAuth(centro.Cuit.Replace("-", string.Empty), resultado);
+
 
             if (!comando.ConsultaAfip && centro.ContingenciaAfipCpe && !comando.ConsultaImagenCpe)
             {
@@ -63,7 +63,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     cartaPorteElectronica.CuitIntermediario = cartaPorteElectronica.RetiroProductor == true ? cartaPorteElectronica.CuitRemitenteComercialProductor : 0;
 
-                    var cpe = ConvertirCartaPorteDto(auth, cartaPorteElectronica, centro, resultado, comando.ConsultaMinima);
+                    var cpe = ConvertirCartaPorteDto(cartaPorteElectronica, centro, resultado, comando.ConsultaMinima);
                     resultado.Cpe = cpe;
                     return resultado;
                 }
@@ -71,6 +71,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             try
             {
+                var auth = accesoWsCtg.ObtenerAuth(centro.Cuit.Replace("-", string.Empty), resultado);
                 var cartaPorte = Repositorio.Obtener<CartaPorteElectronica>(x => x.NroCTG == comando.NroCtg);
                 var continuar = true;
                 var erroresNobloqueantes = new List<string>() { "550" }; //no se pudo generar el pdf
@@ -570,7 +571,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return null;
         }
 
-        private CartaPorteDto ConvertirCartaPorteDto(Auth auth, CartaPorteElectronica cartaPorte, Centro centro, Resultado resultado, bool consultaMinima)
+        private CartaPorteDto ConvertirCartaPorteDto(CartaPorteElectronica cartaPorte, Centro centro, Resultado resultado, bool consultaMinima)
         {
             if (consultaMinima)
             {
@@ -617,7 +618,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             Localidad localidadDto = null;
 
             if (localidadObj == null)
+            {
+                var auth = accesoWsCtg.ObtenerAuth(centro.Cuit.Replace("-", string.Empty), resultado);
                 localidadDto = ObtenerLocalidadAfip(auth, localidad, cartaPorte.Provincia.Value);
+            }
+               
             else
                 localidadDto = localidadObj;
 
