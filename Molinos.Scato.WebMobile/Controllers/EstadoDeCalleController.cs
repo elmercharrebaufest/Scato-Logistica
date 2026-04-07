@@ -117,6 +117,9 @@ namespace Molinos.Scato.WebMobile.Controllers
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
         public JsonResult LlamarCalle(int calleId, int? calleCaladoId)
         {
+            var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
+            log.Debug("El usuario {0} intenta llamar la calle {1} con el calado {2}", usuario.Value, calleId, calleCaladoId);
+
             calleCaladoId = calleCaladoId ?? 0;
 
             var response = new MensajeEstandarDto();
@@ -152,6 +155,9 @@ namespace Molinos.Scato.WebMobile.Controllers
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
         public JsonResult LLamarSiguienteCalle(int materialId)
         {
+            var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
+            log.Debug("El usuario {0} intenta llamar siguiente calle con material {1}", usuario.Value, materialId);
+
             var calle = servicio.ObtenerSiguienteCalle(materialId);
             if (calle != null)
             {
