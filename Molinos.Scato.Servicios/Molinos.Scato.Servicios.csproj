@@ -190,6 +190,8 @@
     <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionCalleHidraulicaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ExceptuadosTicketMunicipalMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ExcepcionAlControlProveedorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LogValidacionAccesoStopBandasHorariasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LogValidacionAccesoStopRespuestaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\MonitoreoServicioExternoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\HistorialMensajeCartelLedMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\LlamadoAutomaticoHidraulicaMappingProfile.cs" />
@@ -612,6 +614,8 @@
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarExcepcionPagoTicketMunicipal.cs" />
+    <Compile Include="Procesamiento\Stop\ProcesadorCrearLogValidacionAccesoStopBandasHorarias.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogValidacionAccesoStopRespuesta.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearModificarRecorridoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarInformadoPagosTasaMunicipal.cs" />
@@ -642,6 +646,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarComoUsadoPagosTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCartaPorteRENSPA.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoTipoVariedad.cs" />
+    <Compile Include="Procesamiento\Stop\ProcesadorValidarAccesoStopBandasHorarias.cs" />
     <Compile Include="Procesamiento\Visec\ProcesadorConsultarDataAgroVisec.cs" />
     <Compile Include="Procesamiento\Visec\ProcesadorConsultarEstadoTransmisionVisec.cs" />
     <Compile Include="Procesamiento\Visec\ProcesadorConsultarStockRUCA.cs" />

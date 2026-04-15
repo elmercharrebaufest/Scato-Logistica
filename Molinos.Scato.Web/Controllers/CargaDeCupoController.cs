@@ -191,6 +191,12 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 else
                 {
+                    servicioComandos.Ejecutar(new ValidarAccesoStopBandasHorarias
+                    {
+                        CTG = model.CTG,
+                        Patente = model.Patente,
+                        Fecha = DateTime.Now
+                    });
                     model.FotoRutaDestino = resultado.Mensaje;
                     model.FotoRutaSustentable = resultado.PathSustentable;
 

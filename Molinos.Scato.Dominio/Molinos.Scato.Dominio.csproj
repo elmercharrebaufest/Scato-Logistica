@@ -93,6 +93,8 @@
     <Compile Include="Comandos\ConsultarCategoriaVehiculoGranos.cs" />
     <Compile Include="Comandos\Consultas\ConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarExcepcionPagoTicketMunicipal.cs" />
+    <Compile Include="Comandos\CrearLogValidacionAccesoStopBandasHorarias.cs" />
+    <Compile Include="Comandos\CrearLogValidacionAccesoStopRespuesta.cs" />
     <Compile Include="Comandos\CrearModificarRecorridoTasaMunicipal.cs" />
     <Compile Include="Comandos\DatosExcepcionTasaMunicipal.cs" />
     <Compile Include="Comandos\DatosTasaMunicipal.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Comandos\ModificarRecorridoPorContingenciaPay.cs" />
     <Compile Include="Comandos\ModificarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\LiberarPagoTasaMunicipal.cs" />
+    <Compile Include="Comandos\Stop\ValidarAccesoStopBandasHorarias.cs" />
     <Compile Include="Comandos\Validaciones\ValidarVehiculoDetectado.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoValidarVehiculoDetectado.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarCategoriaVehiculo.cs" />
@@ -823,6 +826,8 @@
     <Compile Include="Dto\DatosExcepcionPagoTicketMunicipalDto.cs" />
     <Compile Include="Dto\FiltroEditarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Dto\FiltroExcepcionPagoTasaMunicipal.cs" />
+    <Compile Include="Dto\LogValidacionAccesoStopBandasHorariasDto.cs" />
+    <Compile Include="Dto\LogValidacionAccesoStopRespuestaDto.cs" />
     <Compile Include="Dto\PanelPagoMunicipalDto.cs" />
     <Compile Include="Dto\ExceptuadosTicketMunicipalDto.cs" />
     <Compile Include="Dto\FiltroPanelPagoMunicipalDto.cs" />
@@ -1145,6 +1150,7 @@
     <Compile Include="Dto\WebAPI\ResultadoCPEPendienteResolucion.cs" />
     <Compile Include="Dto\WebAPI\ResultadoConfirmacionDescargadoDestino.cs" />
     <Compile Include="Dto\WebAPI\ResponseWebAPIDto.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoValidarAccesoBandaHoraria.cs" />
     <Compile Include="Dto\WebAPI\VisecErrorResponse.cs" />
     <Compile Include="Dto\WebAPI\VisecValidationError.cs" />
     <Compile Include="Dto\WorkflowCreadoDto.cs" />
@@ -1156,6 +1162,8 @@
     <Compile Include="Dto\LogExceptuadosTicketMunicipalDto.cs" />
     <Compile Include="Dto\PanelServerAppPoolDto.cs" />
     <Compile Include="Dto\MuestraEnvioACamaraYRecorridoDto.cs" />
+    <Compile Include="Entidades\LogValidacionAccesoStopBandasHorarias.cs" />
+    <Compile Include="Entidades\LogValidacionAccesoStopRespuesta.cs" />
     <Compile Include="Entidades\RecorridoTasaMunicipal.cs" />
     <Compile Include="Entidades\EstadoPagoTasaMunicipal.cs" />
     <Compile Include="Entidades\ExceptuadosTicketMunicipal.cs" />

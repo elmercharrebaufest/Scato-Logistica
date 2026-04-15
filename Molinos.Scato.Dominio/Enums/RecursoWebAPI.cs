@@ -22,5 +22,10 @@
             public const string ExisteStockRUCA = "VisecApi/ExisteStockRUCA";
             public const string ConsultarEstadoImportacion = "VisecApi/ConsultarEstadoImportacion";
         }
+
+        public struct STOP
+        {
+            public const string ValidarAcceso = "api/BandasHorarias/ValidarAcceso";
+        }
     }
 }

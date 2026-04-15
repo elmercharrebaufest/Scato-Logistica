@@ -32113,5 +32113,14 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("Zona", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Servicio No Disponible.
+        /// </summary>
+        public static string Stop_Error_ServicioNoDisponible {
+            get {
+                return ResourceManager.GetString("Stop_Error_ServicioNoDisponible", resourceCulture);
+            }
+        }
     }
 }

@@ -557,6 +557,8 @@
     <Build Include="dbo\Tables\MonitoreoServicioExterno.sql" />
     <Build Include="dbo\Tables\RecorridoTasaMunicipal.sql" />
     <Build Include="dbo\Tables\LogIngresoPorPuesto.sql" />
+    <Build Include="dbo\Tables\LogValidacionAccesoStopBandasHorarias.sql" />
+    <Build Include="dbo\Tables\LogValidacionAccesoStopRespuesta.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

@@ -10772,4 +10772,7 @@
   <data name="PuestoDeTrabajo_NoEncontrado" xml:space="preserve">
     <value>Puesto de Trabajo no encontrado</value>
   </data>
+  <data name="Stop_Error_ServicioNoDisponible" xml:space="preserve">
+    <value>Servicio No Disponible</value>
+  </data>
 </root>
