@@ -1,6 +1,7 @@
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.WebAPI;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
@@ -30,6 +31,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ValidarAccesoStopBandasHorarias comando)
         {
             var resultado = new Resultado();
+
+            var yaValidado = Repositorio.Existe<LogValidacionAccesoStopBandasHorarias>(x => x.CTG == comando.CTG);
+            if (yaValidado)
+            {
+                resultado.Error("Error", Textos.Stop_Error_AccesoYaValidado);
+                return resultado;
+            }
+
             var fechaAcceso = comando.Fecha ?? DateTime.Now;
             var logDto = new LogValidacionAccesoStopBandasHorariasDto
             {

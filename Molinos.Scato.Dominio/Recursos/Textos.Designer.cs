@@ -28857,6 +28857,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La banda horaria de la CTG ya fue validada anteriormente.
+        /// </summary>
+        public static string Stop_Error_AccesoYaValidado {
+            get {
+                return ResourceManager.GetString("Stop_Error_AccesoYaValidado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Servicio No Disponible.
+        /// </summary>
+        public static string Stop_Error_ServicioNoDisponible {
+            get {
+                return ResourceManager.GetString("Stop_Error_ServicioNoDisponible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Panel Baja CTG Definitiva.
         /// </summary>
         public static string String1 {
@@ -32111,15 +32129,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Zona {
             get {
                 return ResourceManager.GetString("Zona", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Servicio No Disponible.
-        /// </summary>
-        public static string Stop_Error_ServicioNoDisponible {
-            get {
-                return ResourceManager.GetString("Stop_Error_ServicioNoDisponible", resourceCulture);
             }
         }
     }

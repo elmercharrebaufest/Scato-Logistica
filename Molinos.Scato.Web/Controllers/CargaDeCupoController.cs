@@ -11,9 +11,7 @@ using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Servicios.Orquestador;
-using Molinos.Scato.Servicios.Procesamiento;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
@@ -26,6 +24,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -191,12 +190,11 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 else
                 {
-                    servicioComandos.Ejecutar(new ValidarAccesoStopBandasHorarias
+                    Task.Run(() => servicioComandos.Ejecutar(new ValidarAccesoStopBandasHorarias
                     {
                         CTG = model.CTG,
                         Patente = model.Patente,
-                        Fecha = DateTime.Now
-                    });
+                    }));
                     model.FotoRutaDestino = resultado.Mensaje;
                     model.FotoRutaSustentable = resultado.PathSustentable;
 
