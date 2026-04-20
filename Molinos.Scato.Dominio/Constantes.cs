@@ -185,6 +185,7 @@ namespace Molinos.Scato.Dominio
             public struct CargaDeCupo
             {
                 public const string MaterialExcepcionFastPass = "MaterialExcepcionFastPass";
+                public const string OmitirValidacionDataAgroVisec = "OmitirValidacionDataAgroVisec";
             }
 
             public struct Servicios

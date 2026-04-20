@@ -142,35 +142,45 @@ namespace Molinos.Scato.Web.Controllers
                 var tipoVariedadCodigo = Constantes.TipoVariedadMaterial.Estandar;
                 if (model.Cupo != Constantes.ValoresPorDefecto.CupoGenerico)
                 {
-                    var resultadoConsultaDataAgroVisec = servicioComandos.Ejecutar(new ConsultarDataAgroVisec
-                    {
-                        Cupo = model.Cupo,
-                    }) as ResultadoConsultarDataAgroVisec;
-                    if (resultadoConsultaDataAgroVisec == null || resultadoConsultaDataAgroVisec.HayErrores)
-                    {
-                        ModelState.AddModelError("", "Ocurrió un error al consultar cupo en Data Agro");
-                        return View("Form", model);
-                    }
-                    tipoVariedadCodigo = resultadoConsultaDataAgroVisec.CodigoVariedad;
+                    var configuracionOmitirDataAgro = servicio.ObtenerConfiguracionGeneral(
+                        Constantes.ConfiguracionGeneral.Pantalla.CargaDeCupo,
+                        Constantes.ConfiguracionGeneral.CargaDeCupo.OmitirValidacionDataAgroVisec);
+                    var omitirValidacionDataAgroVisec = !string.IsNullOrEmpty(configuracionOmitirDataAgro?.Valor)
+                        && bool.TryParse(configuracionOmitirDataAgro.Valor, out bool omitir)
+                        && omitir;
 
-                    if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.VisecCaido))
+                    if (!omitirValidacionDataAgroVisec)
                     {
-                        if (tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR
-                        || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR
-                        || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA)
+                        var resultadoConsultaDataAgroVisec = servicioComandos.Ejecutar(new ConsultarDataAgroVisec
                         {
-                            ModelState.AddModelError("", "Contingencia Visec Activada");
+                            Cupo = model.Cupo,
+                        }) as ResultadoConsultarDataAgroVisec;
+                        if (resultadoConsultaDataAgroVisec == null || resultadoConsultaDataAgroVisec.HayErrores)
+                        {
+                            ModelState.AddModelError("", "Ocurrió un error al consultar cupo en Data Agro");
                             return View("Form", model);
                         }
-                    }
+                        tipoVariedadCodigo = resultadoConsultaDataAgroVisec.CodigoVariedad;
 
-                    if (tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR)
-                    {
-                        var resultadoValidarStock = ValidarVisec(model.Cosecha, model.MaterialId.GetValueOrDefault(), model.PesoNetoOrigen, model.CodEstab, model.CodigoRENSPA);
-                        if (resultadoValidarStock.HayErrores)
+                        if (servicio.TieneContingenciaPorTipo(Constantes.Contingencia.VisecCaido))
                         {
-                            ModelState.AddModelError("", resultadoValidarStock.Errores.FirstOrDefault().Value);
-                            return View("Form", model);
+                            if (tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR
+                            || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR
+                            || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPA)
+                            {
+                                ModelState.AddModelError("", "Contingencia Visec Activada");
+                                return View("Form", model);
+                            }
+                        }
+
+                        if (tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EUDR || tipoVariedadCodigo == Constantes.TipoVariedadMaterial.EPAyEUDR)
+                        {
+                            var resultadoValidarStock = ValidarVisec(model.Cosecha, model.MaterialId.GetValueOrDefault(), model.PesoNetoOrigen, model.CodEstab, model.CodigoRENSPA);
+                            if (resultadoValidarStock.HayErrores)
+                            {
+                                ModelState.AddModelError("", resultadoValidarStock.Errores.FirstOrDefault().Value);
+                                return View("Form", model);
+                            }
                         }
                     }
                 }

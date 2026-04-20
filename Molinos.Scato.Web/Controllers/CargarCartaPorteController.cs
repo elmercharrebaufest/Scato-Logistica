@@ -290,18 +290,28 @@ namespace Molinos.Scato.Web.Controllers
             orden.TipoVariedadCodigo = Constantes.TipoVariedadMaterial.Estandar;
             if (workflowObj.AplicaConsultaCupoDataAgro && orden.Cupo != Constantes.ValoresPorDefecto.CupoGenerico)
             {
-                var resultadoConsultaDataAgroVisec = servicioComandos.Ejecutar(new ConsultarDataAgroVisec
+                var configuracionOmitirDataAgro = servicio.ObtenerConfiguracionGeneral(
+                    Constantes.ConfiguracionGeneral.Pantalla.CargaDeCupo,
+                    Constantes.ConfiguracionGeneral.CargaDeCupo.OmitirValidacionDataAgroVisec);
+                var omitirValidacionDataAgroVisec = !string.IsNullOrEmpty(configuracionOmitirDataAgro?.Valor)
+                    && bool.TryParse(configuracionOmitirDataAgro.Valor, out bool omitir)
+                    && omitir;
+
+                if (!omitirValidacionDataAgroVisec)
                 {
-                    Cupo = orden.Cupo,
-                }) as ResultadoConsultarDataAgroVisec;
-                if (resultadoConsultaDataAgroVisec == null || resultadoConsultaDataAgroVisec.HayErrores)
-                {
-                    TempData["Alerta"] = resultadoConsultaDataAgroVisec.Errores.FirstOrDefault().Value;
-                    TempData["TipoAlerta"] = TipoAlerta.Error;
-                    SetearVista(workflowObj, datosUsuario.CentroId);
-                    return View(orden);
+                    var resultadoConsultaDataAgroVisec = servicioComandos.Ejecutar(new ConsultarDataAgroVisec
+                    {
+                        Cupo = orden.Cupo,
+                    }) as ResultadoConsultarDataAgroVisec;
+                    if (resultadoConsultaDataAgroVisec == null || resultadoConsultaDataAgroVisec.HayErrores)
+                    {
+                        TempData["Alerta"] = resultadoConsultaDataAgroVisec.Errores.FirstOrDefault().Value;
+                        TempData["TipoAlerta"] = TipoAlerta.Error;
+                        SetearVista(workflowObj, datosUsuario.CentroId);
+                        return View(orden);
+                    }
+                    orden.TipoVariedadCodigo = resultadoConsultaDataAgroVisec.CodigoVariedad;
                 }
-                orden.TipoVariedadCodigo = resultadoConsultaDataAgroVisec.CodigoVariedad;
             }
 
             orden.Vehiculos = vehiculos;

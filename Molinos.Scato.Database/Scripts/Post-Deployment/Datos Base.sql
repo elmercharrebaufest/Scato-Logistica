@@ -1632,6 +1632,12 @@ BEGIN
 INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('PagoTasaMunicipal', 'PermitirBloqueoDeIngreso', 'false', NULL, GETDATE(), 'SCATO')   
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'CargaDeCupo' AND Nombre = 'OmitirValidacionDataAgroVisec' AND Centro_Id IS NULL)
+BEGIN
+INSERT INTO ConfiguracionGeneral(Pantalla, Nombre, Valor, Centro_Id, FechaCreacion, UsuarioCreacion)
+VALUES ('CargaDeCupo', 'OmitirValidacionDataAgroVisec', 'false', NULL, GETDATE(), 'SCATO')
+END
+
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MarcaSustentable' AND  Nombre = 'PosicionImagenSustentableX' AND  Centro_Id IS NULL) 
 BEGIN 
 INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('MarcaSustentable', 'PosicionImagenSustentableX', '100', NULL, GETDATE(), 'SCATO')   
