@@ -5,6 +5,7 @@ using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
+using Ninject.Extensions.Logging;
 using System;
 using System.Activities;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace Molinos.Scato.Actividades.Internas
         {
             var servComando = context.GetExtension<IServicioComandos>();
             var repositorio = context.GetExtension<IServicioRepositorio>();
+            var log = context.GetExtension<ILogger>();
             var puestoId = PuestoDeTrabajoId.Get<int>(context);
             var recorrido = new ControlRecorridoDto
             {
@@ -48,13 +50,16 @@ namespace Molinos.Scato.Actividades.Internas
                 recorrido.RecorridoId = datosRecorrido.Id;
                 recorrido.PasoPorContingenciaPesosExc = datosRecorrido.PasoPorContingenciaPesosExc;
 
-                var resultadoCero = VolverACero(repositorio, servComando, recorrido, context);
+                log.Debug($"[ANALISIS_BARRERA] {context.WorkflowInstanceId} Iniciando vuelta a cero. Patente={recorrido.Patente} PuestoId={puestoId}");
+                var resultadoCero = VolverACero(repositorio, servComando, recorrido, context, log);
                 ControlRecorrido.Set(context, recorrido);
                 Resultado.Set(context, resultadoCero);
+                log.Debug($"[ANALISIS_BARRERA] {context.WorkflowInstanceId} Vuelta a cero finalizada. HayErrores={resultadoCero?.HayErrores} Automatizado={recorrido.Automatizado}");
                 
             }
             catch (Exception e)
             {
+                log.Debug($"[ANALISIS_BARRERA] {context.WorkflowInstanceId} Error en Execute. Error={e.Message}");
                 recorrido.Automatizado = false;
                 ControlRecorrido.Set(context, recorrido);
             }
@@ -102,7 +107,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
             }
         }
-        private ResultadoPesaje VolverACero(IServicioRepositorio repositorio, IServicioComandos servComando, ControlRecorridoDto recorrido, CodeActivityContext context)
+        private ResultadoPesaje VolverACero(IServicioRepositorio repositorio, IServicioComandos servComando, ControlRecorridoDto recorrido, CodeActivityContext context, ILogger log)
         {
             ResultadoPesaje resultado = null;
             try
@@ -113,8 +118,15 @@ namespace Molinos.Scato.Actividades.Internas
                 recorrido.Automatizado = puesto != null && (puesto.AutomatizadoFull && !puesto.PausaAutoFull);
                 if (!recorrido.Automatizado)
                 {
+                    log.Debug($"[ANALISIS_BARRERA] {recorrido.WorkflowInstanceId} Puesto no automatizado, se omite vuelta a cero. PuestoId={recorrido.PuestoDeTrabajoId}");
                     return resultado;
                 }
+
+                var configDelay = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.BalanzaACero, Constantes.ConfiguracionGeneral.BalanzaACero.TiempoEsperaEntreIntentos);
+                var delayMs = 5000;
+                if (configDelay != null && int.TryParse(configDelay.Valor, out var configDelayMs) && configDelayMs > 0)
+                    delayMs = configDelayMs;
+
                 var count = 0;
 
                 while (resultado == null || resultado.HayErrores || resultado.Peso != 0)
@@ -149,7 +161,9 @@ namespace Molinos.Scato.Actividades.Internas
                             return resultado;
                         }
                         
+                        log.Debug($"[ANALISIS_BARRERA] {recorrido.WorkflowInstanceId} Tomando peso. Intento={count + 1} PuestoId={recorrido.PuestoDeTrabajoId}");
                         resultado = (ResultadoPesaje)servComando.Ejecutar(new ObtenerPesada() { Recorrido = recorrido });
+                        log.Debug($"[ANALISIS_BARRERA] {recorrido.WorkflowInstanceId} Peso obtenido. Peso={resultado?.Peso} HayErrores={resultado?.HayErrores}");
                         if (recorrido.PasoPorContingenciaPesosExc && recorrido.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
                         {
                             ContigenciaDePesosExcedidos(repositorio, resultado, recorrido);
@@ -162,7 +176,7 @@ namespace Molinos.Scato.Actividades.Internas
                     }
                     finally
                     {
-                        Thread.Sleep(5000);
+                        Thread.Sleep(delayMs);
                     }
                 }
 

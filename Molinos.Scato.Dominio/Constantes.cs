@@ -100,6 +100,7 @@ namespace Molinos.Scato.Dominio
                 public const string ConsultaDataAgroVisec = "ConsultaDataAgroVisec";
                 public const string MarcaSustentable = "MarcaSustentable";
                 public const string MOAOperacionesListadoTicketPesada = "MOAOperaciones.ListadoTicketPesada";
+                public const string BalanzaACero = "BalanzaACero";
             }
 
             public struct ContingenciaPesosExcedidos
@@ -213,6 +214,11 @@ namespace Molinos.Scato.Dominio
             public struct MOAOperacionesListadoTicketPesada
             {
                 public const string TiposComerciales = "TiposComerciales";
+            }
+
+            public struct BalanzaACero
+            {
+                public const string TiempoEsperaEntreIntentos = "TiempoEsperaEntreIntentos";
             }
         }
 

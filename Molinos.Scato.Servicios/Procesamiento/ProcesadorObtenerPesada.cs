@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Threading;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Orquestador;
@@ -15,12 +12,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorObtenerPesada : ProcesadorComando<ObtenerPesada>
     {
-        private readonly IServicioComandos servicioComandos;
         private readonly IServicioOrquestador orquestador;
 
-        public ProcesadorObtenerPesada(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos, IServicioOrquestador orquestador) : base(repositorio, conversor, log)
+        public ProcesadorObtenerPesada(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioOrquestador orquestador) : base(repositorio, conversor, log)
         {
-            this.servicioComandos = servicioComandos;
             this.orquestador = orquestador;
         }        
 
@@ -41,9 +36,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 try
                 {
+                    Log.Debug("[ANALISIS_BARRERA] {0} Intento={1} Cabezal={2}", comando.Recorrido.WorkflowInstanceId, contador, balanza.CodigoCabezal);
                     resultado = orquestador.Ejecutar(ejecutarPesaje);
                     hayPesaje = resultado.Mensaje.Codigo == 0;
-                    Log.Debug("Llamada al orquestador exitosa. Hay peso en cabezal {0} = {1}", balanza.CodigoCabezal, hayPesaje);
+                    Log.Debug("[ANALISIS_BARRERA] {0} Cabezal={1} HayPeso={2} Codigo={3}", comando.Recorrido.WorkflowInstanceId, balanza.CodigoCabezal, hayPesaje, resultado.Mensaje.Codigo);
                     if (!hayPesaje)
                     {
                         Thread.Sleep(50);

@@ -24,6 +24,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(FinDeActividad comando)
         {
             Log.Debug("Actividad {0}, instanceID {1}, puesto de trabajo {2}", comando.Actividad,comando.InstanceId, comando.PuestoDeTrabajoId);
+            Log.Debug($"[ANALISIS_BARRERA] {comando.InstanceId} FinDeActividad {comando.Actividad}");
             var resultado = new Resultado();
             var resultadoEjecutar = new ResultadoEjecutar{Mensaje = new Mensaje()};
             try

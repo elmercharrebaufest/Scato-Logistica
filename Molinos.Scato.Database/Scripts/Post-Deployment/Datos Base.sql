@@ -1800,6 +1800,13 @@ IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='22' )
 BEGIN 
 INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Lerini, Diego','22');
 END
+
+-- ConfiguracionGeneral - BalanzaACero
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'BalanzaACero' AND Nombre = 'TiempoEsperaEntreIntentos' AND Centro_Id IS NULL)
+BEGIN
+INSERT INTO ConfiguracionGeneral(Pantalla, Nombre, Valor, Centro_Id, FechaCreacion, UsuarioCreacion)
+VALUES ('BalanzaACero', 'TiempoEsperaEntreIntentos', '5000', NULL, GETDATE(), 'SCATO');
+END
 IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='23' )
 BEGIN 
 INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('López, Andrea','23');
