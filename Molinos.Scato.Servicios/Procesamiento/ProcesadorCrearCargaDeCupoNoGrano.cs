@@ -91,24 +91,27 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (resultadoConsultarTasa.SeLevantaBarrera)
                     AbrirBarrera(nuevoCupo.PuestoDeTrabajo.Entrada);
             }
-            catch (ErrorCrearCupoNoGranoExcepcion ex)
+            catch (ErrorBloqueanteCrearCupoNoGranoExcepcion ex)
             {
                 Log.Error(ex, "Error de aplicación en CrearCargaDeCupoNoGrano");
+                resultado.Error("error", ex.Message);
                 EliminarCupoSiFueCreado(nuevoCupo);
-                resultado.Error("Error", ex.Message);
             }
-            catch (ErrorNoBloqueanteCrearCupoNoGranoExcepcion ex)
+            catch (ErrorNoBloqueanteExitosoCrearCupoNoGranoExcepcion ex)
             {
-                Log.Info(ex, "Error No Bloqueante de aplicación en CrearCargaDeCupoNoGrano");
-                resultado.Error("Advertencia", "La carga se creó correctamente, pero " + ex.Message + " Camión debe dirigirse a Mesa FAS.");
-
+                Log.Error(ex, "Error No Bloqueante de aplicación en CrearCargaDeCupoNoGrano");
+                resultado.Error("warning", "La carga se creó correctamente, pero " + ex.Message + " Camión debe dirigirse a Mesa FAS.");
                 AbrirBarrera(nuevoCupo.PuestoDeTrabajo.Entrada);
+            }
+            catch (ErrorNoBloqueanteAdvertenciaCrearCupoNoGranoExcepcion ex)
+            {
+                resultado.Error("warning", ex.Message);
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Error de aplicación no esperado en CrearCargaDeCupoNoGrano");
+                resultado.Error("error", "Ocurrió un error al crear cupo no grano.");
                 EliminarCupoSiFueCreado(nuevoCupo);
-                resultado.Error("Error", "Ocurrió un error al crear cupo no grano.");
             }
 
             return resultado;
@@ -195,27 +198,27 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             if (!string.IsNullOrEmpty(comando.Dto.Patente) 
                 && Repositorio.Existe<CargaDeCupo>(e => e.Patente == comando.Dto.Patente && e.Centro.Id == comando.Dto.CentroId && e.Recorrido != null && !e.Recorrido.Terminado))
-                throw new ErrorCrearCupoNoGranoExcepcion($"El camion {comando.Dto.Patente} ya se encuentra en circuito");
+                throw new ErrorBloqueanteCrearCupoNoGranoExcepcion($"El camion {comando.Dto.Patente} ya se encuentra en circuito");
 
             if (servicioRepositorio.EsTarjetaBloqueada(comando.Dto.Numero, comando.Dto.CentroId))
-                throw new ErrorCrearCupoNoGranoExcepcion(Textos.AsignacionTarjetaDeAcceso_TarjetaBloqueada);
+                throw new ErrorBloqueanteCrearCupoNoGranoExcepcion(Textos.AsignacionTarjetaDeAcceso_TarjetaBloqueada);
 
             if (!servicioRepositorio.EsTarjetaEnRangoValido(comando.Dto.Numero, comando.Dto.CentroId))
-                throw new ErrorCrearCupoNoGranoExcepcion(Textos.AsignacionTarjetaDeAcceso_TarjetaSinRango);
+                throw new ErrorBloqueanteCrearCupoNoGranoExcepcion(Textos.AsignacionTarjetaDeAcceso_TarjetaSinRango);
 
             if (Repositorio.Existe<Recorrido>(x => x.TarjetaDeAcceso == comando.Dto.Numero && x.Centro.Id == comando.Dto.CentroId && x.Terminado == false))
-                throw new ErrorCrearCupoNoGranoExcepcion(Textos.ImpresionTarjetaDeAcceso_EnUso);
+                throw new ErrorBloqueanteCrearCupoNoGranoExcepcion(Textos.ImpresionTarjetaDeAcceso_EnUso);
 
             var validarTarjetaEnUsoPendienteSinRecorridoConfig = ConfigurationManager.AppSettings["ValidarTarjetaEnUsoEtapaPendiente"];
             if (bool.TryParse(validarTarjetaEnUsoPendienteSinRecorridoConfig, out bool validarTarjetaEnUsoPendienteSinRecorrido) && validarTarjetaEnUsoPendienteSinRecorrido)
             {
                 var workflowsPendientes = servicioRepositorio.ListarDatosDeWorkflowsPendientes(comando.Dto.CentroId, 0).Where(x => x.NumeroDeTarjeta == comando.Dto.Numero);
                 if (workflowsPendientes.Any())
-                    throw new ErrorCrearCupoNoGranoExcepcion(string.Format(Textos.TarjetaDeAcceso_EnUso_Pendiente, workflowsPendientes.FirstOrDefault().Patente));
+                    throw new ErrorBloqueanteCrearCupoNoGranoExcepcion(string.Format(Textos.TarjetaDeAcceso_EnUso_Pendiente, workflowsPendientes.FirstOrDefault().Patente));
             }
 
             if (!Repositorio.Existe<PuestoDeTrabajo>(x => x.Id == comando.Dto.PuestoDeTrabajoId))
-                throw new ErrorCrearCupoNoGranoExcepcion(Textos.RequierePuestoDeTrabajo);
+                throw new ErrorBloqueanteCrearCupoNoGranoExcepcion(Textos.RequierePuestoDeTrabajo);
         }
 
         private ResultadoCrearCalle AsignarCalle(int cargaCupoId, int centroId)
@@ -227,7 +230,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 CentroId = centroId,
             }) as ResultadoCrearCalle;
             if (resultadoAsignarCalle.HayErrores)
-                throw new ErrorCrearCupoNoGranoExcepcion("Ocurrió un error al asignar la calle.");
+                throw new ErrorBloqueanteCrearCupoNoGranoExcepcion("Ocurrió un error al asignar la calle.");
 
             return resultadoAsignarCalle;
         }
@@ -265,7 +268,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             catch (Exception ex)
             {
                 Log.Error(ex, "ProcesadorCrearCargaDeCupoNoGrano MostrarMensajeEnCartel");
-                throw new ErrorNoBloqueanteCrearCupoNoGranoExcepcion("falló la comunicación con el cartel.");
+                throw new ErrorNoBloqueanteExitosoCrearCupoNoGranoExcepcion("falló la comunicación con el cartel.");
             }
         }
 
@@ -284,7 +287,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 OrigenImpresion = "CargaDeCupoController"
             });
             if (resultadoImpresion.HayErrores)
-                throw new ErrorCrearCupoNoGranoExcepcion("Ocurrió un error al imprimir la tarjeta de acceso.");
+                throw new ErrorBloqueanteCrearCupoNoGranoExcepcion("Ocurrió un error al imprimir la tarjeta de acceso.");
         }
 
         private void AbrirBarrera(string codigoBarrera)
@@ -296,7 +299,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             catch (Exception ex)
             {
                 Log.Error(ex, "ProcesadorCrearCargaDeCupoNoGrano AbrirBarrera");
-                throw new ErrorNoBloqueanteCrearCupoNoGranoExcepcion("falló la apertura de la barrera.");
+                throw new ErrorNoBloqueanteAdvertenciaCrearCupoNoGranoExcepcion("Levantar barrera manualmente.");
             }
         }
 
@@ -327,7 +330,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             if (!fastPassValido)
-                throw new ErrorNoBloqueanteCrearCupoNoGranoExcepcion("falló el fast pass.");
+                throw new ErrorNoBloqueanteExitosoCrearCupoNoGranoExcepcion("falló el fast pass.");
 
             return fastPassValido;
         }
@@ -403,16 +406,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
         }
     }
 
-    public class ErrorCrearCupoNoGranoExcepcion : Exception
+    public class ErrorBloqueanteCrearCupoNoGranoExcepcion : Exception
     {
-        public ErrorCrearCupoNoGranoExcepcion(string message) : base(message)
+        public ErrorBloqueanteCrearCupoNoGranoExcepcion(string message) : base(message)
         {
         }
     }
 
-    public class ErrorNoBloqueanteCrearCupoNoGranoExcepcion : Exception
+    public class ErrorNoBloqueanteExitosoCrearCupoNoGranoExcepcion : Exception
     {
-        public ErrorNoBloqueanteCrearCupoNoGranoExcepcion(string message) : base(message)
+        public ErrorNoBloqueanteExitosoCrearCupoNoGranoExcepcion(string message) : base(message)
+        {
+        }
+    }
+
+    public class ErrorNoBloqueanteAdvertenciaCrearCupoNoGranoExcepcion : Exception
+    {
+        public ErrorNoBloqueanteAdvertenciaCrearCupoNoGranoExcepcion(string message) : base(message)
         {
         }
     }

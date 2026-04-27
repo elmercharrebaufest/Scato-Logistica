@@ -89,7 +89,6 @@ namespace Molinos.Scato.Web.Controllers
                         CentroId = centroId,
                         TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                         NroCtg = cpe.NroCtg,
-                        ConsultaAfip = true,
                         FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now
                     });
 

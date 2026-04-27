@@ -58,7 +58,6 @@
     [NotificarCamioneroCircular]       BIT            DEFAULT ((0)) NOT NULL,
     [Sucursal]                         INT            NULL,
     [Planta]                           INT            NULL,
-    [ContingenciaAfipCpe]              BIT            DEFAULT ((0)) NOT NULL,
     [MinutosInactividadCalado]         INT            NULL,
     [LimiteCamionesCalado]             INT            DEFAULT ((8)) NULL,
     [FechaEjecucionCacheoCPE]          DATETIME       NULL,

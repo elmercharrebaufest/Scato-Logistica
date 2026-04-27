@@ -240,7 +240,6 @@ namespace Molinos.Scato.Web.Controllers
                                  CentroId = centro,
                                  TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                                  NroCtg = ctg,
-                                 ConsultaAfip = true,
                                  FechaUltimaActualizacion = cpe.FechaUltimaModificacion
                              });
 
@@ -280,13 +279,12 @@ namespace Molinos.Scato.Web.Controllers
 
                 foreach (var cpe in registros.MonitorCPECacheadaListado)
                 {
-                    log.Debug("Sinscronizando CartaPorteElectronica " + cpe.CTG.Value);
+                    log.Debug("Sincronizando CartaPorteElectronica " + cpe.CTG.Value);
                     var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
                     {
                         CentroId = centro,
                         TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                         NroCtg = cpe.CTG.Value,
-                        ConsultaAfip = true,
                         FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now
                     });;
 

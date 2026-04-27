@@ -156,5 +156,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string MotivoDemora { get; set; }
         public bool IngresoContingenciaPagoMunicipal { get; set; }
         public bool PagoTasaMunicipalInformado { get; set; }
+        public List<DocumentoPorRecorridoDto> Documentos { get; set; }
     }
 }

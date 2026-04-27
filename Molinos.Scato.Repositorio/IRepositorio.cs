@@ -1,4 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Consultas;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using System;
 using System.Collections.Generic;
@@ -263,5 +264,24 @@ namespace Molinos.Scato.Repositorio
         /// </summary>
         /// <returns></returns>
         List<TEntidad> ObtenerPagoTasaMunicipal<TEntidad>(TipoCategoriaVehiculo tipoCategoria, string patente, string numeroDocumento, int dias, int centroId, string codigoDiferencia);
+
+        /// <summary>
+        /// Elimina las cartas de porte electronica de documentos no ingresados
+        /// </summary>
+        /// <returns>Cantidad de cartas de porte eliminadas</returns>
+        int EliminaCartaPorteElectronicaDocumentosNoIngresados(int diasLimiteDeBusqueda, int diasInicioDeBuqedaDeRecorrido);
+
+
+        /// <summary>
+        /// Elimina las cartas de porte electronica de documentos ingresados
+        /// </summary>
+        /// <returns>Cantidad de cartas de porte eliminadas</returns>
+        int EliminaCartaPorteElectronicaDocumentoIngresados(int diasInicioDeBuqedaDeRecorrido);
+
+        /// <summary>
+        /// Obtiene los datos de los recorridos relacionados con cartas de porte electronica
+        /// </summary>
+        /// <returns>Lista de datos de recorridos relacionados con cartas de porte electronica</returns>
+        List<RecorridoCpeDto> ObtenerDatosRecorridoRelacionadosConCartaPorteElectronica(DateTime fechaInicio, DateTime fechaFin);
     }
 }

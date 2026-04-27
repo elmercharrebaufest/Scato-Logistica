@@ -395,12 +395,14 @@ namespace Molinos.Scato.Web.Controllers
             log.Info("CargarCartaPorte: Iniciando carga de workflow/s para los/el vehiculo/s: " + orden.VehiculoJson);
             foreach (var vehiculo in vehiculos)
             {
+                byte[] pdf = null;
                 if (orden.TipoVehiculoInt == (int)TipoVehiculo.Tren && orden.Cpe && workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
                 {
                     var ctgVagon = Convert.ToInt64(string.IsNullOrEmpty(vehiculo?.NumCTG) ? orden.NroCartaPorte : vehiculo?.NumCTG);
                     var cartaPorteImagen = servicioComandos.Ejecutar(new ConsultarImagenCpe { NroCtg = ctgVagon }) as ResultadoConsultarImagenCpe;
                     if (!cartaPorteImagen.HayErrores)
                     {
+                        pdf = cartaPorteImagen.PdfImage;
                         var imagenBase64 = Convert.ToBase64String(cartaPorteImagen.PdfImage);
                         orden.FotoRutaDestino = GuardarfotoMesaDigitalizacion(imagenBase64, orden, puestoDeTrabajo, datosUsuario, fecha, ctgVagon.ToString());
                         if (cupo != null && cupo.Especial)
@@ -418,6 +420,9 @@ namespace Molinos.Scato.Web.Controllers
                      SetearVista(workflowObj, datosUsuario.CentroId);
                      return View(orden);
                 }
+
+                if (workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
+                    GuardarDocumentoPorRecorrido(pdf, resultadoActividad.InstanciaWorkflowId);
 
                 this.EjecutarAccionesDePagoTasaMunicipalPosteriorALaCreacionDeWorkflow(datosUsuario.CentroId, resultadoActividad.InstanciaWorkflowId);
                 
@@ -572,7 +577,7 @@ namespace Molinos.Scato.Web.Controllers
             catch (Exception e)
             {
                 log.Info(e, "No se pudo obtener la carta de porte CTG-CPE {0}", numeroCtg);
-                throw;
+                return Json(new { CodigoDeError = "3", Error = "Ocurrió un error interno" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -864,22 +869,6 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerTipoVehiculoPorPatenteCPE(long nroCtg, long cuit, DatosUsuario datosUsuario)
-        {
-            try
-            {
-                var cartaPorte = (ResultadoCartaPorteElectronica)servicioComandos.Ejecutar(new ConsultarCPDigital { CuitSolicitante = cuit, NroCtg = nroCtg });
-
-                return Json(new { cartaPorte }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e)
-            {
-                log.Error(e, $"No se pudo obtener cpe para ctg {nroCtg} y cuit {cuit}");
-                throw;
-            }
-        }
-
-        [DatosUsuario]
         public JsonResult ObtenerImagenCpe(long nroCtg, DatosUsuario datosUsuario)
         {
             var cartaPorteImagen = servicioComandos.Ejecutar(new ConsultarImagenCpe { NroCtg = nroCtg }) as ResultadoConsultarImagenCpe;
@@ -887,7 +876,7 @@ namespace Molinos.Scato.Web.Controllers
             if (cartaPorteImagen.HayErrores)
             {
                 cartaPorteImagen = new ResultadoConsultarImagenCpe();
-                var consultaAfip = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = nroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, ConsultaImagenCpe = true }) as ResultadoCartaPorteElectronica;
+                var consultaAfip = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = nroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId }) as ResultadoCartaPorteElectronica;
                 if (consultaAfip.HayErrores && consultaAfip.PdfImage is null)
                 {
                     cartaPorteImagen.Errores.Add("3", "No se pudo obtener la imagen de la CP desde AFIP. Por favor intente nuevamente más tarde..");
@@ -1042,6 +1031,31 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             return resultadoStockVisec;
+        }
+
+        private void GuardarDocumentoPorRecorrido(byte[] pdf, Guid instanceId)
+        {
+            try
+            {
+                var documentoPorRecorrido = new CrearDocumentoPorRecorrido
+                {
+                    Archivo = pdf,
+                    ArchivoExtension = "pdf",
+                    WorkflowIntanceId = instanceId,
+                    TipoDocumentoIngreso = TipoImpresion.CartaDePorteElectronica,
+                    Fecha = DateTime.Now
+                };
+
+                var respuestaCrearDocumento = servicioComandos.Ejecutar(documentoPorRecorrido);
+                if (respuestaCrearDocumento.HayErrores)
+                {
+                    log.Error("Error al crear documento por recorrido - {0}", respuestaCrearDocumento.Errores.FirstOrDefault().Value);
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("Error al guardar documento pdf - {0}", e.Message);
+            }
         }
     }
 }

@@ -518,27 +518,6 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ContingenciaAfipCpe(DatosUsuario datosUsuario, string motivo)
-        {
-
-            try
-            {
-                var aModificar = servicio.ObtenerCentro(datosUsuario.CentroId);
-                aModificar.ContingenciaAfipCpe = !aModificar.ContingenciaAfipCpe;
-
-                var comando = new ModificarCentro { Dto = aModificar, Usuario = datosUsuario.NombreUsuario };
-
-                var resultado = servicioComandos.Ejecutar(comando);
-                RegistracionContingencia("Conecta a AFIP para buscar Carta Porte Electronica", datosUsuario.NombreUsuario, aModificar.ContingenciaAfipCpe, motivo);
-                return Json("", JsonRequestBehavior.AllowGet);
-            }
-            catch
-            {
-                return Json(Textos.Error_ActualizarGenerico, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [DatosUsuario]
         public JsonResult ContingenciaVisec(DatosUsuario datosUsuario, string motivo)
         {
             try

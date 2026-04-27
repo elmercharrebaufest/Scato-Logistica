@@ -50,6 +50,8 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
             StartJobsForMOAPay();
             StartJobsForVisec();
             StartJobsHealthChecks();
+            StartJobsCacheCpeAfip();
+            StartJobsLimpiezaCacheCpe();
         }
 
         private static void StartJobsForAutomatismos()
@@ -121,7 +123,48 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
 
             RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.VerificarHealthCheckMOAPayHealth, x => x.EjecutarHealthCheckAsync(Constantes.Job.VerificarHealthCheckMOAPayHealth), cronForHealthChecks);
         }
-        
+
+        private static void StartJobsCacheCpeAfip()
+        {
+            var cronExpressionForCachearCpeAFIPSanLorenzos = ConfigurationManager.AppSettings["Hangfire.CronExpressionFor.CachearCpeAFIPSanLorenzo"];
+            if (string.IsNullOrWhiteSpace(cronExpressionForCachearCpeAFIPSanLorenzos))
+                cronExpressionForCachearCpeAFIPSanLorenzos = Constantes.Job.DefaultCronExpressionForCachearCpeAFIPSanLorenzo;
+
+            RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.CachearCpeAFIPSanLorenzo, x => x.CachearCpeAFIPSanLorenzo(), cronExpressionForCachearCpeAFIPSanLorenzos);
+
+            var cronExpressionForCachearCpeAFIPPorCentros = ConfigurationManager.AppSettings["Hangfire.CronExpressionFor.CachearCpeAFIPPorCentros"];
+            if (string.IsNullOrWhiteSpace(cronExpressionForCachearCpeAFIPPorCentros))
+                cronExpressionForCachearCpeAFIPPorCentros = Constantes.Job.DefaultCronExpressionForCachearCpeAFIPPorCentros;
+
+            RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.CachearCpeAFIPPorCentros, x => x.CachearCpeAFIPPorCentros(), cronExpressionForCachearCpeAFIPPorCentros);
+
+            var cronExpressionForActualizarCacheCpeAFIPSanLorenzo = ConfigurationManager.AppSettings["Hangfire.CronExpressionFor.ActualizarCacheCpeAFIPSanLorenzo"];
+            if (string.IsNullOrWhiteSpace(cronExpressionForActualizarCacheCpeAFIPSanLorenzo))
+                cronExpressionForActualizarCacheCpeAFIPSanLorenzo = Constantes.Job.DefaultCronExpressionForActualizarCacheCpeAFIPSanLorenzo;
+
+            RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.ActualizarCacheCpeAFIPSanLorenzo, x => x.ActualizarCacheCpeAFIPSanLorenzo(), cronExpressionForActualizarCacheCpeAFIPSanLorenzo);
+        }
+
+        private static void StartJobsLimpiezaCacheCpe()
+        {
+            if (ValidarEncendidoJob("Hangfire.IsEnabled.LimpiarCacheCartaPorteElectronicaDocumentosIngresados"))
+            {
+                var cronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosIngresados = ConfigurationManager.AppSettings["Hangfire.CronExpressionFor.LimpiarCacheCartaPorteElectronicaDocumentosIngresados"];
+                if (string.IsNullOrWhiteSpace(cronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosIngresados))
+                    cronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosIngresados = Constantes.Job.DefaultCronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosIngresados;
+
+                RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.LimpiarCacheCartaPorteElectronicaDocumentosIngresados, x => x.LimpiarCacheCpeAFIPDocumentosIngresados(), cronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosIngresados);
+            }
+
+            if (ValidarEncendidoJob("Hangfire.IsEnabled.LimpiarCacheCartaPorteElectronicaDocumentosNoIngresados"))
+            {
+                var cronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosNoIngresados = ConfigurationManager.AppSettings["Hangfire.CronExpressionFor.LimpiarCacheCartaPorteElectronicaDocumentosNoIngresados"];
+                if (string.IsNullOrWhiteSpace(cronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosNoIngresados))
+                    cronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosNoIngresados = Constantes.Job.DefaultCronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosNoIngresados;
+
+                RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.LimpiarCacheCartaPorteElectronicaDocumentosNoIngresados, x => x.LimpiarCacheCpeAFIPDocumentosNoIngresados(), cronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosNoIngresados);
+            }
+        }
     }
 
     public class HangfireDashboardAuthorizationFilter : IDashboardAuthorizationFilter

@@ -100,5 +100,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool PagoTasaMunicipalInformado { get; set; }
 
         public virtual RecorridoTasaMunicipal RecorridoTasaMunicipal { get; set; }
+        public virtual ICollection<DocumentoPorRecorrido> Documentos { get; set; }
     }
 }

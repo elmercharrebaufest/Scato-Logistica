@@ -10969,15 +10969,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Consutar Base por CPE.
-        /// </summary>
-        public static string ContingenciaAfipCpe {
-            get {
-                return ResourceManager.GetString("ContingenciaAfipCpe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Avanza Automatico Cpe.
         /// </summary>
         public static string ContingenciaAvanceCpe {

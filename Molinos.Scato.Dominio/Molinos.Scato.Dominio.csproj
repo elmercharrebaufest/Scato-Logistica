@@ -95,9 +95,12 @@
     <Compile Include="Comandos\Consultas\ConsultarExcepcionPagoTicketMunicipal.cs" />
     <Compile Include="Comandos\CrearLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Comandos\CrearLogValidacionAccesoStopRespuesta.cs" />
+    <Compile Include="Comandos\CrearDocumentoPorRecorridoHistorico.cs" />
     <Compile Include="Comandos\CrearModificarRecorridoTasaMunicipal.cs" />
+    <Compile Include="Comandos\CrearDocumentoPorRecorrido.cs" />
     <Compile Include="Comandos\DatosExcepcionTasaMunicipal.cs" />
     <Compile Include="Comandos\DatosTasaMunicipal.cs" />
+    <Compile Include="Comandos\EliminarListaCartaPorteElectronica.cs" />
     <Compile Include="Comandos\EliminarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\MOAPay\MOAPayCrearModificarCPE.cs" />
     <Compile Include="Comandos\MOAPay\MOAPayInformarPagoComoConsumido.cs" />
@@ -824,6 +827,7 @@
     <Compile Include="Comandos\Visec\ImportarCartaPorteVisec.cs" />
     <Compile Include="Consultas\InfoCalle.cs" />
     <Compile Include="Dto\DatosExcepcionPagoTicketMunicipalDto.cs" />
+    <Compile Include="Dto\DocumentoPorRecorridoDto.cs" />
     <Compile Include="Dto\FiltroEditarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Dto\FiltroExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Dto\LogValidacionAccesoStopBandasHorariasDto.cs" />
@@ -834,7 +838,9 @@
     <Compile Include="Dto\HealthCheck\MonitoreoServicioExternoDto.cs" />
     <Compile Include="Dto\HealthCheck\HealthCheckConfigDto.cs" />
     <Compile Include="Dto\HealthCheck\HealthCheckResult.cs" />
+    <Compile Include="Dto\RecorridoCpeDto.cs" />
     <Compile Include="Dto\RegistroJobEjecucionDto.cs" />
+    <Compile Include="Dto\CargaDeCupoResponseDto.cs" />
     <Compile Include="Dto\PagosTasaMunicipalDto.cs" />
     <Compile Include="Dto\PagosTasaMunicipalResponse.cs" />
     <Compile Include="Dto\AutomatismoTipoLlamadoDto.cs" />
@@ -1165,6 +1171,7 @@
     <Compile Include="Entidades\LogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Entidades\LogValidacionAccesoStopRespuesta.cs" />
     <Compile Include="Entidades\RecorridoTasaMunicipal.cs" />
+    <Compile Include="Entidades\DocumentoPorRecorrido.cs" />
     <Compile Include="Entidades\EstadoPagoTasaMunicipal.cs" />
     <Compile Include="Entidades\ExceptuadosTicketMunicipal.cs" />
     <Compile Include="Entidades\MonitoreoServicioExterno.cs" />
@@ -1388,6 +1395,7 @@
     <Compile Include="Filtros\AtLeastOneItemIntAttribute.cs" />
     <Compile Include="Filtros\LoguearEntidad.cs" />
     <Compile Include="Filtros\FechaAntiguaAttribute.cs" />
+    <Compile Include="Filtros\RequiredIfAttribute.cs" />
     <Compile Include="Helpers\CantidadPrecaladoCircularHelper.cs" />
     <Compile Include="Helpers\ExtensionesByte.cs" />
     <Compile Include="Helpers\ExtensionesDecimal.cs" />

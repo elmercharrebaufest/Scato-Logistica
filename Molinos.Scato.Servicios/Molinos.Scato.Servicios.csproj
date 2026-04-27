@@ -183,6 +183,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\ComercialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoNoGranoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoGranoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DocumentoPorRecorridoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\DomicilioMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CallePreBalanzaPlayaInternaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaMaritimaPuertoMappingProfile.cs" />
@@ -616,7 +617,9 @@
     <Compile Include="Procesamiento\ProcesadorConsultarExcepcionPagoTicketMunicipal.cs" />
     <Compile Include="Procesamiento\Stop\ProcesadorCrearLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogValidacionAccesoStopRespuesta.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDocumentoPorRecorridoHistorico.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearModificarRecorridoTasaMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarListaCartaPorteElectronica.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarInformadoPagosTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoPorContingenciaPay.cs" />
@@ -627,6 +630,7 @@
     <Compile Include="Procesamiento\ProcesadorValidarVehiculoDetectado.cs" />
     <Compile Include="Procesamiento\ProcesadorReprocesarPagoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarRegistroJobEjecucion.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDocumentoPorRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorVerificarPagoTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarCategoriaVehiculoNoGranos.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarCategoriaVehiculoGranos.cs" />

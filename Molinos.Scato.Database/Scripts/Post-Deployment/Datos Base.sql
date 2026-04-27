@@ -1638,6 +1638,16 @@ INSERT INTO ConfiguracionGeneral(Pantalla, Nombre, Valor, Centro_Id, FechaCreaci
 VALUES ('CargaDeCupo', 'OmitirValidacionDataAgroVisec', 'false', NULL, GETDATE(), 'SCATO')
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'LimpiarCacheCartaPorte' AND  Nombre = 'DiasLimiteDeBusqueda' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('LimpiarCacheCartaPorte', 'DiasLimiteDeBusqueda', '5', NULL, GETDATE(), 'SCATO')   
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'LimpiarCacheCartaPorte' AND  Nombre = 'DiasInicioDeBusquedaDeRecorrido' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('LimpiarCacheCartaPorte', 'DiasInicioDeBusquedaDeRecorrido', '1', NULL, GETDATE(), 'SCATO')   
+END
+
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MarcaSustentable' AND  Nombre = 'PosicionImagenSustentableX' AND  Centro_Id IS NULL) 
 BEGIN 
 INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('MarcaSustentable', 'PosicionImagenSustentableX', '100', NULL, GETDATE(), 'SCATO')   

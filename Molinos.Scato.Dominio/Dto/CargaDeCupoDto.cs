@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.Dominio.Filtros;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +9,8 @@ namespace Molinos.Scato.Dominio.Dto
     public class CargaDeCupoDto
     {
         public int Id { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
+
+        [Required(ErrorMessage = "El 'N° tarjeta' es requerido")]
         [RegularExpression(@"\d{10,10}", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Solo10Digitos")]
         public string Numero { set; get; }
 
@@ -37,11 +39,8 @@ namespace Molinos.Scato.Dominio.Dto
         public string Camara { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Cupo_NumeroDeCartaPorte")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Cupo_NumeroDeCartaPorte")]
-        [RegularExpression(@"00\d{10}", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Solo12DigitosCartaPorte")]
         public string NumeroCartaPorte { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_PatenteAfip")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         [RegularExpression(@"^[A-Za-z]{3}\d{3}$|^[A-Za-z]{2}\d{3}[A-Za-z]{2}$", ErrorMessage = "Formato de patente inválido. Use AAA000 o AA000AA.")]
         public string Patente
@@ -54,9 +53,11 @@ namespace Molinos.Scato.Dominio.Dto
         public string ImagenCartaPorte { get; set; }
         public string ImagenCartaPorteSustentable { get; set; }
         public string FotoRutaDestino { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
+        
+        [RequiredIf(nameof(CircuitoNoGranos), false, ErrorMessage = "El campo CTG es requerido")]
+        [RegularExpression(@"^\d{11,12}$", ErrorMessage = "El CTG debe tener entre 11 y 12 caracteres")]
         public string CTG { get; set; }
+        
         public string CodEstab { get; set; }
         public string RtteComercialCodigoSap { get; set; }
         public string RtteComercialVentaSecundariaCuit { get; set; }

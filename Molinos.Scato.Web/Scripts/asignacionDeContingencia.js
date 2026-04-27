@@ -35,7 +35,6 @@
     $(document).on('click', '.encolaBajaCtgAutomatico', function () {
         habilitarContingencia(urlEncolaBajaCtgAutomatico);
     });
-
     $(document).on('click', '.nirsManual', function () {
         habilitarContingencia(urlNirsManual);
     });
@@ -47,9 +46,6 @@
     });
     $(document).on('click', '.informarArriboACircular', function () {
         habilitarContingencia(urlInformarArriboACircularEnCentro);
-    });
-    $(document).on('click', '.contingenciaAfipCpe', function () {
-        habilitarContingencia(urlContingenciaAfipCpe);
     });
 
     function habilitarContingencia(url) {

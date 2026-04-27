@@ -1025,22 +1025,6 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerTipoVehiculoPorPatenteCPE(long nroCtg, long cuit, DatosUsuario datosUsuario)
-        {
-            try
-            {
-                var cartaPorte = (ResultadoCartaPorteElectronica)servicioComandos.Ejecutar(new ConsultarCPDigital { CuitSolicitante = cuit, NroCtg = nroCtg });
-
-                return Json(new { cartaPorte }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e)
-            {
-                log.Error(e, $"No se pudo obtener cpe para ctg {nroCtg} y cuit {cuit}");
-                throw;
-            }
-        }
-
-        [DatosUsuario]
         public JsonResult ObtenerImagenCpe(long nroCtg, DatosUsuario datosUsuario)
         {
             var cartaPorteImagen = servicioComandos.Ejecutar(new ConsultarImagenCpe { NroCtg = nroCtg }) as ResultadoConsultarImagenCpe;
@@ -1048,7 +1032,7 @@ namespace Molinos.Scato.Web.Controllers
             if (cartaPorteImagen.HayErrores)
             {
                 cartaPorteImagen = new ResultadoConsultarImagenCpe();
-                var consultaAfip = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = nroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, ConsultaImagenCpe = true }) as ResultadoCartaPorteElectronica;
+                var consultaAfip = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = nroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId }) as ResultadoCartaPorteElectronica;
                 if (consultaAfip.HayErrores && consultaAfip.PdfImage is null)
                 {
                     cartaPorteImagen.Errores.Add("3", "No se pudo obtener la imagen de la CP desde AFIP. Por favor intente nuevamente más tarde..");

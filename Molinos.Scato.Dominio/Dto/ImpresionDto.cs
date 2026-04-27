@@ -12,5 +12,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool Eliminada { get; set; }
         public long? Ctg { get; set; }
         public string CtgDG { get; set;}
+        public string CtgDocumentoCpe{ get; set; }
     }
 }

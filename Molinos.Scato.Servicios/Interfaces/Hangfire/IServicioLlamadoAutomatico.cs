@@ -19,5 +19,20 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         Task<HealthCheckResult> EjecutarHealthCheckAsync(string jobName);
+        
+        [OperationContract]
+        void CachearCpeAFIPSanLorenzo();
+
+        [OperationContract]
+        void CachearCpeAFIPPorCentros();
+
+        [OperationContract]
+        void ActualizarCacheCpeAFIPSanLorenzo();
+
+        [OperationContract]
+        void LimpiarCacheCpeAFIPDocumentosIngresados();
+
+        [OperationContract]
+        void LimpiarCacheCpeAFIPDocumentosNoIngresados();
     }
 }

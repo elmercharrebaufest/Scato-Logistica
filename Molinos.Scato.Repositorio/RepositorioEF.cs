@@ -1,4 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Consultas;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio.Extensions;
 using System;
@@ -609,6 +610,70 @@ namespace Molinos.Scato.Repositorio
             ).ToList();
 
             return resultado;
+        }
+
+        public int EliminaCartaPorteElectronicaDocumentosNoIngresados(int diasLimiteDeBusqueda ,int diasInicioDeBusqedaDeRecorrido )
+        {
+            return context.Database.SqlQuery<int>(
+                $@"
+		            BEGIN
+		                DELETE cpe
+                        FROM CartaPorteElectronica cpe
+                        WHERE cpe.FechaCacheado < DATEADD(DAY, -{diasLimiteDeBusqueda}, GETDATE())
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM Recorrido r
+                            WHERE 
+                              r.TipoDocumentoIngreso = 1
+	                          AND r.FechaInicio >=  DATEADD(DAY, -{diasInicioDeBusqedaDeRecorrido}, GETDATE())
+                              AND r.NumeroDocumentoIngreso IS NOT NULL
+                              AND TRY_CAST(r.NumeroDocumentoIngreso AS BIGINT) = cpe.NroCTG
+                        );
+
+                        SELECT @@ROWCOUNT AS FilasBorradas;
+		            END "
+                ).FirstOrDefault();
+        }
+
+        public int EliminaCartaPorteElectronicaDocumentoIngresados(int diasInicioDeBuqedaDeRecorrido)
+        {
+            return context.Database.SqlQuery<int>(
+                $@"
+		            BEGIN
+		                DELETE cpe
+                        FROM CartaPorteElectronica cpe
+                        WHERE EXISTS (
+                            SELECT 1
+                            FROM Recorrido r
+                            WHERE 
+                              r.TipoDocumentoIngreso = 1
+                              AND r.Terminado = 1
+                              AND r.Rechazado = 0
+	                          AND r.FechaInicio >=  DATEADD(DAY, -{diasInicioDeBuqedaDeRecorrido}, GETDATE())
+                              AND r.NumeroDocumentoIngreso IS NOT NULL
+                              AND TRY_CAST(r.NumeroDocumentoIngreso AS BIGINT) = cpe.NroCTG
+                        );
+
+                        SELECT @@ROWCOUNT AS FilasBorradas;
+		            END "
+                ).FirstOrDefault();
+        }
+
+        public List<RecorridoCpeDto> ObtenerDatosRecorridoRelacionadosConCartaPorteElectronica(DateTime fechaInicio, DateTime fechaFin)
+        {
+            return context.Database.SqlQuery<RecorridoCpeDto>(
+                $@"
+                SELECT
+                    r.InstanciaWorkflow,
+                    r.Id,
+                    cp.FechaCacheado,
+                    cp.Pdf
+                FROM CartaPorteElectronica cp
+                INNER JOIN Recorrido r
+                    ON cp.NroCTG = TRY_CAST(r.NumeroDocumentoIngreso AS BIGINT)
+                WHERE FechaEmision BETWEEN '{fechaInicio}' AND '{fechaFin}'
+                "
+            ).ToList();
         }
     }
 }

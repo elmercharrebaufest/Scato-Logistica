@@ -75,11 +75,14 @@ namespace Molinos.Scato.Actividades
                 {
                     LoggerHelper.WriteLine("Lentitud Impresora - ImpresionGenericaFile CPE Inicio");
                     var recorrido = repositorio.ObtenerRecorridoPorGuid(workflowId);
-                    var cartaporteElectronica = repositorio.ObtenerCartaPorteElectronicaPorCTG(recorrido?.NumeroDocumentoIngreso);
-
-                    if (!(cartaporteElectronica is null))
+                    var resultadoConsultaCPE = servicio.Ejecutar(new ConsultarPDFCpe
                     {
-                        ImprimirFileGenerico(servicio, cartaporteElectronica.Pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
+                        NroCtg = long.Parse(recorrido?.NumeroDocumentoIngreso)
+                    }) as ResultadoConsultarPDFCpe;
+
+                    if (!resultadoConsultaCPE.HayErrores && resultadoConsultaCPE.Pdf != null)
+                    {
+                        ImprimirFileGenerico(servicio, resultadoConsultaCPE.Pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
                         LoggerHelper.WriteLine("Lentitud Impresora - ImpresionGenericaFile CPE Fin");
                     }
                 }

@@ -5,18 +5,12 @@
 @{
     Layout = null;
     var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
-    var fila = ViewBag.FilaAsignadaNombre ?? "";
-    var mostrarAlertaExitosa = (bool)(ViewBag.MostrarAlertaExitosa ?? false);
-    var disponibilidad = ViewBag.Disponibilidad;
     var avanzaAutomatico = (bool)ViewBag.AvanzaAutomatico;
 
-    var mensajeExitoso = (string)ViewBag.MensajeExitoso;
-    var mensajeAdvertencia = (string)ViewBag.MensajeAdvertencia;
-    var mensajeInformativo = (string)ViewBag.MensajeInformativo;
-    var mensajeError = (string)ViewBag.MensajeError;
-    var tipoAlertaEnumLayout = ViewBag.TipoDeAlertaTasaMunicipal as TipoAlerta?;
+    var imageSrc = !string.IsNullOrEmpty(Model.ImagenCartaPorteSustentable) ? "data:image/jpg;base64," + Model.ImagenCartaPorteSustentable
+        : !string.IsNullOrEmpty(Model.ImagenCartaPorte) ? "data:image/jpg;base64," + Model.ImagenCartaPorte
+        : "";
 }
-<script src="@Url.Script("~/Scripts/cargaDeCupo.form.js")" type="text/javascript"></script>
 
 <style>
     #patenteALPR {
@@ -104,94 +98,9 @@
     }
 </style>
 
-@if (!string.IsNullOrEmpty(mensajeError))
-{
-    <script type="text/javascript">
-        $("#validation-error-message").html('<strong>@mensajeError</strong>');
-        $("#validation-error-alert").removeClass("hide");
-    </script>
-}
-else if (!string.IsNullOrEmpty(mensajeAdvertencia))
-{
-    <script type="text/javascript">
-        $("#validation-advertencia-message").html('<strong>@mensajeAdvertencia</strong>');
-        $("#validation-advertencia-alert").removeClass("hide");
-    </script>
-}
-else if (!string.IsNullOrEmpty(mensajeExitoso))
-{
-    <script type="text/javascript">MostrarAlertaExitosa('@mensajeExitoso', 10000);</script>
-}
-
-@if (!string.IsNullOrEmpty(ViewBag.MensajeAlertaTasaMunicipal) && @tipoAlertaEnumLayout == TipoAlerta.Exito)
-{
-    <script type="text/javascript">MostrarAlertaExitosaTasaMunicipal('@ViewBag.MensajeAlertaTasaMunicipal', 10000);</script>
-}
-
-@if (!string.IsNullOrEmpty(ViewBag.MensajeAlertaTasaMunicipal) && @tipoAlertaEnumLayout == TipoAlerta.Error)
-{
-    <script type="text/javascript">MostrarAlertaAdvertenciaTasaMunicipal('@ViewBag.MensajeAlertaTasaMunicipal', 10000);</script>
-}
-
-@if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
-{
-    <style>
-        #alertaExitosa {
-            font-size: 26px;
-        }
-    </style>
-    <script type="text/javascript">
-            MostrarAlertaExitosa('Carga Exitosa, se asignó @fila', 10000);
-    </script>
-}
-
-@if (!string.IsNullOrEmpty(fila) && disponibilidad <= 5 && disponibilidad > 0)
-{
-    <script type="text/javascript">
-        MostrarAlertaExitosa('Carga Exitosa, se asignó @fila, <br> ESPACIO DISPONIBLE: @disponibilidad camiones', 1000);
-    </script>
-}
-
-@if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
-{
-    <script type="text/javascript">
-        var message = "<strong>Error al guardar el cupo!, intente nuevamente.</strong>";
-        message += @Html.Raw(Json.Encode(((@Html.ValidationSummary()==null)?"":@Html.ValidationSummary().ToHtmlString())));
-        MostrarAlertaError(message);
-    </script>
-}
-
-@if (ViewData.ModelState["warning"] != null && ViewData.ModelState["warning"].Errors.Any() && !Model.CircuitoNoGranos)
-{
-    <script type="text/javascript">
-        var message = "<strong>Error al asignar una fila de pre calado!</strong>";
-        message += @Html.Raw(Json.Encode(((@Html.ValidationSummary()==null)?"":@Html.ValidationSummary().ToHtmlString())));
-            MostrarAlertaAdvertencia(message);
-    </script>
-}
-
-@if (ViewData.ModelState["warning"] != null && ViewData.ModelState["warning"].Errors.Any() && Model.CircuitoNoGranos)
-{
-    <script type="text/javascript">
-        var message = "<strong>Error al asignar una fila de NoGranos!</strong>";
-        message += @Html.Raw(Json.Encode(((@Html.ValidationSummary()==null)?"":@Html.ValidationSummary().ToHtmlString())));
-            MostrarAlertaAdvertencia(message);
-    </script>
-}
-
-@if (ViewData.ModelState["PuestoDeTrabajoId"] != null && ViewData.ModelState["PuestoDeTrabajoId"].Errors.Any())
-{
-    <div class="alert alert-error">
-        <span>@Html.ViewData.ModelState["PuestoDeTrabajoId"].Errors.FirstOrDefault().ErrorMessage</span>
-    </div>
-}
-
-@if (ViewData.ModelState["avanceCpe"] != null && ViewData.ModelState["avanceCpe"].Errors.Any())
-{
-    <div class="alert alert-error">
-        <span>@Html.ViewData.ModelState["avanceCpe"].Errors.FirstOrDefault().ErrorMessage</span>
-    </div>
-}
+@Html.HiddenFor(x => x.CPE)
+@Html.Hidden("AvanceCpe", avanzaAutomatico)
+@Html.HiddenFor(x => x.FotoRutaDestino)
 
 <div class="row-fluid" style="margin-bottom:5px;">
     <div class="span8">
@@ -202,24 +111,25 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
                 </div>
                 <br />
                 <div class="control-group sinMargen">
-                    <div id="avance-cpe-check" style="width: 260px;" hidden>
-                        @Html.Hidden("AvanceCpe", avanzaAutomatico, new { id = "avanceCpe" })
-                    </div>
                     <div style="width: 260px; display: inline-flex;">
                         <div style="width: 160px;">
                             @Html.Label(@Textos.CircuitoGranos, new { @class = "control-label inline" })
                             @Html.CheckBoxFor(x => x.CircuitoNoGranos, new { id = "circuitoNoGranos" })
                         </div>
-                        <div style="width: 100px; display: none">
-                            @Html.Label(@Textos.CPE, new { @class = "control-label inline" })
-                            @Html.CheckBoxFor(x => x.CPE, new { id = "cpe" })
-                        </div>
                     </div>
                 </div>
                 <div class="control-group sinMargen">
-                    @Html.Label(Textos.AsignacionTarjetaDeAcceso_NTarj + ":", new { @class = "control-label menosAncho" })
+                    @Html.LabelFor(model => model.Numero, Textos.AsignacionTarjetaDeAcceso_NTarj + ":", new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
-                        @Html.TextBoxFor(model => model.Numero, new { @class = "control input-medium", maxlength = 10, @readonly = "readonly", placeholder = Textos.ListaDeTareasAutomatizada_EsperandoLectura })
+                        @Html.TextBoxFor(model => model.Numero,
+                            new
+                            {
+                                @readonly = "readonly",
+                                placeholder = Textos.ListaDeTareasAutomatizada_EsperandoLectura,
+                                @class = "control input-medium",
+                                @type = "number"
+                            })
+                        @Html.ValidationMessageFor(model => model.Numero)
                         @Html.HiddenFor(model => model.PuestoDeTrabajoId)
                         @Html.HiddenFor(model => model.ImprimeCartaPorte)
                         @Html.HiddenFor(model => model.ImprimeTarjetaDeAcceso)
@@ -227,41 +137,38 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
                         @Html.HiddenFor(model => model.SinFotoCartaPorte)
                         <span class="label label-success hidden" id="labelConectado">@Textos.Conectado</span>
                         <span class="label label-important hidden" id="labelDesconectado">@Textos.Desconectado</span>
-                        @*@Html.ValidationMessageFor(model => model.Numero)*@
                     </div>
                 </div>
                 <div class="control-group sinMargen" style="padding-top: 7px;">
-                    @Html.Label(Textos.CTG + ":", new { @class = "control-label menosAncho" })
+                    @Html.LabelFor(model => model.CTG, Textos.CTG + ":", new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
-                        @Html.TextBoxFor(model => model.CTG, new { @class = "control input-medium", @readonly = "readonly", @onkeypress = "return isNumberKey(event)" })
+                        @Html.TextBoxFor(model => model.CTG, new { @class = "control input-medium", @type = "number" })
                         @Html.ValidationMessageFor(model => model.CTG)
-                    </div>
-                </div>
-                <div class="control-group sinMargen" style="display: none;">
-                    @Html.Label(Textos.CUIT_Solicitante + ":", new { @class = "control-label menosAncho" })
-                    <div class="controls menosAncho">
-                        @Html.TextBoxFor(model => model.CUITSolicitante, new { @class = "control input-medium", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.CodEstab)
+                        @Html.HiddenFor(model => model.RtteComercialCodigoSap)
+                        @Html.HiddenFor(model => model.TitularCartaPorteCodigoSap)
                     </div>
                 </div>
                 <div class="control-group sinMargen">
                     @Html.LabelFor(model => model.NumeroCartaPorte, new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
-                        @Html.TextBoxFor(model => model.NumeroCartaPorte, new { @class = "control input-medium uppercase ctgRequerido", data_toggle = "tooltip", maxlength = 12 })
+                        @Html.TextBoxFor(model => model.NumeroCartaPorte, new { @class = "control input-medium", @disabled = "disabled" })
                         @Html.ValidationMessageFor(model => model.NumeroCartaPorte)
-                        @Html.HiddenFor(model => model.CTG)
-                        @Html.HiddenFor(model => model.CodEstab)
-                        @Html.HiddenFor(model => model.RtteComercialCodigoSap)
                         @Html.HiddenFor(model => model.RtteComercialVentaSecundariaCuit)
-                        @Html.HiddenFor(model => model.TitularCartaPorteCodigoSap)
                         @Html.HiddenFor(model => model.CodigoRENSPA)
                         @Html.HiddenFor(model => model.Cosecha)
                         @Html.HiddenFor(model => model.PesoNetoOrigen)
                     </div>
                 </div>
                 <div class="control-group sinMargen">
-                    @Html.Label(@Textos.CartaPorte_Cupo + ":", new { @class = "control-label menosAncho" })
+                    @Html.LabelFor(model => model.Cupo, @Textos.CartaPorte_Cupo + ":", new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
-                        @Html.TextBoxFor(model => model.Cupo, new { @class = "control input-medium cupoValidacion", autocomplete = "off", maxlength = 16, data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_Cupo }) })
+                        @Html.TextBoxFor(model => model.Cupo,
+                            new
+                            {
+                                autocomplete = "off",
+                                @class = "control input-medium",
+                            })
                         @Html.ValidationMessageFor(model => model.Cupo, null, new { id = "cupoValidation" })
                         @Html.HiddenFor(model => model.RespuestaSap)
                         @Html.HiddenFor(model => model.Especial)
@@ -272,13 +179,14 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
                 <div class="control-group sinMargen">
                     @Html.LabelFor(model => model.Patente, new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
-                        @Html.TextBoxFor(model => model.Patente, new
-                        {
-                            @class = "control input-medium uppercase",
-                            @readonly = "readonly",
-                            data_toggle = "tooltip",
-                            maxlength = 10,
-                        })
+                        @Html.TextBoxFor(model => model.Patente,
+                            new
+                                 {
+                                maxlength = 10,
+                                required = "required",
+                                pattern = "[A-Za-z]{3}\\d{3}|[A-Za-z]{2}\\d{3}[A-Za-z]{2}",
+                                @class = "control input-medium uppercase",
+                            })
                         @Html.ValidationMessageFor(model => model.Patente)
                         @Html.HiddenFor(model => model.PatenteAcoplado)
                     </div>
@@ -316,6 +224,13 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
             </div>
         </div>
         <div class="row-fluid" style="margin-top:20px">
+            <div class="row-fluid">
+                <div class="span12 alert hide" id="validation-alert-cargaDeCupo">
+                    <button type="button" class="close" id="validation-alert-cargaDeCupo-close">×</button>
+                    <div id="validation-alert-cargaDeCupo-message"></div>
+                </div>
+            </div>
+
             <!--Alertas generales-->
             <div class="row-fluid">
                 <div class="span12 alert alert-error hide" id="validation-error-alert">
@@ -341,36 +256,21 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
                 @*se muestran errores de patentes*@
                 <div class="span12 alert alert-info hide" id="validation-patente-danger">
                     <button type="button" class="close" id="validation-danger-close">×</button>
-                    <div id="validation-danger">
-
-                    </div>
+                    <div id="validation-patente-danger-message"></div>
                 </div>
             </div>
+
             <div class="row-fluid">
                 @*se muestran errores de tarjetas*@
-                <div class="span12 alert alert-error hide" id="validation-patente-alert">
-                    <button type="button" class="close" id="validation-patente-close">×</button>
-                    <div id="validation-patente">
-
-                    </div>
+                <div class="span12 alert alert-error hide" id="validation-tarjeta-alert">
+                    <button type="button" class="close" id="validation-tarjeta-close">×</button>
+                    <div id="validation-tarjeta"></div>
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span12 alert alert-error hide" id="validation-ctg-alert">
                     <button type="button" class="close" id="validation-ctg-close">×</button>
-                    <div id="validation-ctg">
-
-                    </div>
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="alert alert-error hide" id="validation-cupo">
-                        <button type="button" class="close" id="validation-cupo-close">×</button>
-                        <div id="validation-cupo-body">
-
-                        </div>
-                    </div>
+                    <div id="validation-ctg"></div>
                 </div>
             </div>
             <div class="control-group">
@@ -382,46 +282,39 @@ else if (!string.IsNullOrEmpty(mensajeExitoso))
         </div>
     </div>
     <div class="span4">
-        <div class="row-fluid" id="listaCupos">
+        <div class="row-fluid" id="listaCupos"></div>
 
-        </div>
         <div class="row-fluid divFotoCP">
             <div class="bordeGrisCompleto" id="marco-cp" style="height:560px; width:367px;margin:auto">
                 @Html.HiddenFor(x => x.ImagenCartaPorte)
-                @Html.HiddenFor(x => x.FotoRutaDestino)
-                <a id="" href="#" class="btn tomarFoto1" style="display: none; position: absolute;float:left;z-index:1000">
+                @Html.HiddenFor(x => x.ImagenCartaPorteSustentable)
+
+                <a id="" href="#" class="btn tomarFoto1" style="display: none; position: absolute; float:left; z-index:1000">
                     <i class="fa fa-camera"></i>
                 </a>
-                <img id="imagen-cp" src="" alt="Carta de porte&#10&#13Ingrese el numero de Carta de porte para que se tome la foto..." style="max-height: 100%; max-width: 100%;height:560px" />
+
+                <img id="imagen-cp"
+                     src="@imageSrc"
+                     alt="Carta de porte"
+                     style="max-height: 100%; max-width: 100%;height:560px" />
             </div>
         </div>
     </div>
-    @Html.HiddenFor(x => x.ImagenCartaPorteSustentable)
-
 </div>
 
-<div class="modal hide fade" id="dialogo-confirmar">
-    <div class="modal-header alert-danger">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4>@Textos.Confirmacion</h4>
+<dialog id="dialogo-confirmar" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>
+    <div class="dialogModal__descripcion" id="dialogo-confirmar-body"></div>
+    <div class="dialogModal__botones">
+        <button id="dialogo-confirmar-confirmar" type="button" class="btn btn-primary">@Textos.Aceptar</button>
+        <button id="dialogo-confirmar-cancelar" type="button" class="btn" onclick="document.getElementById('dialogo-confirmar').close()">@Textos.Cancelar</button>
     </div>
-    <div class="modal-body" id="dialogo-confirmar-body">
-    </div>
-    <div class="modal-footer">
-        <button id="dialogo-confirmar-confirmar" type="submit" class="btn ">@Textos.Aceptar</button>
-        <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
-    </div>
-</div>
+</dialog>
 
-<div class="modal hide fade" id="dialogo-advertir">
-    <div class="modal-header alert-danger">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4>@Textos.Advertencia</h4>
+<dialog id="dialogo-error" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.Error</h4>
+    <div class="dialogModal__descripcion" id="dialogo-error-body"></div>
+    <div class="dialogModal__botones">
+        <button id="dialogo-error-confirmar" type="button" class="btn btn-danger" onclick="location.href='@Url.Action("Index", "CargaDeCupo")'">@Textos.Aceptar</button>
     </div>
-    <div class="modal-body" id="dialogo-advertir-body">
-    </div>
-    <div class="modal-footer">
-        <button id="dialogo-advertir-cancelar" class="btn btn-warning" onclick="location.href='@Url.Action("Index", "CargaDeCupo")'">@Textos.Aceptar</button>
-
-    </div>
-</div>
+</dialog>

@@ -898,6 +898,10 @@
     <Content Include="Scripts\camionDemorado.js" />
     <Content Include="Scripts\caladoRechazar.js" />
     <Content Include="Scripts\caladoEnPlanta.js" />
+    <Content Include="Scripts\cargaDeCupo.api.js" />
+    <Content Include="Scripts\cargaDeCupo.app.js" />
+    <Content Include="Scripts\cargaDeCupo.core.js" />
+    <Content Include="Scripts\cargaDeCupo.ui.js" />
     <Content Include="Scripts\cartaporte.bypass.cargar.js" />
     <Content Include="Scripts\cartaporte.bypass.index.js" />
     <Content Include="Scripts\cartaporte.redespacho.mercaderia.index.js" />
@@ -951,7 +955,6 @@
     <Content Include="Scripts\balanzada.crear.js" />
     <Content Include="Scripts\balanzada.index.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
-    <Content Include="Scripts\cargaDeCupo.form.js" />
     <Content Include="Scripts\ControlCalado.js" />
     <Content Include="Scripts\graficoDePlantaCabezera.js" />
     <Content Include="Scripts\actividadPorDispositivo.index.js" />
@@ -962,7 +965,6 @@
     <Content Include="Scripts\asignarTicketMunicipal.index.js" />
     <Content Include="Scripts\autorizarRecepcionUvas.js" />
     <Content Include="Scripts\bootstrap-filestyle.min.js" />
-    <Content Include="Scripts\cargaDeCupo.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\ciuAnulado.crear.js" />
     <Content Include="Scripts\configurartabla.js" />

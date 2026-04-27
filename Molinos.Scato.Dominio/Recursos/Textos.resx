@@ -9587,9 +9587,6 @@
   <data name="Sucursal_CPE" xml:space="preserve">
     <value>Sucursal CPE</value>
   </data>
-  <data name="ContingenciaAfipCpe" xml:space="preserve">
-    <value>Consutar Base por CPE</value>
-  </data>
   <data name="CartaPorte_Nro_CPE" xml:space="preserve">
     <value>Nro CPE</value>
   </data>

@@ -62,6 +62,7 @@ namespace Molinos.Scato.Dominio
         public struct AFIPCodigoDeError
         {
             public const string NoExistenSolicitudes = "800";
+            public const string ErrorPDFNoGenerado = "550";
         }
 
         public struct AsignacionDeEstablecimientoRangos
@@ -101,6 +102,7 @@ namespace Molinos.Scato.Dominio
                 public const string MarcaSustentable = "MarcaSustentable";
                 public const string MOAOperacionesListadoTicketPesada = "MOAOperaciones.ListadoTicketPesada";
                 public const string BalanzaACero = "BalanzaACero";
+                public const string LimpiarCacheCartaPorte = "LimpiarCacheCartaPorte";
             }
 
             public struct ContingenciaPesosExcedidos
@@ -219,6 +221,13 @@ namespace Molinos.Scato.Dominio
             public struct BalanzaACero
             {
                 public const string TiempoEsperaEntreIntentos = "TiempoEsperaEntreIntentos";
+            }
+            
+            public struct CartaPorteElectronica
+            {
+                public const string DiasLimiteDeBusqueda = "DiasLimiteDeBusqueda";
+                public const string DiasInicioDeBusquedaDeRecorrido = "DiasInicioDeBusquedaDeRecorrido";
+
             }
         }
 
@@ -343,6 +352,17 @@ namespace Molinos.Scato.Dominio
 
             public const string DefaultCronExpressionForSincronizarMOAPayEstadoDePagos = "0 */30 * * * *"; //cada 30 minutos
             public const string VerificarHealthCheckMOAPayHealth = "VerificarHealthCheckMOAPayHealth";
+            
+            public const string CachearCpeAFIPSanLorenzo = "CachearCpeAFIPSanLorenzo";
+            public const string CachearCpeAFIPPorCentros = "CachearCpeAFIPPorCentros";
+            public const string ActualizarCacheCpeAFIPSanLorenzo = "ActualizarCacheCpeAFIPSanLorenzo";
+            public const string LimpiarCacheCartaPorteElectronicaDocumentosIngresados = "LimpiarCacheCartaPorteElectronicaDocumentosIngresados";
+            public const string LimpiarCacheCartaPorteElectronicaDocumentosNoIngresados = "LimpiarCacheCartaPorteElectronicaDocumentosNoIngresados";
+            public const string DefaultCronExpressionForCachearCpeAFIPSanLorenzo = "0 */15 * * * *";
+            public const string DefaultCronExpressionForActualizarCacheCpeAFIPSanLorenzo = "0 0 * * * *";
+            public const string DefaultCronExpressionForCachearCpeAFIPPorCentros = "0 0 * * * *";
+            public const string DefaultCronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosIngresados = "0 0 * * * *";
+            public const string DefaultCronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosNoIngresados = "0 0 3 * * *";
         }
 
         public struct AutomatismoTipoLlamado

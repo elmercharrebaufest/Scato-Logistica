@@ -21,10 +21,10 @@ namespace Molinos.Scato.Dominio.Helpers
         public static string ConvertirCuilConGuionesSinException(string cuilSinGuiones) 
         {
             if (string.IsNullOrEmpty(cuilSinGuiones))
-                return "";
+                return null;
 
             if (cuilSinGuiones.Length != 11)
-                throw new ArgumentException("El cuil debe tener 11 dígitos");
+                return null;
 
             string validador1 = cuilSinGuiones.Substring(0, 2);
             string documento = cuilSinGuiones.Substring(2, 8);

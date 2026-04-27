@@ -1,11 +1,15 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
+using Molinos.Scato.Repositorio.ConsultasEF;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
 using System.Linq;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -22,12 +26,26 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             try
             {
-                var cartaPorteElectronica = Repositorio.Listar<CartaPorteElectronica>(x => x.NroCTG == comando.NroCtg).FirstOrDefault();
-                if (cartaPorteElectronica != null)
+                if (comando.NroCtg <= 0)
                 {
-                    if (cartaPorteElectronica.Pdf != null)
+                    resultado.Errores.Add("2", "El número de CTG es inválido");
+                    return resultado;
+                }
+                var ctg = comando.NroCtg.ToString();
+                var recorrido = Repositorio.Listar<Recorrido>(x => x.NumeroDocumentoIngreso == ctg).FirstOrDefault();
+                if (recorrido == null)
+                {
+                    resultado.Errores.Add("1", $"No se encontró recorrido asociado al CTG {comando.NroCtg}");
+                    return resultado;
+                }
+
+                var documento = Repositorio.ObtenerConsultaEscalar(new ConsultarDocumento(recorrido.InstanciaWorkflow, TipoImpresion.CartaDePorteElectronica, "pdf"));
+
+                if (documento != null)
+                {
+                    if (documento.Path != null)
                     {
-                        resultado.Pdf = cartaPorteElectronica.Pdf;
+                        resultado.Pdf = System.IO.File.ReadAllBytes(documento.Path);
                     }
                     else
                     {
