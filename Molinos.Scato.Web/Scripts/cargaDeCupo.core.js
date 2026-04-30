@@ -18,7 +18,7 @@ const CargaDeCupoCore = {
         errorPatente: false,
         iniciarLoopFotoPatenteActivo: false,
         puestoDeTrabajo: null,
-        patenteLeida: false
+        patenteGuardada: null
     },
 
     validation: {

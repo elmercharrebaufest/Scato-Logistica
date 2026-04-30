@@ -3,7 +3,7 @@ const CargaDeCupoApp = {
         all: () => {
             try {
                 BlockUI();
-                console.log('Iniciando aplicación Carga de Cupo...');
+                console.log('Iniciando aplicaciï¿½n Carga de Cupo...');
 
                 CargaDeCupoApp.events.setupFormEvents();
                 CargaDeCupoApp.events.setupCheckEvents();
@@ -19,10 +19,10 @@ const CargaDeCupoApp = {
                 CargaDeCupoApp.polling.startListarCupos();
                 CargaDeCupoApp.polling.startPatenteImageRefresh();
 
-                console.log('Aplicación Carga de Cupo iniciada correctamente');
+                console.log('Aplicaciï¿½n Carga de Cupo iniciada correctamente');
             } catch (error) {
-                console.error('Error inicializando aplicación:', error);
-                MostrarAlertaError('Error al inicializar la aplicación');
+                console.error('Error inicializando aplicaciï¿½n:', error);
+                MostrarAlertaError('Error al inicializar la aplicaciï¿½n');
             } finally {
                 $.unblockUI();
             }
@@ -30,7 +30,7 @@ const CargaDeCupoApp = {
 
         signalR: async () => {
             if (!$.connection) {
-                console.warn('SignalR no está disponible');
+                console.warn('SignalR no estï¿½ disponible');
                 return;
             }
 
@@ -50,7 +50,7 @@ const CargaDeCupoApp = {
                         await CargaDeCupoApp.signalR.config.notificaLectura.server.escucharPuestosDeTrabajo(centroId, puestoDeTrabajo.Id);
                     }
                 } else {
-                    console.warn('window.hubReady no está disponible - funcionando sin SignalR en tiempo real');
+                    console.warn('window.hubReady no estï¿½ disponible - funcionando sin SignalR en tiempo real');
                     window.location.href = window.location.href;
                 }
             } catch (error) {
@@ -121,37 +121,33 @@ const CargaDeCupoApp = {
         },
 
         setupFormEvents: () => {
+            const btnAceptar = CargaDeCupoUI.dom.getElement('#btnAceptar');
+            btnAceptar.addEventListener('click', async (event) => {
+                event.preventDefault();
+                await CargaDeCupoApp.events.handlers.handleSubmit();
+            });
+
             const form = CargaDeCupoUI.dom.getElement('#formCargaDeCupo');
+            form.addEventListener('keydown', async (event) => {
+                if (event.key !== 'Enter') {
+                    return;
+                }
+
+                const target = event.target;
+                const tagName = target && target.tagName ? target.tagName.toLowerCase() : '';
+                if (tagName === 'textarea') {
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+                await CargaDeCupoApp.events.handlers.handleSubmit();
+            }, true);
+
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
-
-                const $form = $(form);
-                if (!$form.valid()) {
-                    return;
-                }
-
-                const materialValido = CargaDeCupoApp.validations.validateMaterialSelection();
-                if (!materialValido) {
-                    console.log('material invalido')
-                    return;
-                }
-
-                if (CargaDeCupoCore.state.errorPatente) {
-                    const mensaje = CargaDeCupoUI.dom.isChecked('#circuitoNoGranos')
-                        ? 'La patente leída en la imagen no coincide con la indicada en el formulario'
-                        : 'La patente leída en la imagen no coincide con la obtenida de AFIP';
-
-                    CargaDeCupoUI.dialogs.showConfirmationModal(
-                        `${mensaje}, ¿desea confirmarlo de todas formas?`,
-                        () => {
-                            CargaDeCupoCore.state.errorPatente = false;
-                            CargaDeCupoApp.business.submitForm();
-                        }
-                    );
-                    return;
-                }
-
-                await CargaDeCupoApp.business.submitForm();
+                event.stopPropagation();
+                await CargaDeCupoApp.events.handlers.handleSubmit();
             });
         },
 
@@ -205,6 +201,35 @@ const CargaDeCupoApp = {
         },
 
         handlers: {
+            handleSubmit: async () => {
+                const btnAceptar = CargaDeCupoUI.dom.getElement('#btnAceptar');
+                if (btnAceptar.disabled) return;
+
+                const form = CargaDeCupoUI.dom.getElement('#formCargaDeCupo');
+                const $form = $(form);
+                if (!$form.valid()) return;
+
+                const materialValido = CargaDeCupoApp.validations.validateMaterialSelection();
+                if (!materialValido) return;
+
+                if (CargaDeCupoCore.state.errorPatente) {
+                    const mensaje = CargaDeCupoUI.dom.isChecked('#circuitoNoGranos')
+                        ? 'La patente leï¿½da en la imagen no coincide con la indicada en el formulario'
+                        : 'La patente leï¿½da en la imagen no coincide con la obtenida de AFIP';
+
+                    CargaDeCupoUI.dialogs.showConfirmationModal(
+                        `${mensaje}, ï¿½desea confirmarlo de todas formas?`,
+                        () => {
+                            CargaDeCupoCore.state.errorPatente = false;
+                            CargaDeCupoApp.business.submitForm();
+                        }
+                    );
+                    return;
+                }
+
+                await CargaDeCupoApp.business.submitForm();
+            },
+
             circuitoChange: async (event) => {
                 if (CargaDeCupoUI.dom.isChecked('#circuitoNoGranos')) {
                     CargaDeCupoUI.dom.setValue('#circuitoNoGranos', true)
@@ -264,7 +289,7 @@ const CargaDeCupoApp = {
                 } else {
                     const patente = CargaDeCupoUI.dom.getValue('#Patente').trim().toUpperCase();
                     const materialId = CargaDeCupoUI.dom.getValue('#MaterialId');
-                    
+
                     if (patente && materialId) {
                         const tarjeta = CargaDeCupoUI.dom.getValue('#Numero');
                         const esEspecial = CargaDeCupoUI.dom.getValue('#Especial');
@@ -301,7 +326,7 @@ const CargaDeCupoApp = {
                 CargaDeCupoUI.alerts.showAlertPatente(mensaje);
                 CargaDeCupoCore.state.errorPatente = true;
             } else if ((patenteALPR === CargaDeCupoCore.CONSTANTS.PATENTE_NO_RECONOCIDA || patenteALPR === '') && patenteValue !== '') {
-                CargaDeCupoUI.alerts.showAlertPatente('No se pudo reconocer la patente del vehículo en la imagen, debe validarla manualmente');
+                CargaDeCupoUI.alerts.showAlertPatente('No se pudo reconocer la patente del vehï¿½culo en la imagen, debe validarla manualmente');
                 CargaDeCupoCore.state.errorPatente = true;
             } else {
                 CargaDeCupoUI.alerts.hideAlertPatente();
@@ -394,32 +419,36 @@ const CargaDeCupoApp = {
 
     images: {
         setPatenteImage: (error, imagen, patente = null) => {
-            const imageElement = CargaDeCupoUI.dom.getElement('#imagen-patente');
-            const patenteDisplay = CargaDeCupoUI.dom.getElement('#patenteALPR');
+            if (CargaDeCupoUI.dom.isChecked('#checkvalidarPatente')) {
+                const imageElement = CargaDeCupoUI.dom.getElement('#imagen-patente');
+                const patenteDisplay = CargaDeCupoUI.dom.getElement('#patenteALPR');
+                const patenteNormalizada = patente?.toUpperCase();
 
-            if (error === '') {
-                if (patente && patente !== 'NULL') {
-                    patenteDisplay.textContent = patente;
+                if (!error) {
+                    if (patenteNormalizada && patenteNormalizada !== 'NULL') {
+                        patenteDisplay.textContent = patenteNormalizada;
+                        ;
 
-                    CargaDeCupoCore.state.patenteLeida = true;
-
-                    const patenteField = CargaDeCupoUI.dom.getElement('#Patente');
-                    if (patenteField && !CargaDeCupoUI.dom.getValue('#Patente')) {
-                        CargaDeCupoUI.dom.setValue('#Patente', patente);
-                        patenteField.dispatchEvent(new Event('change', { bubbles: true }));
+                        const patenteField = CargaDeCupoUI.dom.getElement('#Patente');
+                        const patenteGuardada = CargaDeCupoCore.state.patenteGuardada;
+                        if (patenteField && !CargaDeCupoUI.dom.getValue('#Patente') && patenteNormalizada !== patenteGuardada) {
+                            CargaDeCupoUI.dom.setValue('#Patente', patenteNormalizada);
+                            patenteField.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    } else {
+                        patenteDisplay.textContent = CargaDeCupoCore.CONSTANTS.PATENTE_NO_RECONOCIDA;
+                        CargaDeCupoUI.dom.setValue('#Patente', '');
                     }
+                    imageElement.src = imagen || '';
+                    imageElement.alt = 'Imagen de patente';
                 } else {
-                    patenteDisplay.textContent = CargaDeCupoCore.CONSTANTS.PATENTE_NO_RECONOCIDA;
+                    patenteDisplay.textContent = '';
+                    imageElement.src = '';
+                    imageElement.alt = 'Error al obtener la imagen';
                 }
-                imageElement.src = imagen;
-                imageElement.alt = 'Cargando...';
-            } else {
-                patenteDisplay.textContent = '';
-                imageElement.src = '';
-                imageElement.alt = 'Error al obtener la imagen';
-            }
 
-            CargaDeCupoApp.validations.validatePatenteWithImage();
+                CargaDeCupoApp.validations.validatePatenteWithImage();
+            }
         },
 
         setCartaPorteImage: (error, imagen, directorio, esSustentable = false) => {
@@ -473,7 +502,7 @@ const CargaDeCupoApp = {
                         CargaDeCupoUI.dom.getElement(processedData.focusElement)?.focus();
                     }
                 } else if (processedData.type === 'success') {
-                    const alertType = processedData.respuestaSap === 'Cupo del día' ? 'alert-success'
+                    const alertType = processedData.respuestaSap === 'Cupo del dï¿½a' ? 'alert-success'
                         : processedData.respuestaSap === 'Cupo vencido' ? 'alert-block'
                             : processedData.respuestaSap === 'Cupo futuro' ? 'alert-info'
                                 : 'alert-success';
@@ -707,6 +736,11 @@ const CargaDeCupoApp = {
         },
 
         submitForm: async () => {
+            const btnAceptar = CargaDeCupoUI.dom.getElement('#btnAceptar');
+            btnAceptar.disabled = true;
+            btnAceptar.classList.add('disabled');
+            btnAceptar.blur();
+
             try {
                 BlockUI();
                 const form = CargaDeCupoUI.dom.getElement('#formCargaDeCupo');
@@ -723,6 +757,12 @@ const CargaDeCupoApp = {
                 CargaDeCupoUI.alerts.hideAlert();
 
                 if (data.Success) {
+                    const patente = CargaDeCupoUI.dom.getValue('#Patente');
+                    if (patente) {
+                        CargaDeCupoCore.state.patenteGuardada = patente.trim().toUpperCase();
+                    }
+                    const imageElement = CargaDeCupoUI.dom.getElement('#imagen-cp');
+                    imageElement.src = '';
                     form.reset();
 
                     if (data.Data.FilaAsignada) {
@@ -763,8 +803,10 @@ const CargaDeCupoApp = {
                 }
             } catch (error) {
                 console.error('Error submitting form:', error);
-                MostrarAlertaError('Ocurrió un error al ingresar camión');
+                MostrarAlertaError('Ocurriï¿½ un error al ingresar camiï¿½n');
             } finally {
+                btnAceptar.disabled = false;
+                btnAceptar.classList.remove('disabled');
                 $.unblockUI();
             }
         }

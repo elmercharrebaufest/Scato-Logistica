@@ -7,7 +7,8 @@
     [FechaHora] DATETIME NOT NULL,
     CONSTRAINT [PK_LogIngresoPorPuesto] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_LogIngresoPorPuesto_Recorrido] FOREIGN KEY([Recorrido_Id])
-        REFERENCES [dbo].[Recorrido] ([Id]),
+        REFERENCES [dbo].[Recorrido] ([Id])
+        ON DELETE CASCADE,
     CONSTRAINT [FK_LogIngresoPorPuesto_PuestoDeTrabajo] FOREIGN KEY([PuestoDeTrabajo_Id])
         REFERENCES [dbo].[PuestoDeTrabajo] ([Id])
 );

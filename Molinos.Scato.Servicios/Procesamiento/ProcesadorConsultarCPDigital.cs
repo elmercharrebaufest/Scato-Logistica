@@ -61,7 +61,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var resultado = new ResultadoCartaPorteElectronica();
 
-            var cpes = Repositorio.Listar<CartaPorteElectronica>(x => x.NroCTG.HasValue && x.Material.HasValue && x.Dominio.StartsWith(patente));
+            int diasLimite = ObtenerConfiguracionInt(
+                Constantes.ConfiguracionGeneral.Pantalla.LimpiarCacheCartaPorte,
+                Constantes.ConfiguracionGeneral.CartaPorteElectronica.DiasLimiteDeBusqueda
+            );
+
+            DateTime fecha = DateTime.Today.AddDays(-diasLimite);
+
+            var cpes = Repositorio.Listar<CartaPorteElectronica>(x => 
+                x.NroCTG.HasValue && 
+                x.Material.HasValue && 
+                x.Dominio.StartsWith(patente) &&
+                x.FechaEmision.HasValue && x.FechaEmision.Value >= fecha);
+
             if (materialId.HasValue)
             {
                 var material = Repositorio.Obtener<Material>(materialId);
@@ -601,6 +613,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             Repositorio.Agregar(cpe);
             Repositorio.GuardarCambios();
+        }
+
+        private int ObtenerConfiguracionInt(string pantalla, string nombre)
+        {
+            var valor = Repositorio.Obtener<ConfiguracionGeneral>(
+                x => x.Pantalla == pantalla && x.Nombre == nombre
+            )?.Valor;
+
+            if (!int.TryParse(valor, out int resultado))
+                throw new InvalidOperationException(
+                    $"Configuración inválida: {pantalla} - {nombre}"
+                );
+
+            return resultado;
         }
     }
 }
