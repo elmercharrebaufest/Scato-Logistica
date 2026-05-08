@@ -198,6 +198,10 @@ namespace Molinos.Scato.Web.Controllers
                 response.Success = false;
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
+            else
+            {
+                response.Success = true;
+            }
 
             Task.Run(() => servicioComandos.Ejecutar(new ValidarAccesoStopBandasHorarias
             {
@@ -239,18 +243,15 @@ namespace Molinos.Scato.Web.Controllers
 
             if (model.ImprimeTarjetaDeAcceso)
                 ImprimirTarjetaDeAcceso(model, resultado.Id, response);
-            log.Debug("Carga de cupo realizada con exito Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
+
             if (response.Success)
             {
-                log.Debug("Response: {0}", response.Success);
                 if (AvanceCpe && EsCupoValidoParaAvanceAutomatico(model, tipoVariedadCodigo)
                     && !resultadoConsultarTasa.HayErrores
                     && resultadoConsultarTasa.EjecutaWorkFlow)
                 {
                     servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = true });
-                    log.Debug("Se inició el progreso automático para la carga de cupo Id= {0}", resultado.Id);
                     CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte, resultadoConsultarTasa, response, tipoVariedadCodigo);
-                    log.Debug("Finalizó el proceso de avance automático para la carga de cupo Id= {0}", resultado.Id);
                     servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = false });
                 }
 
@@ -319,8 +320,9 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             var fila = servicio.ObtenerCalleNombre(resultado.Id);
-            response.Data.Disponibilidad = resultado.Disponibilidad;
-            response.Data.FilaAsignada = fila;
+            response.Message = resultado.Disponibilidad <= 5 && resultado.Disponibilidad > 0
+                ? $"Carga Exitosa, se asignó {fila}, ESPACIO DISPONIBLE: {resultado.Disponibilidad} camiones"
+                : $"Carga Exitosa, se asignó {fila}";
 
             servicioComandos.Ejecutar(new EnviarMensajeCamioneroCircular
             {
@@ -383,16 +385,17 @@ namespace Molinos.Scato.Web.Controllers
             model.CentroId = datosUsuario.CentroId;
             model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
             var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupoNoGrano { Dto = model }) as ResultadoCrearCargaDeCupo;
+            if (resultado.HayErrores)
+            {
+                var error = resultado.Errores.First();
+                response.ValidationErrors.Add(error.Key, error.Value);
+            }
 
-            if (!resultado.HayErrores && resultado.FastPassValido && !resultado.ErroresOExcepcionesConsultaTasaMunicipal)
-            {
+            response.Success = resultado.HayErrores && resultado.Errores.ContainsKey("error") ? false : true;
+
+            if (resultado.FastPassValido)
                 IniciarWorkflows(resultado, model, resultado.IdPagoMunicipal, resultado.IdExcepcionPagoMunicipal, datosUsuario, resultado.TieneExcepcionTasaMunicipal, resultado.MotivoExcepcionTasaMunicipal);
-            }
-            else
-            {
-                response.ValidationErrors.Add(resultado.Errores.First().Key, resultado.Errores.First().Value);
-                response.Success = !resultado.Errores.ContainsKey("error");
-            }
+
             ProcesarResultadoTasaMunicipal(resultado.tipoAlerta, resultado.MensajeTasaMunicipal, response);
 
             return Json(response, JsonRequestBehavior.AllowGet);

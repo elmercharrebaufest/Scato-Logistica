@@ -86,26 +86,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 return resultado;
             }
 
-            var gruposPorMaterial = cpes.GroupBy(c => c.Material.Value).ToList();
-            if (gruposPorMaterial.Count > 1)
-            {
-                var cpesDuplicados = new List<MaterialDuplicadoCPE>();
-                foreach (var grupo in gruposPorMaterial)
-                {
-                    var registroMasReciente = grupo.OrderByDescending(g => g.FechaEmision).FirstOrDefault();
-                    var materialEntidad = Repositorio.Obtener<Material>(m => m.CodigoEspecie == registroMasReciente.Material);
-                    cpesDuplicados.Add(new MaterialDuplicadoCPE
-                    {
-                        MaterialId = materialEntidad != null ? materialEntidad.Id : 0,
-                        MaterialDescripcion = materialEntidad != null ? materialEntidad.Descripcion : registroMasReciente.Material.ToString(),
-                        CTG = registroMasReciente.NroCTG.ToString()
-                    });
-                }
-
-                resultado.Duplicados = cpesDuplicados;
-                return resultado;
-            }
-
             var cpe = cpes.OrderByDescending(c => c.FechaEmision).FirstOrDefault();
             resultado.PdfImage = ConvertirPDFenPNG(cpe.Pdf);
             resultado.Pdf = cpe.Pdf;

@@ -75,14 +75,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.IdPagoMunicipal = resultadoConsultarTasa.IdPago;
                 resultado.MensajeTasaMunicipal = resultadoConsultarTasa.MensajeAlerta ?? string.Empty;
                 resultado.tipoAlerta = resultadoConsultarTasa.TipoAlerta;
-                resultado.ErroresOExcepcionesConsultaTasaMunicipal = resultadoConsultarTasa.HayErrores || !resultadoConsultarTasa.EjecutaWorkFlow;
                 resultado.IdExcepcionPagoMunicipal = resultadoConsultarTasa.IdExcepcion;
                 resultado.TieneExcepcionTasaMunicipal = resultadoConsultarTasa.TieneExcepcion;
                 resultado.MotivoExcepcionTasaMunicipal = resultadoConsultarTasa.MotivoExcepcion;
 
                 resultado.Id = nuevoCupo.Id;
                 if (comando.Dto.TipoOrdenCargaNoGranos.HasValue && 
-                    comando.Dto.TipoOrdenCargaNoGranos != TipoOrdenCargaNoGranos.Ninguno)
+                    comando.Dto.TipoOrdenCargaNoGranos != TipoOrdenCargaNoGranos.Ninguno
+                    && !resultadoConsultarTasa.HayErrores
+                    && resultadoConsultarTasa.EjecutaWorkFlow)
                 {
                     resultado.FastPassValido = ValidarFastPass(comando, resultado);
                     resultado.FastPassWorkflowDefinicionId = ObtenerWorkflowDefinicionId(comando.Dto.TipoOrdenCargaNoGranos.Value);

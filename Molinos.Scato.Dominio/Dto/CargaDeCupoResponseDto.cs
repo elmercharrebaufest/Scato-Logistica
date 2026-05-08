@@ -6,6 +6,7 @@ namespace Molinos.Scato.Dominio.Dto
     public class CargaDeCupoResponseDto
     {
         public bool Success { get; set; }
+        public string Message { get; set; }
         public Dictionary<string, string> ValidationErrors { get; set; }
         public CargaDeCupoDataDto Data { get; set; }
 

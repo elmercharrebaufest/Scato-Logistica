@@ -1,9 +1,9 @@
-const CargaDeCupoApp = {
+﻿const CargaDeCupoApp = {
     init: {
         all: () => {
             try {
                 BlockUI();
-                console.log('Iniciando aplicaci�n Carga de Cupo...');
+                console.log('Iniciando aplicación Carga de Cupo...');
 
                 CargaDeCupoApp.events.setupFormEvents();
                 CargaDeCupoApp.events.setupCheckEvents();
@@ -19,10 +19,10 @@ const CargaDeCupoApp = {
                 CargaDeCupoApp.polling.startListarCupos();
                 CargaDeCupoApp.polling.startPatenteImageRefresh();
 
-                console.log('Aplicaci�n Carga de Cupo iniciada correctamente');
+                console.log('Aplicación Carga de Cupo iniciada correctamente');
             } catch (error) {
-                console.error('Error inicializando aplicaci�n:', error);
-                MostrarAlertaError('Error al inicializar la aplicaci�n');
+                console.error('Error inicializando aplicación:', error);
+                MostrarAlertaError('Error al inicializar la aplicación');
             } finally {
                 $.unblockUI();
             }
@@ -30,7 +30,7 @@ const CargaDeCupoApp = {
 
         signalR: async () => {
             if (!$.connection) {
-                console.warn('SignalR no est� disponible');
+                console.warn('SignalR no está disponible');
                 return;
             }
 
@@ -50,7 +50,7 @@ const CargaDeCupoApp = {
                         await CargaDeCupoApp.signalR.config.notificaLectura.server.escucharPuestosDeTrabajo(centroId, puestoDeTrabajo.Id);
                     }
                 } else {
-                    console.warn('window.hubReady no est� disponible - funcionando sin SignalR en tiempo real');
+                    console.warn('window.hubReady no está disponible - funcionando sin SignalR en tiempo real');
                     window.location.href = window.location.href;
                 }
             } catch (error) {
@@ -214,11 +214,11 @@ const CargaDeCupoApp = {
 
                 if (CargaDeCupoCore.state.errorPatente) {
                     const mensaje = CargaDeCupoUI.dom.isChecked('#circuitoNoGranos')
-                        ? 'La patente le�da en la imagen no coincide con la indicada en el formulario'
-                        : 'La patente le�da en la imagen no coincide con la obtenida de AFIP';
+                        ? 'La patente leída en la imagen no coincide con la indicada en el formulario'
+                        : 'La patente leída en la imagen no coincide con la obtenida de AFIP';
 
                     CargaDeCupoUI.dialogs.showConfirmationModal(
-                        `${mensaje}, �desea confirmarlo de todas formas?`,
+                        `${mensaje}, ¿desea confirmarlo de todas formas?`,
                         () => {
                             CargaDeCupoCore.state.errorPatente = false;
                             CargaDeCupoApp.business.submitForm();
@@ -244,6 +244,7 @@ const CargaDeCupoApp = {
             checkValidarPatente: (event) => {
                 const validarPatente = CargaDeCupoUI.dom.isChecked('#checkvalidarPatente');
                 CargaDeCupoUI.dom.setReadonly('#Patente', validarPatente);
+                CargaDeCupoUI.dom.setReadonly('#CTG', validarPatente);
                 if (!validarPatente) {
                     CargaDeCupoUI.dom.getElement('#Patente').focus();
                 }
@@ -326,7 +327,7 @@ const CargaDeCupoApp = {
                 CargaDeCupoUI.alerts.showAlertPatente(mensaje);
                 CargaDeCupoCore.state.errorPatente = true;
             } else if ((patenteALPR === CargaDeCupoCore.CONSTANTS.PATENTE_NO_RECONOCIDA || patenteALPR === '') && patenteValue !== '') {
-                CargaDeCupoUI.alerts.showAlertPatente('No se pudo reconocer la patente del veh�culo en la imagen, debe validarla manualmente');
+                CargaDeCupoUI.alerts.showAlertPatente('No se pudo reconocer la patente del vehículo en la imagen, debe validarla manualmente');
                 CargaDeCupoCore.state.errorPatente = true;
             } else {
                 CargaDeCupoUI.alerts.hideAlertPatente();
@@ -502,7 +503,7 @@ const CargaDeCupoApp = {
                         CargaDeCupoUI.dom.getElement(processedData.focusElement)?.focus();
                     }
                 } else if (processedData.type === 'success') {
-                    const alertType = processedData.respuestaSap === 'Cupo del d�a' ? 'alert-success'
+                    const alertType = processedData.respuestaSap === 'Cupo del día' ? 'alert-success'
                         : processedData.respuestaSap === 'Cupo vencido' ? 'alert-block'
                             : processedData.respuestaSap === 'Cupo futuro' ? 'alert-info'
                                 : 'alert-success';
@@ -765,18 +766,10 @@ const CargaDeCupoApp = {
                     imageElement.src = '';
                     form.reset();
 
-                    if (data.Data.FilaAsignada) {
-                        if (data.Data.Disponibilidad && data.Data.Disponibilidad <= 5 && data.Data.Disponibilidad > 0) {
-                            MostrarAlertaExitosa(`${data.Message}<br>ESPACIO DISPONIBLE: ${data.Data.Disponibilidad} camiones`, 10000);
-                        } else {
-                            MostrarAlertaExitosa(data.Message, 10000);
-                        }
-                    } else {
-                        MostrarAlertaExitosa(data.Message || 'Carga de cupo realizada exitosamente', 10000);
-                    }
+                    MostrarAlertaExitosa(data.Message || 'Carga de cupo realizada exitosamente', 10000);
 
                     if (data.Data.MensajeTasaMunicipal) {
-                        if (data.Data.TipoAlertaTasaMunicipal === 'Exito') {
+                        if (data.Data.TipoAlertaTasaMunicipal === 0) {
                             MostrarAlertaExitosaTasaMunicipal(data.Data.MensajeTasaMunicipal, 10000);
                         } else {
                             MostrarAlertaAdvertenciaTasaMunicipal(data.Data.MensajeTasaMunicipal, 10000);
@@ -803,7 +796,7 @@ const CargaDeCupoApp = {
                 }
             } catch (error) {
                 console.error('Error submitting form:', error);
-                MostrarAlertaError('Ocurri� un error al ingresar cami�n');
+                MostrarAlertaError('Ocurrió un error al ingresar camión');
             } finally {
                 btnAceptar.disabled = false;
                 btnAceptar.classList.remove('disabled');
