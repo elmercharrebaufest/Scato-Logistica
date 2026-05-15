@@ -36,25 +36,82 @@ namespace Molinos.Scato.Servicios.Procesamiento
             this.accesoWsCtg = accesoWsCtg;
             this.kernel = kernel;
             this.serviceAfipCPDigital = serviceAfipCPDigital;
+
+            ServicePointManager.ServerCertificateValidationCallback = ((sender, certificate, chain, sslPolicyErrors) => true);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
+        /// <summary>
+        /// Ejecuta la consulta de Carta de Porte Electrónica según los parámetros proporcionados.
+        /// Soporta búsqueda por patente, CTG directo en AFIP, o con caché como fallback.
+        /// </summary>
+        /// <exception cref="ArgumentException">Si no se proporcionan parámetros de búsqueda válidos</exception>
         public override Resultado Ejecutar(ConsultarCPDigital comando)
         {
-            var resultado = new ResultadoCartaPorteElectronica();
             try
             {
-                if (!string.IsNullOrEmpty(comando.Patente))
-                    return BuscarCPEPorPatenteEnCache(comando.Patente, comando.MaterialId, comando.CentroId);
+                if (string.IsNullOrEmpty(comando.Patente) && !comando.NroCtg.HasValue)
+                {
+                    Log.Debug($"ConsultarCPDigital: Sin parámetros de búsqueda. Patente={comando.Patente}, NroCtg={comando.NroCtg}");
+                    return new ResultadoCartaPorteElectronica
+                    {
+                        Errores = { { nameof(comando.NroCtg), "Debe proporcionar una Patente o un número de CTG" } }
+                    };
+                }
 
-                if (comando.NroCtg.HasValue)
-                    return BuscarCPEPorCTGEnCache(comando.NroCtg.Value, comando.CentroId) ?? BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg);
+                var tipoBusqueda = DeterminarTipoDeBusqueda(comando);
+                Log.Debug($"ConsultarCPDigital: Tipo={tipoBusqueda}, Patente={comando.Patente}, NroCtg={comando.NroCtg}, Centro={comando.CentroId}");
+
+                switch (tipoBusqueda)
+                {
+                    case TipoBusquedaCPE.BusquedaPorPatente:
+                        return BuscarCPEPorPatenteEnCache(comando.Patente, comando.MaterialId, comando.CentroId);
+
+                    case TipoBusquedaCPE.ConsultaDirectaAfip:
+                        return BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg);
+
+                    case TipoBusquedaCPE.CacheConFallbackAfip:
+                        var resultadoCache = BuscarCPEPorCTGEnCache(comando.NroCtg.Value, comando.CentroId);
+                        if (resultadoCache != null)
+                        {
+                            Log.Debug($"ConsultarCPDigital: CPE encontrada en caché. CTG={comando.NroCtg}");
+                            return resultadoCache;
+                        }
+                        Log.Debug($"ConsultarCPDigital: CPE no encontrada en caché, consultando AFIP. CTG={comando.NroCtg}");
+                        return BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg);
+
+                    default:
+                        Log.Warn($"ConsultarCPDigital: Tipo de búsqueda no reconocido: {tipoBusqueda}");
+                        return new ResultadoCartaPorteElectronica
+                        {
+                            Errores = { { string.Empty, "Tipo de búsqueda no válido" } }
+                        };
+                }
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error en Ejecutar ProcesadorConsultarCPDigital");
-                resultado.Errores.Add(string.Empty, Textos.Error_Generico);
+                Log.Error(ex, $"Error en ConsultarCPDigital - Patente={comando.Patente}, NroCtg={comando.NroCtg}, Centro={comando.CentroId}");
+                return new ResultadoCartaPorteElectronica 
+                { 
+                    Errores = { { string.Empty, Textos.Error_Generico } } 
+                };
             }
-            return resultado;
+        }
+
+        /// <summary>
+        /// Determina el tipo de búsqueda según los parámetros del comando.
+        /// </summary>
+        /// <remarks>
+        /// Precondición: Al menos uno de los campos Patente o NroCtg debe tener valor.
+        /// </remarks>
+        private TipoBusquedaCPE DeterminarTipoDeBusqueda(ConsultarCPDigital comando)
+        {
+            if (!string.IsNullOrEmpty(comando.Patente))
+                return TipoBusquedaCPE.BusquedaPorPatente;
+
+            return comando.ForzarConsultaAfip 
+                ? TipoBusquedaCPE.ConsultaDirectaAfip 
+                : TipoBusquedaCPE.CacheConFallbackAfip;
         }
 
         private ResultadoCartaPorteElectronica BuscarCPEPorPatenteEnCache(string patente, int? materialId, int centroId)
@@ -112,8 +169,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIP(long ctg, int tipoVehiculo, int centroId, bool consultaFerroviarioPorCtg)
         {
-            ServicePointManager.ServerCertificateValidationCallback = ((sender, certificate, chain, sslPolicyErrors) => true);
-            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             var resultado = new ResultadoCartaPorteElectronica();
             var centro = Repositorio.Obtener<Centro>(centroId);
             var auth = accesoWsCtg.ObtenerAuth(centro.Cuit.Replace("-", string.Empty), resultado);
@@ -121,8 +176,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (tipoVehiculo == (int)TipoVehiculo.Tren)
                 return BuscarCPEPorCTGEnAFIPFerroviaria(ctg, auth, consultaFerroviarioPorCtg, centroId);
-            else
-                return BuscarCPEPorCTGEnAFIPAutomotor(ctg, auth, centroId);
+
+            return BuscarCPEPorCTGEnAFIPAutomotor(ctg, auth, centroId);
         }
 
         private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviaria(long ctg, Auth auth, bool consultaFerroviarioPorCtg, int centroId)
@@ -136,105 +191,27 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(long nroCTG, Auth auth, int centroId)
         {
             var resultado = new ResultadoCartaPorteElectronica();
-            var request = new consultarCPEFerroviariaRequest
-            {
-                auth = auth,
-                solicitud = new ConsultarFerroviariaSolicitud
-                {
-                    nroCTG = nroCTG,
-                    nroCTGSpecified = true
-                }
-            };
+            var request = CrearRequestFerroviariaPorCtg(nroCTG, auth);
             Log.Debug(request.ToXml());
 
             var responseCp = serviceAfipCPDigital.consultarCPEFerroviaria(request);
-            if (responseCp.respuesta == null)
-            {
-                resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, "No se obtuvo respuesta desde AFIP");
+            if (ProcesarErroresAfip(responseCp.respuesta, resultado))
                 return resultado;
-            }
-            if (responseCp.respuesta != null && responseCp.respuesta.errores != null && responseCp.respuesta.errores.Any())
-            {
-                if (!erroresNobloqueantes.Any(x => responseCp.respuesta.errores.Any(y => y.codigo == x)))
-                {
-                    if (responseCp.respuesta.errores.Any(y => y.codigo == Constantes.AFIPCodigoDeError.NoExistenSolicitudes))
-                        resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, "No se encuentran datos");
-                    else
-                        resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, responseCp.respuesta.errores.FirstOrDefault().descripcion);
-                }
 
-                foreach (var error in responseCp.respuesta.errores)
-                    Log.Error(string.Format("ProcesadorConsultarCPDigital - ({0}) {1}", error.codigo, error.descripcion));
-
-                return resultado;
-            }
-
-            var cartaPorteEntity = ConvertirResponseAFIPenCartaPorteElectronica(responseCp.respuesta);
-            if (cartaPorteEntity != null)
-            {
-                RegistrarCartaPorteElectronica(cartaPorteEntity);
-                resultado.PdfImage = ConvertirPDFenPNG(responseCp.respuesta.pdf);
-                resultado.Pdf = responseCp.respuesta.pdf;
-                var cpe = ConvertirCartaPorteDto(cartaPorteEntity, centroId, resultado);
-                resultado.Cpe = cpe;
-            }
-
+            ProcesarRespuestaExitosaAFIP(responseCp.respuesta, centroId, resultado);
             return resultado;
         }
 
         private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviariaPorOperativo(long nroOperativo, Auth auth, int centroId)
         {
             var resultado = new ResultadoCartaPorteElectronica();
-            var listaVagones = new List<VehiculoDto>();
-            var requestPorOperativo = new consultaCPEFerroviariaPorNroOperativoRequest
-            {
-                auth = auth,
-                solicitud = new ConsultaCPEFerroviariaPorNroOperativoSolicitud
-                {
-                    nroOperativo = nroOperativo
-                }
-            };
+            var requestPorOperativo = CrearRequestFerroviariaPorOperativo(nroOperativo, auth);
 
             var responseCp = serviceAfipCPDigital.consultaCPEFerroviariaPorNroOperativo(requestPorOperativo);
-            if (responseCp.respuesta == null)
-            {
-                resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, "No se obtuvo respuesta desde AFIP");
+            if (ProcesarErroresAfip(responseCp.respuesta, resultado))
                 return resultado;
-            }
-            if (responseCp.respuesta != null && responseCp.respuesta.errores != null && responseCp.respuesta.errores.Any())
-            {
-                if (!erroresNobloqueantes.Any(x => responseCp.respuesta.errores.Any(y => y.codigo == x)))
-                {
-                    if (responseCp.respuesta.errores.Any(y => y.codigo == Constantes.AFIPCodigoDeError.NoExistenSolicitudes))
-                        resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, "No se encuentran datos");
-                    else
-                        resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, responseCp.respuesta.errores.FirstOrDefault().descripcion);
-                }
 
-                foreach (var error in responseCp.respuesta.errores)
-                    Log.Error(string.Format("ProcesadorConsultarCPDigital - ({0}) {1}", error.codigo, error.descripcion));
-
-                return resultado;
-            }
-
-            resultado.CTGsDeOperativo = responseCp?.respuesta?.cartaPorte?.Select(cp => cp.nroCTG).ToList();
-            foreach (var CTGFerroviaria in resultado.CTGsDeOperativo)
-            {
-                var resultadoCpe = BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(CTGFerroviaria, auth, centroId);
-                if (resultadoCpe.HayErrores)
-                    break;
-
-                var vehiculo = resultadoCpe.Cpe.Vehiculos.FirstOrDefault();
-                if (!(vehiculo is null))
-                {
-                    vehiculo.NumCTG = resultadoCpe?.Cpe?.NroCartaPorte;
-                    vehiculo.Sucural = resultadoCpe?.Cpe?.Sucursal?.ToString("D5");
-                    vehiculo.NumOrden = resultadoCpe?.Cpe?.NroOrden?.ToString("D8");
-                    vehiculo.TipoVehiculo = TipoVehiculo.Tren;
-                    listaVagones.Add(vehiculo);
-                }
-            }
-
+            var listaVagones = ProcesarVagonesFerroviarios(responseCp.respuesta, auth, centroId, resultado);
             if (!resultado.HayErrores)
                 resultado.Cpe.Vehiculos = listaVagones;
 
@@ -244,7 +221,47 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPAutomotor(long nroCTG, Auth auth, int centroId)
         {
             var resultado = new ResultadoCartaPorteElectronica();
-            var request = new consultarCPEAutomotorRequest
+            var request = CrearRequestAutomotor(nroCTG, auth);
+            Log.Debug(request.ToXml());
+
+            var responseCp = serviceAfipCPDigital.consultarCPEAutomotor(request);
+            if (ProcesarErroresAfip(responseCp.respuesta, resultado))
+                return resultado;
+
+            ProcesarRespuestaExitosaAFIP(responseCp.respuesta, centroId, resultado);
+            return resultado;
+        }
+
+        #region Métodos de Creación de Requests AFIP
+
+        private consultarCPEFerroviariaRequest CrearRequestFerroviariaPorCtg(long nroCTG, Auth auth)
+        {
+            return new consultarCPEFerroviariaRequest
+            {
+                auth = auth,
+                solicitud = new ConsultarFerroviariaSolicitud
+                {
+                    nroCTG = nroCTG,
+                    nroCTGSpecified = true
+                }
+            };
+        }
+
+        private consultaCPEFerroviariaPorNroOperativoRequest CrearRequestFerroviariaPorOperativo(long nroOperativo, Auth auth)
+        {
+            return new consultaCPEFerroviariaPorNroOperativoRequest
+            {
+                auth = auth,
+                solicitud = new ConsultaCPEFerroviariaPorNroOperativoSolicitud
+                {
+                    nroOperativo = nroOperativo
+                }
+            };
+        }
+
+        private consultarCPEAutomotorRequest CrearRequestAutomotor(long nroCTG, Auth auth)
+        {
+            return new consultarCPEAutomotorRequest
             {
                 auth = auth,
                 solicitud = new ConsultarAutomotorSolicitud
@@ -253,42 +270,87 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     nroCTGSpecified = true
                 }
             };
-            Log.Debug(request.ToXml());
+        }
 
-            var responseCp = serviceAfipCPDigital.consultarCPEAutomotor(request);
-            if (responseCp.respuesta == null)
+        #endregion
+
+        #region Métodos de Procesamiento de Respuestas AFIP
+
+        private bool ProcesarErroresAfip(dynamic respuesta, ResultadoCartaPorteElectronica resultado)
+        {
+            if (respuesta == null)
             {
                 resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, "No se obtuvo respuesta desde AFIP");
-                return resultado;
+                return true;
             }
-            if (responseCp.respuesta != null && responseCp.respuesta.errores != null && responseCp.respuesta.errores.Any())
+
+            if (respuesta.errores == null || !((IEnumerable<dynamic>)respuesta.errores).Any())
+                return false;
+
+            var erroresNobloqueanteSet = new HashSet<string>(erroresNobloqueantes);
+            var errores = (IEnumerable<dynamic>)respuesta.errores;
+            var tieneErrorBloqueante = errores.Any(e => !erroresNobloqueanteSet.Contains((string)e.codigo));
+
+            if (tieneErrorBloqueante)
             {
-                if (!erroresNobloqueantes.Any(x => responseCp.respuesta.errores.Any(y => y.codigo == x)))
-                {
-                    if (responseCp.respuesta.errores.Any(y => y.codigo == Constantes.AFIPCodigoDeError.NoExistenSolicitudes))
-                        resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, "No se encuentran datos");
-                    else
-                        resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, responseCp.respuesta.errores.FirstOrDefault().descripcion);
-                }
-
-                foreach (var error in responseCp.respuesta.errores)
-                    Log.Error(string.Format("ProcesadorConsultarCPDigital - ({0}) {1}", error.codigo, error.descripcion));
-
-                return resultado;
+                var errorNoExiste = errores.Any(e => (string)e.codigo == Constantes.AFIPCodigoDeError.NoExistenSolicitudes);
+                var mensaje = errorNoExiste ? "No se encuentran datos" : (string)errores.FirstOrDefault()?.descripcion;
+                resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, mensaje);
             }
 
-            var cartaPorteEntity = ConvertirResponseAFIPenCartaPorteElectronica(responseCp.respuesta);
-            if (cartaPorteEntity != null)
-            {
-                RegistrarCartaPorteElectronica(cartaPorteEntity);
-                resultado.PdfImage = ConvertirPDFenPNG(responseCp.respuesta.pdf);
-                resultado.Pdf = responseCp.respuesta.pdf;
-                var cpe = ConvertirCartaPorteDto(cartaPorteEntity, centroId, resultado);
-                resultado.Cpe = cpe;
-            }
+            foreach (var error in errores)
+                Log.Error($"ProcesadorConsultarCPDigital - ({error.codigo}) {error.descripcion}");
 
-            return resultado;
+            return tieneErrorBloqueante;
         }
+
+        private void ProcesarRespuestaExitosaAFIP(dynamic respuestaAFIP, int centroId, ResultadoCartaPorteElectronica resultado)
+        {
+            var cartaPorteEntity = ConvertirResponseAFIPenCartaPorteElectronica(respuestaAFIP);
+            if (cartaPorteEntity == null)
+                return;
+
+            RegistrarCartaPorteElectronica(cartaPorteEntity);
+            resultado.PdfImage = ConvertirPDFenPNG(respuestaAFIP.pdf);
+            resultado.Pdf = respuestaAFIP.pdf;
+            resultado.Cpe = ConvertirCartaPorteDto(cartaPorteEntity, centroId, resultado);
+        }
+
+        private List<VehiculoDto> ProcesarVagonesFerroviarios(dynamic respuestaAFIP, Auth auth, int centroId, ResultadoCartaPorteElectronica resultado)
+        {
+            var listaVagones = new List<VehiculoDto>();
+            var cartasPorte = respuestaAFIP?.cartaPorte as IEnumerable<dynamic>;
+            resultado.CTGsDeOperativo = cartasPorte?.Select(cp => (long)cp.nroCTG).ToList();
+
+            if (resultado.CTGsDeOperativo == null)
+                return listaVagones;
+
+            foreach (var ctgFerroviaria in resultado.CTGsDeOperativo)
+            {
+                var resultadoCpe = BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(ctgFerroviaria, auth, centroId);
+                if (resultadoCpe.HayErrores)
+                    break;
+
+                var vehiculo = resultadoCpe.Cpe?.Vehiculos?.FirstOrDefault();
+                if (vehiculo != null)
+                {
+                    EnriquecerVehiculoFerroviario(vehiculo, resultadoCpe.Cpe);
+                    listaVagones.Add(vehiculo);
+                }
+            }
+
+            return listaVagones;
+        }
+
+        private void EnriquecerVehiculoFerroviario(VehiculoDto vehiculo, CartaPorteDto cpe)
+        {
+            vehiculo.NumCTG = cpe?.NroCartaPorte;
+            vehiculo.Sucural = cpe?.Sucursal?.ToString("D5");
+            vehiculo.NumOrden = cpe?.NroOrden?.ToString("D8");
+            vehiculo.TipoVehiculo = TipoVehiculo.Tren;
+        }
+
+        #endregion
 
         private CartaPorteDto ConvertirCartaPorteDto(CartaPorteElectronica cartaPorte, int centroId, Resultado resultado)
         {
@@ -589,10 +651,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private void RegistrarCartaPorteElectronica(CartaPorteElectronica cpe)
         {
             var cpeExistente = Repositorio.Obtener<CartaPorteElectronica>(x => x.NroCTG == cpe.NroCTG);
-            if (cpeExistente != null) return;
 
-            Repositorio.Agregar(cpe);
+            if (cpeExistente != null)
+                ActualizarCartaPorteElectronica(cpeExistente, cpe);
+            else
+                Repositorio.Agregar(cpe);
+
             Repositorio.GuardarCambios();
+        }
+
+        private void ActualizarCartaPorteElectronica(CartaPorteElectronica destino, CartaPorteElectronica origen)
+        {
+            var idOriginal = destino.Id;
+
+            Conversor.Convertir(origen, destino);
+
+            destino.Id = idOriginal;
+            destino.FechaUltimaActualizacion = DateTime.Now;
+            destino.FechaCacheado = DateTime.Now;
         }
 
         private int ObtenerConfiguracionInt(string pantalla, string nombre)

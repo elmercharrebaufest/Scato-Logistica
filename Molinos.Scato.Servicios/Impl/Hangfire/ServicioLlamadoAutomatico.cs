@@ -611,7 +611,9 @@ namespace Molinos.Scato.Servicios.Impl
                         CentroId = centro,
                         TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                         NroCtg = cpe.CTG.Value,
-                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now
+                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now,
+                        ForzarConsultaAfip = true
+
                     }); ;
 
 

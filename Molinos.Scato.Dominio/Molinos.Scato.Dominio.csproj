@@ -109,6 +109,8 @@
     <Compile Include="Comandos\ModificarRecorridoPorContingenciaPay.cs" />
     <Compile Include="Comandos\ModificarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\LiberarPagoTasaMunicipal.cs" />
+    <Compile Include="Comandos\ReiniciarIntercomunicador.cs" />
+    <Compile Include="Comandos\ResultadoReiniciarIntercomunicador.cs" />
     <Compile Include="Comandos\Stop\ValidarAccesoStopBandasHorarias.cs" />
     <Compile Include="Comandos\Validaciones\ValidarVehiculoDetectado.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoValidarVehiculoDetectado.cs" />
@@ -1307,6 +1309,7 @@
     <Compile Include="Entidades\Adjunto.cs" />
     <Compile Include="Entidades\ReglaDeAnalisisObligatorio.cs" />
     <Compile Include="Enums\HealthCheckStatus.cs" />
+    <Compile Include="Enums\TipoBusquedaCPE.cs" />
     <Compile Include="Enums\TipoCategoriaVehiculo.cs" />
     <Compile Include="Entidades\TipoEmbalaje.cs" />
     <Compile Include="Entidades\TipoDeActividad.cs" />

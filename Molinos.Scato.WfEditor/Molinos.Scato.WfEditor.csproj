@@ -76,7 +76,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2C6ECC0A9BF53DDF65E2AA9D8925675A040BD62E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>787A8A6EFB71A1A6F2C584B8BB70E7A850BFF641</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Molinos.Scato.WfEditor_TemporaryKey.pfx</ManifestKeyFile>

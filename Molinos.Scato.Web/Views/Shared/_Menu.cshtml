@@ -772,6 +772,10 @@
                                 {
                                     <li>@Html.ActionLink("Monitor de Servicios", "Index", "PanelMonitoreoServicioExterno")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.ReiniciarIntercomunicador))
+                                {
+                                    <li>@Html.ActionLink("Intercomunicador", "Index", "Intercomunicador")</li>
+                                }
                                 @if (PermisosHelper.Is(PermisosScato.PanelDeControlTransaccionesVisec))
                                 {
                                     <li>@Html.ActionLink(Textos.PanelDeControlTransaccionesVisec, "Index", "PanelDeControlTransaccionesVisec")</li>

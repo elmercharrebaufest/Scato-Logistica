@@ -201,6 +201,7 @@
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <None Include="Molinos.Scato.WfEditorWeb_TemporaryKey.pfx" />
     <None Include="README.md" />
     <Page Include="Page1.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -254,7 +255,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="log4net.config" />
-    <None Include="Molinos.Scato.WfEditorWeb_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -290,7 +290,7 @@
     <ManifestKeyFile>Molinos.Scato.WfEditorWeb_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2C6ECC0A9BF53DDF65E2AA9D8925675A040BD62E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>8EF1D72A04BAF6D09CE19D64991D0F17CD1A7610</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

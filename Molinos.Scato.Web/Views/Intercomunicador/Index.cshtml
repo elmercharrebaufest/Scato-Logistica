@@ -1,0 +1,43 @@
+﻿@using Molinos.Scato.Web.Helpers
+
+@{
+    ViewBag.Title = "Panel de control de Intercomunicador";
+    ViewBag.Lang = "es";
+    var servidor = (string)ViewBag.Servidor;
+    var urlReiniciar = Url.Action("Reiniciar", "Intercomunicador");
+}
+
+<link href="~/Styles/area/shared/card.css" rel="stylesheet" />
+<link href="~/Styles/area/Intercomunicador/intercomunicador.css" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Script("~/scripts/intercomunicadorReinicio.js")"></script>
+
+<div id="links" data-url-reiniciar="@urlReiniciar"></div>
+
+<div class="panel-intercomunicador__container">
+
+    <div class="panel-intercomunicador__header">
+        <h2>Panel de control de Intercomunicador</h2>
+    </div>
+
+    <div class="panel-intercomunicador__card">
+        <div class="panel-intercomunicador__card-row">
+            <span class="panel-intercomunicador__label">Servidor</span>
+            <span class="panel-intercomunicador__server-value">@servidor</span>
+            <button id="btnReiniciar" class="btn btn-danger">
+                <i class="icon-refresh icon-white"></i> Reiniciar
+            </button>
+        </div>
+    </div>
+
+    <div class="panel-intercomunicador__warning">
+        <div class="alert alert-warning">
+            <i class="icon-warning-sign"></i>
+            <strong>Advertencia:</strong> Utilice el reinicio del servicio Intercomunicador únicamente una vez que haya validado y garantizado que:
+            <ul style="margin-top: 6px; margin-bottom: 0;">
+                <li>No tiene problemas con su PC o con sus dispositivos de auricular/micrófono.</li>
+                <li>Se ha asegurado de que SCATO tiene los permisos de micrófono y audio habilitados en el navegador.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>

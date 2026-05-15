@@ -11,5 +11,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public bool ConsultaFerroviarioPorCtg { get; set; }
         public string Patente { get; set; }
         public int? MaterialId { get; set; }
+        public bool ForzarConsultaAfip { get; set; }
     }
 }

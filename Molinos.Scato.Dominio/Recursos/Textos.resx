@@ -10775,4 +10775,7 @@
   <data name="Stop_Error_AccesoYaValidado" xml:space="preserve">
     <value>La banda horaria de la CTG ya fue validada anteriormente</value>
   </data>
+  <data name="ReiniciarIntercomunicador" xml:space="preserve">
+    <value>Reiniciar Servicio Windows "IntercomunicadorService"</value>
+  </data>
 </root>

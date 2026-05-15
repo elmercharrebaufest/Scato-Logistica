@@ -791,5 +791,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         
         [Display(ResourceType = typeof(Textos), Name = "MonitoreoServicioExterno")]
         MonitoreoServicioExterno = 713,
+
+        [Display(ResourceType = typeof(Textos), Name = "ReiniciarIntercomunicador")]
+        ReiniciarIntercomunicador = 714,
     }
 }

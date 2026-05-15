@@ -27014,7 +27014,18 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("Reimprimir", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reiniciar Servicio Windows &quot;IntercomunicadorService&quot;.
+        /// </summary>
+        public static string ReiniciarIntercomunicador
+        {
+            get
+            {
+                return ResourceManager.GetString("ReiniciarIntercomunicador", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Reintentar.
         /// </summary>

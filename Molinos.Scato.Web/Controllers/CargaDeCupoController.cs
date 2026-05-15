@@ -707,10 +707,18 @@ namespace Molinos.Scato.Web.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 MaxJsonLength = Int32.MaxValue
             };
+
             try
             {
                 log.Debug("Obteniendo CPE por patente {0} en carga de Cupo.", patente);
-                var cartaPorteResponse = servicioComandos.Ejecutar(new ConsultarCPDigital { Patente = patente, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, MaterialId = materialId }) as ResultadoCartaPorteElectronica;
+                var cartaPorteResponse = servicioComandos.Ejecutar(new ConsultarCPDigital 
+                { 
+                    Patente = patente, 
+                    Usuario = datosUsuario.NombreUsuario, 
+                    CentroId = datosUsuario.CentroId, 
+                    MaterialId = materialId 
+                }) as ResultadoCartaPorteElectronica;
+
                 if (cartaPorteResponse.HayErrores)
                 {
                     response.Data = new
@@ -731,19 +739,53 @@ namespace Molinos.Scato.Web.Controllers
                     return response;
                 }
 
-                var cargaDeCupo = new CargaDeCupoDto()
+                if (!EstadosCPEdeAFIP.Validos.Contains(cartaPorteResponse.Cpe.EstadoCpe))
+                {
+                    var estadoCPE = cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim();
+                    var codigoError = "4";
+                    var mensajeError = string.Format("El CTG {0} no se encuentra en estado ACTIVO", cartaPorteResponse.Cpe.CTG);
+
+                    if (!string.IsNullOrEmpty(estadoCPE) && EstadosCPEdeAFIP.Bloqueantes.Any(a => a == estadoCPE))
+                    {
+                        codigoError = "5";
+                        mensajeError = string.Format("El CTG {0} se encuentra en estado {1}", 
+                            cartaPorteResponse.Cpe.CTG, 
+                            EstadosCPEdeAFIP.Descripciones.ContainsKey(estadoCPE) 
+                                ? EstadosCPEdeAFIP.Descripciones[estadoCPE] 
+                                : estadoCPE);
+                    }
+
+                    response.Data = new
+                    {
+                        CodigoDeError = codigoError,
+                        Error = mensajeError,
+                    };
+                    return response;
+                }
+
+                var cargaDeCupo = new CargaDeCupoDto
                 {
                     Numero = tarjeta,
                     NumeroCartaPorte = cartaPorteResponse.Cpe.CTG
                 };
-                var pdfConEtiqueta = cartaPorteResponse.PdfImage != null ? DibujarEtiqueta(cartaPorteResponse.PdfImage, cargaDeCupo, 18) : null;
-                var pdfConEtiquetaSustentable = cartaPorteResponse.PdfImage != null && esEspecial ? DibujarSelloSustentable(pdfConEtiqueta) : null;
+
+                var pdfConEtiqueta = cartaPorteResponse.PdfImage != null 
+                    ? DibujarEtiqueta(cartaPorteResponse.PdfImage, cargaDeCupo, 18) 
+                    : null;
+
+                var pdfConEtiquetaSustentable = pdfConEtiqueta != null && esEspecial 
+                    ? DibujarSelloSustentable(pdfConEtiqueta) 
+                    : null;
 
                 response.Data = new
                 {
                     Cpe = cartaPorteResponse.Cpe,
-                    PdfImageBase64 = pdfConEtiqueta != null ? String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(pdfConEtiqueta)) : string.Empty,
-                    PdfImageSustentableBase64 = pdfConEtiquetaSustentable != null ? String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(pdfConEtiquetaSustentable)) : string.Empty,
+                    PdfImageBase64 = pdfConEtiqueta != null 
+                        ? String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(pdfConEtiqueta)) 
+                        : string.Empty,
+                    PdfImageSustentableBase64 = pdfConEtiquetaSustentable != null 
+                        ? String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(pdfConEtiquetaSustentable)) 
+                        : string.Empty,
                 };
             }
             catch (Exception e)

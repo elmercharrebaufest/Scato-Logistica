@@ -406,6 +406,7 @@
     <Compile Include="Controllers\ConfiguracionEficienciaCaladoController.cs" />
     <Compile Include="Controllers\ExcepcionAlControlProveedorController.cs" />
     <Compile Include="Controllers\HuellaDigitalController.cs" />
+    <Compile Include="Controllers\IntercomunicadorController.cs" />
     <Compile Include="Controllers\LoteInaseController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
@@ -907,6 +908,7 @@
     <Content Include="Scripts\cartaporte.redespacho.mercaderia.index.js" />
     <Content Include="Scripts\excepcionAlControlProveedor.js" />
     <Content Include="Scripts\huellaDigital.js" />
+    <Content Include="Scripts\intercomunicadorReinicio.js" />
     <Content Include="Scripts\listarHuellaDigital.js" />
     <Content Include="Scripts\panelDePagoMunicipal.index.js" />
     <Content Include="Scripts\panelDePagoMunicipal.listar.js" />
@@ -1142,6 +1144,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Styles\area\Intercomunicador\intercomunicador.css" />
     <Content Include="Styles\area\listaDeCamiones\filtroDeCamiones.css" />
     <Content Include="Styles\area\enEsperaHB4\index.css" />
     <Content Include="Styles\area\PanelMonitoreoServicioExterno\panelMonitoreoServicioExterno.css" />
@@ -2518,6 +2521,7 @@
     <Content Include="Views\PanelDeControlPagoMunicipal\Listar.cshtml" />
     <Content Include="Views\PanelDeControlPagoMunicipal\Modificar.cshtml" />
     <Content Include="Views\EnEsperaHB4\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\Intercomunicador\Index.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
