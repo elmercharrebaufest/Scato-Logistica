@@ -31,8 +31,8 @@ namespace Molinos.Scato.Actividades.Internas
 
                 var validacion = new ValidacionCOT
                 {
-                    PtoVtaRemito = numeroDocumento != null ? numeroDocumento.Substring(0, 4) : string.Empty,
-                    NroComprobante = numeroDocumento != null ? numeroDocumento.Substring(5, 8) : string.Empty,
+                    PtoVtaRemito = numeroDocumento != null ? numeroDocumento.Substring(0, 5) : string.Empty,
+                    NroComprobante = numeroDocumento != null ? numeroDocumento.Substring(6, 8) : string.Empty,
                     DocInternoSAP = recorridoDto.DocumentoInternoSap ?? string.Empty,
                 };
 
