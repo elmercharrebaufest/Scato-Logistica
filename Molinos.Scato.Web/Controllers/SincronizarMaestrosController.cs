@@ -12,6 +12,7 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -222,26 +223,30 @@ namespace Molinos.Scato.Web.Controllers
 
                 var consultasParalelo = 0;
                 int.TryParse(consultasParaleloVal?.Valor, out consultasParalelo);
+                var maxParalelismo = consultasParalelo > 0 ? consultasParalelo : -1; // -1 = sin límite (valor válido)
+                var cpesPorCtg = cpesPendientes.Cpes.ToDictionary(x => x.Ctg);
 
                 log.Debug("Se inicia el proceso de cacheo");
-                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = consultasParalelo }, (ctg) =>
+                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = maxParalelismo }, (ctg) =>
                  {
                      var intentos = 0;
                      var ok = false;
 
                      while (!ok && intentos < reintentos)
                      {
+                         if (intentos > 0)
+                             Thread.Sleep(TimeSpan.FromSeconds(Math.Pow(2, intentos)));
                          try
                          {
-                             var cpe = cpesPendientes.Cpes.First(x => x.Ctg == ctg);
-
+                             var cpe = cpesPorCtg[ctg];
                              var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
                              {
                                  CentroId = centro,
                                  TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                                  NroCtg = ctg,
                                  FechaUltimaActualizacion = cpe.FechaUltimaModificacion,
-                                 ForzarConsultaAfip = true
+                                 ForzarConsultaAfip = true,
+                                 IncluirImagen = false
                              });
 
                              ok = !resultado.HayErrores;
@@ -286,7 +291,8 @@ namespace Molinos.Scato.Web.Controllers
                         CentroId = centro,
                         TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                         NroCtg = cpe.CTG.Value,
-                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now
+                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now,
+                        IncluirImagen = false
                     });;
 
                  

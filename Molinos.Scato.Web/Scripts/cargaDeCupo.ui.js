@@ -1,7 +1,7 @@
 const CargaDeCupoUI = {
     dom: {
         getElement: (selector) => document.querySelector(selector),
-        getValue: (selector) => document.querySelector(selector).value,
+        getValue: (selector) => document.querySelector(selector)?.value ?? '',
         setValue: (selector, value) => document.querySelector(selector).value = value,
         isChecked: (selector) => document.querySelector(selector).checked,
         setCheckedEvent: (selector, checked) => {

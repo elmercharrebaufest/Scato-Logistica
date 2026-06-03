@@ -58,8 +58,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
                 var urlCompleta = _urlServicioCnrt + FormatearParametrosConsulta(comando);
-                var response = _httpClient.GetAsync(urlCompleta).Result;
+                var response = _httpClient.GetAsync(urlCompleta).ConfigureAwait(false).GetAwaiter().GetResult();
 
+               
                 if (!response.IsSuccessStatusCode)
                 {
                     _log.Error("Error en consulta CNRT. Patente: {0}, StatusCode: {1}, Reason: {2}",
@@ -68,8 +69,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
 
-                var content = response.Content.ReadAsStringAsync().Result;
+                var content = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 var consulta = JsonConvert.DeserializeObject<ConsultaEscalablesDto>(content);
+                if (consulta?.Data == null)
+                {
+                    _log.Warn("CNRT retornó respuesta vacía o sin datos. Patente: {0}", comando.Patente);
+                    resultado.Error(ErrorKeyCnrt, Textos.CategoriaEscalable_NoValidada);
+                    return resultado;
+                }
                 resultado.Categoria = consulta.Data.MapeoCategoriaEscalado;
 
                 if (resultado.Categoria.HasValue)

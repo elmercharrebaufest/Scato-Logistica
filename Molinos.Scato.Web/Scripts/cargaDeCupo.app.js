@@ -276,8 +276,7 @@
                 if (!noGranosActivado && patente) {
                     const tarjeta = CargaDeCupoUI.dom.getValue('#Numero');
                     const esEspecial = CargaDeCupoUI.dom.getValue('#Especial');
-                    const materialId = CargaDeCupoUI.dom.getValue('#MaterialId');
-                    await CargaDeCupoApp.business.handlePatenteGranos(patente, tarjeta, esEspecial, materialId);
+                    await CargaDeCupoApp.business.handlePatenteGranos(patente, tarjeta, esEspecial, null);
                 } else if (noGranosActivado && patente) {
                     await CargaDeCupoApp.business.handlePatenteNoGranos(patente);
                 }
@@ -428,11 +427,16 @@
                 if (!error) {
                     if (patenteNormalizada && patenteNormalizada !== 'NULL') {
                         patenteDisplay.textContent = patenteNormalizada;
-                        ;
 
                         const patenteField = CargaDeCupoUI.dom.getElement('#Patente');
                         const patenteGuardada = CargaDeCupoCore.state.patenteGuardada;
-                        if (patenteField && !CargaDeCupoUI.dom.getValue('#Patente') && patenteNormalizada !== patenteGuardada) {
+                        const currentPatente = (CargaDeCupoUI.dom.getValue('#Patente') || '').toUpperCase();
+                        const patenteSetByCamara = (CargaDeCupoCore.state.patenteSetByCamara || '').toUpperCase();
+                        // La cámara solo actualiza #Patente si: el campo está vacío,
+                        // o si el valor actual fue el que la cámara misma puso (el operador no lo modificó a mano).
+                        const camaraEsFuenteActual = !currentPatente || currentPatente === patenteSetByCamara;
+                        if (patenteField && patenteNormalizada !== patenteGuardada && camaraEsFuenteActual && currentPatente !== patenteNormalizada) {
+                            CargaDeCupoCore.state.patenteSetByCamara = patenteNormalizada;
                             CargaDeCupoUI.dom.setValue('#Patente', patenteNormalizada);
                             patenteField.dispatchEvent(new Event('change', { bubbles: true }));
                         }
@@ -552,9 +556,9 @@
 
                 const data = await CargaDeCupoAPI.services.obtenerCPE(nroCTG, tarjeta, esEspecial);
 
-                if (data.CodigoDeError == 1) {
+                if (data.CodigoDeError === "1") {
                     CargaDeCupoUI.alerts.showAlert(data.Error, 'alert-info');
-                } else if (data.CodigoDeError == 3 || data.CodigoDeError == 4) {
+                } else if (data.CodigoDeError === "3" || data.CodigoDeError === "4") {
                     if (!data.Cpe) {
                         CargaDeCupoUI.alerts.showAlert('No se recibieron datos del CPE', 'alert-error');
                         return;
@@ -566,7 +570,9 @@
                     CargaDeCupoUI.dom.setValue('#CodEstab', data.Cpe.CodEstab);
                     CargaDeCupoUI.dom.setValue('#CodigoRENSPA', data.Cpe.CodigoRENSPA);
                     CargaDeCupoUI.dom.setValue('#Cosecha', data.Cpe.Cosecha);
-                    CargaDeCupoUI.dom.setValue('#PesoNetoOrigen', data.Cpe.Vehiculos[0]["PesoNetoOrigen"]);
+                    if (data.Cpe.Vehiculos?.length > 0) {
+                        CargaDeCupoUI.dom.setValue('#PesoNetoOrigen', data.Cpe.Vehiculos[0]["PesoNetoOrigen"]);
+                    }
                     CargaDeCupoUI.dom.setValue('#RtteComercialVentaSecundariaCuit', data.Cpe.RtteComercialVentaSecundarioCuil);
 
                     if (data.Cpe.Vehiculos && data.Cpe.Vehiculos.length > 0) {
@@ -583,7 +589,7 @@
                         const cupoFormateado = CargaDeCupoCore.formatting.truncateCupoLength(data.Cpe.Cupo);
                         CargaDeCupoUI.dom.setCheckedEvent('#checkSinCupo', false);
                         CargaDeCupoUI.dom.setValue('#Cupo', cupoFormateado);
-                        CargaDeCupoApp.business.validateCupoSap();
+                        await CargaDeCupoApp.business.validateCupoSap();
                     } else {
                         CargaDeCupoUI.dom.setCheckedEvent('#checkSinCupo', true);
                     }
@@ -597,7 +603,7 @@
                         esEspecial === "true"
                     );
 
-                    if (data.CodigoDeError == 4) {
+                    if (data.CodigoDeError == 4 || (data.CodigoDeError === "3" && data.Error)) {
                         CargaDeCupoUI.alerts.showAlert(data.Error, 'alert-block');
                     }
                 } else {
@@ -615,6 +621,7 @@
             try {
                 BlockUI('Consultando CPE por patente...');
 
+                CargaDeCupoUI.dom.setValue('#CTG', '');
                 CargaDeCupoUI.form.clearValidation();
                 CargaDeCupoUI.alerts.hideAlert();
 
@@ -626,10 +633,6 @@
                 } else if (data.Error && data.CodigoDeError === "MaterialId") {
                     CargaDeCupoUI.dom.setReadonly('#CTG', false);
                     CargaDeCupoUI.validation.showFieldError('MaterialId', data.Error);
-                } else if (data.Error) {
-                    CargaDeCupoUI.dom.setReadonly('#CTG', false);
-                    CargaDeCupoUI.dom.getElement('#CTG').focus();
-                    CargaDeCupoUI.alerts.showAlert(data.Error, 'alert-error');
                 } else if (data.Cpe) {
                     CargaDeCupoUI.dom.setValue('#CTG', data.Cpe.NroCartaPorte);
                     CargaDeCupoUI.dom.setValue('#MaterialId', data.Cpe.MaterialId);
@@ -667,6 +670,14 @@
                             esEspecial === "true"
                         );
                     }
+
+                    if (data.CodigoDeError === "3" && data.Error) {
+                        CargaDeCupoUI.alerts.showAlert(data.Error, 'alert-block');
+                    }
+                } else if (data.Error) {
+                    CargaDeCupoUI.dom.setReadonly('#CTG', false);
+                    CargaDeCupoUI.dom.getElement('#CTG').focus();
+                    CargaDeCupoUI.alerts.showAlert(data.Error, 'alert-error');
                 }
             } catch (error) {
                 console.error('Error al obtener datos por patente:', error);
@@ -783,11 +794,22 @@
                     await CargaDeCupoApp.events.handlers.circuitoChange();
                 } else {
                     if (data.ValidationErrors) {
+                        const globalKeys = new Set(['', 'error', 'warning', 'avanceCpe']);
+                        const hasFieldErrors = Object.keys(data.ValidationErrors).some(k => !globalKeys.has(k));
+                        if (!hasFieldErrors) {
+                            const imageElement = CargaDeCupoUI.dom.getElement('#imagen-cp');
+                            if (imageElement) imageElement.src = '';
+                            form.reset();
+                            await CargaDeCupoApp.events.handlers.circuitoChange();
+                        }
+
                         Object.keys(data.ValidationErrors).forEach(key => {
                             const message = data.ValidationErrors[key];
 
-                            if (key === '' || key === 'error') {
+                            if (key === '' || key === 'error' || key === 'avanceCpe') {
                                 CargaDeCupoUI.alerts.showAlert(message, 'alert-error');
+                            } else if (key === 'warning') {
+                                CargaDeCupoUI.alerts.showAlert(message, 'alert-block');
                             } else {
                                 CargaDeCupoUI.validation.showFieldError(key, message);
                             }

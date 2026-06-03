@@ -28,6 +28,31 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private IKernel kernel;
         private readonly List<string> erroresNobloqueantes = new List<string>() { Constantes.AFIPCodigoDeError.ErrorPDFNoGenerado };
 
+        private static readonly int _dpiX;
+        private static readonly int _dpiY;
+
+        private int? _diasLimiteBusqueda;
+
+        static ProcesadorConsultarCPDigital()
+        {
+            var dpixStr = ConfigurationManager.AppSettings["PdfCpeDpiX"];
+            var dpiyStr = ConfigurationManager.AppSettings["PdfCpeDpiY"];
+            _dpiX = string.IsNullOrEmpty(dpixStr) ? 600 : Convert.ToInt32(dpixStr);
+            _dpiY = string.IsNullOrEmpty(dpiyStr) ? 600 : Convert.ToInt32(dpiyStr);
+        }
+
+        private int DiasLimiteBusqueda
+        {
+            get
+            {
+                if (!_diasLimiteBusqueda.HasValue)
+                    _diasLimiteBusqueda = ObtenerConfiguracionInt(
+                        Constantes.ConfiguracionGeneral.Pantalla.LimpiarCacheCartaPorte,
+                        Constantes.ConfiguracionGeneral.CartaPorteElectronica.DiasLimiteDeBusqueda);
+                return _diasLimiteBusqueda.Value;
+            }
+        }
+
         public ProcesadorConsultarCPDigital(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos,
                                  CpePortType serviceAfipCPDigital, IAccesoWsCtg accesoWsCtg, IKernel kernel)
             : base(repositorio, conversor, log)
@@ -60,25 +85,25 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
 
                 var tipoBusqueda = DeterminarTipoDeBusqueda(comando);
-                Log.Debug($"ConsultarCPDigital: Tipo={tipoBusqueda}, Patente={comando.Patente}, NroCtg={comando.NroCtg}, Centro={comando.CentroId}");
+                Log.Debug($"ConsultarCPDigital: Tipo={tipoBusqueda}, Patente={comando.Patente}, NroCtg={comando.NroCtg}, Centro={comando.CentroId}, IncluirImagen={comando.IncluirImagen}");
 
                 switch (tipoBusqueda)
                 {
                     case TipoBusquedaCPE.BusquedaPorPatente:
-                        return BuscarCPEPorPatenteEnCache(comando.Patente, comando.MaterialId, comando.CentroId);
+                        return BuscarCPEPorPatenteEnCache(comando.Patente, comando.MaterialId, comando.CentroId, comando.IncluirImagen);
 
                     case TipoBusquedaCPE.ConsultaDirectaAfip:
-                        return BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg);
+                        return BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg, comando.IncluirImagen);
 
                     case TipoBusquedaCPE.CacheConFallbackAfip:
-                        var resultadoCache = BuscarCPEPorCTGEnCache(comando.NroCtg.Value, comando.CentroId);
+                        var resultadoCache = BuscarCPEPorCTGEnCache(comando.NroCtg.Value, comando.CentroId, comando.IncluirImagen);
                         if (resultadoCache != null)
                         {
                             Log.Debug($"ConsultarCPDigital: CPE encontrada en caché. CTG={comando.NroCtg}");
                             return resultadoCache;
                         }
                         Log.Debug($"ConsultarCPDigital: CPE no encontrada en caché, consultando AFIP. CTG={comando.NroCtg}");
-                        return BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg);
+                        return BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg, comando.IncluirImagen);
 
                     default:
                         Log.Warn($"ConsultarCPDigital: Tipo de búsqueda no reconocido: {tipoBusqueda}");
@@ -91,9 +116,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             catch (Exception ex)
             {
                 Log.Error(ex, $"Error en ConsultarCPDigital - Patente={comando.Patente}, NroCtg={comando.NroCtg}, Centro={comando.CentroId}");
-                return new ResultadoCartaPorteElectronica 
-                { 
-                    Errores = { { string.Empty, Textos.Error_Generico } } 
+                return new ResultadoCartaPorteElectronica
+                {
+                    Errores = { { string.Empty, Textos.Error_Generico } }
                 };
             }
         }
@@ -109,32 +134,35 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (!string.IsNullOrEmpty(comando.Patente))
                 return TipoBusquedaCPE.BusquedaPorPatente;
 
-            return comando.ForzarConsultaAfip 
-                ? TipoBusquedaCPE.ConsultaDirectaAfip 
+            return comando.ForzarConsultaAfip
+                ? TipoBusquedaCPE.ConsultaDirectaAfip
                 : TipoBusquedaCPE.CacheConFallbackAfip;
         }
 
-        private ResultadoCartaPorteElectronica BuscarCPEPorPatenteEnCache(string patente, int? materialId, int centroId)
+        private ResultadoCartaPorteElectronica BuscarCPEPorPatenteEnCache(string patente, int? materialId, int centroId, bool incluirImagen = true)
         {
             var resultado = new ResultadoCartaPorteElectronica();
+            var fecha = DateTime.Today.AddDays(-DiasLimiteBusqueda);
 
-            int diasLimite = ObtenerConfiguracionInt(
-                Constantes.ConfiguracionGeneral.Pantalla.LimpiarCacheCartaPorte,
-                Constantes.ConfiguracionGeneral.CartaPorteElectronica.DiasLimiteDeBusqueda
-            );
-
-            DateTime fecha = DateTime.Today.AddDays(-diasLimite);
-
-            var cpes = Repositorio.Listar<CartaPorteElectronica>(x => 
-                x.NroCTG.HasValue && 
-                x.Material.HasValue && 
-                x.Dominio.StartsWith(patente) &&
-                x.FechaEmision.HasValue && x.FechaEmision.Value >= fecha);
-
+            IList<CartaPorteElectronica> cpes;
             if (materialId.HasValue)
             {
                 var material = Repositorio.Obtener<Material>(materialId);
-                cpes = cpes.Where(x => x.Material == material.CodigoEspecie).ToList();
+                var codigoEspecie = material.CodigoEspecie;
+                cpes = Repositorio.Listar<CartaPorteElectronica>(x =>
+                    x.NroCTG.HasValue &&
+                    x.Material.HasValue &&
+                    x.Dominio.StartsWith(patente) &&
+                    x.FechaEmision.HasValue && x.FechaEmision.Value >= fecha &&
+                    x.Material == codigoEspecie);
+            }
+            else
+            {
+                cpes = Repositorio.Listar<CartaPorteElectronica>(x =>
+                    x.NroCTG.HasValue &&
+                    x.Material.HasValue &&
+                    x.Dominio.StartsWith(patente) &&
+                    x.FechaEmision.HasValue && x.FechaEmision.Value >= fecha);
             }
 
             if (!cpes.Any())
@@ -144,15 +172,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             var cpe = cpes.OrderByDescending(c => c.FechaEmision).FirstOrDefault();
-            resultado.PdfImage = ConvertirPDFenPNG(cpe.Pdf);
-            resultado.Pdf = cpe.Pdf;
+            if (incluirImagen)
+            {
+                resultado.PdfImage = ConvertirPDFenPNG(cpe.Pdf);
+                resultado.Pdf = cpe.Pdf;
+            }
             var cpeDto = ConvertirCartaPorteDto(cpe, centroId, resultado);
             resultado.Cpe = cpeDto;
 
             return resultado;
         }
 
-        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnCache(long ctg, int centroId)
+        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnCache(long ctg, int centroId, bool incluirImagen = true)
         {
             var resultado = new ResultadoCartaPorteElectronica();
 
@@ -160,14 +191,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (cpe is null)
                 return null;
 
-            resultado.PdfImage = ConvertirPDFenPNG(cpe.Pdf);
+            if (incluirImagen)
+                resultado.PdfImage = ConvertirPDFenPNG(cpe.Pdf);
+
             var cpeDto = ConvertirCartaPorteDto(cpe, centroId, resultado);
             resultado.Cpe = cpeDto;
 
             return resultado;
         }
 
-        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIP(long ctg, int tipoVehiculo, int centroId, bool consultaFerroviarioPorCtg)
+        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIP(long ctg, int tipoVehiculo, int centroId, bool consultaFerroviarioPorCtg, bool incluirImagen)
         {
             var resultado = new ResultadoCartaPorteElectronica();
             var centro = Repositorio.Obtener<Centro>(centroId);
@@ -175,20 +208,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (resultado.HayErrores) return resultado;
 
             if (tipoVehiculo == (int)TipoVehiculo.Tren)
-                return BuscarCPEPorCTGEnAFIPFerroviaria(ctg, auth, consultaFerroviarioPorCtg, centroId);
+                return BuscarCPEPorCTGEnAFIPFerroviaria(ctg, auth, consultaFerroviarioPorCtg, centroId, incluirImagen);
 
-            return BuscarCPEPorCTGEnAFIPAutomotor(ctg, auth, centroId);
+            return BuscarCPEPorCTGEnAFIPAutomotor(ctg, auth, centroId, incluirImagen);
         }
 
-        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviaria(long ctg, Auth auth, bool consultaFerroviarioPorCtg, int centroId)
+        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviaria(long ctg, Auth auth, bool consultaFerroviarioPorCtg, int centroId, bool incluirImagen)
         {
             if (consultaFerroviarioPorCtg)
-                return BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(ctg, auth, centroId);
+                return BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(ctg, auth, centroId, incluirImagen);
             else
-                return BuscarCPEPorCTGEnAFIPFerroviariaPorOperativo(ctg, auth, centroId);
+                return BuscarCPEPorCTGEnAFIPFerroviariaPorOperativo(ctg, auth, centroId, incluirImagen);
         }
 
-        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(long nroCTG, Auth auth, int centroId)
+        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(long nroCTG, Auth auth, int centroId, bool incluirImagen)
         {
             var resultado = new ResultadoCartaPorteElectronica();
             var request = CrearRequestFerroviariaPorCtg(nroCTG, auth);
@@ -198,11 +231,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (ProcesarErroresAfip(responseCp.respuesta, resultado))
                 return resultado;
 
-            ProcesarRespuestaExitosaAFIP(responseCp.respuesta, centroId, resultado);
+            ProcesarRespuestaExitosaAFIP(responseCp.respuesta, centroId, resultado, incluirImagen);
             return resultado;
         }
 
-        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviariaPorOperativo(long nroOperativo, Auth auth, int centroId)
+        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviariaPorOperativo(long nroOperativo, Auth auth, int centroId, bool incluirImagen)
         {
             var resultado = new ResultadoCartaPorteElectronica();
             var requestPorOperativo = CrearRequestFerroviariaPorOperativo(nroOperativo, auth);
@@ -211,14 +244,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (ProcesarErroresAfip(responseCp.respuesta, resultado))
                 return resultado;
 
-            var listaVagones = ProcesarVagonesFerroviarios(responseCp.respuesta, auth, centroId, resultado);
+            var listaVagones = ProcesarVagonesFerroviarios(responseCp.respuesta, auth, centroId, resultado, incluirImagen);
             if (!resultado.HayErrores)
                 resultado.Cpe.Vehiculos = listaVagones;
 
             return resultado;
         }
 
-        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPAutomotor(long nroCTG, Auth auth, int centroId)
+        private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPAutomotor(long nroCTG, Auth auth, int centroId, bool incluirImagen)
         {
             var resultado = new ResultadoCartaPorteElectronica();
             var request = CrearRequestAutomotor(nroCTG, auth);
@@ -228,7 +261,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (ProcesarErroresAfip(responseCp.respuesta, resultado))
                 return resultado;
 
-            ProcesarRespuestaExitosaAFIP(responseCp.respuesta, centroId, resultado);
+            ProcesarRespuestaExitosaAFIP(responseCp.respuesta, centroId, resultado, incluirImagen);
             return resultado;
         }
 
@@ -304,19 +337,22 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return tieneErrorBloqueante;
         }
 
-        private void ProcesarRespuestaExitosaAFIP(dynamic respuestaAFIP, int centroId, ResultadoCartaPorteElectronica resultado)
+        private void ProcesarRespuestaExitosaAFIP(dynamic respuestaAFIP, int centroId, ResultadoCartaPorteElectronica resultado, bool incluirImagen = true)
         {
             var cartaPorteEntity = ConvertirResponseAFIPenCartaPorteElectronica(respuestaAFIP);
             if (cartaPorteEntity == null)
                 return;
 
             RegistrarCartaPorteElectronica(cartaPorteEntity);
-            resultado.PdfImage = ConvertirPDFenPNG(respuestaAFIP.pdf);
-            resultado.Pdf = respuestaAFIP.pdf;
+            if (incluirImagen)
+            {
+                resultado.PdfImage = ConvertirPDFenPNG(respuestaAFIP.pdf);
+                resultado.Pdf = respuestaAFIP.pdf;
+            }
             resultado.Cpe = ConvertirCartaPorteDto(cartaPorteEntity, centroId, resultado);
         }
 
-        private List<VehiculoDto> ProcesarVagonesFerroviarios(dynamic respuestaAFIP, Auth auth, int centroId, ResultadoCartaPorteElectronica resultado)
+        private List<VehiculoDto> ProcesarVagonesFerroviarios(dynamic respuestaAFIP, Auth auth, int centroId, ResultadoCartaPorteElectronica resultado, bool incluirImagen)
         {
             var listaVagones = new List<VehiculoDto>();
             var cartasPorte = respuestaAFIP?.cartaPorte as IEnumerable<dynamic>;
@@ -327,7 +363,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             foreach (var ctgFerroviaria in resultado.CTGsDeOperativo)
             {
-                var resultadoCpe = BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(ctgFerroviaria, auth, centroId);
+                var resultadoCpe = BuscarCPEPorCTGEnAFIPFerroviariaPorCtg(ctgFerroviaria, auth, centroId, incluirImagen);
                 if (resultadoCpe.HayErrores)
                     break;
 
@@ -358,24 +394,26 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var categoriaStr = cartaPorte.NroCTG.ToString().Substring(0, 3).EndsWith("01") ? "PRODUCTOR" : "OPERADOR";
             var categoria = Repositorio.Obtener<Categoria>(x => x.Clasificacion == categoriaStr);
 
-            var cpeCuitOrigen = cartaPorte.CuitOrigen.ToString();
-            var titular = ObtenerProveedor(cpeCuitOrigen, resultado, Textos.CartaPorte_TitularCartaPorte, false, false, true);
-            var intermediario = ObtenerProveedor(cartaPorte.CuitIntermediario.ToString(), resultado, Textos.CartaPorte_Intermediario, false, false, true);
-            var rtteComercialProductor = ObtenerProveedor(cartaPorte.CuitRemitenteComercialProductor.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true);
-            var rtteComercial = ObtenerProveedor(cartaPorte.CuitRemitenteComercialVentaPrimaria.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true);
-            var rtteComercialVentaSecundaria = ObtenerProveedor(cartaPorte.CuitRemitenteComercialVentaSecundaria.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true);
-            var rtteComercialVentaSecundaria2 = ObtenerProveedor(cartaPorte?.CuitRemitenteComercialVentaSecundaria2.ToString(), resultado, Textos.Rtte_comercial_venta_secundaria_2, false, false, true);
-            var corredor = ObtenerProveedor(cartaPorte?.CuitCorredorVentaPrimaria?.ToString(), resultado, Textos.Corredor_primario, false, true, false);
-            var corredorVendedorSecundario = ObtenerProveedor(cartaPorte.CuitCorredorVentaSecundaria.ToString(), resultado, Textos.CartaPorte_CorredorVendedor, false, true, false);
-            var agenteCompras = ObtenerProveedor(cartaPorte.CuitMercadoATermino.ToString(), resultado, Textos.CartaPorte_AgenteCompras, false, false, true);
+            var batch = PrecargarProveedores(cartaPorte);
+
+            var titular = GetProveedorDeBatch(batch, cartaPorte.CuitOrigen?.ToString(), resultado, Textos.CartaPorte_TitularCartaPorte, am: false, cm: false, pr: true);
+            var intermediario = GetProveedorDeBatch(batch, cartaPorte.CuitIntermediario?.ToString(), resultado, Textos.CartaPorte_Intermediario, am: false, cm: false, pr: true);
+            var rtteComercialProductor = GetProveedorDeBatch(batch, cartaPorte.CuitRemitenteComercialProductor?.ToString(), resultado, Textos.CartaPorte_RtteComercial, am: false, cm: false, pr: true);
+            var rtteComercial = GetProveedorDeBatch(batch, cartaPorte.CuitRemitenteComercialVentaPrimaria?.ToString(), resultado, Textos.CartaPorte_RtteComercial, am: false, cm: false, pr: true);
+            var rtteComercialVentaSecundaria = GetProveedorDeBatch(batch, cartaPorte.CuitRemitenteComercialVentaSecundaria?.ToString(), resultado, Textos.CartaPorte_RtteComercial, am: false, cm: false, pr: true);
+            var rtteComercialVentaSecundaria2 = GetProveedorDeBatch(batch, cartaPorte?.CuitRemitenteComercialVentaSecundaria2?.ToString(), resultado, Textos.Rtte_comercial_venta_secundaria_2, am: false, cm: false, pr: true);
+            var corredor = GetProveedorDeBatch(batch, cartaPorte?.CuitCorredorVentaPrimaria?.ToString(), resultado, Textos.Corredor_primario, am: false, cm: true, pr: false);
+            var corredorVendedorSecundario = GetProveedorDeBatch(batch, cartaPorte.CuitCorredorVentaSecundaria?.ToString(), resultado, Textos.CartaPorte_CorredorVendedor, am: false, cm: true, pr: false);
+            var agenteCompras = GetProveedorDeBatch(batch, cartaPorte.CuitMercadoATermino?.ToString(), resultado, Textos.CartaPorte_AgenteCompras, am: false, cm: false, pr: true);
+            var destinatario = GetProveedorDeBatch(batch, cartaPorte.CuitDestinatario?.ToString(), resultado, Textos.CartaPorte_Destinatario, am: false, cm: false, pr: true);
+            var intermediarioFlete = GetProveedorDeBatch(batch, cartaPorte.CuitIntermediarioFlete?.ToString(), resultado, Textos.CartaPorte_Intermediario, am: false, cm: false, pr: true);
+            var pagadorFlete = GetProveedorDeBatch(batch, cartaPorte.CuitPagadorFlete?.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, am: false, cm: false, pr: true);
+            var corredorVendedor = GetProveedorDeBatch(batch, cartaPorte.CuitCorredorVentaPrimaria?.ToString(), resultado, Textos.CartaPorte_CorredorVendedor, am: false, cm: true, pr: false);
+
             var cpeCuitRepresentanteEntregador = cartaPorte.CuitRepresentanteEntregador.ToString();
             var entregador = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cpeCuitRepresentanteEntregador && x.Activo).LastOrDefault() ?? Repositorio.Listar<Entregador>(x => x.RazonSocial.ToUpper().Contains("SIN ENTREGA")).LastOrDefault();
-            var corredorVendedor = ObtenerProveedor(cartaPorte.CuitCorredorVentaPrimaria.ToString(), resultado, Textos.CartaPorte_CorredorVendedor, false, true, false);
             var cpeCuitRepresentanteRecibidor = cartaPorte.CuitRepresentanteRecibidor.ToString();
             var representanteRecibidor = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cpeCuitRepresentanteRecibidor && x.Activo).LastOrDefault();
-            var destinatario = ObtenerProveedor(cartaPorte.CuitDestinatario.ToString(), resultado, Textos.CartaPorte_Destinatario, false, false, true);
-            var intermediarioFlete = ObtenerProveedor(cartaPorte.CuitIntermediarioFlete.ToString(), resultado, Textos.CartaPorte_Intermediario, false, false, true);
-            var pagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true);
             var transportista = ObtenerTransportista(cartaPorte.CuitTransportista.ToString(), resultado);
 
             var material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo);
@@ -493,6 +531,84 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Repositorio.GuardarCambios();
             }
             return localidad;
+        }
+
+        /// <summary>
+        /// Pre-fetches all proveedores for a CartaPorteElectronica in a single DB query,
+        /// syncing missing ones with SAP before a second targeted query.
+        /// Reduces 10+ sequential DB queries to 1-2 per conversion.
+        /// </summary>
+        private List<Proveedor> PrecargarProveedores(CartaPorteElectronica cartaPorte)
+        {
+            var cuitsRaw = new[]
+            {
+                cartaPorte.CuitOrigen?.ToString(),
+                cartaPorte.CuitIntermediario?.ToString(),
+                cartaPorte.CuitRemitenteComercialProductor?.ToString(),
+                cartaPorte.CuitRemitenteComercialVentaPrimaria?.ToString(),
+                cartaPorte.CuitRemitenteComercialVentaSecundaria?.ToString(),
+                cartaPorte.CuitRemitenteComercialVentaSecundaria2?.ToString(),
+                cartaPorte.CuitCorredorVentaPrimaria?.ToString(),
+                cartaPorte.CuitCorredorVentaSecundaria?.ToString(),
+                cartaPorte.CuitMercadoATermino?.ToString(),
+                cartaPorte.CuitDestinatario?.ToString(),
+                cartaPorte.CuitIntermediarioFlete?.ToString(),
+                cartaPorte.CuitPagadorFlete?.ToString(),
+            };
+
+            var cuils = cuitsRaw
+                .Where(c => !string.IsNullOrEmpty(c) && c.Trim() != "0")
+                .Select(FormatterHelper.ConvertirCuilConGuionesSinException)
+                .Where(c => c != null)
+                .Distinct()
+                .ToList();
+
+            if (!cuils.Any()) return new List<Proveedor>();
+
+            var encontrados = Repositorio.Listar<Proveedor>(x => cuils.Contains(x.Cuil) && x.Activo).ToList();
+
+            var cuilsEncontrados = new HashSet<string>(encontrados.Select(p => p.Cuil));
+            var faltantes = cuils.Where(c => !cuilsEncontrados.Contains(c)).ToList();
+            if (faltantes.Any())
+            {
+                foreach (var cuit in faltantes)
+                    servicioComandos.Ejecutar(new SincronizarProveedores { RetornarResultado = false, Cuit = cuit, CargaMasiva = false });
+
+                var recuperados = Repositorio.Listar<Proveedor>(x => faltantes.Contains(x.Cuil) && x.Activo);
+                encontrados.AddRange(recuperados);
+            }
+
+            return encontrados;
+        }
+
+        /// <summary>
+        /// Looks up a proveedor from a pre-fetched batch list.
+        /// Falls back to SAP sync + individual DB query only on role mismatch (rare case),
+        /// and updates the batch to avoid redundant syncs for duplicate CUITs.
+        /// </summary>
+        private Proveedor GetProveedorDeBatch(List<Proveedor> batch, string cuitRaw, Resultado resultado, string nombreDato, bool am, bool cm, bool pr)
+        {
+            if (!string.IsNullOrEmpty(cuitRaw) && cuitRaw.Trim() == "0") return null;
+            var cuil = FormatterHelper.ConvertirCuilConGuionesSinException(cuitRaw);
+            if (cuil == null) return null;
+
+            var proveedor = batch
+                .Where(x => x.Cuil == cuil && ((x.AM == am && am) || (x.CM == cm && cm) || (x.PR == pr && pr)))
+                .LastOrDefault();
+
+            if (proveedor == null)
+            {
+                // Role mismatch: CUIT is in DB but without the expected role flag; sync may update it
+                servicioComandos.Ejecutar(new SincronizarProveedores { RetornarResultado = false, Cuit = cuil, CargaMasiva = false });
+                proveedor = Repositorio.Listar<Proveedor>(x => x.Cuil == cuil && ((x.AM == am && am) || (x.CM == cm && cm) || (x.PR == pr && pr)) && x.Activo).LastOrDefault();
+                if (proveedor != null)
+                    batch.Add(proveedor); // prevent re-sync for same CUIT+role used more than once
+            }
+
+            if (proveedor == null)
+                resultado.Error(nombreDato, string.Format(Textos.Proveedor_NoEncontrado, nombreDato, cuil));
+
+            return proveedor;
         }
 
         private Proveedor ObtenerProveedor(string cuitSinGuiones, Resultado resultado, string nombreDato, bool am, bool cm, bool pr)
@@ -636,10 +752,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             using (var document = PdfDocument.Load(new MemoryStream(pdf)))
             {
-                var dpix = ConfigurationManager.AppSettings["PdfCpeDpiX"];
-                var dpiy = ConfigurationManager.AppSettings["PdfCpeDpiY"];
-
-                var image = document.Render(0, string.IsNullOrEmpty(dpix) ? 600 : Convert.ToInt32(dpix), string.IsNullOrEmpty(dpiy) ? 600 : Convert.ToInt32(dpiy), PdfRenderFlags.ForPrinting | PdfRenderFlags.CorrectFromDpi);
+                var image = document.Render(0, _dpiX, _dpiY, PdfRenderFlags.ForPrinting | PdfRenderFlags.CorrectFromDpi);
                 using (MemoryStream ms = new MemoryStream())
                 {
                     image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);

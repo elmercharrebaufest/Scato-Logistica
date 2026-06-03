@@ -124,21 +124,21 @@ namespace Molinos.Scato.Servicios.Impl
             }
             return result;
         }
-            
-        public void CachearCpeAFIPSanLorenzo() 
+
+        public void CachearCpeAFIPSanLorenzo()
         {
-            CachearCpeAfip(Constantes.Centro.IdSanLorenzo, 3, "AMBOS");
+            CachearCpeAfip(Constantes.Centro.IdSanLorenzo, 3, TipoCpeConsulta.Ambos);
         }
 
         public void CachearCpeAFIPPorCentros()
         {
             var centros = repositorio.ListarCentros();
-            if(centros != null || centros.Any())
+            if (centros?.Any() == true)
             {
-                foreach(var centro in centros)
+                foreach (var centro in centros)
                 {
-                    if(centro.Id != Constantes.Centro.IdSanLorenzo)
-                        CachearCpeAfip(centro.Id, 3, "AMBOS");
+                    if (centro.Id != Constantes.Centro.IdSanLorenzo)
+                        CachearCpeAfip(centro.Id, 3, TipoCpeConsulta.Ambos);
                 }
             }
         }
@@ -152,9 +152,9 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var resultadoCrearCallePreBalanzaPlayaInterna = comandos.Ejecutar(new EliminarListaCartaPorteElectronica
             {
-               SonCartasIngresadas = true
+                SonCartasIngresadas = true
             });
-            if(resultadoCrearCallePreBalanzaPlayaInterna.HayErrores)
+            if (resultadoCrearCallePreBalanzaPlayaInterna.HayErrores)
                 log.Error("Ocurrio un error al limpiar la cache de CPE AFIP de documentos ingresados");
         }
 
@@ -529,13 +529,13 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
-        private void CachearCpeAfip(int centro = 5, int reintentos = 3, string tipoCpe = "AMBOS")
+        private void CachearCpeAfip(int centro = 5, int reintentos = 3, TipoCpeConsulta tipoCpe = TipoCpeConsulta.Ambos)
         {
             var cpesPendientes = (ResultadoConsultaCpePorDestino)comandos.Ejecutar(
                 new ConsultarCPEPorDestino()
                 {
                     CentroId = centro,
-                    TipoCpe = tipoCpe == "CAMION" ? TipoCpeConsulta.Camion : (tipoCpe == "TREN" ? TipoCpeConsulta.Tren : TipoCpeConsulta.Ambos),
+                    TipoCpe = tipoCpe,
                     FechaPartidaDesde = DateTime.Today,
                     FechaPartidaHasta = DateTime.Today.AddDays(1)
                 });
@@ -548,32 +548,36 @@ namespace Molinos.Scato.Servicios.Impl
 
                 var consultasParalelo = 0;
                 int.TryParse(consultasParaleloVal?.Valor, out consultasParalelo);
+                var maxParalelismo = consultasParalelo > 0 ? consultasParalelo : -1; // -1 = sin límite (valor válido)
+                var cpesPorCtg = cpesPendientes.Cpes.ToDictionary(x => x.Ctg);
 
                 log.Debug("Se inicia el proceso de cacheo");
-                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = consultasParalelo }, (ctg) =>
+                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = maxParalelismo }, (ctg) =>
                 {
                     var intentos = 0;
                     var ok = false;
 
                     while (!ok && intentos < reintentos)
                     {
+                        if (intentos > 0)
+                            Thread.Sleep(TimeSpan.FromSeconds(Math.Pow(2, intentos)));
                         try
                         {
-                            var cpe = cpesPendientes.Cpes.First(x => x.Ctg == ctg);
-
+                            var cpe = cpesPorCtg[ctg];
                             var resultado = comandos.Ejecutar(new ConsultarCPDigital()
                             {
                                 CentroId = centro,
                                 TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                                 NroCtg = ctg,
-                                FechaUltimaActualizacion = cpe.FechaUltimaModificacion
+                                FechaUltimaActualizacion = cpe.FechaUltimaModificacion,
+                                IncluirImagen = false,
                             });
 
                             ok = !resultado.HayErrores;
                         }
                         catch (Exception ex)
                         {
-                            log.Error("Ocurrio un problema al realizar el cache de {0}: {1}", ctg, ex.Message);
+                            log.Error(string.Format("Ocurrio un problema al realizar el cache de {0}", ctg), ex);
                             ok = false;
                         }
                         finally
@@ -592,45 +596,57 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void SincronizarCartaPorteElectronicaActivos(int centro, int items = 10000)
         {
-            try
+
+            var paginacion = new Paginacion("CTG", DirOrden.Asc, 1, itemsPorPagina: items);
+            var filtro = new MonitorCPECacheadaFiltroDto
             {
-                var paginacion = new Paginacion("CTG", DirOrden.Asc, 1, itemsPorPagina: items);
-                var filtro = new MonitorCPECacheadaFiltroDto
-                {
-                    CentroId = centro,
-                    EsJobAutomatico = true
-                };
+                CentroId = centro,
+                EsJobAutomatico = true
+            };
 
-                var registros = repositorio.ListarCPEsCacheadas(filtro, paginacion);
+            var registros = repositorio.ListarCPEsCacheadas(filtro, paginacion);
+            var consultasParaleloVal = repositorio.ObtenerConfiguracionGeneral(
+                                       Constantes.ConfiguracionGeneral.Pantalla.AFIP,
+                                       Constantes.ConfiguracionGeneral.AFIP.ConsultasParalelas);
+            var consultasParalelo = 0;
+            int.TryParse(consultasParaleloVal?.Valor, out consultasParalelo);
+            var maxParalelismo = consultasParalelo > 0 ? consultasParalelo : -1;
 
-                foreach (var cpe in registros.MonitorCPECacheadaListado)
-                {
-                    log.Debug("Sincronizando CartaPorteElectronica " + cpe.CTG.Value);
-                    var resultado = comandos.Ejecutar(new ConsultarCPDigital()
+            Parallel.ForEach(registros.MonitorCPECacheadaListado, 
+                    new ParallelOptions { MaxDegreeOfParallelism = maxParalelismo },
+                    (cpe) =>
                     {
-                        CentroId = centro,
-                        TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
-                        NroCtg = cpe.CTG.Value,
-                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now,
-                        ForzarConsultaAfip = true
-
-                    }); ;
-
-
-
-                    if (resultado.HayErrores)
-                    {
-                        foreach (var error in resultado.Errores)
+                        try
                         {
-                            log.Error("Ocurrio un problema al realizar el proceso de SinscronizarEstadosCartaPorteElectronicaActivos del CTG: {0} - {1}", cpe.CTG.Value, error);
+
+                            log.Debug("Sincronizando CartaPorteElectronica " + cpe.CTG.Value);
+                            var resultado = comandos.Ejecutar(new ConsultarCPDigital()
+                            {
+                                CentroId = centro,
+                                TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
+                                NroCtg = cpe.CTG.Value,
+                                FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now,
+                                ForzarConsultaAfip = true,
+                                IncluirImagen = false
+
+                            });
+
+
+
+                            if (resultado.HayErrores)
+                            {
+                                foreach (var error in resultado.Errores)
+                                {
+                                    log.Error(string.Format("Ocurrio un problema al SincronizarEstadosCartaPorteElectronicaActivos del CTG: {0} - {1}", cpe.CTG, error));
+                                }
+                            }
                         }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                log.Error("Ocurrio un problema al realizar el proceso de SinscronizarEstadosCartaPorteElectronicaActivos: ", e.Message);
-            }
+                        catch (Exception e)
+                        {
+                            log.Error("Ocurrio un problema al SincronizarEstadosCartaPorteElectronicaActivos", e);
+                        }
+                    });
+
         }
     }
 }
