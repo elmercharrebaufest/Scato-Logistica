@@ -29,10 +29,11 @@ namespace Molinos.Scato.Actividades.Internas
                 var recorridoDto = srvRepositorio.ObtenerRecorridoValoresSapPorGuid(instanceId);
                 var numeroDocumento = recorridoDto.NumeroDeDocumentoSap;
 
+                var documentos = numeroDocumento != null ? numeroDocumento.Split(new[] { '-', 'R' }) : null;
                 var validacion = new ValidacionCOT
                 {
-                    PtoVtaRemito = numeroDocumento != null ? numeroDocumento.Substring(0, 5) : string.Empty,
-                    NroComprobante = numeroDocumento != null ? numeroDocumento.Substring(6, 8) : string.Empty,
+                    PtoVtaRemito = documentos != null && documentos.Length > 0 ? documentos[0] : string.Empty,
+                    NroComprobante = documentos != null && documentos.Length > 1 ? documentos[1] : string.Empty,
                     DocInternoSAP = recorridoDto.DocumentoInternoSap ?? string.Empty,
                 };
 
