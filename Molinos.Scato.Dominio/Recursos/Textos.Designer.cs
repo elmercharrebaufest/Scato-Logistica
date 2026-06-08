@@ -25997,6 +25997,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Identificador Vehicular.
+        /// </summary>
+        public static string PuestoDeTrabajo_CodigoConfigIdentificacionVehicular {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_CodigoConfigIdentificacionVehicular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Concentrador.
         /// </summary>
         public static string PuestoDeTrabajo_Concentrador {
@@ -26254,6 +26263,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoDeTrabajo_SensorVehicular {
             get {
                 return ResourceManager.GetString("PuestoDeTrabajo_SensorVehicular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Los datos se guardaron exitosamente, pero hubo un error al suscribir el codigo de identificacion vehicular: {0}.
+        /// </summary>
+        public static string PuestoDeTrabajo_SuscribirIdentificacionVehicular {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_SuscribirIdentificacionVehicular", resourceCulture);
             }
         }
         

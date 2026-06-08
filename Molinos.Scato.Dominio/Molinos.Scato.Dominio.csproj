@@ -85,6 +85,9 @@
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarAsignacionAutomatismoGranoEnRecorrido .cs" />
+    <Compile Include="Comandos\ActualizarLogIdentificacionVehicularResultado.cs" />
+    <Compile Include="Comandos\AvanzarWorkflowPorIdentificacionVehicular.cs" />
+    <Compile Include="Comandos\ModificarFinMarcaTiempoPorPuestoDeTrabajo.cs" />
     <Compile Include="Comandos\ComandoImpresion.cs" />
     <Compile Include="Comandos\ActualizarRegistroJobEjecucion.cs" />
     <Compile Include="Comandos\ConsultarCategoriaVehiculoNoGranos.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="Comandos\ConsultarCategoriaVehiculoGranos.cs" />
     <Compile Include="Comandos\Consultas\ConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarExcepcionPagoTicketMunicipal.cs" />
+    <Compile Include="Comandos\CrearLogIdentificacionVehicular.cs" />
     <Compile Include="Comandos\CrearLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Comandos\CrearLogValidacionAccesoStopRespuesta.cs" />
     <Compile Include="Comandos\CrearDocumentoPorRecorridoHistorico.cs" />
@@ -109,6 +113,9 @@
     <Compile Include="Comandos\ModificarRecorridoPorContingenciaPay.cs" />
     <Compile Include="Comandos\ModificarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\LiberarPagoTasaMunicipal.cs" />
+    <Compile Include="Comandos\ProcesarIdentificacionVehicular.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoProcesarIdentificacionVehicular.cs" />
+    <Compile Include="Comandos\CrearInicioMarcaTiempoPorPuestoDeTrabajo.cs" />
     <Compile Include="Comandos\ReiniciarIntercomunicador.cs" />
     <Compile Include="Comandos\ResultadoReiniciarIntercomunicador.cs" />
     <Compile Include="Comandos\Stop\ValidarAccesoStopBandasHorarias.cs" />
@@ -861,6 +868,7 @@
     <Compile Include="Dto\ExcepcionAlControlProveedorDto.cs" />
     <Compile Include="Dto\DerivadoGranario\RequestAltaCTGDGDto.cs" />
     <Compile Include="Dto\DomicilioDto.cs" />
+    <Compile Include="Dto\ResultadoIntentoALPR.cs" />
     <Compile Include="Dto\TicketPesadaDto.cs" />
     <Compile Include="Dto\Visec\FiltroPanelDeTransaccionesVisecDto.cs" />
     <Compile Include="Dto\HistorialMensajeCartelLedDto.cs" />
@@ -1170,8 +1178,11 @@
     <Compile Include="Dto\LogExceptuadosTicketMunicipalDto.cs" />
     <Compile Include="Dto\PanelServerAppPoolDto.cs" />
     <Compile Include="Dto\MuestraEnvioACamaraYRecorridoDto.cs" />
+    <Compile Include="Entidades\LogIdentificacionVehicular.cs" />
+    <Compile Include="Entidades\LogIdentificacionVehicularDetalle.cs" />
     <Compile Include="Entidades\LogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Entidades\LogValidacionAccesoStopRespuesta.cs" />
+    <Compile Include="Entidades\MarcaTiempoPorPuestoDeTrabajo.cs" />
     <Compile Include="Entidades\RecorridoTasaMunicipal.cs" />
     <Compile Include="Entidades\DocumentoPorRecorrido.cs" />
     <Compile Include="Entidades\EstadoPagoTasaMunicipal.cs" />

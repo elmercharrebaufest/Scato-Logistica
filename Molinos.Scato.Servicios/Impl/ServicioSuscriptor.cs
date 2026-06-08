@@ -1,23 +1,18 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
-
 using Molinos.Scato.Servicios.Behavior;
+using Molinos.Scato.Servicios.Estrategias;
 using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Threading;
-
-
+using System.Threading.Tasks;
 using static Molinos.Scato.Dominio.Constantes;
-using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Servicios.Estrategias;
 
 namespace Molinos.Scato.Servicios.Impl
 {

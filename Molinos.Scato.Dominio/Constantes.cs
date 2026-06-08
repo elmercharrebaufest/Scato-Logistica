@@ -57,6 +57,7 @@ namespace Molinos.Scato.Dominio
             public const string CambioEstadoSensorCirculacion = "CambioEstadoSensorCirculacion";
             public const string CambioEstadoCamaraALPR = "CambioEstadoCamaraALPR";
             public const string VehiculoDetectado = "VehiculoDetectado";
+            public const string IdentificacionVehicular = "IdentificacionVehicular";
         }
 
         public struct AFIPCodigoDeError

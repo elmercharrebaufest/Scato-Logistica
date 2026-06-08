@@ -2,6 +2,7 @@
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
@@ -92,9 +93,35 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     }
                 }
             }
+
+            if (!string.IsNullOrEmpty(dto.CodigoConfigIdentificacionVehicular))
+            {
+                var estaAsociadoAOtroPuesto = Repositorio.Existe<PuestoDeTrabajo>(
+                    p => p.CodigoConfigIdentificacionVehicular == dto.CodigoConfigIdentificacionVehicular && p.Id != dto.Id);
+
+                if (!estaAsociadoAOtroPuesto)
+                {
+                    try
+                    {
+                        SuscribirIV(dto.CodigoConfigIdentificacionVehicular, nameof(dto.CodigoConfigIdentificacionVehicular), Constantes.CodigosEventos.IdentificacionVehicular, urlNotificacionesWeb, resultado);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "No se pudo crear la suscripción para el codigo de Identificación vehicular {0}.", dto.CodigoConfigIdentificacionVehicular);
+                        if (!resultado.Errores.Keys.Contains(nameof(dto.CodigoConfigIdentificacionVehicular)))
+                        {
+                            resultado.Error(nameof(dto.CodigoConfigIdentificacionVehicular), String.Format(Textos.PuestoDeTrabajo_SuscribirIdentificacionVehicular, e.Message));
+                        }
+                    }
+                }
+                else
+                {
+                    Log.Info("No se suscribe el código de Identificación Vehicular {0} porque ya está asociado a otro puesto de trabajo.", dto.CodigoConfigIdentificacionVehicular);
+                }
+            }
         }
 
-        protected void CancelarDispositivos(PuestoDeTrabajoDto dto, Resultado resultado)
+        protected void CancelarDispositivos(PuestoDeTrabajoDto dto, Resultado resultado, string codigoCIVAnterior = null)
         {
             var urlNotificaciones = config.AppSettings["UrlNotificaciones"];
             var urlNotificacionesWeb = config.AppSettings["UrlNotificacionesWeb"];
@@ -151,7 +178,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 Log.Error(e, "No se pudo cancelar la suscripción para el sensor {0}.", dto.SensorQuiebre);
             }
-            
+
             if (!string.IsNullOrEmpty(dto.SensorVehicular))
             {
                 try
@@ -171,6 +198,33 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Log.Error(e, "No se pudo cancelar la suscripción para el sensor vehicular {0}.", dto.SensorVehicular);
                 }
             }
+
+            if (!string.IsNullOrEmpty(codigoCIVAnterior))
+            {
+                var estaAsociadoAOtroPuesto = Repositorio.Existe<PuestoDeTrabajo>(
+                    p => p.CodigoConfigIdentificacionVehicular == codigoCIVAnterior && p.Id != dto.Id);
+
+                if (!estaAsociadoAOtroPuesto)
+                {
+                    try
+                    {
+                        var resultadoOrq = servicioOrquestador.CancelarSuscripcionIdentificacionVehicular(codigoCIVAnterior, Constantes.CodigosEventos.IdentificacionVehicular, urlNotificacionesWeb);
+                        if (resultadoOrq.Mensaje.Codigo != 0)
+                        {
+                            Log.Error("No se pudo cancelar la suscripción para el codigo de Identificación vehicular {0}. Mensaje: {1}-{2}", codigoCIVAnterior, resultadoOrq.Mensaje.Codigo, resultadoOrq.Mensaje.Descripcion);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "No se pudo cancelar la suscripción para el codigo de Identificación vehicular {0}.", codigoCIVAnterior);
+                    }
+                }
+                else
+                {
+                    Log.Info("No se cancela la suscripción del código de Identificación Vehicular {0} porque está asociado a otro puesto de trabajo.", codigoCIVAnterior);
+                }
+            }
+
         }
 
 
@@ -190,6 +244,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (!resultadoComando.Errores.Keys.Contains(dispositivo))
                 {
                     resultadoComando.Error(dispositivo, String.Format(Textos.PuestoDeTrabajo_SuscribirLector, resultado.Mensaje.Descripcion));
+                }
+            }
+        }
+
+        private void SuscribirIV(string codigoDispositivo, string dispositivo, string codigoEvento, string rutaAcceso, Resultado resultadoComando)
+        {
+            var resultado = servicioOrquestador.SuscribirIdentificacionVehicular(
+                codigoDispositivo,
+                codigoEvento,
+                rutaAcceso
+            );
+
+            if (resultado.Mensaje.Codigo != 0)
+            {
+                Log.Error("No se pudo crear la suscripción para el dispositivo {0}. Mensaje: {1}-{2}", codigoDispositivo, resultado.Mensaje.Codigo, resultado.Mensaje.Descripcion);
+                if (!resultadoComando.Errores.Keys.Contains(dispositivo))
+                {
+                    resultadoComando.Error(dispositivo, String.Format(Textos.PuestoDeTrabajo_SuscribirIdentificacionVehicular, resultado.Mensaje.Descripcion));
                 }
             }
         }

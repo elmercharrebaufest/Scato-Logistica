@@ -928,10 +928,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.ReporteDePasoPorCero, "Index", "Reportes", new { nombreReporte = "Reporte de Paso por Cero" }, null)</li>
                                 }
-                                @if (PermisosHelper.Is(PermisosScato.ReconocimientoDePatentes))
+                                <!--@if (PermisosHelper.Is(PermisosScato.ReconocimientoDePatentes))
                                 {
                                     <li>@Html.ActionLink(Textos.ReconocimientoDePatentes, "Index", "Reportes", new { nombreReporte = "Reconocimiento de Patentes" }, null)</li>
-                                }
+                                }-->
                                 @if (PermisosHelper.Is(PermisosScato.AutorizacionesExcesoDeTiempo))
                                 {
                                     <li>@Html.ActionLink(Textos.AutorizacionesExcesoDeTiempo, "Index", "Reportes", new { nombreReporte = "Autorizaciones por Exceso de Tiempo" }, null)</li>

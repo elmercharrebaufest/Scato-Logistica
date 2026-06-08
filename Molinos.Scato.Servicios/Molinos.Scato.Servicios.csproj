@@ -614,8 +614,14 @@
     <Compile Include="Procesamiento\ProcesadoLimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLogIdentificacionVehicularResultado.cs" />
+    <Compile Include="Procesamiento\ProcesadorAvanzarWorkflowPorIdentificacionVehicular.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogIdentificacionVehicular.cs" />
+    <Compile Include="Procesamiento\ProcesadorProcesarIdentificacionVehicular.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarFinMarcaTiempoPorPuestoDeTrabajo.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarExcepcionPagoTicketMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearInicioMarcaTiempoPorPuestoDeTrabajo.cs" />
     <Compile Include="Procesamiento\ProcesadorReiniciarIntercomunicador.cs" />
     <Compile Include="Procesamiento\Stop\ProcesadorCrearLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogValidacionAccesoStopRespuesta.cs" />
@@ -1759,6 +1765,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.CamaraDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ConfigIdentificacionVehicularDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.DispositivoDto.datasource">

@@ -1733,6 +1733,147 @@ namespace Molinos.Scato.Servicios.Orquestador {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ConfigIdentificacionVehicularDto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class ConfigIdentificacionVehicularDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool ActivoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoLectorTarjetasField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoSensorPresenciaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoSensorVehicularField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NombreField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Activo {
+            get {
+                return this.ActivoField;
+            }
+            set {
+                if ((this.ActivoField.Equals(value) != true)) {
+                    this.ActivoField = value;
+                    this.RaisePropertyChanged("Activo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Codigo {
+            get {
+                return this.CodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoField, value) != true)) {
+                    this.CodigoField = value;
+                    this.RaisePropertyChanged("Codigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CodigoLectorTarjetas {
+            get {
+                return this.CodigoLectorTarjetasField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoLectorTarjetasField, value) != true)) {
+                    this.CodigoLectorTarjetasField = value;
+                    this.RaisePropertyChanged("CodigoLectorTarjetas");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CodigoSensorPresencia {
+            get {
+                return this.CodigoSensorPresenciaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoSensorPresenciaField, value) != true)) {
+                    this.CodigoSensorPresenciaField = value;
+                    this.RaisePropertyChanged("CodigoSensorPresencia");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CodigoSensorVehicular {
+            get {
+                return this.CodigoSensorVehicularField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoSensorVehicularField, value) != true)) {
+                    this.CodigoSensorVehicularField = value;
+                    this.RaisePropertyChanged("CodigoSensorVehicular");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Nombre {
+            get {
+                return this.NombreField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NombreField, value) != true)) {
+                    this.NombreField = value;
+                    this.RaisePropertyChanged("Nombre");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CamaraDto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
     [System.SerializableAttribute()]
     public partial class CamaraDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -2074,6 +2215,26 @@ namespace Molinos.Scato.Servicios.Orquestador {
             "nse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoComando> RecargarConfiguracionAsync(string codigoDispositivo);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/SuscribirIdentificacionVeh" +
+            "icular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/SuscribirIdentificacionVeh" +
+            "icularResponse")]
+        Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir SuscribirIdentificacionVehicular(string codigoCIV, string codigoEvento, string rutaAccesoSuscriptor);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/SuscribirIdentificacionVeh" +
+            "icular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/SuscribirIdentificacionVeh" +
+            "icularResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir> SuscribirIdentificacionVehicularAsync(string codigoCIV, string codigoEvento, string rutaAccesoSuscriptor);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcionIdentif" +
+            "icacionVehicular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcionIdentif" +
+            "icacionVehicularResponse")]
+        Molinos.Scato.Servicios.Orquestador.ResultadoComando CancelarSuscripcionIdentificacionVehicular(string codigoCIV, string codigoEvento, string rutaAccesoSuscriptor);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcionIdentif" +
+            "icacionVehicular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcionIdentif" +
+            "icacionVehicularResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoComando> CancelarSuscripcionIdentificacionVehicularAsync(string codigoCIV, string codigoEvento, string rutaAccesoSuscriptor);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectores", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectoresResponse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarLectores();
         
@@ -2131,6 +2292,16 @@ namespace Molinos.Scato.Servicios.Orquestador {
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehiculares", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresVehicularesR" +
             "esponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarSensoresVehicularesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarConfigIdentificacion" +
+            "Vehicular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarConfigIdentificacion" +
+            "VehicularResponse")]
+        Molinos.Scato.Servicios.Orquestador.ConfigIdentificacionVehicularDto[] ListarConfigIdentificacionVehicular();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarConfigIdentificacion" +
+            "Vehicular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarConfigIdentificacion" +
+            "VehicularResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ConfigIdentificacionVehicularDto[]> ListarConfigIdentificacionVehicularAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetros", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetrosResponse" +
             "")]
@@ -2227,6 +2398,16 @@ namespace Molinos.Scato.Servicios.Orquestador {
             "dor", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentra" +
             "dorResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarSensoresPorConcentradorAsync(string concentrador);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfigIdentificaci" +
+            "onVehicular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfigIdentificaci" +
+            "onVehicularResponse")]
+        Molinos.Scato.Servicios.Orquestador.ResultadoComando RecargarConfigIdentificacionVehicular(string codigoCIV);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfigIdentificaci" +
+            "onVehicular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfigIdentificaci" +
+            "onVehicularResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoComando> RecargarConfigIdentificacionVehicularAsync(string codigoCIV);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/DetenerServiceOrquestador", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/DetenerServiceOrquestadorR" +
             "esponse")]
@@ -2388,6 +2569,22 @@ namespace Molinos.Scato.Servicios.Orquestador {
             return base.Channel.RecargarConfiguracionAsync(codigoDispositivo);
         }
         
+        public Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir SuscribirIdentificacionVehicular(string codigoCIV, string codigoEvento, string rutaAccesoSuscriptor) {
+            return base.Channel.SuscribirIdentificacionVehicular(codigoCIV, codigoEvento, rutaAccesoSuscriptor);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir> SuscribirIdentificacionVehicularAsync(string codigoCIV, string codigoEvento, string rutaAccesoSuscriptor) {
+            return base.Channel.SuscribirIdentificacionVehicularAsync(codigoCIV, codigoEvento, rutaAccesoSuscriptor);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.ResultadoComando CancelarSuscripcionIdentificacionVehicular(string codigoCIV, string codigoEvento, string rutaAccesoSuscriptor) {
+            return base.Channel.CancelarSuscripcionIdentificacionVehicular(codigoCIV, codigoEvento, rutaAccesoSuscriptor);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoComando> CancelarSuscripcionIdentificacionVehicularAsync(string codigoCIV, string codigoEvento, string rutaAccesoSuscriptor) {
+            return base.Channel.CancelarSuscripcionIdentificacionVehicularAsync(codigoCIV, codigoEvento, rutaAccesoSuscriptor);
+        }
+        
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarLectores() {
             return base.Channel.ListarLectores();
         }
@@ -2450,6 +2647,14 @@ namespace Molinos.Scato.Servicios.Orquestador {
         
         public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarSensoresVehicularesAsync() {
             return base.Channel.ListarSensoresVehicularesAsync();
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.ConfigIdentificacionVehicularDto[] ListarConfigIdentificacionVehicular() {
+            return base.Channel.ListarConfigIdentificacionVehicular();
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ConfigIdentificacionVehicularDto[]> ListarConfigIdentificacionVehicularAsync() {
+            return base.Channel.ListarConfigIdentificacionVehicularAsync();
         }
         
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarHumedimetros() {
@@ -2554,6 +2759,14 @@ namespace Molinos.Scato.Servicios.Orquestador {
         
         public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarSensoresPorConcentradorAsync(string concentrador) {
             return base.Channel.ListarSensoresPorConcentradorAsync(concentrador);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.ResultadoComando RecargarConfigIdentificacionVehicular(string codigoCIV) {
+            return base.Channel.RecargarConfigIdentificacionVehicular(codigoCIV);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoComando> RecargarConfigIdentificacionVehicularAsync(string codigoCIV) {
+            return base.Channel.RecargarConfigIdentificacionVehicularAsync(codigoCIV);
         }
         
         public void DetenerServiceOrquestador(string server) {

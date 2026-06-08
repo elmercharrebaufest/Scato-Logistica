@@ -5,7 +5,6 @@ using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Comandos.Validaciones;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
@@ -64,7 +63,20 @@ namespace Molinos.Scato.Web.ServicioHub
 
         public void Recibir(NotificacionEvento notificacion)
         {
-            if (notificacion.CodigoEvento == Constantes.CodigosEventos.VehiculoDetectado)
+            if (notificacion.CodigoEvento == Constantes.CodigosEventos.IdentificacionVehicular)
+            {
+                try
+                {
+                    log.Debug("Iniciando - Notificacion IdentificacionVehicular de dispositivo: {0}", notificacion.CodigoDispositivo);
+                    ProcesarAuditoriaIdentificacionVehicular(notificacion);
+                    log.Debug("Fin - Notificacion IdentificacionVehicular procesada para dispositivo: {0}", notificacion.CodigoDispositivo);
+                }
+                catch (Exception e)
+                {
+                    log.Error(e, "Error al procesar notificación IdentificacionVehicular del dispositivo: {0}", notificacion.CodigoDispositivo);
+                }
+            }
+            else if (notificacion.CodigoEvento == Constantes.CodigosEventos.VehiculoDetectado)
             {
                 try
                 {
@@ -904,6 +916,64 @@ namespace Molinos.Scato.Web.ServicioHub
             };
 
             hubClientLectura.Invoke("NotificarCambioEstadoIntercomunicador", notificacionIntercomunicador);
+        }
+
+        private void ProcesarAuditoriaIdentificacionVehicular(NotificacionEvento notificacion)
+        {
+            var error = notificacion.Datos.ContainsKey("Error") ? notificacion.Datos["Error"] : null;
+            var tarjeta = notificacion.Datos.ContainsKey("Tarjeta") ? notificacion.Datos["Tarjeta"] : null;
+            var codigoDispositivo = notificacion.CodigoDispositivo;
+            var patente = notificacion.Datos.ContainsKey("Patente") ? notificacion.Datos["Patente"] : null;
+            bool.TryParse(notificacion.Datos.ContainsKey("VehiculoPresente") ? notificacion.Datos["VehiculoPresente"] : "false", out var vehiculoPresente);
+            DateTime.TryParse(notificacion.Datos.ContainsKey("FechaEvento") ? notificacion.Datos["FechaEvento"] : null, out var fechaEvento);
+
+            var detalles = new List<Molinos.Scato.Dominio.Dto.ResultadoIntentoALPR>();
+            if (notificacion.Datos.ContainsKey("Detalle") && !string.IsNullOrEmpty(notificacion.Datos["Detalle"]))
+            {
+                try
+                {
+                    detalles = JsonConvert.DeserializeObject<List<Molinos.Scato.Dominio.Dto.ResultadoIntentoALPR>>(notificacion.Datos["Detalle"]);
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex, "Error al deserializar Detalle de IdentificacionVehicular: {0}", notificacion.Datos["Detalle"]);
+                }
+            }
+
+            var resultado = comandos.Ejecutar(new ProcesarIdentificacionVehicular
+            {
+                CodigoDispositivo = codigoDispositivo,
+                Tarjeta = tarjeta,
+                Error = error,
+                Patente = patente,
+                VehiculoPresente = vehiculoPresente,
+                FechaEvento = fechaEvento == default ? DateTime.Now : fechaEvento,
+                Detalles = detalles
+            }) as ResultadoProcesarIdentificacionVehicular;
+
+            if (resultado == null || resultado.HayErrores)
+            {
+                log.Error("Error al procesar identificación vehicular: {0}", 
+                    resultado?.Errores.FirstOrDefault().Value ?? "Resultado nulo");
+                return;
+            }
+
+            if (!resultado.AvanzarWorkflow)
+            {
+                log.Debug($"IdentificacionVehicular — no requiere avanzar workflow. Motivo: {resultado.ResultadoWorkflow}");
+                return;
+            }
+
+            log.Debug($"IdentificacionVehicular — procesando lectura puesto. RecorridoId: {resultado.RecorridoId}, PuestoId: {resultado.PuestoDeTrabajoId}");
+            ProcesarLecturaPuesto(notificacion, resultado.LecturaPuestoDeTrabajo);
+
+            comandos.Ejecutar(new ActualizarLogIdentificacionVehicularResultado
+            {
+                LogId = resultado.LogId,
+                ResultadoWorkflow = "Lectura puesto procesada exitosamente",
+                RecorridoId = resultado.RecorridoId,
+                PuestoDeTrabajoId = resultado.PuestoDeTrabajoId
+            });
         }
 
         private string GuardarFotoLogALPR(byte[] imagen, string fileName)

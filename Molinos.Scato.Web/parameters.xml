@@ -258,4 +258,9 @@
         <parameterEntry kind="XmlFile" scope="log4net.config"
                             match="/log4net/appender[@name='RollingLogFileAppender']/file/@value" />
     </parameter>
+
+    <parameter name="CustomErrors Mode Config">
+        <parameterEntry kind="XmlFile" scope="Web.config"
+                        match="/configuration/system.web/customErrors/@mode" />
+    </parameter>
 </parameters>

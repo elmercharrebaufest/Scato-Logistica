@@ -26,6 +26,7 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<IServicioComandos> servComandosMock;
         private Mock<IServicioOrquestador> orquestadorMock;
         private Mock<IServicioEstadoPuesto> estado;
+        private Mock<IFirmwareFactory> firmwareFactoryMock;
 
         private List<PuestoDeTrabajoDto> puestos;
         [SetUp]
@@ -35,8 +36,14 @@ namespace Molinos.Scato.Test.Controllers
             servComandosMock = new Mock<IServicioComandos>();
             orquestadorMock = new Mock<IServicioOrquestador>();
             estado = new Mock<IServicioEstadoPuesto>();
+            firmwareFactoryMock = new Mock<IFirmwareFactory>();
+
+            // Mock firmwares disponibles
+            firmwareFactoryMock.Setup(f => f.FirmwareDisponibles())
+                .Returns(new Dictionary<string, string> { { "FirmwareTest", "TestValue" } });
+
             target = new PuestoDeTrabajoController(
-                null, servRepositorioMock.Object, servComandosMock.Object, orquestadorMock.Object, null, estado.Object);
+                null, servRepositorioMock.Object, servComandosMock.Object, orquestadorMock.Object, firmwareFactoryMock.Object, estado.Object);
 
             puestos = new List<PuestoDeTrabajoDto>
                 {
@@ -131,9 +138,7 @@ namespace Molinos.Scato.Test.Controllers
             var resultado = new Resultado();
             resultado.Error("Error", "error");
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<CrearPuestoDeTrabajo>())).Returns(resultado);
-            orquestadorMock.Setup(s => s.ListarLectores()).Returns(new[]{ new DispositivoDto()});
-            orquestadorMock.Setup(s => s.ListarBarrerasSemaforos()).Returns(new[] { new DispositivoDto() });
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            ConfigurarMocksSetearVista();
 
             var datosUsuario = new DatosUsuario { CentroId = 1 };
             var result = target.Crear(datosUsuario, "[{\"Codigo\":\"Barem01\",\"Descripcion\":\"Bar1\"}]", "[{\"Codigo\":\"Barem01\",\"Descripcion\":\"Bar1\"}]", "[]", "[]", puestos[0],"[]") as ViewResult;
@@ -150,10 +155,10 @@ namespace Molinos.Scato.Test.Controllers
         {
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<CrearPuestoDeTrabajo>()))
                 .Returns(new Resultado());
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            ConfigurarMocksSetearVista();
             var datosUsuario = new DatosUsuario { CentroId = 1 };
             var result = target.Crear(datosUsuario, "", "", "","", puestos[0],"") as ContentResult;
-            
+
             servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(0));
             Assert.Null(result);
             Assert.False(target.ModelState.IsValid);
@@ -164,9 +169,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             servRepositorioMock.Setup(s => s.ObtenerPuestoDeTrabajo(1))
                 .Returns(puestos[0]);
-            orquestadorMock.Setup(s => s.ListarLectores()).Returns(new[] { new DispositivoDto() });
-            orquestadorMock.Setup(s => s.ListarBarrerasSemaforos()).Returns(new[] { new DispositivoDto() });
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            ConfigurarMocksSetearVista();
 
             var result = target.Modificar(1,new DatosUsuario()) as ViewResult;
 
@@ -197,7 +200,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ModificarPuestoDeTrabajo>()))
                 .Returns(new Resultado());
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            ConfigurarMocksSetearVista();
 
             var camaraDto = new PuestoDeTrabajoDto
             {
@@ -206,7 +209,7 @@ namespace Molinos.Scato.Test.Controllers
             };
 
             var result = target.Modificar(camaraDto, "", "", "", "", new DatosUsuario(),"") as ContentResult;
-            
+
             servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(0));
             Assert.Null(result);
             Assert.False(target.ModelState.IsValid);
@@ -217,9 +220,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ModificarPuestoDeTrabajo>()))
                 .Returns(new Resultado());
-            orquestadorMock.Setup(s => s.ListarLectores()).Returns(new DispositivoDto[] { new DispositivoDto() });
-            orquestadorMock.Setup(s => s.ListarBarrerasSemaforos()).Returns(new DispositivoDto[] { new DispositivoDto() });
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            ConfigurarMocksSetearVista();
 
             var camaraDto = new PuestoDeTrabajoDto
             {
@@ -295,6 +296,22 @@ namespace Molinos.Scato.Test.Controllers
 
         }
 
+        private void ConfigurarMocksSetearVista()
+        {
+            orquestadorMock.Setup(s => s.ListarLectores()).Returns(new[] { new DispositivoDto() });
+            orquestadorMock.Setup(s => s.ListarBarrerasSemaforos()).Returns(new[] { new DispositivoDto() });
+            orquestadorMock.Setup(s => s.ListarCamaras()).Returns(new[] { new DispositivoDto() });
+            orquestadorMock.Setup(s => s.ListarSensores()).Returns(new[] { new DispositivoDto() });
+            orquestadorMock.Setup(s => s.ListarSensoresVehiculares()).Returns(new[] { new DispositivoDto() });
+            orquestadorMock.Setup(s => s.ListarConfigIdentificacionVehicular()).Returns(new[] { new Molinos.Scato.Servicios.Orquestador.ConfigIdentificacionVehicularDto { Codigo = "TEST01", Nombre = "Test Vehicular" } });
+            orquestadorMock.Setup(s => s.ListarLectoresQr()).Returns(new[] { new DispositivoDto() });
+            orquestadorMock.Setup(s => s.ListarCartelesLed()).Returns(new[] { new DispositivoDto() });
+            orquestadorMock.Setup(s => s.ListarIntercomunicadores()).Returns(new[] { new DispositivoDto() });
+            orquestadorMock.Setup(s => s.ListarGruposBarrera()).Returns(new[] { new DispositivoDto() });
+            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            servRepositorioMock.Setup(x => x.ListarConfiguracionSensores(It.IsAny<int>())).Returns(new List<ConfigSensoresDto>());
+            servRepositorioMock.Setup(x => x.ObtenerGruposBarrerasPorCentro(It.IsAny<int>())).Returns(new List<VisualizacionBarreraDto>());
+        }
 
     }
 }

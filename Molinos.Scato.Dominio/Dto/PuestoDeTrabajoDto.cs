@@ -164,5 +164,8 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_SensorVehicular")]
         public string SensorVehicular { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_CodigoConfigIdentificacionVehicular")]
+        public string CodigoConfigIdentificacionVehicular { get; set; }
+
     }
 }

@@ -1,11 +1,12 @@
-﻿using System;
-using System.Activities;
-using System.Configuration;
-using System.Linq;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
+using Ninject.Extensions.Logging;
+using System;
+using System.Activities;
+using System.Configuration;
+using System.Linq;
 
 namespace Molinos.Scato.Actividades
 {
@@ -21,6 +22,7 @@ namespace Molinos.Scato.Actividades
             var servicio = context.GetExtension<IServicioComandos>();
             var repositorio = context.GetExtension<IServicioRepositorio>();
             var notificar = context.GetExtension<IServicioNotificarUsuario>();
+            var log = context.GetExtension<ILogger>();
 
             try
             {

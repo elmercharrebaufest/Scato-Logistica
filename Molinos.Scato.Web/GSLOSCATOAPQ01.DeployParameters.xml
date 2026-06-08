@@ -44,4 +44,5 @@
     <setParameter name="URLOperacionesAPI Config" value="http://qahuenei.moaoperaciones.com.ar/externalApi/external/api/" />
     <setParameter name="APITokenOperacionesAPI Config" value="prueba" />
     <setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoWeb.log" />
+    <setParameter name="CustomErrors Mode Config" value="Off" />
 </parameters>

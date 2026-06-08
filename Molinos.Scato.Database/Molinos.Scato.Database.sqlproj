@@ -560,6 +560,9 @@
     <Build Include="dbo\Tables\LogValidacionAccesoStopBandasHorarias.sql" />
     <Build Include="dbo\Tables\LogValidacionAccesoStopRespuesta.sql" />
     <Build Include="dbo\Tables\DocumentoPorRecorrido.sql" />
+    <Build Include="dbo\Tables\LogIdentificacionVehicular.sql" />
+    <Build Include="dbo\Tables\LogIdentificacionVehicularDetalle.sql" />
+    <Build Include="dbo\Tables\MarcaTiempoPorPuestoDeTrabajo.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

@@ -224,6 +224,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Camaras = servicioOrquestador.ListarCamaras().ToSelectList(x => x.Codigo, x => x.Descripcion);
             ViewBag.Sensores = servicioOrquestador.ListarSensores().ToSelectList(x => x.Codigo, x => x.Descripcion);
             ViewBag.SensoresVehiculares = servicioOrquestador.ListarSensoresVehiculares().ToSelectList(x => x.Codigo, x => x.Descripcion);
+            ViewBag.IdentificadoresVehiculares = servicioOrquestador.ListarConfigIdentificacionVehicular().ToSelectList(x => x.Codigo, x => x.Nombre + " (" + x.Codigo + ")");
             ViewBag.LectoresQr = servicioOrquestador.ListarLectoresQr().ToSelectList(x => x.Codigo, x => x.Descripcion);
             ViewBag.CartelesLed = servicioOrquestador.ListarCartelesLed().ToSelectList(x => x.Codigo, x => x.Descripcion);
             ViewBag.Balanzas = servicio.ListarTodasLasBalanzasActivas(centroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);

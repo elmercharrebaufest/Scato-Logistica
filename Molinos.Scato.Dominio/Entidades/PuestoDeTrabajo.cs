@@ -87,6 +87,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool RequiereComentarioGestionarBarrera { get; set; }
         public virtual string GrupoBarreraCodigo { get; set; }
         public virtual string SensorVehicular { get; set; }
+        public virtual string CodigoConfigIdentificacionVehicular { get; set; }
 
     }
 }

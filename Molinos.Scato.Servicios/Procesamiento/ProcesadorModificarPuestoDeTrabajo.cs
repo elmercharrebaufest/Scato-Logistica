@@ -21,7 +21,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             Validar(comando, resultado);
             if (!resultado.HayErrores)
             {
-                CancelarDispositivos(comando.Dto, resultado);
+                var puestoActual = Repositorio.Obtener<PuestoDeTrabajo>(comando.Dto.Id);
+                var codigoCIVAnterior = puestoActual?.CodigoConfigIdentificacionVehicular;
+
+                CancelarDispositivos(comando.Dto, resultado, codigoCIVAnterior);
                 ModificarEntidad(comando);
                 Repositorio.GuardarCambios();
                 SuscribirDispositivos(comando.Dto, resultado);
