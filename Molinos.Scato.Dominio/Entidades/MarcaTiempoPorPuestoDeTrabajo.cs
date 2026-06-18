@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Dominio.Entidades
@@ -10,16 +9,16 @@ namespace Molinos.Scato.Dominio.Entidades
         [Key]
         public virtual int Id { get; set; }
 
-        public virtual string NumeroDocumento { get; set; }
-
-        public virtual int PuestoDeTrabajoId { get; set; }
+        public virtual int? PuestoDeTrabajoId { get; set; }
 
         public virtual DateTime? FechaInicio { get; set; }
 
+        public virtual DateTime? FechaIdentificacion { get; set; }
+
         public virtual DateTime? FechaFin { get; set; }
 
-        public virtual int? Centro_Id { get; set; }
+        public virtual TipoIdentificacionPorPuesto? TipoIdentificacion { get; set; }
 
-        public virtual TipoIngresoPorPuesto TipoIngreso { get; set; }
+        public virtual int? RecorridoId { get; set; }
     }
 }

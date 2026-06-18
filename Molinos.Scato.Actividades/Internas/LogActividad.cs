@@ -24,7 +24,25 @@ namespace Molinos.Scato.Actividades.Internas
             
             logActividad.Fecha = DateTime.Now;
             var resultado = new Resultado();
-            
+
+            if (logActividad.ActividadXaml == "EnTransito" || logActividad.ActividadXaml == "PasoPorBalanza")
+            {
+                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
+                {
+                    Tipo = TipoRegistroMarcaDeTiempo.Fin,
+                    InstanceId = logActividad.WorkflowInstanceId
+                });
+            }
+
+            if (logActividad.ActividadXaml == "SalidaDeCentro")
+            {
+                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
+                {
+                    Tipo = TipoRegistroMarcaDeTiempo.Inicio,
+                    InstanceId = logActividad.WorkflowInstanceId
+                });
+            }
+
             try
             {
                 resultado = servicioComandos.Ejecutar(new CrearLogActividad { Dto = logActividad });

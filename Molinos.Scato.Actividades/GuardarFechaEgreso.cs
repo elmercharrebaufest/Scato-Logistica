@@ -1,9 +1,10 @@
-﻿using System;
-using System.Activities;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
+using System;
+using System.Activities;
 
 namespace Molinos.Scato.Actividades
 {
@@ -36,7 +37,7 @@ namespace Molinos.Scato.Actividades
             {
                 resultado.Errores.Add("", Textos.LogActividad_ErrorEnLaCarga);
             }
-            
+
             servicioComandos.Ejecutar(new ModificarFechaEgreso { Fecha = fecha, WorkflowInstanciaId = context.WorkflowInstanceId});
             FechaEgreso.Set(context,fecha);
 

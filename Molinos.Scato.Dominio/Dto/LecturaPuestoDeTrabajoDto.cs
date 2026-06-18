@@ -46,6 +46,6 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoAlerta TipoAlerta { get; set; }
         public string MensajeAlerta { get; set; }
         public bool Rechazado { get; set; }
-        public TipoIngresoPorPuesto TipoIngresoPorPuesto { get; set; } = TipoIngresoPorPuesto.IngresoPorLectura;
+        public TipoIdentificacionPorPuesto TipoIngresoPorPuesto { get; set; } = TipoIdentificacionPorPuesto.IngresoPorLectura;
     }
 }

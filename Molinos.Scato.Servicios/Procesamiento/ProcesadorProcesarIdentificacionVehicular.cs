@@ -146,10 +146,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 OcrActivo = true,
                 PrimerNumeroDeTarjeta = recorrido.TarjetaDeAcceso ?? string.Empty,
                 TipoIngresoPorPuesto = !string.IsNullOrEmpty(comando.Patente)
-                                        ? TipoIngresoPorPuesto.IngresoPorPatente
+                                        ? TipoIdentificacionPorPuesto.IngresoPorPatente
                                         : !string.IsNullOrEmpty(comando.Tarjeta)
-                                            ? TipoIngresoPorPuesto.IngresoPorLectura
-                                            : TipoIngresoPorPuesto.IngresoPorPatente,
+                                            ? TipoIdentificacionPorPuesto.IngresoPorLectura
+                                            : TipoIdentificacionPorPuesto.IngresoPorPatente,
                                                 };
         }
 

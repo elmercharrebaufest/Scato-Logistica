@@ -1,11 +1,12 @@
-﻿using System;
-using System.Activities;
-using System.Linq;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
+using System;
+using System.Activities;
+using System.Linq;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -34,6 +35,17 @@ namespace Molinos.Scato.Actividades.Internas
 
             var workflowInstanceId = instanceId ?? controlRecorrido.WorkflowInstanceId;
             var resultado = new Resultado();
+
+            if (controlRecorrido.ActividadXaml == "EnTransito" || controlRecorrido.ActividadXaml == "SalidaDeCentro")
+            {
+                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
+                {
+                    Tipo = TipoRegistroMarcaDeTiempo.Fin,
+                    InstanceId = controlRecorrido.WorkflowInstanceId,
+                    PuestoDeTrabajoId = controlRecorrido.PuestoDeTrabajoId,
+                });
+            }
+
             try
             {
                 resultado = servicioComandos.Ejecutar(new Dominio.Comandos.FinDeActividad { InstanceId = workflowInstanceId, Actividad = controlRecorrido.ActividadXaml, PuestoDeTrabajoId = controlRecorrido.PuestoDeTrabajoId });

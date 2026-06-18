@@ -394,9 +394,11 @@
     <Compile Include="Estrategias\Interface\IBalanzadaContext.cs" />
     <Compile Include="Estrategias\Interface\IBalanzadaStrategy.cs" />
     <Compile Include="IAdministradorDeCalles.cs" />
+    <Compile Include="Interfaces\IMarcaDeTiempo.cs" />
     <Compile Include="IExternalServiceException.cs" />
     <Compile Include="IFirmware.cs" />
     <Compile Include="Impl\AdministradorDeCalles.cs" />
+    <Compile Include="Impl\MarcaDeTiempo.cs" />
     <Compile Include="CrearException.cs" />
     <Compile Include="IFirmwareFactory.cs" />
     <Compile Include="Impl\Balanzada\ServicioCarga.cs" />
@@ -618,10 +620,9 @@
     <Compile Include="Procesamiento\ProcesadorAvanzarWorkflowPorIdentificacionVehicular.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogIdentificacionVehicular.cs" />
     <Compile Include="Procesamiento\ProcesadorProcesarIdentificacionVehicular.cs" />
-    <Compile Include="Procesamiento\ProcesadorModificarFinMarcaTiempoPorPuestoDeTrabajo.cs" />
+    <Compile Include="Procesamiento\ProcesadorRegistrarMarcaDeTiempo.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarExcepcionPagoTicketMunicipal.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearInicioMarcaTiempoPorPuestoDeTrabajo.cs" />
     <Compile Include="Procesamiento\ProcesadorReiniciarIntercomunicador.cs" />
     <Compile Include="Procesamiento\Stop\ProcesadorCrearLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogValidacionAccesoStopRespuesta.cs" />
@@ -1042,7 +1043,6 @@
     <Compile Include="Procesamiento\ProcesadorActualizarEgresoSinFleteFazonesTransmisionASap.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarLecturaDeTarjeta.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjeta.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearLogIngresoPorPuesto.cs" />
     <Compile Include="Procesamiento\ProcesadorControlDeBalanza.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarAjusteDeStock.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAjusteDeStock.cs" />

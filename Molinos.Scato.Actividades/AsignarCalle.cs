@@ -95,6 +95,15 @@ namespace Molinos.Scato.Actividades
                                 Mensaje = $"Por favor ubicarse en la fila: {calle.Nombre}"
                             });
                         }
+
+                        if (tipoCalle == Dominio.Enums.TipoCalle.PostCalado)
+                        {
+                            servicio.Ejecutar(new RegistrarMarcaDeTiempo
+                            {
+                                Tipo = TipoRegistroMarcaDeTiempo.Fin,
+                                InstanceId = context.WorkflowInstanceId
+                            });
+                        }
                     }
                 }
             }

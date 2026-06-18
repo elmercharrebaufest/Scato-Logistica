@@ -26,7 +26,6 @@ using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Servicios.Urenport;
 using Ninject;
 using Ninject.Modules;
-using Ninject.Web.Common;
 using System.Data.Entity;
 using System.Net.Http;
 using System.ServiceModel;
@@ -70,8 +69,8 @@ namespace Molinos.Scato.Dependencias
             Bind<IServicioHangfireQueue, ServicioHangfireQueue>().To<ServicioHangfireQueue>().InScope(ctx => OperationContext.Current);
             Bind<IHangfireQueue, HangfireQueue>().To<HangfireQueue>().InScope(ctx => OperationContext.Current);
 
-            
             Bind<IServicioHealthCheck, ServicioHealthCheck>().To<ServicioHealthCheck>().InScope(ctx => OperationContext.Current);
+            Bind<IMarcaDeTiempo, MarcaDeTiempo>().To<MarcaDeTiempo>().InScope(ctx => OperationContext.Current);
 
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<LoginCMS>("LoginCms");

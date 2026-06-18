@@ -62,7 +62,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Firmware = puestoDeTrabajo.Firmware,
                     ReconocimientoExitoso = true,
                     OcrActivo = true,
-                    TipoIngresoPorPuesto = TipoIngresoPorPuesto.IngresoPorPatente,
+                    TipoIngresoPorPuesto = TipoIdentificacionPorPuesto.IngresoPorPatente,
                 };
 
                 resultado.LecturaPuestosDeTrabajo.Add(lecturaPuestoDeTrabajo);

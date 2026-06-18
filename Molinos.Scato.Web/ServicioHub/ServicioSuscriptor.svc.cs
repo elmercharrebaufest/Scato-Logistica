@@ -618,20 +618,6 @@ namespace Molinos.Scato.Web.ServicioHub
                         log.Error("La ejecución de la actividad {0} terminó con errores: {1}",
                                 resultado.ProximaActividad, resultadoActividad.Errores.First().Value);
                     }
-
-                    if (resultadoActividad != null && !resultadoActividad.HayErrores)
-                    {
-                        comandos.Ejecutar(new CrearLogIngresoPorPuesto
-                        {
-                            Dto = new LogIngresoPorPuestoDto
-                            {
-                                RecorridoId = recorrido.Id,
-                                PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId,
-                                TipoIngreso = lecturaPuestoDeTrabajo.TipoIngresoPorPuesto,
-                                FechaHora = DateTime.Now
-                            }
-                        });
-                    }
                 }
                 else
                 {
@@ -701,20 +687,6 @@ namespace Molinos.Scato.Web.ServicioHub
                     {
                         log.Error("La ejecución de la actividad {0} terminó con errores: {1}",
                                 resultado.ProximaActividad, resultadoActividad.Errores.First().Value);
-                    }
-
-                    if (resultadoActividad != null && !resultadoActividad.HayErrores)
-                    {
-                        comandos.Ejecutar(new CrearLogIngresoPorPuesto
-                        {
-                            Dto = new LogIngresoPorPuestoDto
-                            {
-                                RecorridoId = recorrido.Id,
-                                PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId,
-                                TipoIngreso = lecturaPuestoDeTrabajo.TipoIngresoPorPuesto,
-                                FechaHora = DateTime.Now
-                            }
-                        });
                     }
                 }
                 else
@@ -927,12 +899,12 @@ namespace Molinos.Scato.Web.ServicioHub
             bool.TryParse(notificacion.Datos.ContainsKey("VehiculoPresente") ? notificacion.Datos["VehiculoPresente"] : "false", out var vehiculoPresente);
             DateTime.TryParse(notificacion.Datos.ContainsKey("FechaEvento") ? notificacion.Datos["FechaEvento"] : null, out var fechaEvento);
 
-            var detalles = new List<Molinos.Scato.Dominio.Dto.ResultadoIntentoALPR>();
+            var detalles = new List<ResultadoIntentoALPR>();
             if (notificacion.Datos.ContainsKey("Detalle") && !string.IsNullOrEmpty(notificacion.Datos["Detalle"]))
             {
                 try
                 {
-                    detalles = JsonConvert.DeserializeObject<List<Molinos.Scato.Dominio.Dto.ResultadoIntentoALPR>>(notificacion.Datos["Detalle"]);
+                    detalles = JsonConvert.DeserializeObject<List<ResultadoIntentoALPR>>(notificacion.Datos["Detalle"]);
                 }
                 catch (Exception ex)
                 {
@@ -964,7 +936,19 @@ namespace Molinos.Scato.Web.ServicioHub
                 return;
             }
 
+            comandos.Ejecutar(new RegistrarMarcaDeTiempo
+            {
+                Tipo = TipoRegistroMarcaDeTiempo.Identificacion,
+                PuestoDeTrabajoId = resultado.PuestoDeTrabajoId,
+                NumeroDeTarjeta = tarjeta,
+                Patente = patente,
+                Trigger = notificacion.Datos.ContainsKey("Trigger") && notificacion.Datos["Trigger"] == "Tarjeta"
+                    ? TipoIdentificacionPorPuesto.IngresoPorLectura
+                    : TipoIdentificacionPorPuesto.IngresoPorPatente
+            });
+
             log.Debug($"IdentificacionVehicular — procesando lectura puesto. RecorridoId: {resultado.RecorridoId}, PuestoId: {resultado.PuestoDeTrabajoId}");
+            
             ProcesarLecturaPuesto(notificacion, resultado.LecturaPuestoDeTrabajo);
 
             comandos.Ejecutar(new ActualizarLogIdentificacionVehicularResultado

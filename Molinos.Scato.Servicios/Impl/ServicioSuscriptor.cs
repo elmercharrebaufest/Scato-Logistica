@@ -100,7 +100,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             catch (Exception e)
             {
-                log.Info("No se pudo loguear contadores de notificaciones: " + e.Message);
+                log.Error(e, "No se pudo loguear contadores de notificaciones");
             }
         }
 
@@ -136,6 +136,23 @@ namespace Molinos.Scato.Servicios.Impl
                         bool estado;
                         if (bool.TryParse(notificacion.Datos["Mensaje"], out estado))
                         {
+                            if (estado)
+                            {
+                                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
+                                {
+                                    Tipo = TipoRegistroMarcaDeTiempo.Inicio,
+                                    CodigoDispositivo = notificacion.CodigoDispositivo
+                                });
+                            }
+                            else
+                            {
+                                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
+                                {
+                                    Tipo = TipoRegistroMarcaDeTiempo.Fin,
+                                    CodigoDispositivo = notificacion.CodigoDispositivo
+                                });
+                            }
+
                             var cierreAutomaticoBarreraActivo = configuracion.AppSettings.Get("ActivarCierreAutomaticoDeBarrera");
 
                             if (cierreAutomaticoBarreraActivo.ToUpper() == "TRUE")
@@ -193,10 +210,18 @@ namespace Molinos.Scato.Servicios.Impl
                                     break;
 
                                 case TipoAccionSensor.HidraulicaBajo:
+                                    servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
+                                    {
+                                        Tipo = TipoRegistroMarcaDeTiempo.Fin,
+                                        CodigoDispositivo = notificacion.CodigoDispositivo
+                                    });
+
                                     var hidraulica = repositorio.ObtenerHidraulicaPorSensorBajada(notificacion.CodigoDispositivo);
-                                    log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - HidraulicaBajo - Hidraulica: {hidraulica.Nombre}");
                                     if (hidraulica != null && repositorio.EstaDisponibleParaLlamadoAutomaticoHidraulica(hidraulica.Id))
+                                    {
+                                        log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - HidraulicaBajo - Hidraulica: {hidraulica.Nombre}");
                                         ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty, string.Empty);
+                                    }
                                     log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - Fin");
                                     break;
                             }

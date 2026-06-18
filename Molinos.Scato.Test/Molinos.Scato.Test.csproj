@@ -542,7 +542,7 @@
     <Compile Include="Meta\ExistenciaUnitTestsTest.cs" />
     <Compile Include="Mock\FakeHttpMessageHandler.cs" />
     <Compile Include="Mock\NullLogger.cs" />
-    <Compile Include="Procesamiento\ProcesadorModificarFinMarcaTiempoPorPuestoDeTrabajoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorRegistrarMarcaDeTiempoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjetaPatenteTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLogIdentificacionVehicularResultadoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorAgregarMarcaSustentableTest.cs" />
@@ -557,7 +557,6 @@
     <Compile Include="Procesamiento\ProcesadorPagarMercadoPagoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorProcesarIdentificacionVehicularTest.cs" />
     <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcaladoTest.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearInicioMarcaTiempoPorPuestoDeTrabajoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorRetransmitirTransmisionASapTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarCargaDeCupoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarZE7550TransmisionASapTest.cs" />
