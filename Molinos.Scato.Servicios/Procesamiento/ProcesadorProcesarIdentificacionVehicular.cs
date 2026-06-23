@@ -61,7 +61,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 ActualizarLogResultado(logId, $"Error: {comando.Error}", null, null);
                 resultado.ResultadoWorkflow = $"Error: {comando.Error}";
 
-                if (string.IsNullOrEmpty(comando.Patente))
+                if (string.IsNullOrEmpty(comando.Patente) && string.IsNullOrEmpty(comando.Tarjeta))
                     return false;
             }
 
@@ -82,6 +82,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Warn($"IdentificacionVehicular — sin recorrido activo para tarjeta: {comando.Tarjeta} o patente: {comando.Patente} en el PuestoId: {_puesto.Id}");
                 ActualizarLogResultado(logId, "SinRecorridoActivo", null, _puesto.Id);
                 resultado.ResultadoWorkflow = "SinRecorridoActivo";
+                if (!string.IsNullOrEmpty(comando.Tarjeta))
+                    resultado.LecturaPuestoDeTrabajo = CrearLecturaPuestoDeTrabajoFallback(_puesto, comando);
                 return false;
             }
 
@@ -151,6 +153,28 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                             ? TipoIdentificacionPorPuesto.IngresoPorLectura
                                             : TipoIdentificacionPorPuesto.IngresoPorPatente,
                                                 };
+        }
+
+        private LecturaPuestoDeTrabajoDto CrearLecturaPuestoDeTrabajoFallback(PuestoDeTrabajo puesto, ProcesarIdentificacionVehicular comando)
+        {
+            return new LecturaPuestoDeTrabajoDto
+            {
+                PuestoDeTrabajoId = puesto.Id,
+                CentroId = puesto.Centro.Id,
+                NumeroDeTarjeta = comando.Tarjeta,
+                PuestoDeTrabajoPidePantente = puesto.PidePatente,
+                TarjetaValida = true,
+                PuestoDeTrabajoImprimeTarjetaDeAcceso = puesto.ImprimeTarjetaDeAcceso,
+                Entrada = puesto.Entradas(),
+                Salida = puesto.CierresEntrada(),
+                Automatizado = puesto.AutomatizadoFull && !puesto.PausaAutoFull,
+                VideoCamaras = Conversor.ConvertirList<VideoCamara, VideoCamaraDto>(puesto.VideoCamaras.ToList()),
+                Patente = comando.Patente,
+                PatenteLeida = comando.Patente,
+                CodigoDispositivo = comando.CodigoDispositivo,
+                Firmware = puesto.Firmware,
+                TipoIngresoPorPuesto = TipoIdentificacionPorPuesto.IngresoPorLectura
+            };
         }
 
         private int? ObtenerIdRecorridoActivo(string patente, string tarjeta)

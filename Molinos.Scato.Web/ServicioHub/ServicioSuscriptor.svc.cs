@@ -925,14 +925,26 @@ namespace Molinos.Scato.Web.ServicioHub
 
             if (resultado == null || resultado.HayErrores)
             {
-                log.Error("Error al procesar identificación vehicular: {0}", 
+                log.Error("Error al procesar identificación vehicular: {0}",
                     resultado?.Errores.FirstOrDefault().Value ?? "Resultado nulo");
+
+                if (!string.IsNullOrEmpty(tarjeta) && resultado?.LecturaPuestoDeTrabajo != null)
+                {
+                    log.Debug($"IdentificacionVehicular — procesando lectura puesto por tarjeta con errores. PuestoId: {resultado.LecturaPuestoDeTrabajo.PuestoDeTrabajoId}");
+                    ProcesarLecturaPuesto(notificacion, resultado.LecturaPuestoDeTrabajo);
+                }
                 return;
             }
 
             if (!resultado.AvanzarWorkflow)
             {
                 log.Debug($"IdentificacionVehicular — no requiere avanzar workflow. Motivo: {resultado.ResultadoWorkflow}");
+
+                if (!string.IsNullOrEmpty(tarjeta) && resultado.LecturaPuestoDeTrabajo != null)
+                {
+                    log.Debug($"IdentificacionVehicular — procesando lectura puesto por tarjeta. PuestoId: {resultado.LecturaPuestoDeTrabajo.PuestoDeTrabajoId}");
+                    ProcesarLecturaPuesto(notificacion, resultado.LecturaPuestoDeTrabajo);
+                }
                 return;
             }
 
