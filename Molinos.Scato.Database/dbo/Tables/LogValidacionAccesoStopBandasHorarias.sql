@@ -10,6 +10,7 @@ CREATE TABLE [dbo].[LogValidacionAccesoStopBandasHorarias] (
     [BandaHorariaFecha]     DATETIME       NULL,
     [BandaHorariaHoraDesde] NVARCHAR (20)  NULL,
     [BandaHorariaHoraHasta] NVARCHAR (20)  NULL,
+    [Reintentos] INT NOT NULL DEFAULT 0, 
     CONSTRAINT [PK_dbo.LogValidacionAccesoStopBandasHorarias] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [UQ_LogValidacionAccesoStopBandasHorarias_CTG] UNIQUE ([CTG])
 );

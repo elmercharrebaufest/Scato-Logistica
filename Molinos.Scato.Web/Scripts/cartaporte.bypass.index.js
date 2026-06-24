@@ -459,7 +459,9 @@ jQuery(document).ready(function ($) {
         if ($("#PesoTaraOrigen").val() == "") $("#PesoTaraOrigen").val("99999");
         if ($("#PesoNetoOrigen").val() == "") $("#PesoNetoOrigen").val("99999");
         if ($("#KmRecorrer").val() == "") $("#KmRecorrer").val("9999");
+        if ($("#KmRecorrerSalida").val() == "") $("#KmRecorrerSalida").val("9999");
         if ($("#TarifaReferencia").val() == "") $("#TarifaReferencia").val("9999999999");
+        if ($("#TarifaToneladaSalida").val() == "") $("#TarifaToneladaSalida").val("9999999999");
         
         $("form").submit();       
     });
@@ -934,7 +936,7 @@ function setearSombreado(nombre) {
         [["TitularCartaPorte", "Intermediario", "RtteComercial", "Corredor", "AgenteCompras", "CorredorVendedor", "Entregador", "Destinatario", "Destino", "IntermediarioFlete", "Transportista"], [180, 740, 180, 0, 327]],
         [["Chofer.Cuil", "EsExtranjero", "Chofer.TipoDocumentoIdentidadId", "Chofer.NumeroDeDocumento", "Chofer.Nombre", "Chofer.Apellido"], [180, 740, 350, 70, 688]],
         [["MaterialId", "Variedad", "Cosecha", "Procedencia", "CodEstab", "TrigoEspecial", "Cupo", "SinCupo", "PesoBrutoOrigen", "PesoTaraOrigen", "PesoNetoOrigen"], [500, 580, 500, 110, 818]],
-        [["OrigenVehiculo", "Patente", "PatenteAcoplado", "PatenteAcoplado2", "KmRecorrer", "TarifaReferencia", "TarifaTonelada"], [700, 430, 800, 200, 1095]]
+        [["OrigenVehiculo", "Patente", "PatenteAcoplado", "PatenteAcoplado2", "KmRecorrer", "TarifaReferencia", "TarifaTonelada", "KmRecorrerSalida", "TarifaToneladaSalida"], [700, 430, 800, 200, 1095]]
     ];
     if ($(window).width() >= 1920) {
         alturaImagen = 1670;

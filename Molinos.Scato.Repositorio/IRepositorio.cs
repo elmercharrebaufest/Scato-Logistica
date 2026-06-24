@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using System;
 using System.Collections.Generic;
@@ -282,6 +283,6 @@ namespace Molinos.Scato.Repositorio
         /// Obtiene los datos de los recorridos relacionados con cartas de porte electronica
         /// </summary>
         /// <returns>Lista de datos de recorridos relacionados con cartas de porte electronica</returns>
-        List<RecorridoCpeDto> ObtenerDatosRecorridoRelacionadosConCartaPorteElectronica(DateTime fechaInicio, DateTime fechaFin);
+        List<RecorridoCpeDto> ObtenerDatosRecorridoRelacionadosConCartaPorteElectronica(DateTime fechaInicio, DateTime fechaFin); 
     }
 }

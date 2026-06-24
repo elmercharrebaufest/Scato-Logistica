@@ -126,6 +126,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             orden.FechaVto = DateTime.Now;
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
+            log.Debug($"KM salida {orden.KmRecorrerSalida} - Tarifa salida {orden.TarifaToneladaSalida}");
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var vehiculos = orden.Vehiculos;
 

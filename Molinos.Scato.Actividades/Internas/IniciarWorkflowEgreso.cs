@@ -15,6 +15,7 @@ using Ninject;
 using static Molinos.Scato.Dominio.Constantes;
 using System.ServiceModel;
 using Molinos.Scato.Servicios.Orquestador;
+using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Actividades
 {
@@ -31,6 +32,9 @@ namespace Molinos.Scato.Actividades
 
         public InArgument<int> PuestoDeTrabajoId { get; set; }
         public InArgument<string> CupoSalida { get; set; }
+        public InArgument<int> KmARecorrerSalida { get; set; }
+        public InArgument<decimal> TarifaDeSalida { get; set; }
+
 
         protected override Resultado Execute(CodeActivityContext context)
         {
@@ -42,12 +46,15 @@ namespace Molinos.Scato.Actividades
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var servicioFactory = context.GetExtension<IServicioActividadFactory<ICargarCartaPorteByPassService>>();
                 var sericioRepositorio = context.GetExtension<IServicioRepositorio>();
+                var logger = context.GetExtension<ILogger>();
 
                 var instanceId = InstanceId.Get<Guid>(context);
                 var centroId = CentroId.Get<int>(context);
                 var puestoDeTrabajo = PuestoDeTrabajoId.Get<int>(context);
                 var orden = Orden.Get<CartaPorteDto>(context);
                 var cupoSalida = CupoSalida.Get<string>(context);
+                var kmRecorrerSalida = KmARecorrerSalida.Get<int>(context);
+                var tarifaSalida = TarifaDeSalida.Get<decimal>(context);
 
                 var workflow = sericioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.CrearCartaPorteByPass, Constantes.ConfiguracionGeneral.CrearCartaPorteByPass.WorkFlowEgreso , centroId).Valor;
                 
@@ -57,10 +64,12 @@ namespace Molinos.Scato.Actividades
                     return resultado;
                 }
 
+                logger.Debug($"Iniciando Workflow Egreso para Recorrido {recorrido.Id} con Workflow {workflow} y WorkflowInstanceId {instanceId}");
                 orden.Vehiculos.First().PesoBrutoOrigen = recorrido.PesoBruto;
                 orden.Vehiculos.First().PesoNetoOrigen = recorrido.PesoNeto;
                 orden.Vehiculos.First().PesoTaraOrigen = recorrido.PesoTara;
 
+                logger.Debug($"Pesos para Recorrido {recorrido.Id} - PesoBruto: {recorrido.PesoBruto}, PesoNeto: {recorrido.PesoNeto}, PesoTara: {recorrido.PesoTara}");
                 var adicionales = new AdicionalesCartaPorteByPassDto {
                   Calado = recorrido.Calado,
                   EstablecimientoId = recorrido.Establecimiento is null ? null : recorrido?.Establecimiento.Id,
@@ -76,11 +85,12 @@ namespace Molinos.Scato.Actividades
 
                 var controlRecorrido = GenerarControlRecorrido(recorrido.Usuario , puestoDeTrabajo);
                 orden.Cupo = cupoSalida;
-                servicioComandos.Ejecutar(new CrearLogActividad { Dto = new LogActividadDto { Actividad = "Invocando Nuevo Workflow", WorkflowInstanceId = context.WorkflowInstanceId } });
+                orden.KmARecorrer = kmRecorrerSalida.ToString();
+                orden.TarifaTonelada = tarifaSalida;
+                servicioComandos.Ejecutar(new CrearLogActividad { Dto = new LogActividadDto { Actividad = "Invocando Nuevo Workflow", WorkflowInstanceId = instanceId } });
                 var uri = ConfigurationManager.AppSettings["UrlBaseWorkflow"] + workflowDefinicionId + ".xamlx";
                 var canal = new ChannelFactory<ICargarCartaPorteService>(new BasicHttpBinding("CommonBinding"), new EndpointAddress(uri)).CreateChannel();
                 resultado = canal.CargarCartaPorte(orden, orden.Vehiculos.First(), centroId, workflow, workflowDefinicionId, recorrido.Usuario, controlRecorrido);
-
            
                 if (resultado.HayErrores)
                 {
@@ -92,10 +102,9 @@ namespace Molinos.Scato.Actividades
                             Fecha = DateTime.Now,
                             Comentario = resultado.Errores.FirstOrDefault().Value,
                             NombreUsuario = recorrido.Usuario,
-                            WorkflowInstanceId = context.WorkflowInstanceId,
+                            WorkflowInstanceId = instanceId,
                         }
                     });
-                   
                 }
             }
             catch (Exception)

@@ -23,6 +23,7 @@ namespace Molinos.Scato.Dominio
             public const string CodigoSapACA = "50012088";
             public const string EstablecimientoACA = "21145";
             public const string ColorTextoDemoradoTasaMunicipal = "#FF2900";
+            public const string RazonSocialMOA = "Molinos Agro S.A.";
         }
 
         public struct IntercomunicadorDireccion
@@ -350,6 +351,8 @@ namespace Molinos.Scato.Dominio
             public const string SincronizarMOAPayOperacionesFason = "SincronizarMOAPayOperacionesFason";
             public const string SincronizarMOAPayOperacionesFas = "SincronizarMOAPayOperacionesFas";
             public const string SincronizarMOAPayOperacionesResiduos = "SincronizarMOAPayOperacionesResiduos";
+            
+            public const string SincronizarBandaHorariaStopRechazados = "SincronizarBandaHorariaStopRechazados";
 
             public const string DefaultCronExpressionForSincronizarMOAPayEstadoDePagos = "0 */30 * * * *"; //cada 30 minutos
             public const string VerificarHealthCheckMOAPayHealth = "VerificarHealthCheckMOAPayHealth";
@@ -416,6 +419,12 @@ namespace Molinos.Scato.Dominio
         {
             public const string VisecCaido = "VisecCaido";
             public const string PayCaido = "PayCaido";
+        }
+
+        public struct ClasificacionCategorias
+        {
+            public const string OPERADOR = "OPERADOR";
+            public const string PRODUCTOR = "PRODUCTOR";
         }
 
         public static class MOAPay

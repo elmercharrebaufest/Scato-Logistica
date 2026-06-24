@@ -74,10 +74,14 @@
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
     <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
       <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
       <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
       <AssemblyReference>Ninject</AssemblyReference>
       <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>Owin</AssemblyReference>
       <AssemblyReference>PresentationCore</AssemblyReference>
       <AssemblyReference>PresentationFramework</AssemblyReference>
       <AssemblyReference>System</AssemblyReference>
@@ -100,6 +104,7 @@
       <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
       <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
       <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
@@ -113,7 +118,7 @@
     </Sequence.Variables>
     <Flowchart sap2010:WorkflowViewState.IdRef="Flowchart_1">
       <Flowchart.StartNode>
-        <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_6">
+        <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_6">
           <p:Receive x:Name="__ReferenceID0" CanCreateInstance="True" sap2010:WorkflowViewState.IdRef="Receive_1" OperationName="CargarCartaPorteByPass" ServiceContractName="p1:ICargarCartaPorteByPassService">
             <p:ReceiveParametersContent>
               <OutArgument x:TypeArguments="msdd:CartaPorteDto" x:Key="orden">
@@ -149,76 +154,77 @@
                 </local:ObtenerInstanceId.Result>
               </local:ObtenerInstanceId>
               <FlowStep.Next>
-                <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_1">
-                  <local:CrearCartaPorte sap2010:WorkflowViewState.IdRef="CrearCartaPorte_1">
-                    <local:CrearCartaPorte.CartaPorte>
+                <FlowStep x:Name="__ReferenceID9">
+                  <local:CrearCartaPorteByPass>
+                    <local:CrearCartaPorteByPass.CartaPorte>
                       <OutArgument x:TypeArguments="msdd:CartaPorteDto">
                         <mca:CSharpReference x:TypeArguments="msdd:CartaPorteDto">orden</mca:CSharpReference>
                       </OutArgument>
-                    </local:CrearCartaPorte.CartaPorte>
-                    <local:CrearCartaPorte.CentroId>
+                    </local:CrearCartaPorteByPass.CartaPorte>
+                    <local:CrearCartaPorteByPass.CentroId>
                       <InArgument x:TypeArguments="x:Int32">
                         <mca:CSharpValue x:TypeArguments="x:Int32">centroId</mca:CSharpValue>
                       </InArgument>
-                    </local:CrearCartaPorte.CentroId>
-                    <local:CrearCartaPorte.FechaInicio>
+                    </local:CrearCartaPorteByPass.CentroId>
+                    <local:CrearCartaPorteByPass.FechaInicio>
                       <OutArgument x:TypeArguments="s:DateTime">
                         <mca:CSharpReference x:TypeArguments="s:DateTime">fechaInicio</mca:CSharpReference>
                       </OutArgument>
-                    </local:CrearCartaPorte.FechaInicio>
-                    <local:CrearCartaPorte.InstanciaWorkflowId>
+                    </local:CrearCartaPorteByPass.FechaInicio>
+                    <local:CrearCartaPorteByPass.InstanciaWorkflowId>
                       <InArgument x:TypeArguments="s:Guid">
                         <mca:CSharpValue x:TypeArguments="s:Guid">InstanceId</mca:CSharpValue>
                       </InArgument>
-                    </local:CrearCartaPorte.InstanciaWorkflowId>
-                    <local:CrearCartaPorte.NombreWorkflow>
+                    </local:CrearCartaPorteByPass.InstanciaWorkflowId>
+                    <local:CrearCartaPorteByPass.NombreWorkflow>
                       <InArgument x:TypeArguments="x:String">
                         <mca:CSharpValue x:TypeArguments="x:String">nombreWorkflow</mca:CSharpValue>
                       </InArgument>
-                    </local:CrearCartaPorte.NombreWorkflow>
-                    <local:CrearCartaPorte.NumeroCartaPorte>
+                    </local:CrearCartaPorteByPass.NombreWorkflow>
+                    <local:CrearCartaPorteByPass.NumeroCartaPorte>
                       <OutArgument x:TypeArguments="x:String">
                         <mca:CSharpReference x:TypeArguments="x:String">centro</mca:CSharpReference>
                       </OutArgument>
-                    </local:CrearCartaPorte.NumeroCartaPorte>
-                    <local:CrearCartaPorte.Orden>
+                    </local:CrearCartaPorteByPass.NumeroCartaPorte>
+                    <local:CrearCartaPorteByPass.Orden>
                       <InArgument x:TypeArguments="msdd:CartaPorteDto">
                         <mca:CSharpValue x:TypeArguments="msdd:CartaPorteDto">orden</mca:CSharpValue>
                       </InArgument>
-                    </local:CrearCartaPorte.Orden>
-                    <local:CrearCartaPorte.Result>
+                    </local:CrearCartaPorteByPass.Orden>
+                    <local:CrearCartaPorteByPass.Result>
                       <OutArgument x:TypeArguments="msdc:Resultado">
                         <mca:CSharpReference x:TypeArguments="msdc:Resultado">Resultado</mca:CSharpReference>
                       </OutArgument>
-                    </local:CrearCartaPorte.Result>
-                    <local:CrearCartaPorte.TipoDocumentoIngreso>
+                    </local:CrearCartaPorteByPass.Result>
+                    <local:CrearCartaPorteByPass.TipoDocumentoIngreso>
                       <OutArgument x:TypeArguments="msde:TipoDocumentoIngreso">
                         <mca:CSharpReference x:TypeArguments="msde:TipoDocumentoIngreso">tipoDocumentoIngreso</mca:CSharpReference>
                       </OutArgument>
-                    </local:CrearCartaPorte.TipoDocumentoIngreso>
-                    <local:CrearCartaPorte.Usuario>
+                    </local:CrearCartaPorteByPass.TipoDocumentoIngreso>
+                    <local:CrearCartaPorteByPass.Usuario>
                       <InArgument x:TypeArguments="x:String">
                         <mca:CSharpValue x:TypeArguments="x:String">NombreUsuario</mca:CSharpValue>
                       </InArgument>
-                    </local:CrearCartaPorte.Usuario>
-                    <local:CrearCartaPorte.Vehiculo>
+                    </local:CrearCartaPorteByPass.Usuario>
+                    <local:CrearCartaPorteByPass.Vehiculo>
                       <InArgument x:TypeArguments="msdd:VehiculoDto">
                         <mca:CSharpValue x:TypeArguments="msdd:VehiculoDto">vehiculo</mca:CSharpValue>
                       </InArgument>
-                    </local:CrearCartaPorte.Vehiculo>
-                    <local:CrearCartaPorte.VehiculoDemorado>
+                    </local:CrearCartaPorteByPass.Vehiculo>
+                    <local:CrearCartaPorteByPass.VehiculoDemorado>
                       <OutArgument x:TypeArguments="x:Boolean">
                         <mca:CSharpReference x:TypeArguments="x:Boolean">vehiculoDemorado</mca:CSharpReference>
                       </OutArgument>
-                    </local:CrearCartaPorte.VehiculoDemorado>
-                    <local:CrearCartaPorte.WorkflowDefinicionId>
+                    </local:CrearCartaPorteByPass.VehiculoDemorado>
+                    <local:CrearCartaPorteByPass.WorkflowDefinicionId>
                       <InArgument x:TypeArguments="x:Int32">
                         <mca:CSharpValue x:TypeArguments="x:Int32">workflowDefinicionId</mca:CSharpValue>
                       </InArgument>
-                    </local:CrearCartaPorte.WorkflowDefinicionId>
-                  </local:CrearCartaPorte>
+                    </local:CrearCartaPorteByPass.WorkflowDefinicionId>
+                    <sap2010:WorkflowViewState.IdRef>CrearCartaPorteByPass_1</sap2010:WorkflowViewState.IdRef>
+                  </local:CrearCartaPorteByPass>
                   <FlowStep.Next>
-                    <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_10">
+                    <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_10">
                       <local:LogActividad sap2010:WorkflowViewState.IdRef="LogActividad_1">
                         <local:LogActividad.LogActividadDto>
                           <InArgument x:TypeArguments="msdd:LogActividadDto">
@@ -227,7 +233,7 @@
                         </local:LogActividad.LogActividadDto>
                       </local:LogActividad>
                       <FlowStep.Next>
-                        <FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_8">
+                        <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_8">
                           <local:PersistirPropiedadesCustom Calidad="{x:Null}" sap2010:WorkflowViewState.IdRef="PersistirPropiedadesCustom_1">
                             <local:PersistirPropiedadesCustom.CentroId>
                               <InArgument x:TypeArguments="s:Nullable(x:Int32)">
@@ -301,7 +307,7 @@
                             </local:PersistirPropiedadesCustom.Workflow>
                           </local:PersistirPropiedadesCustom>
                           <FlowStep.Next>
-                            <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_7">
+                            <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_7">
                               <p:SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendReplyToReceive" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
                                 <p:SendReply.CorrelationInitializers>
                                   <p:QueryCorrelationInitializer>
@@ -328,12 +334,12 @@
                                 </p:SendParametersContent>
                               </p:SendReply>
                               <FlowStep.Next>
-                                <FlowDecision x:Name="__ReferenceID6" DisplayName="Hay Errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+                                <FlowDecision x:Name="__ReferenceID5" DisplayName="Hay Errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
                                   <FlowDecision.Condition>
                                     <mca:CSharpValue x:TypeArguments="x:Boolean">Resultado.HayErrores</mca:CSharpValue>
                                   </FlowDecision.Condition>
                                   <FlowDecision.True>
-                                    <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_9">
+                                    <FlowStep x:Name="__ReferenceID6" sap2010:WorkflowViewState.IdRef="FlowStep_9">
                                       <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1">
                                         <TerminateWorkflow.Reason>
                                           <InArgument x:TypeArguments="x:String">
@@ -344,7 +350,7 @@
                                     </FlowStep>
                                   </FlowDecision.True>
                                   <FlowDecision.False>
-                                    <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_12">
+                                    <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_12">
                                       <local:FinDeActividad sap2010:WorkflowViewState.IdRef="FinDeActividad_1">
                                         <local:FinDeActividad.ControlRecorridoDto>
                                           <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -393,6 +399,7 @@
                       </FlowStep.Next>
                     </FlowStep>
                   </FlowStep.Next>
+                  <sap2010:WorkflowViewState.IdRef>FlowStep_13</sap2010:WorkflowViewState.IdRef>
                 </FlowStep>
               </FlowStep.Next>
             </FlowStep>
@@ -409,7 +416,7 @@
       <x:Reference>__ReferenceID8</x:Reference>
       <x:Reference>__ReferenceID9</x:Reference>
     </Flowchart>
-    <sads:DebugSymbol.Symbol>d2dDOlxVc2Vyc1xhbW9yYWxlc1xzb3VyY2VccmVwb3NcU2NhdG9Mb2dpc3RpY2EyMDI0XE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcQ2FyZ2FyQ2FydGFQb3J0ZUJ5UGFzcy54YW1sOGoDnQMOAgEBcgWbAxECAQJ1C40BFwMB+gSQAQ+WASkDAekEmQET2wErAwGYA94BF+QBLAMBhwPnARuuAj4DAaYBsQIfyQItAgF1zQIlzQJ4AgFl3AIngQM+AgEU0QIn1wI7AgEDigERigF3AwHbBX4Rfl4DAcsFhwERhwFkAwG7BXgReGYDAasFgQERgQFlAwGbBYQBEYQBagMBiwV7EXtnAwH7BJMBFZMBYwMB6gTTARnTAXADAdkEoQEZoQFeAwHJBLUBGbUBZQMBuQS6ARm6AWYDAakExAEZxAGEAQMBmQSwARmwAWUDAYkEnAEZnAFuAwH5A6sBGasBXwMB6QO/ARm/AW4DAdkD2AEZ2AFqAwHJA6YBGaYBbAMBuQPJARnJAWQDAakDzgEZzgFnAwGZA+EBHeEB4wEDAYgDoQIhoQKCAQMB9wLqASHqAXIDAecCiAIhiAJvAwHXAqYCIaYCfwMBxwLvASHvAX0DAbcCnAIhnAKEAQMBpwKrAiGrAm0DAZcCkgIhkgJyAwGHAo0CIY0CcAMB9wGXAiGXAn8DAecB/gEh/gF6AwHXAYMCIYMCfQMBxwH5ASH5AXADAbcB9AEh9AF6AwGnAcYCJcYCawMBlgHDAiXDAnIDAYYBtgIptgJ9AgF23wIt6gIgAgFV9AIt9AKAAQIBRf4CLf4CggECATX5Ai35AoMBAgEl7wIt7wJ/AgEV1AIt1AKpAQIBBA==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d05DOlxSZXBvc1xTY2F0byBMb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xDYXJnYXJDYXJ0YVBvcnRlQnlQYXNzLnhhbWw4bwOkAw4CAQF3BaIDEQIBAnoLkgEXAwH6BJUBD5sBKQMB6QSeARPhATEDAZgD5AEX6gEsAwGHA+0BG7QCPgMBpgG3Ah/PAi0CAXXTAiXTAngCAWXiAieHAz4CARTXAifdAjsCAQOPARGPAXcDAdsFgwERgwFeAwHLBYwBEYwBZAMBuwV9EX1mAwGrBYYBEYYBZQMBmwWJARGJAWoDAYsFgAERgAFnAwH7BJgBFZgBYwMB6gTYARnYAXADAdkEpgEZpgFeAwHJBLoBGboBZQMBuQS/ARm/AWYDAakEyQEZyQGEAQMBmQS1ARm1AWUDAYkEoQEZoQFuAwH5A7ABGbABXwMB6QPEARnEAW4DAdkD3QEZ3QFqAwHJA6sBGasBbAMBuQPOARnOAWQDAakD0wEZ0wFnAwGZA+cBHecB6QEDAYgDpwIhpwKCAQMB9wLwASHwAXIDAecCjgIhjgJvAwHXAqwCIawCfwMBxwL1ASH1AX0DAbcCogIhogKEAQMBpwKxAiGxAm0DAZcCmAIhmAJyAwGHApMCIZMCcAMB9wGdAiGdAn8DAecBhAIhhAJ6AwHXAYkCIYkCfQMBxwH/ASH/AXADAbcB+gEh+gF6AwGnAcwCJcwCawMBlgHJAiXJAnIDAYYBvAIpvAJ9AgF25QIt8AIgAgFV+gIt+gKAAQIBRYQDLYQDggECATX/Ai3/AoMBAgEl9QIt9QJ/AgEV2gIt2gKpAQIBBA==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -427,7 +434,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="CrearCartaPorte_1" sap:VirtualizedContainerService.HintSize="200,22">
+      <sap2010:ViewStateData Id="CrearCartaPorteByPass_1" sap:VirtualizedContainerService.HintSize="200,22">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -517,7 +524,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_1">
+      <sap2010:ViewStateData Id="FlowStep_13">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">200,289</av:Point>
@@ -544,7 +551,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="614,872">
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="734,872">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -553,17 +560,18 @@
             <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,95</av:PointCollection>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
             <x:Double x:Key="Height">836</x:Double>
+            <x:Double x:Key="Width">720</x:Double>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="636,996">
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="756,996">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.CargarCartaPorteByPass_1" sap:VirtualizedContainerService.HintSize="676,1076" />
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.CargarCartaPorteByPass_1" sap:VirtualizedContainerService.HintSize="796,1076" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

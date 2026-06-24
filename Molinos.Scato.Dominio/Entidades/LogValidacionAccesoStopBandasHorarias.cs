@@ -17,5 +17,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual DateTime? BandaHorariaFecha { get; set; }
         public virtual string BandaHorariaHoraDesde { get; set; }
         public virtual string BandaHorariaHoraHasta { get; set; }
+        public virtual int Reintentos { get; set; }
     }
 }

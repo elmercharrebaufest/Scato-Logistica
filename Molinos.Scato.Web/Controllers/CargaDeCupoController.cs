@@ -45,6 +45,25 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factoryFason;
         private readonly IServicioActividadFactory<IIngresarOrdenCargaFasService> factoryFas;
 
+        // Claves de intervinientes que deben tratarse como errores no-bloqueantes (solo advertencia)
+        private static readonly string[] ClavesIntervinientesNoBloqueantes = new[]
+        {
+            nameof(CartaPorteDto.Transportista),
+            Textos.CartaPorte_RtteComercial,
+            Textos.CartaPorte_TitularCartaPorte,
+            Textos.CartaPorte_Intermediario,
+            Textos.CartaPorte_Destinatario,
+            Textos.CartaPorte_Entregador,
+            Textos.CartaPorte_AgenteCompras,
+            Textos.CartaPorte_CorredorVendedor,
+            Textos.CartaPorte_IntermediarioFlete,
+            Textos.Corredor_primario,
+            Textos.Rtte_comercial_venta_secundaria_2,
+            Textos.CartaPorte_RtteComercialProductor,
+            Textos.CartaPorte_RtteComercialVentaSecundario,
+            Textos.CartaPorte_Transportista_Pagador_Flete
+        };
+
         public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
             IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador,
             IConfiguracionProvider configuracion, IFirmaProvider firma,
@@ -715,18 +734,14 @@ namespace Molinos.Scato.Web.Controllers
                 }) as ResultadoCartaPorteElectronica;
                 log.Debug(resultado.HayErrores ? "Error al obtener CPE por patente {0}: "+ resultado.Errores.Keys.First() + " - " + resultado.Errores.Values.First() : "Devolviendo CPE por patente {0}", patente);
 
-                // Extraer errores no bloqueantes (Transportista y RtteComercial) antes de evaluar errores bloqueantes
+                // Extraer errores no bloqueantes de TODOS los intervinientes
                 var mensajesNoBloqueantes = new List<string>();
-                if (resultado.Errores.TryGetValue(nameof(CartaPorteDto.Transportista), out var msgTransportista))
+                foreach (var clave in ClavesIntervinientesNoBloqueantes.Where(c => resultado.Errores.ContainsKey(c)))
                 {
-                    mensajesNoBloqueantes.Add(msgTransportista);
-                    resultado.Errores.Remove(nameof(CartaPorteDto.Transportista));
+                    mensajesNoBloqueantes.Add(resultado.Errores[clave]);
+                    resultado.Errores.Remove(clave);
                 }
-                if (resultado.Errores.TryGetValue(Textos.CartaPorte_RtteComercial, out var msgRtteComercial))
-                {
-                    mensajesNoBloqueantes.Add(msgRtteComercial);
-                    resultado.Errores.Remove(Textos.CartaPorte_RtteComercial);
-                }
+
                 if (resultado.HayErrores)
                     return ConstruirJsonResult(new { CodigoDeError = resultado.Errores.Keys.First(), Error = resultado.Errores.Values.First() });
 
@@ -786,12 +801,10 @@ namespace Molinos.Scato.Web.Controllers
                     IncluirImagen = true
                 }) as ResultadoCartaPorteElectronica;
 
-                // Capturar ambos mensajes no bloqueantes antes de que sean eliminados del diccionario
+                // Capturar mensajes no bloqueantes de TODOS los intervinientes antes de que sean eliminados
                 var mensajesNoBloqueantesCtg = new List<string>();
-                if (resultado.Errores.TryGetValue(nameof(CartaPorteDto.Transportista), out var msgTransportistaCtg))
-                    mensajesNoBloqueantesCtg.Add(msgTransportistaCtg);
-                if (resultado.Errores.TryGetValue(Textos.CartaPorte_RtteComercial, out var msgRtteComercialCtg))
-                    mensajesNoBloqueantesCtg.Add(msgRtteComercialCtg);
+                foreach (var clave in ClavesIntervinientesNoBloqueantes.Where(c => resultado.Errores.ContainsKey(c)))
+                    mensajesNoBloqueantesCtg.Add(resultado.Errores[clave]);
 
                 var codigoError = resultado.HayErrores ? resultado.Errores.Keys.First() : "3";
                 var mensajeError = resultado.Errores.Values.FirstOrDefault();
@@ -1755,15 +1768,13 @@ namespace Molinos.Scato.Web.Controllers
 
         private void EliminarDeListaErroresNoBloqueantes(Resultado resultado, ref string codigoError)
         {
-            if (resultado.Errores.ContainsKey(nameof(CartaPorteDto.Transportista)))
+            foreach (var clave in ClavesIntervinientesNoBloqueantes)
             {
-                resultado.Errores.Remove(nameof(CartaPorteDto.Transportista));
-                codigoError = "3";
-            }
-            if (resultado.Errores.ContainsKey(Textos.CartaPorte_RtteComercial))
-            {
-                resultado.Errores.Remove(Textos.CartaPorte_RtteComercial);
-                codigoError = "3";
+                if (resultado.Errores.ContainsKey(clave))
+                {
+                    resultado.Errores.Remove(clave);
+                    codigoError = "3";
+                }
             }
         }
 

@@ -8,6 +8,7 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
+using NPOI.SS.Formula.Functions;
 using RestSharp;
 using System;
 using System.Linq;
@@ -30,24 +31,35 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(ValidarAccesoStopBandasHorarias comando)
         {
+            Log.Info("STOP - Paso 6: ValidarAccesoStopBandasHorarias, ProcesadorValidarAccesoStopBandasHorarias");            
+
             var resultado = new Resultado();
 
-            var yaValidado = Repositorio.Existe<LogValidacionAccesoStopBandasHorarias>(x => x.CTG == comando.CTG);
+            var yaValidado = Repositorio.Existe<LogValidacionAccesoStopBandasHorarias>(x => x.CTG == comando.CTG && x.Semaforo != "Blanco");
             if (yaValidado)
             {
                 resultado.Error("Error", Textos.Stop_Error_AccesoYaValidado);
                 return resultado;
             }
-
+            
             var fechaAcceso = comando.Fecha ?? DateTime.Now;
+
             var logDto = new LogValidacionAccesoStopBandasHorariasDto
             {
                 CTG = comando.CTG,
                 Patente = comando.Patente,
                 FechaIngreso = fechaAcceso,
                 Semaforo = "Blanco",
-                Mensaje = Textos.Stop_Error_ServicioNoDisponible
+                Mensaje = Textos.Stop_Error_ServicioNoDisponible,
+                Reintentos = comando.Reintentos
             };
+
+
+            if (logDto.Reintentos >= 3)
+            {
+                resultado.Error("Error", "Cantidad máxima de reintentos alcanzada");
+                return resultado;
+            }
 
             try
             {
@@ -60,6 +72,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var responseWebAPI = client.Execute(request);
                 if (!responseWebAPI.IsSuccessful)
                 {
+                    logDto.Reintentos++;
                     resultado.Error("Error", Textos.Stop_Error_ServicioNoDisponible);
                 }
                 else
@@ -68,10 +81,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var response = JsonConvert.DeserializeObject<ResponseWebAPIDto<ResultadoValidarAccesoBandaHoraria>>(responseWebAPI.Content);
                     if (response == null)
                     {
+                        logDto.Reintentos++;
                         resultado.Error("Error", Textos.Stop_Error_ServicioNoDisponible);
                     }
                     else if (!response.IsValid)
                     {
+                        logDto.Reintentos++;
                         var mensajeError = response.Messages?.FirstOrDefault()?.Message ?? Textos.Stop_Error_ServicioNoDisponible;
                         logDto.Mensaje = mensajeError;
                         resultado.Error("Error", mensajeError);
@@ -112,20 +127,46 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void RegistrarLog(LogValidacionAccesoStopBandasHorariasDto dto, string usuario)
         {
+            Log.Info("STOP - Paso 7: RegistrarLog, ProcesadorValidarAccesoStopBandasHorarias");
+            Log.Info("STOP - Paso 7: RegistrarLog, Camion: "+dto.Patente);
             try
             {
-                var resultadoLog = servicioComandos.Ejecutar(new CrearLogValidacionAccesoStopBandasHorarias { Dto = dto, Usuario = usuario }) as ResultadoCrear;
-                if (resultadoLog != null && !resultadoLog.HayErrores && !string.IsNullOrEmpty(dto.RespuestaStop))
+                var logExistente = Repositorio.Existe<LogValidacionAccesoStopBandasHorarias>(x => x.CTG == dto.CTG);               
+
+                if (!logExistente)
                 {
-                    servicioComandos.Ejecutar(new CrearLogValidacionAccesoStopRespuesta
+                    var resultadoLog = servicioComandos.Ejecutar(new CrearLogValidacionAccesoStopBandasHorarias { Dto = dto, Usuario = usuario }) as ResultadoCrear;
+                    if (resultadoLog != null && !resultadoLog.HayErrores && !string.IsNullOrEmpty(dto.RespuestaStop))
                     {
-                        Dto = new LogValidacionAccesoStopRespuestaDto
+                        servicioComandos.Ejecutar(new CrearLogValidacionAccesoStopRespuesta
                         {
-                            LogValidacionAccesoStopBandasHorariasId = resultadoLog.Id,
-                            RespuestaStop = dto.RespuestaStop
-                        },
-                        Usuario = usuario
-                    });
+                            Dto = new LogValidacionAccesoStopRespuestaDto
+                            {
+                                LogValidacionAccesoStopBandasHorariasId = resultadoLog.Id,
+                                RespuestaStop = dto.RespuestaStop
+                            },
+                            Usuario = usuario
+                        });
+                    }
+                    
+                }
+                else
+                {                    
+                    var resultado = servicioComandos.Ejecutar(new ModificarLogValidacionAccesoStopBandasHorarias { Dto = dto }) as Resultado;
+
+                    if (resultado.HayErrores)
+                    {
+                        Log.Error("Error en Actualizar Banda Horaria STOP");
+                        if (resultado?.HayErrores == true)
+                        {
+                            foreach (var err in resultado.Errores)
+                            {
+                                Log.Error($"Error: {err}");
+                            }
+                        }
+                    }
+                        
+                        
                 }
             }
             catch (Exception ex)

@@ -7285,13 +7285,21 @@ namespace Molinos.Scato.Servicios.Impl
         {
             log.Debug("Obteniendo Datos Envío Mail Por Stock EPA para camión: {0}", workflowId);
             var dto = new MailAvisoStockDto();
-            var establecimientoYCosecha = repositorio.ObtenerProyeccion((Recorrido x) => x.InstanciaWorkflow == workflowId, x => new { x.Establecimiento, x.Vehiculo.CartaPorte.Cosecha, materialId = x.Material.Id, centroId = x.Centro.Id, pesoBrutoOrigen = x.PesoBrutoOrigen, pesoTaraOrigen = x.PesoTaraOrigen });
+            var establecimientoYCosecha = repositorio.ObtenerProyeccion((Recorrido x) => x.InstanciaWorkflow == workflowId, x => new { x.Establecimiento, x.Vehiculo.CartaPorte.Cosecha, materialId = x.Material.Id, centroId = x.Centro.Id, pesoBrutoOrigen = x.PesoBrutoOrigen, pesoTaraOrigen = x.PesoTaraOrigen, tipoVariedad = x.TipoVariedad != null ? x.TipoVariedad.Codigo : null });
             if (establecimientoYCosecha.Establecimiento == null)
             {
                 dto.Error = Textos.Establecimiento_NoAsignado;
                 log.Debug("No se asignó establecimiento al camion: {0}", workflowId);
                 return dto;
             }
+
+            if(establecimientoYCosecha.tipoVariedad != Constantes.TipoVariedadMaterial.EPA && establecimientoYCosecha.tipoVariedad != Constantes.TipoVariedadMaterial.EPAyEUDR)
+            {
+                dto.Error = Textos.Establecimiento_SinEPA;
+                log.Debug("El establecimiento asignado al recorrido {0} no tiene EPA configurada o el tipo de variedad del recorrido no es EPA", workflowId);
+                return dto;
+            }
+
             dto.CodigoDeEstablecimiento = establecimientoYCosecha.Establecimiento.CodigoDeEstablecimiento;
             dto.NombreDeEstablecimiento = establecimientoYCosecha.Establecimiento.NombreDeEstablecimiento;
             dto.Cosecha = establecimientoYCosecha.Cosecha;
@@ -11884,6 +11892,42 @@ namespace Molinos.Scato.Servicios.Impl
         public bool ValidarRecorridoExceptuado(int idRecorrido)
         {
             return repositorio.Existe<RecorridoTasaMunicipal>(x => x.Id == idRecorrido && x.Exceptuado);
+        }
+
+        public CategoriaDto ObtenerCategoriaPorClasificacion(string clasificacion)
+        {
+            return Obtener<Categoria, CategoriaDto>(x => x.Clasificacion == clasificacion);
+		}
+
+        public IList<LogValidacionAccesoStopBandasHorariasDto> ListarLogValidacionAccesoStopBandasHorarias(
+            DateTime? desde,
+            DateTime? hasta,
+            string patente,
+            string mensaje)
+        {
+            return Listar<LogValidacionAccesoStopBandasHorarias, LogValidacionAccesoStopBandasHorariasDto>(x =>
+                (!desde.HasValue || x.FechaIngreso >= desde.Value) &&
+                (!hasta.HasValue || x.FechaIngreso <= hasta.Value) &&
+                (string.IsNullOrEmpty(patente) || x.Patente == patente) &&
+                (string.IsNullOrEmpty(mensaje) || x.Mensaje == mensaje)
+            );
+        }
+
+        public IList<string> MoaStopListarMensajes()
+        {
+            return Listar<LogValidacionAccesoStopBandasHorarias, LogValidacionAccesoStopBandasHorariasDto>(x =>
+                 x.Mensaje != null && x.Mensaje != "")
+                .Select(x => x.Mensaje.Trim())
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
+        }
+
+        public IList<LogValidacionAccesoStopBandasHorariasDto> ListarBandaHorariaStopRechazados(string semaforo)
+        {
+            return Listar<LogValidacionAccesoStopBandasHorarias, LogValidacionAccesoStopBandasHorariasDto>(
+                f => f.Semaforo == semaforo
+            );
         }
     }
 }

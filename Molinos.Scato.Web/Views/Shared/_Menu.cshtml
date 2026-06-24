@@ -968,6 +968,11 @@
                                 {
                                     <li>@Html.ActionLink(Textos.ReporteTemplateVisec, "TemplateVisec", "Reportes")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteMoaStop))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteMoaStop, "Index", "ReporteMoaStop")</li>
+                                }
+
                             </ul>
                         </li>
                         <li class="dropdown-submenu">

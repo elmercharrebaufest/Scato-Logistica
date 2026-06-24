@@ -422,6 +422,7 @@
     <Compile Include="Controllers\PanelMonitoreoServicioExternoController.cs" />
     <Compile Include="Controllers\PuestoComandoPuertoController.cs" />
     <Compile Include="Controllers\RegistroInactividadController.cs" />
+    <Compile Include="Controllers\ReporteMoaStopController.cs" />
     <Compile Include="Controllers\SalidaDeCentroPlayaController.cs" />
     <Compile Include="Controllers\CamionDemoradoController.cs" />
     <Compile Include="Controllers\VideoCamaraController.cs" />
@@ -2522,6 +2523,8 @@
     <Content Include="Views\PanelDeControlPagoMunicipal\Modificar.cshtml" />
     <Content Include="Views\EnEsperaHB4\_TransportistaRechazado.cshtml" />
     <Content Include="Views\Intercomunicador\Index.cshtml" />
+    <Content Include="Views\ReporteMoaStop\Index.cshtml" />
+    <Content Include="Views\ReporteMoaStop\Listar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

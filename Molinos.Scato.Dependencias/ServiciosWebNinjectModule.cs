@@ -69,6 +69,8 @@ namespace Molinos.Scato.Dependencias
             Bind<IServicioHangfireQueue, ServicioHangfireQueue>().To<ServicioHangfireQueue>().InScope(ctx => OperationContext.Current);
             Bind<IHangfireQueue, HangfireQueue>().To<HangfireQueue>().InScope(ctx => OperationContext.Current);
 
+            Bind<IServicioSincronizacionBandaHorariaStopRechazados, ServicioSincronizacionBandaHorariaStopRechazados>().To<ServicioSincronizacionBandaHorariaStopRechazados>().InScope(ctx => OperationContext.Current);
+
             Bind<IServicioHealthCheck, ServicioHealthCheck>().To<ServicioHealthCheck>().InScope(ctx => OperationContext.Current);
             Bind<IMarcaDeTiempo, MarcaDeTiempo>().To<MarcaDeTiempo>().InScope(ctx => OperationContext.Current);
 

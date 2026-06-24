@@ -404,6 +404,7 @@
     <Compile Include="Impl\Balanzada\ServicioCarga.cs" />
     <Compile Include="Impl\CategorizadorVehiculo .cs" />
     <Compile Include="Impl\ExternalServiceException.cs" />
+    <Compile Include="Impl\Hangfire\ServicioSincronizacionBandaHorariaStopRechazados.cs" />
     <Compile Include="Impl\Hangfire\ServicioSincronizacionPay.cs" />
     <Compile Include="Impl\ReglaTasaMunicipalAmbos.cs" />
     <Compile Include="Impl\ReglaTasaMunicipalGranos.cs" />
@@ -420,6 +421,7 @@
     <Compile Include="Imp\ServicioHealthCheck.cs" />
     <Compile Include="InnerException.cs" />
     <Compile Include="Interfaces\Balanzada\IServicioCarga.cs" />
+    <Compile Include="Interfaces\Hangfire\IServicioSincronizacionBandaHorariaStopRechazados.cs" />
     <Compile Include="Interfaces\IServicioHealthCheck.cs" />
     <Compile Include="Interfaces\Hangfire\IServicioSincronizacionPay.cs" />
     <Compile Include="IReglaTasaMunicipal.cs" />
@@ -659,6 +661,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarComoUsadoPagosTasaMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCartaPorteRENSPA.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoTipoVariedad.cs" />
+    <Compile Include="Procesamiento\Stop\ProcesadorModificarLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Procesamiento\Stop\ProcesadorValidarAccesoStopBandasHorarias.cs" />
     <Compile Include="Procesamiento\Visec\ProcesadorConsultarDataAgroVisec.cs" />
     <Compile Include="Procesamiento\Visec\ProcesadorConsultarEstadoTransmisionVisec.cs" />

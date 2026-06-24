@@ -1774,6 +1774,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:enumeration>
+	  <xs:enumeration value="ReporteMoaStop">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">473</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
       <xs:enumeration value="ReporteResumenGeneralPorBodega">
         <xs:annotation>
           <xs:appinfo>

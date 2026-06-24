@@ -727,6 +727,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         ReporteInactividadCalado = 471,
         [Display(ResourceType = typeof(Textos), Name = "ReporteTemplateVisec")]
         ReporteTemplateVisec = 472,
+        [Display(ResourceType = typeof(Textos), Name = "ReporteMoaStop")]
+        ReporteMoaStop = 473,
 
         //Permisos Puerto
         [Display(ResourceType = typeof(Textos), Name = "PreLineUp")]

@@ -10,36 +10,8 @@ using System.Activities;
 
 namespace Molinos.Scato.Actividades.Internas
 {
-    public class CrearCartaPorte : CodeActivity<Resultado>
-    {
-        [RequiredArgument]
-        public InArgument<CartaPorteDto> Orden { get; set; }
-
-        [RequiredArgument]
-        public InArgument<string> NombreWorkflow { get; set; }
-
-        [RequiredArgument]
-        public InArgument<int> WorkflowDefinicionId { get; set; }
-
-        [RequiredArgument]
-        public InArgument<Guid> InstanciaWorkflowId { get; set; }
-
-        [RequiredArgument]
-        public InArgument<int> CentroId { get; set; }
-
-        public OutArgument<CartaPorteDto> CartaPorte { get; set; }
-
-        public OutArgument<string> NumeroCartaPorte { get; set; }
-
-        public OutArgument<TipoDocumentoIngreso> TipoDocumentoIngreso { get; set; }
-
-        public OutArgument<DateTime> FechaInicio { get; set; }
-
-        public InArgument<string> Usuario { get; set; }
-
-        public InArgument<VehiculoDto> Vehiculo { get; set; }
-        public OutArgument<bool> VehiculoDemorado { get; set; }
-
+    public class CrearCartaPorteByPass : CrearCartaPorte
+    {     
         protected override Resultado Execute(CodeActivityContext context)
         {
             var orden = Orden.Get<CartaPorteDto>(context);
@@ -85,6 +57,22 @@ namespace Molinos.Scato.Actividades.Internas
                 {
                     ordenDto.VehiculoDemorado = orden.VehiculoDemorado;
                     ordenDto.TipoVariedadCodigo = orden.TipoVariedadCodigo;
+                    if(orden.CupoSalida != null)
+                    {
+                        log.Debug($"Tiene cupo de salida : {orden.CupoSalida}");
+                        ordenDto.CupoSalida = orden.CupoSalida;
+                    }
+                    if(orden.KmRecorrerSalida != null)
+                    {
+                        log.Debug($"Tiene km de salida : {orden.KmRecorrerSalida}");
+                        ordenDto.KmRecorrerSalida = orden.KmRecorrerSalida;
+                    }
+                       
+                    if(orden.TarifaToneladaSalida != null)
+                    {
+                        log.Debug($"Tiene tarifa de salida {orden.TarifaToneladaSalida}");
+                        ordenDto.TarifaToneladaSalida = orden.TarifaToneladaSalida;
+                    }
                     
                     CartaPorte.Set(context, ordenDto);
                     FechaInicio.Set(context, DateTime.Now);

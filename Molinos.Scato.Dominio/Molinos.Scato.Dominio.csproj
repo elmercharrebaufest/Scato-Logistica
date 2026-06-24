@@ -97,6 +97,7 @@
     <Compile Include="Comandos\Consultas\ConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarExcepcionPagoTicketMunicipal.cs" />
     <Compile Include="Comandos\CrearLogIdentificacionVehicular.cs" />
+    <Compile Include="Comandos\ModificarLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Comandos\CrearLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Comandos\CrearLogValidacionAccesoStopRespuesta.cs" />
     <Compile Include="Comandos\CrearDocumentoPorRecorridoHistorico.cs" />

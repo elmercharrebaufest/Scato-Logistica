@@ -7,9 +7,12 @@ using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NPOI.SS.Formula.Functions;
 using Owin;
 using System;
 using System.Configuration;
+using Ninject;
+using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.ServiciosWeb.Configurations
 {
@@ -51,7 +54,8 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
             StartJobsForVisec();
             StartJobsHealthChecks();
             StartJobsCacheCpeAfip();
-            StartJobsLimpiezaCacheCpe();
+            StartJobsLimpiezaCacheCpe();            
+            StartJobsForStop();
         }
 
         private static void StartJobsForAutomatismos()
@@ -91,6 +95,16 @@ namespace Molinos.Scato.ServiciosWeb.Configurations
                 var cronExpressionForSincronizarMOAPayOperacionesResiduos = ObtenerCronJob("Hangfire.CronExpressionFor.SincronizarMOAPayOperacionesResiduos");
                 RecurringJob.AddOrUpdate<IServicioSincronizacionPay>(Constantes.Job.SincronizarMOAPayOperacionesResiduos, x => x.SincronizarMOAPayOperacionesResiduos(), cronExpressionForSincronizarMOAPayOperacionesResiduos);
             }
+        }
+
+        private static void StartJobsForStop()
+        {   
+            if (ValidarEncendidoJob("Hangfire.IsEnabled.SincronizarBandaHorariaStopRechazados"))
+            {
+                var cronExpressionForHangfireSincronizarBandaHorariaStopRechazados = ObtenerCronJob("Hangfire.CronExpressionFor.SincronizarBandaHorariaStopRechazados");
+                RecurringJob.AddOrUpdate<IServicioSincronizacionBandaHorariaStopRechazados>(Constantes.Job.SincronizarBandaHorariaStopRechazados, x => x.SincronizarBandaHorariaStop(), cronExpressionForHangfireSincronizarBandaHorariaStopRechazados);
+            }
+
         }
 
         private static bool ValidarEncendidoJob(string configEnabled)

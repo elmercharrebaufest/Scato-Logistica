@@ -21,6 +21,8 @@ namespace Molinos.Scato.Actividades
 
         public OutArgument<int> peso { get; set; }
 
+        public OutArgument<DateTime> fechaTara { get; set; }
+
         public InArgument<int> PuestoDeTrabajoId { get; set; }
 
 
@@ -79,6 +81,9 @@ namespace Molinos.Scato.Actividades
                 var resultadoPeso = ModificarPesoTara(servicioComandos, instanceId, huellaDigital.PesoTara ?? 0, huellaDigital.IdBalanza, nombreUsuario);
                 resultado = resultadoPeso;
                 peso.Set(context, huellaDigital.PesoTara);
+                var recorridoActualizado = repositorio.ObtenerRecorridoPorGuid(instanceId);
+                var fechaPesada = recorridoActualizado?.PesoTaraFecha ?? DateTime.Now;
+                fechaTara.Set(context, fechaPesada);
 
                 if (resultadoPeso.HayErrores)
                 {

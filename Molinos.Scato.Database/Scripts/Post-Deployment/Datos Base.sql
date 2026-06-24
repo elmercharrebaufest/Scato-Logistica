@@ -399,6 +399,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 469) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 470) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Comparacion Calidad',3,470,'ComparacionCalidad'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 471) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Reporte Inactividad Calado',3,471,'ReporteInactividadCalado'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 472) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Reporte Template Visec',3,472,NULL); END
+IF NOT EXISTS (SELECT 1 FROM Permiso where Codigo = 473) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Reporte MOA STOP',3,473,NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 600) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Pre line up',4,600, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 601) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Line up',4,601, NULL); END

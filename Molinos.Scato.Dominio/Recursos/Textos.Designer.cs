@@ -8296,6 +8296,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Km a Recorrer Salida.
+        /// </summary>
+        public static string CartaPorte_KmRecorrer_Salida {
+            get {
+                return ResourceManager.GetString("CartaPorte_KmRecorrer_Salida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Material.
         /// </summary>
         public static string CartaPorte_Material {
@@ -8643,6 +8652,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string CartaPorte_TarifaTonelada {
             get {
                 return ResourceManager.GetString("CartaPorte_TarifaTonelada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tarifa por Tonelada Salida .
+        /// </summary>
+        public static string CartaPorte_TarifaTonelada_Salida {
+            get {
+                return ResourceManager.GetString("CartaPorte_TarifaTonelada_Salida", resourceCulture);
             }
         }
         
@@ -15424,6 +15442,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Establecimiento_Provisorio {
             get {
                 return ResourceManager.GetString("Establecimiento_Provisorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El establecimiento asignado no es EPA.
+        /// </summary>
+        public static string Establecimiento_SinEPA {
+            get {
+                return ResourceManager.GetString("Establecimiento_SinEPA", resourceCulture);
             }
         }
         
@@ -27032,18 +27059,16 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("Reimprimir", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Busca una cadena traducida similar a Reiniciar Servicio Windows &quot;IntercomunicadorService&quot;.
+        ///   Looks up a localized string similar to Reiniciar Servicio Windows &quot;IntercomunicadorService&quot;.
         /// </summary>
-        public static string ReiniciarIntercomunicador
-        {
-            get
-            {
+        public static string ReiniciarIntercomunicador {
+            get {
                 return ResourceManager.GetString("ReiniciarIntercomunicador", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reintentar.
         /// </summary>
@@ -27419,6 +27444,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ReporteListadoQuiebreBarrera_Titulo {
             get {
                 return ResourceManager.GetString("ReporteListadoQuiebreBarrera_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reporte Moa Stop.
+        /// </summary>
+        public static string ReporteMoaStop {
+            get {
+                return ResourceManager.GetString("ReporteMoaStop", resourceCulture);
             }
         }
         

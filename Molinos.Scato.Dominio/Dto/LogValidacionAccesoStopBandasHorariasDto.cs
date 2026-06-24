@@ -4,6 +4,7 @@ namespace Molinos.Scato.Dominio.Dto
 {
     public sealed class LogValidacionAccesoStopBandasHorariasDto
     {
+        public int Id { get; set; }
         public string CTG { get; set; }
         public string Patente { get; set; }
         public DateTime FechaIngreso { get; set; }
@@ -15,5 +16,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string BandaHorariaHoraDesde { get; set; }
         public string BandaHorariaHoraHasta { get; set; }
         public string RespuestaStop { get; set; }
+        public int Reintentos { get; set; }
     }
 }

@@ -3184,5 +3184,22 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
 		IList<TicketPesadaDto> ObtenerDatosTicketPesada(DateTime? fechaInicio, DateTime? fechaEgreso, string cuitProveedor,
 			string cuitTransportista = null, string numeroCTG = null, string patente = null, string cuitIntermediarioFlete = null, bool esAdmin = false);
-	}
+
+        [OperationContract]
+        CategoriaDto ObtenerCategoriaPorClasificacion(string clasificacion);
+
+        [OperationContract]
+        IList<LogValidacionAccesoStopBandasHorariasDto> ListarLogValidacionAccesoStopBandasHorarias(
+            DateTime? desde,
+            DateTime? hasta,
+            string patente,
+            string mensaje);
+
+        [OperationContract]
+        IList<string> MoaStopListarMensajes();
+
+        [OperationContract]
+        IList<LogValidacionAccesoStopBandasHorariasDto> ListarBandaHorariaStopRechazados(string semaforo);
+
+    }
 }

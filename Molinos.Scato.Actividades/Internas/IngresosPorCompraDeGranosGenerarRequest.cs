@@ -84,6 +84,23 @@ namespace Molinos.Scato.Actividades.Internas
                 var camionRechazado = CamionRechazado.Get<bool>(context);
                 var centro = srvRepositorio.ObtenerCentro(CentroId.Get<int>(context));
                 var instanceId = InstanceId.Get<Guid>(context);
+                var recorrido = srvRepositorio.ObtenerRecorridoPorGuid(instanceId);
+
+                if (fechaPesoBruto == DateTime.MinValue)
+                {
+                    fechaPesoBruto = recorrido?.PesoBrutoFecha ?? DateTime.Now;
+                }
+
+                if (fechaPesoTara == DateTime.MinValue)
+                {
+                    fechaPesoTara = recorrido?.PesoTaraFecha ?? fechaPesoBruto;
+                }
+
+                if (fechaPesoNeto == DateTime.MinValue)
+                {
+                    fechaPesoNeto = fechaPesoTara;
+                }
+
                 var cartaPorteElectronica = cartaPorte.Cpe ? srvRepositorio.ObtenerCartaPorteElectronicaPorCTG(cartaPorte.NroCartaPorte) : null;
                 var camaraExcepcion = srvRepositorio.ObtenerCamaraDeExcepcionDescuento(instanceId, cartaPorte.MaterialId, centro.Id);
                 var camara = camaraExcepcion ?? srvRepositorio.ObtenerCamara(CamaraId.Get<int>(context));

@@ -10772,16 +10772,28 @@
   <data name="PuestoDeTrabajo_NoEncontrado" xml:space="preserve">
     <value>Puesto de Trabajo no encontrado</value>
   </data>
+  <data name="CartaPorte_TarifaTonelada_Salida" xml:space="preserve">
+    <value>Tarifa por Tonelada Salida </value>
+  </data>
+  <data name="CartaPorte_KmRecorrer_Salida" xml:space="preserve">
+    <value>Km a Recorrer Salida</value>
+  </data>
   <data name="Stop_Error_ServicioNoDisponible" xml:space="preserve">
     <value>Servicio No Disponible</value>
   </data>
   <data name="Stop_Error_AccesoYaValidado" xml:space="preserve">
     <value>La banda horaria de la CTG ya fue validada anteriormente</value>
   </data>
+  <data name="Establecimiento_SinEPA" xml:space="preserve">
+    <value>El establecimiento asignado no es EPA</value>
+  </data>
   <data name="ReiniciarIntercomunicador" xml:space="preserve">
     <value>Reiniciar Servicio Windows "IntercomunicadorService"</value>
   </data>
   <data name="PuestoDeTrabajo_SuscribirIdentificacionVehicular" xml:space="preserve">
     <value>Los datos se guardaron exitosamente, pero hubo un error al suscribir el codigo de identificacion vehicular: {0}</value>
+  </data>
+  <data name="ReporteMoaStop" xml:space="preserve">
+    <value>Reporte Moa Stop</value>
   </data>
 </root>

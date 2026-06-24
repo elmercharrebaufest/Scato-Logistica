@@ -556,5 +556,13 @@ namespace Molinos.Scato.Dominio.Dto
         [RegularExpression(@"^\d{2}\.\d{3}\.\d\.\d{5}/\d{2}$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Establecimiento_Error_FormatoCodigoRENSPA")]
         public string CodigoRENSPA { get; set; }
         public string TipoVariedadCodigo { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TarifaTonelada_Salida")]
+        [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
+        public decimal? TarifaToneladaSalida { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_KmRecorrer_Salida")]
+        [RegularExpression(@"^\d+$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
+        public int? KmRecorrerSalida { get; set; }
     }
 }

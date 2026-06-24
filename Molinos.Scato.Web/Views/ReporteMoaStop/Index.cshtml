@@ -1,0 +1,132 @@
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.FechaModel
+
+@{
+    ViewBag.Title = Textos.ReporteMoaStop;
+}
+
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+        font-size: 12px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="@Url.Content("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/validarFechas.js")"></script>
+
+<div class="container">
+    <div class="titSecciones">@Textos.ReporteMoaStop</div>
+</div>
+
+<div class="container content grillaPad">
+
+    @using (Ajax.BeginForm("Listar", null,
+        new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" },
+        new { id = "search-form", @class = "form-search" }))
+    {
+    @Html.ValidationSummary(true)
+
+    <div class="accordion row-fluid">
+
+        <!-- FECHA DESDE -->
+        <div class="span2">
+            <div class="control-group">
+                @Html.LabelFor(model => model.FechaDesde, new { @class = "control-label small" })
+                <div class="FechaDesde">
+                    @Html.TextBoxFor(m => m.FechaDesde, new { @class = "control", style = "width:90%", id = "FechaDesde" })
+                    @Html.ValidationMessageFor(model => model.FechaDesde)
+                </div>
+            </div>
+        </div>
+
+        <!-- FECHA HASTA -->
+        <div class="span2">
+            <div class="control-group">
+                @Html.LabelFor(model => model.FechaHasta, new { @class = "control-label small" })
+                <div class="FechaHasta">
+                    @Html.TextBoxFor(m => m.FechaHasta, new { @class = "control", style = "width:90%", id = "FechaHasta" })
+                    @Html.ValidationMessageFor(model => model.FechaHasta)
+                </div>
+            </div>
+        </div>
+
+        <!-- PATENTE -->
+        <div class="span2">
+            <div class="control-group">
+                <label class="control-label small">Patente</label>
+                <div>
+                    <input type="text" id="patente" name="patente" class="control" style="width:90%" />
+                </div>
+            </div>
+        </div>
+
+        <!-- MENSAJE -->
+        <div class="span2">
+            <div class="control-group">
+                <label class="control-label small">Mensaje</label>
+                <div>
+                    <select id="mensaje" name="mensaje" class="control" style="width:100%">
+                        <option value="">Todos</option>
+
+                        @if (ViewBag.Mensajes != null)
+                        {
+                            foreach (var m in ViewBag.Mensajes)
+                            {
+                                <option value="@m" @(ViewBag.MensajeSeleccionado == m ? "selected" : "")>
+                                    @m
+                                </option>
+                            }
+                        }
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTÓN -->
+        <div class="span1">
+            <div class="control-group">
+                <label class="control-label small">&nbsp;</label>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        @Textos.Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    }
+
+    <!-- RESULTADOS -->
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+
+</div>
+
+<!-- ✅ SCRIPT AJAX PAGINACIÓN -->
+<script type="text/javascript">
+    $(document).on("click", ".page-link", function (e) {
+        e.preventDefault();
+        var page = $(this).data("page");
+        var data = $("#search-form").serializeArray();
+        data.push({ name: "page", value: page });
+        $.ajax({
+            url: '@Url.Action("Listar", "ReporteMoaStop")',
+            type: "GET",
+            data: data,
+            success: function (result) {
+                $("#gridContainer").html(result);
+            }
+        });
+    });
+</script>

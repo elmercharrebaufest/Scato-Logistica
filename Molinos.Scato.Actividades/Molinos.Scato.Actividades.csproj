@@ -95,6 +95,8 @@
     <Compile Include="ActualizarMuestraEnvioACamara.cs" />
     <Compile Include="ActualizarCupo.cs" />
     <Compile Include="ActualizarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Internas\CrearCartaPorteByPass.cs" />
+    <Compile Include="Internas\ObtenerDatosSalida.cs" />
     <Compile Include="Internas\ValidarPagoTasaMunicipalDemorado.cs" />
     <Compile Include="Internas\InformarPagoTasaMunicipal.cs" />
     <Compile Include="ValidarRecorridoDemoradoTasaAdeuda.cs" />
@@ -110,7 +112,6 @@
     <Compile Include="Internas\Visec\ValidarVariedadVisec.cs" />
     <Compile Include="Internas\Visec\EncolamientoImportacionEgresoVisec.cs" />
     <Compile Include="Internas\IniciarWorkflowEgreso.cs" />
-    <Compile Include="Internas\ObtenerCupoSalida.cs" />
     <Compile Include="Internas\IngresarPesoTaraByPass.cs" />
     <Compile Include="Internas\VerificarAutomatismoGranos.cs" />
     <Compile Include="InformarOrdenFasonOperaciones.cs" />

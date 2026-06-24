@@ -7,6 +7,7 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Linq;
 
@@ -255,6 +256,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         resultado.Id = comando.Orden.Id != 0 ? comando.Orden.Id : cartaPorte.Id;
                     }
                 }
+            }
+            catch (Exception e) when (e.GetType().Name == "DbEntityValidationException")
+            {
+                dynamic dbEx = e;
+                var sb = new System.Text.StringBuilder();
+                foreach (dynamic entityError in (IEnumerable)dbEx.EntityValidationErrors)
+                {
+                    foreach (dynamic validationError in (IEnumerable)entityError.ValidationErrors)
+                    {
+                        sb.AppendFormat("{0}: {1}; ", validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
+                Log.Error(e, "Error de validación EF al crear carta de porte para workflow {0}: {1}", comando.InstanciaWorkflowId, sb);
+                resultado.Error("", Textos.CartaDePorte_Error);
             }
             catch (Exception e)
             {

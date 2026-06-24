@@ -9,11 +9,12 @@ using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
+using Ninject.Extensions.Logging;
 using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Actividades
 {
-    public class ObtenerCupoSalida : CodeActivity<Resultado>
+    public class ObtenerDatosSalida : CodeActivity<Resultado>
     {
         [RequiredArgument]
         public InArgument<Guid> InstanceId { get; set; }
@@ -26,6 +27,10 @@ namespace Molinos.Scato.Actividades
 
         public InArgument<CartaPorteDto> Orden { get; set; }
 
+        public OutArgument<int>KmARecorrerSalida { get; set; }
+
+        public OutArgument<decimal> TarifaDeSalida {  get; set; }
+
         protected override Resultado Execute(CodeActivityContext context)
         {
             var instanceId = InstanceId.Get(context);
@@ -37,8 +42,8 @@ namespace Molinos.Scato.Actividades
 
             var logActividad = new LogActividadDto
             {
-                Actividad = "Obtener Cupo Salida",
-                ActividadXaml = "ObtenerCupoSalida",
+                Actividad = "Obtener datos de salida",
+                ActividadXaml = "ObtenerDatosSalida",
                 WorkflowInstanceId = instanceId,
                 Fecha = DateTime.Now
             };
@@ -57,21 +62,22 @@ namespace Molinos.Scato.Actividades
             var servicioComandos = context.GetExtension<IServicioComandos>();
             var repositorio = context.GetExtension<IServicioRepositorio>();
             var persistenceParticipant = context.GetExtension<ScatoPersistenceParticipant>();
+            var log = context.GetExtension<ILogger>();
 
             try
             {
-                LogActividad(context, servicioComandos, "ObtenerCupoSalida", resultado);
-
+                LogActividad(context, servicioComandos, "ObtenerDatosSalida", resultado);
                 cupoSalida.Set(context, orden.CupoSalida);
+                KmARecorrerSalida.Set(context, orden.KmRecorrerSalida);
+                TarifaDeSalida.Set(context, orden.TarifaToneladaSalida);
 
-                
                 servicioComandos.Ejecutar(new CrearControlRecorrido
                 {
                     Dto = new ControlRecorridoDto
                     {
-                        Actividad = "ObtenerCupoSalida",
+                        Actividad = "ObtenerDatosSalida",
                         Fecha = DateTime.Now,
-                        Comentario = "Cupo salida : " + orden.CupoSalida,
+                        Comentario = $"Cupo salida : {orden.CupoSalida} Km a recorrer salida: {orden.KmRecorrerSalida} Tarifa salida: {orden.TarifaToneladaSalida}",
                         NombreUsuario = nombreUsuario,
                         WorkflowInstanceId = context.WorkflowInstanceId,
                     }
@@ -85,7 +91,7 @@ namespace Molinos.Scato.Actividades
 
             try
             {
-                resultado = servicioComandos.Ejecutar(new FinDeActividad { InstanceId = context.WorkflowInstanceId, Actividad = "ObtenerCupoSalida", PuestoDeTrabajoId = puestoDeTrabajoId });
+                resultado = servicioComandos.Ejecutar(new FinDeActividad { InstanceId = context.WorkflowInstanceId, Actividad = "ObtenerDatosSalida", PuestoDeTrabajoId = puestoDeTrabajoId });
             }
             catch (Exception)
             {
@@ -116,7 +122,7 @@ namespace Molinos.Scato.Actividades
             {
                 Dto = new ControlRecorridoDto
                 {
-                    Actividad = "ObtenerCupoSalida",
+                    Actividad = "ObtenerDatosSalida",
                     Fecha = DateTime.Now,
                     Comentario = mensaje,
                     NombreUsuario = usuario,
@@ -131,7 +137,7 @@ namespace Molinos.Scato.Actividades
             {
                 Dto = new ControlRecorridoDto
                 {
-                    Actividad = "ObtenerCupoSalida",
+                    Actividad = "ObtenerDatosSalida",
                     Fecha = DateTime.Now,
                     Comentario = $"{Textos.Error_ActualizarGenerico}: {ex.Message}",
                     NombreUsuario = "",

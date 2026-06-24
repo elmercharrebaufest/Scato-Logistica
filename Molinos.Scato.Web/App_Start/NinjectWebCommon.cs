@@ -2,6 +2,7 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dependencias;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Web.Firmware;
 using Molinos.Scato.Web.Impl;
 using Molinos.Scato.Web.ServicioHub;
@@ -62,8 +63,7 @@ namespace Molinos.Scato.Web.App_Start
             kernel.Bind<IFirmwareFactory, FirmwareFactory>().To<FirmwareFactory>().InSingletonScope();
             kernel.Bind<HubClient>().ToSelf().InSingletonScope();
             kernel.Bind<HubClientNotificar>().ToSelf().InSingletonScope();
-            kernel.Bind<HubClientFactory>().ToSelf().InSingletonScope();
-
+            kernel.Bind<HubClientFactory>().ToSelf().InSingletonScope();            
         }
     }
 }
