@@ -1874,11 +1874,13 @@
     <Compile Include="Enums\TipoDeWorkflow.cs" />
     <Compile Include="Enums\TipoPermiso.cs" />
     <Compile Include="Enums\TipoVehiculo.cs" />
+    <Compile Include="Enums\EscenarioWorkflowCartaPorte.cs" />
     <Compile Include="Enums\TipoVinedo.cs" />
     <Compile Include="Helpers\ExtensionesReflection.cs" />
     <Compile Include="Helpers\ExtensionesEnum.cs" />
     <Compile Include="Helpers\ExtensionesFechas.cs" />
     <Compile Include="Helpers\ExtensionesSerializacion.cs" />
+    <Compile Include="Helpers\WorkflowCartaPorteHelper.cs" />
     <Compile Include="IIdentificable.cs" />
     <Compile Include="Entidades\Observacion.cs" />
     <Compile Include="Entidades\OrdenCargaInterna.cs" />

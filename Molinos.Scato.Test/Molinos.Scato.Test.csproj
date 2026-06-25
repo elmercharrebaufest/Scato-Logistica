@@ -534,6 +534,7 @@
     <Compile Include="Controllers\UsuarioControllerTest.cs" />
     <Compile Include="Controllers\VerificacionCamionRechazadoControllerTest.cs" />
     <Compile Include="Helpers\ValidacionCrearOrdenInternaFasonTests.cs" />
+    <Compile Include="Helpers\WorkflowCartaPorteHelperTests.cs" />
     <Compile Include="Helpers\ZPLConveterTest.cs" />
     <Compile Include="Helpers\ExtensionesHtmlTest.cs" />
     <Compile Include="Helpers\ExtensionesReflectionTest.cs" />

@@ -63,7 +63,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             this.serviceAfipCPDigital = serviceAfipCPDigital;
 
             ServicePointManager.ServerCertificateValidationCallback = ((sender, certificate, chain, sslPolicyErrors) => true);
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
         }
 
         /// <summary>

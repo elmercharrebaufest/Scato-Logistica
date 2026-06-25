@@ -5,6 +5,7 @@ using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.Consultas;
 using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Helpers;
@@ -282,7 +283,6 @@ namespace Molinos.Scato.Web.Controllers
                     CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte, resultadoConsultarTasa, response, tipoVariedadCodigo);
                     servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = false });
                 }
-
                 ProcesarResultadoTasaMunicipal(resultadoConsultarTasa.TipoAlerta, resultadoConsultarTasa.MensajeAlerta, response);
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
@@ -1008,20 +1008,11 @@ namespace Molinos.Scato.Web.Controllers
 
         private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal, CargaDeCupoResponseDto response, string tipoVariedadCodigo)
         {
+            log.Info($"CargarCartaPorte: id={id}, datosUsuario={datosUsuario}, imagenCpBase64={imagenCpBase64}, resultadoTazaMunicipal={resultadoTazaMunicipal}, tipoVariedadCodigo={tipoVariedadCodigo}");
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
             if (cargaDeCupo == null)
             {
                 log.Warn("CargarCartaPorte: CargaDeCupo no encontrada para Id={0}", id);
-                response.ValidationErrors.Add("avanceCpe", "No hay Carga De Cupo");
-                response.Success = false;
-                return;
-            }
-
-            var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo.TitularCartaPorteCodigoSap, cargaDeCupo.RtteComercialCodigoSap, cargaDeCupo.CodEstab, cargaDeCupo.RtteComercialVentaSecundariaCuit);
-            var tipoComercialId = ObtenerTipoComercialSegunWorkflow(workflow);
-            if (string.IsNullOrEmpty(workflow))
-            {
-                log.Warn("CargarCartaPorte: No se encontró workflow para CargaDeCupo Id={0}", id);
                 response.ValidationErrors.Add("avanceCpe", "No hay Carga De Cupo");
                 response.Success = false;
                 return;
@@ -1035,10 +1026,20 @@ namespace Molinos.Scato.Web.Controllers
                 response.Success = false;
                 return;
             }
-
+            log.Info($"CargarCartaPorte: CTG parseado correctamente: {nroCtg}");
             var orden = servicioComandos.Ejecutar(new ConsultarCPDigital { CentroId = datosUsuario.CentroId, NroCtg = long.Parse(cargaDeCupo.CTG), Usuario = datosUsuario.NombreUsuario }) as ResultadoCartaPorteElectronica;
             if (orden != null && orden.Cpe != null)
             {
+                log.Info($"CargarCartaPorte: Carta Porte digital obtenida exitosamente para CTG={nroCtg}");
+                var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo, orden);
+                var tipoComercialId = ObtenerTipoComercialSegunWorkflow(workflow);
+                if (string.IsNullOrEmpty(workflow))
+                {
+                    log.Warn("CargarCartaPorte: No se encontró workflow para CargaDeCupo Id={0}", id);
+                    response.ValidationErrors.Add("avanceCpe", "No hay Carga De Cupo");
+                    response.Success = false;
+                    return;
+                }
                 orden.Cpe.TipoVariedadCodigo = tipoVariedadCodigo;
                 orden.Cpe.TipoComercialId = tipoComercialId;
                 orden.Cpe.Id = 0;
@@ -1088,6 +1089,13 @@ namespace Molinos.Scato.Web.Controllers
                     response.Success = false;
                 }
             }
+            else
+            {
+                log.Warn("CargarCartaPorte: Sin respuesta CPE para CargaDeCupo Id={0}, CTG={1}", id, cargaDeCupo.CTG);
+                response.ValidationErrors.Add("avanceCpe", "No se pudo obtener la Carta de Porte electrónica.");
+                response.Success = false;
+                return;
+            }
         }
 
         private void CargarAutomaticaCartaPorte(CargaDeCupoDto cargaDeCupo, string workflow, string path, string imagenCpBase64, string fotoMesaDigitalizacion2, CartaPorteDto orden, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal, DatosUsuario datosUsuario, CargaDeCupoResponseDto responseCargaDeCupo, byte[] pdf)
@@ -1122,7 +1130,6 @@ namespace Molinos.Scato.Web.Controllers
             if (!EsAptoParaAvanceAutomatico(orden, datosUsuario))
             {
                 log.Debug("No Válido");
-                responseCargaDeCupo.ValidationErrors.Add("avanceCpe", "No válido");
                 responseCargaDeCupo.Success = false;
                 return;
             }
@@ -1275,15 +1282,23 @@ namespace Molinos.Scato.Web.Controllers
         {
             var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
-            var codigoSapTitular = servicio.ObtenerProveedor(orden.TitularCartaPorteId).CodigoSap;
-            var remitente = servicio.ObtenerProveedor(orden.RtteComercialId);
+            var codigoSapTitular = servicio.ObtenerProveedor(orden.TitularCartaPorteId)?.CodigoSap;
+            var codigoSapRemitente = servicio.ObtenerProveedor(orden.RtteComercialId)?.CodigoSap;
             var otroRecorridoDelChofer = orden.Chofer != null ? servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id) : null;
-            var codigoEstablecimientoEsDeMolinos = servicio.ObtenerCodigoEstablecimientoEsDeMolinos(orden.CodEstab);
+            var escenario = WorkflowCartaPorteHelper.ObtenerEscenario(
+                codigoSapTitular,
+                codigoSapRemitente,
+                orden.DestinoCodigoSap,
+                orden.DestinatarioCodigoSap,
+                codigoSapMolinosAgro,
+                codigoSapMRP,
+                orden.CodEstab,
+                orden.RtteComercialVentaSecundarioCuil);
 
-            //si es MRP, no se valida el codigo de establecimiento
-            if (codigoSapTitular == codigoSapMRP && (remitente == null || remitente.CodigoSap == codigoSapMRP || remitente.CodigoSap == codigoSapMolinosAgro))
-                return false;
-            else if ((codigoSapTitular == codigoSapMolinosAgro) && (remitente == null || (remitente.CodigoSap == codigoSapMolinosAgro)) && codigoEstablecimientoEsDeMolinos)
+            if (escenario == EscenarioWorkflowCartaPorte.Compra)
+                return true;
+
+            if (escenario == EscenarioWorkflowCartaPorte.Redespacho)
                 return false;
 
             if (otroRecorridoDelChofer != null && !(orden.TipoVehiculo == TipoVehiculo.Tren))
@@ -1462,6 +1477,7 @@ namespace Molinos.Scato.Web.Controllers
             else if (model.SinCupo && model.Cupo == Constantes.ValoresPorDefecto.CupoGenerico) // CUPO GENERICO
                 esValido = false;
 
+            log.Info($"EsCupoValidoParaAvanceAutomatico: Especial={model.Especial}, MaterialId={model.MaterialId}, TipoVariedadCodigo={tipoVariedadCodigo}, SinCupo={model.SinCupo}, Cupo={model.Cupo}, EsValido={esValido}");
             return esValido;
         }
 
@@ -1476,36 +1492,43 @@ namespace Molinos.Scato.Web.Controllers
                         || (!string.IsNullOrEmpty(remitenteComercialVentaSecundariaCuit) && remitenteComercialVentaSecundariaCuit == Constantes.Proveedores.CuitMolinos)));
         }
 
-        private string ObtenerWorkflowSegunTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial, string codigoEstablecimiento, string remitenteComercialVentaSecundariaCuit = null)
+        private string ObtenerWorkflowSegunTitularCartaPorte(CargaDeCupoDto cargaDeCupo, ResultadoCartaPorteElectronica orden)
         {
-            var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
+            var codigoSapMrp = ConfigurationManager.AppSettings["CodigoSapMRP"];
             var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
+            var workflowCompraGranos = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
+            var workflowRedespachoGranos = ConfigurationManager.AppSettings["workflowRedespacho"];
+            var workflowImportacionGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
 
-            var workflow = string.Empty;
+            var escenario = WorkflowCartaPorteHelper.ObtenerEscenario(
+                cargaDeCupo.TitularCartaPorteCodigoSap,
+                cargaDeCupo.RtteComercialCodigoSap,
+                orden?.Cpe?.DestinoCodigoSap,
+                orden?.Cpe?.DestinatarioCodigoSap,
+                codigoSapMolinosAgro,
+                codigoSapMrp,
+                cargaDeCupo.CodEstab,
+                cargaDeCupo.RtteComercialVentaSecundariaCuit);
 
-            if ((codigoSapTitularCartaPorte == codigoSapMRP
-                    && (codigoSapRemitenteComercial == null
-                        || codigoSapRemitenteComercial == codigoSapMRP
-                        || codigoSapRemitenteComercial == codigoSapMolinosAgro))
-                || (codigoSapTitularCartaPorte == codigoSapMolinosAgro
-                    && (codigoSapRemitenteComercial == null
-                        || codigoSapRemitenteComercial == codigoSapMolinosAgro)))
+            if (escenario == EscenarioWorkflowCartaPorte.Compra)
             {
-                workflow = ConfigurationManager.AppSettings["workflowRedespacho"];
-            }
-            else if (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapTPR
-                || (codigoSapTitularCartaPorte == Constantes.ValoresPorDefecto.CodigoSapACA
-                    && codigoEstablecimiento == Constantes.ValoresPorDefecto.EstablecimientoACA
-                    && (codigoSapRemitenteComercial == codigoSapMolinosAgro || remitenteComercialVentaSecundariaCuit == Constantes.Proveedores.CuitMolinos)))
-            {
-                workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
-            }
-            else if (!string.IsNullOrEmpty(codigoSapTitularCartaPorte))
-            {
-                workflow = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
+                log.Info($"ObtenerWorkflowSegunTitularCartaPorte: workflowCompraGranos={workflowCompraGranos}");
+                return workflowCompraGranos;
             }
 
-            return workflow;
+            if (escenario == EscenarioWorkflowCartaPorte.Redespacho)
+            {
+                log.Info($"ObtenerWorkflowSegunTitularCartaPorte: workflowRedespachoGranos={workflowRedespachoGranos}");
+                return workflowRedespachoGranos;
+            }
+
+            if (escenario == EscenarioWorkflowCartaPorte.Importacion)
+            {
+                log.Info($"ObtenerWorkflowSegunTitularCartaPorte: workflowImportacionGranos={workflowImportacionGranos}");
+                return workflowImportacionGranos;
+            }
+
+            return string.Empty;
         }
 
         private int ObtenerTipoComercialSegunWorkflow(string workflow)

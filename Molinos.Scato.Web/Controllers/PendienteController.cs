@@ -1,5 +1,8 @@
 ﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
@@ -16,12 +19,14 @@ namespace Molinos.Scato.Web.Controllers
     public class PendienteController : BaseController
     {
         private readonly ILogger log;
+        private readonly IServicioComandos servicioComandos;
         private readonly IFirmaProvider configuracion;
 
-        public PendienteController(ILogger log, IServicioRepositorio servicio, IFirmaProvider configuracion)
+        public PendienteController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, IFirmaProvider configuracion)
             : base(servicio)
         {
             this.log = log;
+            this.servicioComandos = servicioComandos;
             this.configuracion = configuracion;
         }
 
@@ -29,33 +34,52 @@ namespace Molinos.Scato.Web.Controllers
         {
             ViewBag.FotoMesaDigitalizacionSustentable = null;
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
+            if (cargaDeCupo == null)
+            {
+                log.Warn("Pendiente.Index: CargaDeCupo no encontrada para Id={0}", id);
+                return RedirectToAction("Index", "ListaDeCamiones");
+            }
+
             if (cargaDeCupo.CircuitoNoGranos)
             {
                 return RedirectToAction("PendienteNogranos", cargaDeCupo);
             }
+
+            var workflowCompraGranos = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
+            var workflowRedespachoGranos = ConfigurationManager.AppSettings["workflowRedespacho"];
+            var workflowImportacionGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
+
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
             var codigoSapMolinosAgro = configuracion.ObtenerFirmaSinLogo().CodigoSAP;
-            var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
+            var datosCpe = ObtenerDatosCpe(cargaDeCupo);
+            var escenario = WorkflowCartaPorteHelper.ObtenerEscenario(
+                cargaDeCupo.TitularCartaPorteCodigoSap,
+                cargaDeCupo.RtteComercialCodigoSap,
+                datosCpe.CodigoSapDestino,
+                datosCpe.CodigoSapDestinatario,
+                codigoSapMolinosAgro,
+                codigoSapMRP,
+                cargaDeCupo.CodEstab,
+                cargaDeCupo.RtteComercialVentaSecundariaCuit);
 
-            if ((cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapMRP && (cargaDeCupo.RtteComercialCodigoSap == null || cargaDeCupo.RtteComercialCodigoSap == codigoSapMRP || cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro)) ||
-                ((cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapMolinosAgro) && (cargaDeCupo.RtteComercialCodigoSap == null || (cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro))))
+            if (escenario == EscenarioWorkflowCartaPorte.Compra)
             {
-                return RedirectToAction("Index", "IngresarCartaPorteRedespacho", new { workflow = ConfigurationManager.AppSettings["workflowRedespacho"], cargaDeCupoId = id });
+                return RedirectToAction("Index", "CargarCartaPorte", new { workflow = workflowCompraGranos, cargaDeCupoId = id });
             }
-            else if(cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapPuertoRosario 
-                || (cargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapACA
-                    && cargaDeCupo.CodEstab == Constantes.ValoresPorDefecto.EstablecimientoACA
-                    && (cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro || cargaDeCupo.RtteComercialVentaSecundariaCuit == Constantes.Proveedores.CuitMolinos)))
+
+            if (escenario == EscenarioWorkflowCartaPorte.Redespacho)
             {
-                return RedirectToAction("Index", "IngresarCartaPorteRedespachoImportaciones", new { workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"], cargaDeCupoId = id });
+                return RedirectToAction("Index", "IngresarCartaPorteRedespacho", new { workflow = workflowRedespachoGranos, cargaDeCupoId = id });
             }
-            else if(!string.IsNullOrEmpty(cargaDeCupo.TitularCartaPorteCodigoSap))
+
+            if (escenario == EscenarioWorkflowCartaPorte.Importacion)
             {
-                return RedirectToAction("Index", "CargarCartaPorte", new { workflow = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"], cargaDeCupoId = id });
+                return RedirectToAction("Index", "IngresarCartaPorteRedespachoImportaciones", new { workflow = workflowImportacionGranos, cargaDeCupoId = id });
             }
-            ViewBag.IngresoPorCompra = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
-            ViewBag.IngresoPorRedespacho = ConfigurationManager.AppSettings["workflowRedespacho"];
-            ViewBag.IngresoPorImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
+
+            ViewBag.IngresoPorCompra = workflowCompraGranos;
+            ViewBag.IngresoPorRedespacho = workflowRedespachoGranos;
+            ViewBag.IngresoPorImpoGranos = workflowImportacionGranos;
             if (!string.IsNullOrEmpty(cargaDeCupo.FotoRutaDestino))
             {
                 var foto = servicio.ObtenerFotoPorPath(cargaDeCupo.FotoRutaDestino);
@@ -74,6 +98,40 @@ namespace Molinos.Scato.Web.Controllers
             }
             return View(cargaDeCupo);
         }
+
+        private DatosCpePendiente ObtenerDatosCpe(CargaDeCupoDto cargaDeCupo)
+        {
+            if (cargaDeCupo == null || string.IsNullOrWhiteSpace(cargaDeCupo.CTG) || cargaDeCupo.CentroId <= 0)
+                return new DatosCpePendiente();
+
+            long nroCtg;
+            if (!long.TryParse(cargaDeCupo.CTG, out nroCtg))
+            {
+                log.Warn("Pendiente.Index: CTG inválido '{0}' para CargaDeCupo Id={1}", cargaDeCupo.CTG, cargaDeCupo.Id);
+                return new DatosCpePendiente();
+            }
+
+            var usuario = System.Security.Claims.ClaimsPrincipal.Current?.FindFirst(System.IdentityModel.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital
+            {
+                CentroId = cargaDeCupo.CentroId,
+                NroCtg = nroCtg,
+                Usuario = usuario
+            }) as ResultadoCartaPorteElectronica;
+
+            return new DatosCpePendiente
+            {
+                CodigoSapDestinatario = resultado?.Cpe?.DestinatarioCodigoSap,
+                CodigoSapDestino = resultado?.Cpe?.DestinoCodigoSap
+            };
+        }
+
+        private class DatosCpePendiente
+        {
+            public string CodigoSapDestinatario { get; set; }
+            public string CodigoSapDestino { get; set; }
+        }
+
         [DatosUsuario]
         public ActionResult PendienteNogranos(CargaDeCupoDto cargaDeCupo, DatosUsuario datosUsuario)
         {

@@ -60,20 +60,21 @@ namespace Molinos.Scato.Web.Controllers
                 TempData["TipoAlerta"] = TipoAlerta.Advertencia;
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
-
+            log.Info($"CargarCartaPorteController Index: workflow={workflow}, datosUsuario={datosUsuario}, destinatarioCodigoSap={destinatarioCodigoSap}, titularCodigoSap={titularCodigoSap}, centroDestino={centroDestino}, rtteComercial={rtteComercial}, cargaDeCupoId={cargaDeCupoId}");
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj, datosUsuario.CentroId);
-
+            log.Info($"CargarCartaPorteController Index: workflowObj={workflowObj}");
             if (string.IsNullOrEmpty(destinatarioCodigoSap) && workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
             {
                 destinatarioCodigoSap = configuracion.ObtenerFirmaSinLogo().CodigoSAP;
             }
-
+            log.Info($"CargarCartaPorteController Index: destinatarioCodigoSap={destinatarioCodigoSap}");
             var carta = servicio.ObtenerCartaPorteVacia(datosUsuario.CentroId, workflow, destinatarioCodigoSap, titularCodigoSap, centroDestino, rtteComercial);
             carta.EsClienteDestinatario = false;
 
             if (cargaDeCupoId > 0)
             {
+                log.Info($"CargarCartaPorteController Index: cargaDeCupoId={cargaDeCupoId}");
                 var carga = servicio.ObtenerCupoPorId(cargaDeCupoId);
                 if (carga != null)
                 {
@@ -110,7 +111,7 @@ namespace Molinos.Scato.Web.Controllers
                     carta.Cupo = carga.Cupo;
                 }
             }
-
+            log.Info($"CargarCartaPorteController Index: carta={carta}");
             return View(carta);
         }
 
@@ -700,23 +701,28 @@ namespace Molinos.Scato.Web.Controllers
         {
             var codigoSapMolinosAgro = configuracion.ObtenerFirmaSinLogo().CodigoSAP;
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
-            var codigoSapTitular = servicio.ObtenerProveedor(orden.TitularCartaPorteId).CodigoSap;
-            var codigoDeEstablecimiento = orden.CodEstab;
-            var remitente = servicio.ObtenerProveedor(orden.RtteComercialId);
+            var codigoSapTitular = servicio.ObtenerProveedor(orden.TitularCartaPorteId)?.CodigoSap;
+            var codigoSapRemitenteComercial = servicio.ObtenerProveedor(orden.RtteComercialId)?.CodigoSap;
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
-            var codigoEstablecimientoEsDeMolinos = servicio.ObtenerCodigoEstablecimientoEsDeMolinos(codigoDeEstablecimiento);
+            orden.DestinoCodigoSap = servicio.ObteneCodigoSapPorCentroId(orden.DestinoId);
+            orden.DestinatarioCodigoSap = servicio.ObtenerProveedor(orden.DestinatarioId)?.CodigoSap;
 
-            //si es MRP, no se valida el codigo de establecimiento
-            if (codigoSapTitular == codigoSapMRP && (remitente == null || remitente.CodigoSap == codigoSapMRP || remitente.CodigoSap == codigoSapMolinosAgro))
+            var escenario = WorkflowCartaPorteHelper.ObtenerEscenario(
+                codigoSapTitular,
+                codigoSapRemitenteComercial,
+                orden.DestinoCodigoSap,
+                orden.DestinatarioCodigoSap,
+                codigoSapMolinosAgro,
+                codigoSapMRP,
+                orden.CodEstab,
+                orden.RtteComercialVentaSecundarioCuil);
+
+            if (escenario != EscenarioWorkflowCartaPorte.Compra)
             {
                 ModelState.AddModelError("", Textos.Error_CCPPCompra);
                 return false;
             }
-            else if ((codigoSapTitular == codigoSapMolinosAgro) && (remitente == null || (remitente.CodigoSap == codigoSapMolinosAgro)) && codigoEstablecimientoEsDeMolinos)
-            {
-                ModelState.AddModelError("", Textos.Error_CCPPCompra);
-                return false;
-            }
+
             if (otroRecorridoDelChofer != null && !(orden.TipoVehiculo == TipoVehiculo.Tren))
             {
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
