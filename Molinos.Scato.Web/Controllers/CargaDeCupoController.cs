@@ -1080,7 +1080,7 @@ namespace Molinos.Scato.Web.Controllers
                     var path = cargaDeCupo.FotoRutaDestino != null && cargaDeCupo.FotoRutaDestino.Contains("temp")
                              ? Path.GetDirectoryName(cargaDeCupo.FotoRutaDestino)?.Replace("temp", "") ?? string.Empty
                              : string.Empty;
-                    CargarAutomaticaCartaPorte(cargaDeCupo, workflow, path, imagenCpBase64, "", orden.Cpe,resultadoTazaMunicipal, datosUsuario, response, orden.Pdf);
+                    CargarAutomaticaCartaPorte(cargaDeCupo, workflow, path, imagenCpBase64, "", orden.Cpe,resultadoTazaMunicipal, datosUsuario, response, orden.Pdf, orden.Errores);
                 }
                 catch (Exception e)
                 {
@@ -1098,7 +1098,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void CargarAutomaticaCartaPorte(CargaDeCupoDto cargaDeCupo, string workflow, string path, string imagenCpBase64, string fotoMesaDigitalizacion2, CartaPorteDto orden, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal, DatosUsuario datosUsuario, CargaDeCupoResponseDto responseCargaDeCupo, byte[] pdf)
+        private void CargarAutomaticaCartaPorte(CargaDeCupoDto cargaDeCupo, string workflow, string path, string imagenCpBase64, string fotoMesaDigitalizacion2, CartaPorteDto orden, ResultadoConsultarPagoTasaMunicipal resultadoTazaMunicipal, DatosUsuario datosUsuario, CargaDeCupoResponseDto responseCargaDeCupo, byte[] pdf, IDictionary<string, string> erroresIntervinientes = null)
         {
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
@@ -1127,9 +1127,9 @@ namespace Molinos.Scato.Web.Controllers
                 responseCargaDeCupo.Success = false;
                 return;
             }
-            if (!EsAptoParaAvanceAutomatico(orden, datosUsuario))
+            if (!EsAptoParaAvanceAutomatico(orden, datosUsuario, erroresIntervinientes))
             {
-                log.Debug("No Válido");
+                log.Debug("No apto para avance automático");
                 responseCargaDeCupo.Success = false;
                 return;
             }
@@ -1278,8 +1278,23 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        protected virtual bool EsAptoParaAvanceAutomatico(CartaPorteDto orden, DatosUsuario usuario)
+        protected virtual bool EsAptoParaAvanceAutomatico(CartaPorteDto orden, DatosUsuario usuario, IDictionary<string, string> erroresIntervinientes)
         {
+            // Errores de intervinientes (ej: proveedor no encontrado en SAP) no bloquean la consulta,
+            // pero sí deben bloquear el avance automático: la CP queda en Pendiente.
+            if (erroresIntervinientes != null)
+            {
+                var erroresDeIntervinientesNoBloqueantes = erroresIntervinientes
+                    .Where(e => ClavesIntervinientesNoBloqueantes.Contains(e.Key))
+                    .ToList();
+                if (erroresDeIntervinientesNoBloqueantes.Any())
+                {
+                    string mensajeError = string.Join("; ", erroresDeIntervinientesNoBloqueantes.Select(e => e.Value)) + ". CP queda en Pendiente.";
+                    log.Warn("EsAptoParaAvanceAutomatico: errores de intervinientes: {0}", mensajeError);
+                    return false;
+                }
+            }
+
             var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
             var codigoSapTitular = servicio.ObtenerProveedor(orden.TitularCartaPorteId)?.CodigoSap;

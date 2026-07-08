@@ -99,8 +99,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         var resultadoCache = BuscarCPEPorCTGEnCache(comando.NroCtg.Value, comando.CentroId, comando.IncluirImagen);
                         if (resultadoCache != null)
                         {
-                            Log.Debug($"ConsultarCPDigital: CPE encontrada en caché. CTG={comando.NroCtg}");
-                            return resultadoCache;
+                            var estadoCache = resultadoCache.Cpe?.EstadoCpe;
+                            if (!string.IsNullOrEmpty(estadoCache) && EstadosCPEdeAFIP.EstadosSinReConsulta.Contains(estadoCache))
+                            {
+                                Log.Debug($"ConsultarCPDigital: CPE en caché con estado '{estadoCache}' no requiere re-consulta. CTG={comando.NroCtg}");
+                                return resultadoCache;
+                            }
+                            Log.Debug($"ConsultarCPDigital: CPE en caché con estado '{estadoCache}' requiere re-consulta a ARCA. CTG={comando.NroCtg}");
+                            var resultadoAfip = BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg, comando.IncluirImagen);
+                            if (resultadoAfip.HayErrores)
+                            {
+                                Log.Warn($"ConsultarCPDigital: ARCA no disponible en re-consulta (estado '{estadoCache}'), usando caché. CTG={comando.NroCtg}");
+                                return resultadoCache;
+                            }
+                            return resultadoAfip;
                         }
                         Log.Debug($"ConsultarCPDigital: CPE no encontrada en caché, consultando AFIP. CTG={comando.NroCtg}");
                         return BuscarCPEPorCTGEnAFIP(comando.NroCtg.Value, comando.TipoVehiculo, comando.CentroId, comando.ConsultaFerroviarioPorCtg, comando.IncluirImagen);
@@ -172,6 +184,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             var cpe = cpes.OrderByDescending(c => c.FechaEmision).FirstOrDefault();
+
+            // Si el estado en caché requiere re-consulta, ir a ARCA ANTES de la conversión costosa.
+            // Evita ejecutar 10+ queries de ConvertirCartaPorteDto cuando vamos a ir a ARCA de todas formas.
+            if (!string.IsNullOrEmpty(cpe.Estado) && !EstadosCPEdeAFIP.EstadosSinReConsulta.Contains(cpe.Estado) && cpe.NroCTG.HasValue)
+            {
+                Log.Debug($"BuscarCPEPorPatenteEnCache: estado '{cpe.Estado}' requiere re-consulta a ARCA. CTG={cpe.NroCTG}");
+                try
+                {
+                    var tipoVehiculo = cpe.TipoCartaPorte ?? (int)TipoVehiculo.Camión;
+                    return BuscarCPEPorCTGEnAFIP(cpe.NroCTG.Value, tipoVehiculo, centroId, false, incluirImagen);
+                }
+                catch (Exception exRequery)
+                {
+                    Log.Warn(exRequery, $"BuscarCPEPorPatenteEnCache: ARCA no disponible en re-consulta (estado '{cpe.Estado}'), usando caché. CTG={cpe.NroCTG}");
+                }
+            }
+
             if (incluirImagen)
             {
                 resultado.PdfImage = ConvertirPDFenPNG(cpe.Pdf);
@@ -200,17 +229,28 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
+        /// <summary>
+        /// Consulta una CPE en ARCA/AFIP. Nunca lanza: errores de transporte se retornan como <see cref="Resultado.HayErrores"/>.
+        /// </summary>
         private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIP(long ctg, int tipoVehiculo, int centroId, bool consultaFerroviarioPorCtg, bool incluirImagen)
         {
             var resultado = new ResultadoCartaPorteElectronica();
-            var centro = Repositorio.Obtener<Centro>(centroId);
-            var auth = accesoWsCtg.ObtenerAuth(centro.Cuit.Replace("-", string.Empty), resultado);
-            if (resultado.HayErrores) return resultado;
+            try
+            {
+                var centro = Repositorio.Obtener<Centro>(centroId);
+                var auth = accesoWsCtg.ObtenerAuth(centro.Cuit.Replace("-", string.Empty), resultado);
+                if (resultado.HayErrores) return resultado;
 
-            if (tipoVehiculo == (int)TipoVehiculo.Tren)
-                return BuscarCPEPorCTGEnAFIPFerroviaria(ctg, auth, consultaFerroviarioPorCtg, centroId, incluirImagen);
-
-            return BuscarCPEPorCTGEnAFIPAutomotor(ctg, auth, centroId, incluirImagen);
+                return tipoVehiculo == (int)TipoVehiculo.Tren
+                    ? BuscarCPEPorCTGEnAFIPFerroviaria(ctg, auth, consultaFerroviarioPorCtg, centroId, incluirImagen)
+                    : BuscarCPEPorCTGEnAFIPAutomotor(ctg, auth, centroId, incluirImagen);
+            }
+            catch (Exception ex)
+            {
+                Log.Warn(ex, $"ConsultarCPDigital: ARCA no disponible. CTG={ctg}");
+                resultado.Error("afip", "ARCA no disponible");
+                return resultado;
+            }
         }
 
         private ResultadoCartaPorteElectronica BuscarCPEPorCTGEnAFIPFerroviaria(long ctg, Auth auth, bool consultaFerroviarioPorCtg, int centroId, bool incluirImagen)
@@ -245,7 +285,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 return resultado;
 
             var listaVagones = ProcesarVagonesFerroviarios(responseCp.respuesta, auth, centroId, resultado, incluirImagen);
-            if (!resultado.HayErrores)
+            if (!resultado.HayErrores && resultado.Cpe != null)
                 resultado.Cpe.Vehiculos = listaVagones;
 
             return resultado;
@@ -372,6 +412,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     EnriquecerVehiculoFerroviario(vehiculo, resultadoCpe.Cpe);
                     listaVagones.Add(vehiculo);
+
+                    // Usamos la primer carta de porte del operativo como base: todos los vagones
+                    // comparten los mismos datos de titular/remitente/destino, solo difiere el CTG por vagón.
+                    if (resultado.Cpe == null)
+                    {
+                        resultado.Cpe = resultadoCpe.Cpe;
+                        resultado.PdfImage = resultadoCpe.PdfImage;
+                        resultado.Pdf = resultadoCpe.Pdf;
+                    }
                 }
             }
 
@@ -393,6 +442,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var centro = Repositorio.Obtener<Centro>(centroId);
             var categoriaStr = cartaPorte.NroCTG.ToString().Substring(0, 3).EndsWith("01") ? "PRODUCTOR" : "OPERADOR";
             var categoria = Repositorio.Obtener<Categoria>(x => x.Clasificacion == categoriaStr);
+
+            // Ramal ferroviario: solo viene informado en respuestas de CTG por tren (ver
+            // ConvertirResponseAFIPenCartaPorteElectronica). Sin esta búsqueda, CodigoRamalId
+            // y NumeroPrecinto nunca llegan al formulario para cargas ferroviarias.
+            var ramalFerroviario = cartaPorte.RamalFerroviario.HasValue
+                ? Repositorio.Obtener<RamalFerroviario>(x => x.CodigoAfip == cartaPorte.RamalFerroviario.Value)
+                : null;
+
+            // Transportista de tramo 2: al igual que el ramal, solo viene informado en respuestas
+            // ferroviarias. No se reporta error si no se encuentra: es un dato opcional.
+            var transportistaTramo2 = ObtenerTransportistaOpcional(cartaPorte.CuitTransportistaTramo2?.ToString());
 
             var batch = PrecargarProveedores(cartaPorte);
 
@@ -450,6 +510,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Categoria = categoria,
                 Sucursal = cartaPorte.Sucursal,
                 Observacion = cartaPorte.Observacion,
+                RamalFerroviario = ramalFerroviario,
+                NumeroPrecinto = cartaPorte.NumeroPrecinto,
+                NumeroOperativo = cartaPorte.NroOperativo,
+                TransportistaTramo2 = transportistaTramo2,
 
                 //Traslado
                 TitularCartaPorte = titular,
@@ -489,7 +553,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             cpe.NroOrden = cartaPorte.NroOrden;
             cpe.Destino = centro.Descripcion;
             cpe.DestinoId = centro.Id;
-            cpe.TipoVehiculo = TipoVehiculo.Camión;
+            // El ramal ferroviario y el nro de operativo solo vienen informados en respuestas de
+            // tren (ver ConvertirResponseAFIPenCartaPorteElectronica). Antes se hardcodeaba
+            // siempre en Camión, por lo que el JS (que gatea la carga de NumeroOperativo con
+            // TipoVehiculoInt === Tren) nunca completaba ese campo al reutilizar un CTG ferroviario.
+            cpe.TipoVehiculo = cartaPorte.RamalFerroviario.HasValue || cartaPorte.NroOperativo.HasValue
+                ? TipoVehiculo.Tren
+                : TipoVehiculo.Camión;
             cpe.EstadoCpe = cartaPorte.Estado;
             cpe.EsTransportista = transportista != null;
             cpe.CodigoRENSPA = VisecHelper.ObtenerTipoOrigenCPE(cartaPorte.PlantaOrigen.GetValueOrDefault()) == TipoOrigenCPE.UnidadProductiva
@@ -647,6 +717,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return transportista;
         }
 
+        /// <summary>
+        /// Busca el transportista de tramo 2 (solo aplica a cargas ferroviarias). A diferencia de
+        /// <see cref="ObtenerTransportista"/>, no reporta error si no se encuentra o el CUIT es
+        /// inválido: es un dato opcional que el usuario puede completar/corregir manualmente.
+        /// </summary>
+        private Transportista ObtenerTransportistaOpcional(string cuitTransportistaTramo2)
+        {
+            var cuit = FormatterHelper.ConvertirCuilConGuionesSinException(cuitTransportistaTramo2);
+            if (cuit == null) return null;
+
+            return Repositorio.Listar<Transportista>(x => x.Cuit == cuit).LastOrDefault();
+        }
+
         private CartaPorteElectronica ConvertirResponseAFIPenCartaPorteElectronica(dynamic responseAFIP)
         {
             if (responseAFIP == null) return null;
@@ -662,9 +745,60 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var destinatarioAFIP = responseAFIP.destinatario;
                 var transporteAFIP = responseAFIP.transporte;
 
+                // OrigenFerroviariaRespuesta (tren) no tiene nroRenspa: ese dato solo aplica al origen
+                // de tipo unidad productiva en automotor. Se resuelve explícitamente según el tipo real
+                // para evitar RuntimeBinderException al acceder vía dynamic.
+                string nroRenspa = origenAFIP is OrigenFerroviariaRespuesta ? null : (origenAFIP != null ? origenAFIP.nroRenspa : null);
+
+                // TransporteFerroviariaRespuesta (tren) no tiene dominio/cuitChofer/fechaHoraPartida/codigoTurno/tarifaReferencia:
+                // usa vagón y conductor en su lugar. Acceder a esos campos vía dynamic sobre este tipo
+                // lanza RuntimeBinderException, por eso se resuelven explícitamente según el tipo real.
                 string dominio = string.Empty;
-                if (transporteAFIP != null && transporteAFIP.dominio != null && transporteAFIP.dominio.Length > 0)
-                    dominio = string.Join(",", transporteAFIP.dominio);
+                long? cuitChofer = null;
+                DateTime? fechaPartida = null;
+                string codigoTurno = null;
+                double tarifaReferencia = 0;
+                int? codigoRamalAfip = null;
+                string numeroPrecinto = null;
+                long? nroOperativo = null;
+                long? cuitTransportistaTramo2 = null;
+
+                if (transporteAFIP is TransporteFerroviariaRespuesta transporteFerroviario)
+                {
+                    // El nro de vagón hace las veces de "dominio" para el vehículo ferroviario:
+                    // ConvertirCartaPorteDto usa este campo (via CartaPorte.Dominio.Split(',')) para
+                    // resolver la Patente del vagón. Sin esto, el vagón queda con Patente vacía.
+                    dominio = transporteFerroviario.nroVagonSpecified
+                        ? transporteFerroviario.nroVagon.ToString()
+                        : string.Empty;
+                    cuitChofer = transporteFerroviario.cuitConductor;
+                    fechaPartida = transporteFerroviario.fechaHoraPartidaTrenSpecified
+                        ? transporteFerroviario.fechaHoraPartidaTren
+                        : (DateTime?)null;
+                    // Ramal, precinto, nro de operativo y transportista de tramo 2 solo vienen en la
+                    // respuesta ferroviaria; sin esto, el formulario nunca recibe estos datos al
+                    // buscar CTG por tren.
+                    codigoRamalAfip = transporteFerroviario.ramal?.codigo;
+                    numeroPrecinto = transporteFerroviario.nroPrecinto != null && transporteFerroviario.nroPrecinto.Length > 0
+                        ? string.Join(",", transporteFerroviario.nroPrecinto)
+                        : null;
+                    nroOperativo = transporteFerroviario.nroOperativoSpecified
+                        ? transporteFerroviario.nroOperativo
+                        : (long?)null;
+                    cuitTransportistaTramo2 = transporteFerroviario.cuitTransportistaTramo2Specified
+                        ? transporteFerroviario.cuitTransportistaTramo2
+                        : (long?)null;
+                }
+                else if (transporteAFIP != null)
+                {
+                    if (transporteAFIP.dominio != null && transporteAFIP.dominio.Length > 0)
+                        dominio = string.Join(",", transporteAFIP.dominio);
+                    cuitChofer = transporteAFIP.cuitChofer;
+                    fechaPartida = transporteAFIP.fechaHoraPartida;
+                    codigoTurno = transporteAFIP.codigoTurno;
+                    if (transporteAFIP.tarifaReferencia != null)
+                        tarifaReferencia = Convert.ToDouble(transporteAFIP.tarifaReferencia);
+                }
 
                 var carta = new CartaPorteElectronica
                 {
@@ -685,7 +819,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Domicilio = origenAFIP != null ? origenAFIP.domicilio : null,
                     PlantaOrigen = origenAFIP != null ? origenAFIP.planta : (int?)null,
                     CuitOrigen = origenAFIP != null ? origenAFIP.cuit : (long?)null,
-                    NroRenspa = origenAFIP != null ? origenAFIP.nroRenspa : null,
+                    NroRenspa = nroRenspa,
 
                     // correspondeRetiroProductor
                     RetiroProductor = responseAFIP != null ? responseAFIP.correspondeRetiroProductor : (bool?)false,
@@ -722,19 +856,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     // transporte
                     CuitTransportista = transporteAFIP != null ? transporteAFIP.cuitTransportista : (long?)null,
                     Dominio = dominio,
-                    FechaPartida = transporteAFIP != null ? transporteAFIP.fechaHoraPartida : (DateTime?)null,
+                    FechaPartida = fechaPartida,
                     KmRecorrer = transporteAFIP != null ? transporteAFIP.kmRecorrer : (int?)null,
-                    CodigoTurno = transporteAFIP != null ? transporteAFIP.codigoTurno : null,
+                    CodigoTurno = codigoTurno,
 
-                    CuitChofer = transporteAFIP != null ? transporteAFIP.cuitChofer : (long?)null,
+                    CuitChofer = cuitChofer,
                     Tarifa = transporteAFIP != null && transporteAFIP.tarifa != null ? Convert.ToDouble(transporteAFIP.tarifa) : 0,
                     CuitPagadorFlete = transporteAFIP != null ? transporteAFIP.cuitPagadorFlete : (long?)null,
                     CuitIntermediarioFlete = transporteAFIP != null ? transporteAFIP.cuitIntermediarioFlete : (long?)null,
                     MercaderiaFumigada = transporteAFIP != null ? transporteAFIP.mercaderiaFumigada : (bool?)null,
                     FechaUltimaActualizacion = null,
                     Pdf = responseAFIP != null ? responseAFIP.pdf : null,
-                    TarifaReferencia = transporteAFIP != null && transporteAFIP.tarifaReferencia != null ? Convert.ToDouble(transporteAFIP.tarifaReferencia) : 0,
-                    FechaCacheado = DateTime.Now
+                    TarifaReferencia = tarifaReferencia,
+                    FechaCacheado = DateTime.Now,
+                    RamalFerroviario = codigoRamalAfip,
+                    NumeroPrecinto = numeroPrecinto,
+                    NroOperativo = nroOperativo,
+                    CuitTransportistaTramo2 = cuitTransportistaTramo2
                 };
 
                 return carta;

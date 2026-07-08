@@ -186,6 +186,10 @@
     <Compile Include="ControllersMobile\TiempoEnTransitoControllerTest.cs" />
     <Compile Include="Controllers\AsignacionDeContingenciaControllerTest.cs" />
     <Compile Include="Controllers\CargaDeCupoTest.cs" />
+    <Compile Include="Controllers\CargaDeCupoEsAptoParaAvanceAutomaticoTest.cs" />
+    <Compile Include="Controllers\CargaDeCupoEsAptoParaAvanceAutomaticoReglasTest.cs" />
+    <Compile Include="Controllers\CargaDeCupoEsCupoValidoParaAvanceAutomaticoTest.cs" />
+    <Compile Include="Controllers\CargaDeCupoValidarCupoTest.cs" />
     <Compile Include="Controllers\AsignarTicketMunicipalControllerTest.cs" />
     <Compile Include="Controllers\BalanzaControllerTest.cs" />
     <Compile Include="Controllers\ClienteControllerTest.cs" />
@@ -298,6 +302,8 @@
     <Compile Include="Actividades\DarDeBajaCtgAutomaticaTest.cs" />
     <Compile Include="Actividades\DarDeAltaCtgAutomaticaTest.cs" />
     <Compile Include="Actividades\CrearCartaPorteTest.cs" />
+    <Compile Include="Actividades\CrearCartaPorteByPassTest.cs" />
+    <Compile Include="Actividades\CrearCartaPorteByPassTest.cs" />
     <Compile Include="Actividades\ControlarPesoTest.cs" />
     <Compile Include="Actividades\ControlarTiempoEnTransitoTest.cs" />
     <Compile Include="Actividades\AutorizarTiempoEnTransitoTest.cs" />
@@ -549,6 +555,7 @@
     <Compile Include="Procesamiento\ProcesadorAgregarMarcaSustentableTest.cs" />
     <Compile Include="Procesamiento\ProcesadorAvanzarWorkflowPorIdentificacionVehicularTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarEscalablesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarCPDigitalTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPDFCpeTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogIdentificacionVehicularTest.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirAsigRecorrCtrolCalidTest.cs" />
@@ -845,6 +852,8 @@
     <Compile Include="Procesamiento\ProcesadorCrearSuplenciaTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearVagonesTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCartaPorteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCartaPorteByPassTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCartaPorteByPassTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAnalisisDeCalidadTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearBocaDestinoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearHumedimetroModificarModalidadTest.cs" />

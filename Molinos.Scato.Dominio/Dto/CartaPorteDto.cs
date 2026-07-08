@@ -287,7 +287,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         public int TitularCartaPorteId { get; set; }
 
-        public int IntermediarioId { get; set; }
+        public int? IntermediarioId { get; set; }
 
         public int RtteComercialId { get; set; }
         public int RtteComercialVentaSecundarioId { get; set; }

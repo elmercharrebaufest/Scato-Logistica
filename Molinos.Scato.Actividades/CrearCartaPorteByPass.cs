@@ -57,15 +57,21 @@ namespace Molinos.Scato.Actividades
             var workflowDefinicionId = WorkflowDefinicionId.Get<int>(context);
             var resultado = new ResultadoCrearWorkflow();
             resultado.InstanciaWorkflowId = instanciaWorkflow;
+            ILogger logger = null;
 
             try
             {
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var srvRepositorio = context.GetExtension<IServicioRepositorio>();
-                var logger = context.GetExtension<ILogger>();
+                logger = context.GetExtension<ILogger>();
+
+                if (servicioComandos == null || srvRepositorio == null)
+                {
+                    resultado.Errores.Add("ErrorCrearCartaPorte", Textos.Error_ActualizarGenerico);
+                    return resultado;
+                }
 
                 var tipoMaterialPorVariedad = srvRepositorio.ObtenerTipoVariedadRecorridoAnterior(orden.NroCartaPorte, centroId);
-                var tipoDeWorkFlow = srvRepositorio.ObtenerTipoDeWorkflowPorGuid(instanciaWorkflow);
                 var centroDto = srvRepositorio.ObtenerCentro(orden.DestinoId);
 
                 var planta = srvRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.CrearCartaPorteByPass, Constantes.ConfiguracionGeneral.CrearCartaPorteByPass.Planta);
@@ -75,38 +81,51 @@ namespace Molinos.Scato.Actividades
                 var tipocomercialSap = srvRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.CrearCartaPorteByPass, Constantes.ConfiguracionGeneral.CrearCartaPorteByPass.TipoComercialEgreso);
                 var proveedorMOA = srvRepositorio.ObtenerProveedorPorCuit(Constantes.Proveedores.CuitMolinos, new TiposProveedor { PR = true });
                 var categoria = srvRepositorio.ObtenerCategoriaPorClasificacion(Constantes.ClasificacionCategorias.OPERADOR);
+                var entregadorSinEntrega = srvRepositorio.BuscarEntregador("Sin Entrega") ?? srvRepositorio.BuscarEntregador("Sin Entregador");
+                var tipoComercial = tipocomercialSap == null ? null : srvRepositorio.ObtenerTipoComercialPorCodigoSap(tipocomercialSap.Valor);
+
+                int destinoLocalidadCodigoAfip;
+                int destinoProvinciaCodigoAfip;
+                int destinoPlantaAfip;
+                int destinoCentroId;
+                if (localidad == null ||
+                    provincia == null ||
+                    planta == null ||
+                    centro == null ||
+                    !int.TryParse(localidad.Valor, out destinoLocalidadCodigoAfip) ||
+                    !int.TryParse(provincia.Valor, out destinoProvinciaCodigoAfip) ||
+                    !int.TryParse(planta.Valor, out destinoPlantaAfip) ||
+                    !int.TryParse(centro.Valor, out destinoCentroId))
+                {
+                    logger?.Error("No se pudo resolver la configuración obligatoria para CrearCartaPorteByPass en la instancia {0}", instanciaWorkflow);
+                    resultado.Errores.Add("ErrorConfiguracionCrearCartaPorteByPass", Textos.Error_ActualizarGenerico);
+                    return resultado;
+                }
+
+                if (tipoComercial == null || categoria == null || proveedorMOA == null || centroDto == null)
+                {
+                    logger?.Error("No se pudieron resolver entidades obligatorias para CrearCartaPorteByPass en la instancia {0}", instanciaWorkflow);
+                    resultado.Errores.Add("ErrorDatosCrearCartaPorteByPass", Textos.Error_ActualizarGenerico);
+                    return resultado;
+                }
 
                 orden.ProvinciaCodigoSap = orden.DestinoProvincia;
                 orden.ProcedenciaCodigoSap = orden.DestinoLocalidadCodigoSap;
-                orden.DestinoLocalidadCodigoAfip = Convert.ToInt32(localidad.Valor); 
-                orden.DestinoProvinciaCodigoAfip = Convert.ToInt32(provincia.Valor); 
-                orden.DestinoPlantaAfip = Convert.ToInt32(planta.Valor);
-                orden.TipoComercialId = srvRepositorio.ObtenerTipoComercialPorCodigoSap(tipocomercialSap.Valor).Id ?? 0;
+                orden.DestinoLocalidadCodigoAfip = destinoLocalidadCodigoAfip;
+                orden.DestinoProvinciaCodigoAfip = destinoProvinciaCodigoAfip;
+                orden.DestinoPlantaAfip = destinoPlantaAfip;
+                orden.TipoComercialId = tipoComercial.Id ?? 0;
                 orden.ProcedenciaId = centroDto.LocalidadId ?? 0;
-                orden.DestinoId = Convert.ToInt32(centro.Valor); 
+                orden.DestinoId = destinoCentroId;
+                orden.CodEstab = centroDto.CodigoEstablecimiento;
                 logger.Info($"Creando carta de porte by pass para el centro {centro.Valor} con localidad {localidad.Valor} y provincia {provincia.Valor}");
 
-                orden.TarifaReferencia = null;
-                orden.FotoRutaDestino = null;
-                orden.TitularCartaPorteId = proveedorMOA != null ? proveedorMOA.Id : 0;
-                orden.RtteComercial = string.Empty;
-                orden.RtteComercialCuit = string.Empty;
-                orden.RtteComercialCodigoSap = string.Empty;
-                orden.RtteComercialId = 0;
-                orden.CorredorVendedor = string.Empty;
-                orden.CorredorVendedorCuil = string.Empty;
-                orden.CorredorVendedorCodigoSap = string.Empty;
-                orden.CorredorVendedorId = 0;
-                orden.CorredorVendedorSecundario = string.Empty;
-                orden.CorredorVendedorSecundarioCuil = string.Empty;
-                orden.CorredorVendedorSecundarioCodigoSap = string.Empty;
-                orden.CorredorVendedorSecundarioId = 0;
-                orden.CorredorId = 0;
+                AplicarBlanqueoIntervinientesByPass(orden, proveedorMOA, entregadorSinEntrega);
 
                 logger.Debug($"Datos para la carta de porte: TarifaReferencia: {orden.TarifaReferencia}, TitularCartaPorteId: {orden.TitularCartaPorteId}, RtteComercial: {orden.RtteComercial}, RtteComercialCuit: {orden.RtteComercialCuit}, RtteComercialCodigoSap: {orden.RtteComercialCodigoSap}, CorredorVendedor: {orden.CorredorVendedor}, CorredorVendedorCuil: {orden.CorredorVendedorCuil}, CorredorVendedorCodigoSap: {orden.CorredorVendedorCodigoSap}, CorredorVendedorSecundario: {orden.CorredorVendedorSecundario}, CorredorVendedorSecundarioCuil: {orden.CorredorVendedorSecundarioCuil}, CorredorVendedorSecundarioCodigoSap: {orden.CorredorVendedorSecundarioCodigoSap}");
                 orden.PagadorFleteCuil = Constantes.ValoresPorDefecto.CuitMOA.ToString();
                 orden.PagadorFlete = Constantes.ValoresPorDefecto.RazonSocialMOA.ToUpper();
-                orden.PagadorFleteId = proveedorMOA != null ? proveedorMOA.Id : 0;
+                orden.PagadorFleteId = proveedorMOA.Id;
                 orden.TipoCategoriaId = categoria.Id;
                 orden.TipoCategoria = categoria.Clasificacion;
                 orden.KmRecorrer = int.TryParse(orden.KmARecorrer, out var kmARecorrer) ? kmARecorrer : 0;
@@ -126,49 +145,146 @@ namespace Molinos.Scato.Actividades
                     WorkflowDefinicionId = workflowDefinicionId,
                     TipoVariedadId = tipoMaterialPorVariedad,
                 }) as ResultadoCrear;
-                resultado.Id = resultadoCartaPorte.Id;
-
-                var ordenDto = srvRepositorio.ObtenerCartaPorte(resultado.Id);
-                var recorridoEgreso = srvRepositorio.ObtenerRecorridoPorNumeroDocumento(ordenDto.NroCartaPorte).Where(c => c.TipoComercial.Id == orden.TipoComercialId).First();
-
-                if (ordenDto != null)
+                if (resultadoCartaPorte == null)
                 {
-                    ordenDto.VehiculoDemorado = orden.VehiculoDemorado;
-                    CartaPorte.Set(context, ordenDto);
-                    FechaInicio.Set(context, DateTime.Now);
-                    NumeroCartaPorte.Set(context, ordenDto.NroCartaPorte);
-                    TipoDocumentoIngreso.Set(context, Dominio.Enums.TipoDocumentoIngreso.CartaPorte);
-                    VehiculoDemorado.Set(context, ordenDto.VehiculoDemorado);
-                    PesoTara.Set(context, orden?.Vehiculos?.FirstOrDefault()?.PesoTaraOrigen);
-                    PesoBruto.Set(context, orden?.Vehiculos?.FirstOrDefault()?.PesoBrutoOrigen);
+                    resultado.Errores.Add("ResultadoCartaPorteNulo", Textos.Error_ActualizarGenerico);
+                    return resultado;
                 }
 
+                resultado.Id = resultadoCartaPorte.Id;
                 if (resultadoCartaPorte.HayErrores)
                 {
-                    resultado.Errores.Add("ResultadoCartaPorte", string.Join(",", resultadoCartaPorte.HayErrores));
+                    var detalleErrores = resultadoCartaPorte.Errores == null || !resultadoCartaPorte.Errores.Any()
+                        ? Textos.Error_ActualizarGenerico
+                        : string.Join(",", resultadoCartaPorte.Errores.Values);
+                    resultado.Errores.Add("ResultadoCartaPorte", detalleErrores);
+                    return resultado;
                 }
+
+                var ordenDto = srvRepositorio.ObtenerCartaPorte(resultado.Id);
+                if (ordenDto == null)
+                {
+                    resultado.Errores.Add("OrdenDtoNoEncontrada", Textos.Error_ActualizarGenerico);
+                    return resultado;
+                }
+
+                var recorridoEgreso = srvRepositorio.ObtenerRecorridoPorNumeroDocumento(ordenDto.NroCartaPorte).FirstOrDefault(c => c.TipoComercial.Id == orden.TipoComercialId);
+                if (recorridoEgreso == null)
+                {
+                    resultado.Errores.Add("RecorridoEgresoNoEncontrado", Textos.Error_ActualizarGenerico);
+                    return resultado;
+                }
+
+                ordenDto.VehiculoDemorado = orden.VehiculoDemorado;
+                CartaPorte.Set(context, ordenDto);
+                FechaInicio.Set(context, DateTime.Now);
+                NumeroCartaPorte.Set(context, ordenDto.NroCartaPorte);
+                TipoDocumentoIngreso.Set(context, Dominio.Enums.TipoDocumentoIngreso.CartaPorte);
+                VehiculoDemorado.Set(context, ordenDto.VehiculoDemorado);
+                var vehiculoPrimario = orden?.Vehiculos?.FirstOrDefault();
+                PesoTara.Set(context, vehiculoPrimario?.PesoTaraOrigen);
+                PesoBruto.Set(context, vehiculoPrimario?.PesoBrutoOrigen);
 
                 if (ordenDto.Id > 0)
                 {
-                   
+                    if (orden.CartaPorteByPass == null)
+                    {
+                        resultado.Errores.Add("CartaPorteByPassNula", Textos.Error_ActualizarGenerico);
+                        return resultado;
+                    }
+                    
                     var resultadoCaracteristicasAnalizadas = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCaracteristicasAnalizadas
                     {
                         IdRecorridoIngreso = orden.CartaPorteByPass.RecorridoIdIngreso,
                         IdRecorridoEgreso = recorridoEgreso.Id
                     }) as ResultadoCrear;
 
+                    if (resultadoCaracteristicasAnalizadas == null)
+                    {
+                        resultado.Errores.Add("ResultadoCaracteristicasNulo", Textos.Error_ActualizarGenerico);
+                        return resultado;
+                    }
+
                     if (resultadoCaracteristicasAnalizadas.HayErrores)
                     {
-                        resultado.Errores.Add("ResultadoCaracteristicas", string.Join(",", resultadoCaracteristicasAnalizadas.HayErrores));
+                        var detalleErrores = resultadoCaracteristicasAnalizadas.Errores == null || !resultadoCaracteristicasAnalizadas.Errores.Any()
+                            ? Textos.Error_ActualizarGenerico
+                            : string.Join(",", resultadoCaracteristicasAnalizadas.Errores.Values);
+                        resultado.Errores.Add("ResultadoCaracteristicas", detalleErrores);
                     }
                 }
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger?.Error(ex, "Error al crear carta de porte by pass. InstanciaWorkflowId: {0}", instanciaWorkflow);
                 resultado.Errores.Add("ErrorCrearCartaPorte", Textos.Error_ActualizarGenerico);
             }
             return resultado;
+        }
+
+        private static void AplicarBlanqueoIntervinientesByPass(CartaPorteDto orden, ProveedorDto proveedorMOA, EntregadorDto entregadorSinEntrega)
+        {
+            orden.TarifaReferencia = null;
+            orden.FotoRutaDestino = null;
+            orden.TitularCartaPorteId = proveedorMOA.Id;
+
+            orden.RtteComercialProductor = string.Empty;
+            orden.RtteComercialProductorCuil = string.Empty;
+            orden.RtteComercialProductorCodigoSap = string.Empty;
+            orden.RtteComercialProductorId = 0;
+
+            orden.RtteComercial = string.Empty;
+            orden.RtteComercialCuit = string.Empty;
+            orden.RtteComercialCodigoSap = string.Empty;
+            orden.RtteComercialId = 0;
+
+            orden.RtteComercialVentaSecundario = string.Empty;
+            orden.RtteComercialVentaSecundarioCuil = string.Empty;
+            orden.RtteComercialVentaSecundarioCodigoSap = string.Empty;
+            orden.RtteComercialVentaSecundarioId = 0;
+
+            orden.RtteComercialVentaSecundario2 = string.Empty;
+            orden.RtteComercialVentaSecundario2Cuil = string.Empty;
+            orden.RtteComercialVentaSecundario2CodigoSap = string.Empty;
+            orden.RtteComercialVentaSecundario2Id = 0;
+
+            orden.Corredor = string.Empty;
+            orden.CorredorCuil = string.Empty;
+            orden.CorredorCodigoSap = string.Empty;
+            orden.CorredorId = 0;
+
+            orden.CorredorVendedor = string.Empty;
+            orden.CorredorVendedorCuil = string.Empty;
+            orden.CorredorVendedorCodigoSap = string.Empty;
+            orden.CorredorVendedorId = 0;
+
+            orden.CorredorVendedorSecundario = string.Empty;
+            orden.CorredorVendedorSecundarioCuil = string.Empty;
+            orden.CorredorVendedorSecundarioCodigoSap = string.Empty;
+            orden.CorredorVendedorSecundarioId = 0;
+
+            orden.AgenteCompras = string.Empty;
+            orden.AgenteComprasCuil = string.Empty;
+            orden.AgenteComprasCodigoSap = string.Empty;
+            orden.AgenteComprasId = 0;
+
+            orden.RepresentanteRecibidor = string.Empty;
+            orden.RepresentanteRecibidorCuil = string.Empty;
+            orden.RepresentanteRecibidorId = null;
+
+            orden.Entregador = "Sin Entrega";
+            orden.EntregadorCuit = entregadorSinEntrega?.Cuil ?? string.Empty;
+            orden.EntregadorId = entregadorSinEntrega?.Id ?? 0;
+
+            orden.Destinatario = "MOLINOS AGRO S.A.";
+            orden.DestinatarioCuil = Constantes.ValoresPorDefecto.CuitMOA.ToString();
+            orden.DestinatarioCodigoSap = proveedorMOA.CodigoSap ?? string.Empty;
+            orden.DestinatarioId = proveedorMOA.Id;
+
+            orden.Intermediario = string.Empty;
+            orden.IntermediarioId = null;
+            orden.IntermediarioCodigoSap = string.Empty;
         }
 
 

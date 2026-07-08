@@ -40,7 +40,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var agente = Repositorio.Obtener<Proveedor>(comando.Orden.AgenteComprasId);
                     var prestador = Repositorio.Obtener<Proveedor>(comando.Orden.PrestadorId);
                     var bocaDestino = Repositorio.Obtener<BocaDestino>(comando.Orden.BocaDestinoId);
-                    var intermediario = Repositorio.Obtener<Proveedor>(comando.Orden.IntermediarioId);
+                    var intermediario = Repositorio.Obtener<Proveedor>(comando.Orden.IntermediarioId ?? 0);
                     var rtteComercial = Repositorio.Obtener<Proveedor>(comando.Orden.RtteComercialId);
                     var corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId);
                     var corredorVendedor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorVendedorId);
