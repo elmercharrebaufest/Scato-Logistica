@@ -37,9 +37,10 @@ namespace Molinos.Scato.Dominio.Enums
         public static IReadOnlyList<string> ValidosParaConfirmacionArribo = new List<string> { "CF", "CN" };
 
         // Estados que NO requieren re-consulta a ARCA: si el CTG tiene uno de estos estados en caché, se confía en el dato local.
-        // AC=Activa, CO=Con contingencia, CF=Con confirmación de arribo, AN=Anulada.
-        // RE (Rechazada) NO está incluido — debe verificarse en ARCA porque puede haber sido corregida y re-autorizada.
+        // AC=Activa, CF=Con confirmación de arribo, AN=Anulada.
+        // RE (Rechazada) y CO (Con contingencia) NO están incluidos — deben verificarse siempre en ARCA:
+        // RE puede haber sido corregida y re-autorizada; CO puede haberse resuelto la contingencia y quedar actualizada.
         // NO modifica Validos ni Bloqueantes — son listas de validación de negocio independientes.
-        public static IReadOnlyList<string> EstadosSinReConsulta = new List<string> { "AC", "CO", "CF", "AN" };
+        public static IReadOnlyList<string> EstadosSinReConsulta = new List<string> { "AC", "CF", "AN" };
     }
 }

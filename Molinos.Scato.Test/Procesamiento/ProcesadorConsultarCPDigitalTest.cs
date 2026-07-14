@@ -75,15 +75,20 @@ namespace Molinos.Scato.Test.Procesamiento
         }
 
         [Test]
-        public void CuandoEstadoEnCacheEsCO_NoDebeReConsultarARCA()
+        public void CuandoEstadoEnCacheEsCO_DebeReConsultarARCA()
         {
+            // "CO" (contingencia) ya NO está en EstadosSinReConsulta → la contingencia puede
+            // haberse resuelto y el dato en ARCA/AFIP quedar más actualizado que el caché.
             var cpe = CrearCpeEntidad(CtgEstable, "CO");
             SetupObtenerMasReciente(cpe);
 
+            accesoWsCtgMock.Setup(a => a.ObtenerAuth(It.IsAny<string>(), It.IsAny<Resultado>()))
+                .Throws(new Exception("ARCA no disponible"));
+
             target.Ejecutar(new ConsultarCPDigital { NroCtg = CtgEstable, CentroId = CentroId, IncluirImagen = false });
 
-            accesoWsCtgMock.Verify(a => a.ObtenerAuth(It.IsAny<string>(), It.IsAny<Resultado>()), Times.Never(),
-                "Estado CO (contingencia) es estable — no debe llamar a ARCA");
+            accesoWsCtgMock.Verify(a => a.ObtenerAuth(It.IsAny<string>(), It.IsAny<Resultado>()), Times.Once(),
+                "Estado CO (contingencia) es inestable — debe re-consultar ARCA/AFIP");
         }
 
         [Test]
