@@ -918,6 +918,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             Conversor.Convertir(origen, destino);
 
             destino.Id = idOriginal;
+            if (origen.Pdf != null)
+            {
+                destino.Pdf = origen.Pdf;
+            }
             destino.FechaUltimaActualizacion = DateTime.Now;
             destino.FechaCacheado = DateTime.Now;
         }

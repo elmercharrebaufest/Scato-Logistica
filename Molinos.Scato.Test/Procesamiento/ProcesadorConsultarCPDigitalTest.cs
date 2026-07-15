@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Molinos.Scato.Test.Procesamiento
 {
@@ -339,8 +340,55 @@ namespace Molinos.Scato.Test.Procesamiento
         }
 
         // ──────────────────────────────────────────────────────────────────────────────
+        // ActualizarCartaPorteElectronica — refresco del Pdf cacheado (regresión PR 5099:
+        // se perdió el `if (pdfNuevo != null) cartaPorte.Pdf = pdfNuevo` al extraer el helper).
+        // ──────────────────────────────────────────────────────────────────────────────
+
+        [Test]
+        public void CuandoAfipDevuelveUnPdfNuevo_DebeActualizarElPdfEnElCache()
+        {
+            var pdfViejo = new byte[] { 1, 2, 3 };
+            var pdfNuevo = new byte[] { 9, 8, 7 };
+
+            var destino = CrearCpeEntidad(CtgEstable, "AC");
+            destino.Pdf = pdfViejo;
+
+            var origen = CrearCpeEntidad(CtgEstable, "AC");
+            origen.Pdf = pdfNuevo;
+
+            InvocarActualizarCartaPorteElectronica(destino, origen);
+
+            Assert.That(destino.Pdf, Is.EqualTo(pdfNuevo),
+                "El Pdf cacheado debe refrescarse cuando AFIP devuelve un Pdf nuevo");
+        }
+
+        [Test]
+        public void CuandoAfipNoDevuelvePdf_DebePreservarElPdfCacheado()
+        {
+            var pdfViejo = new byte[] { 1, 2, 3 };
+
+            var destino = CrearCpeEntidad(CtgEstable, "AC");
+            destino.Pdf = pdfViejo;
+
+            var origen = CrearCpeEntidad(CtgEstable, "AC");
+            origen.Pdf = null;
+
+            InvocarActualizarCartaPorteElectronica(destino, origen);
+
+            Assert.That(destino.Pdf, Is.EqualTo(pdfViejo),
+                "Si la respuesta de AFIP no trae Pdf, debe preservarse el Pdf ya cacheado");
+        }
+
+        // ──────────────────────────────────────────────────────────────────────────────
         // Helpers
         // ──────────────────────────────────────────────────────────────────────────────
+
+        private void InvocarActualizarCartaPorteElectronica(CartaPorteElectronica destino, CartaPorteElectronica origen)
+        {
+            var metodo = typeof(ProcesadorConsultarCPDigital).GetMethod(
+                "ActualizarCartaPorteElectronica", BindingFlags.NonPublic | BindingFlags.Instance);
+            metodo.Invoke(target, new object[] { destino, origen });
+        }
 
         private CartaPorteElectronica CrearCpeEntidad(long nroCTG, string estado) => new CartaPorteElectronica
         {
