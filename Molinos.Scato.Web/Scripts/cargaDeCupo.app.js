@@ -174,6 +174,11 @@
             const tomarFotoBtn = CargaDeCupoUI.dom.getElement('.tomarFoto1');
             tomarFotoBtn.addEventListener('click', CargaDeCupoApp.events.handlers.tomarFoto);
 
+            const btnActualizarCpe = CargaDeCupoUI.dom.getElement('#btnActualizarCpe');
+            if (btnActualizarCpe) {
+                btnActualizarCpe.addEventListener('click', CargaDeCupoApp.events.handlers.actualizarCpe);
+            }
+
             const closeButtons = [
                 { id: '#validation-alert-cargaDeCupo-close', target: '#validation-alert-cargaDeCupo' },
                 { id: '#validation-error-close', target: '#validation-error-alert' },
@@ -268,6 +273,21 @@
                 if (CargaDeCupoCore.validation.isValidCtgLength(nroCTG)) {
                     await CargaDeCupoApp.business.handleCtg(nroCTG, tarjeta, esEspecial);
                 }
+            },
+
+            actualizarCpe: async (event) => {
+                event.preventDefault();
+
+                const nroCTG = CargaDeCupoUI.dom.getValue('#CTG');
+                const tarjeta = CargaDeCupoUI.dom.getValue('#Numero');
+                const esEspecial = CargaDeCupoUI.dom.getValue('#Especial');
+
+                if (!CargaDeCupoCore.validation.isValidCtgLength(nroCTG)) {
+                    CargaDeCupoUI.alerts.showAlert('Debe ingresar un CTG válido para actualizar la CPE', 'alert-error');
+                    return;
+                }
+
+                await CargaDeCupoApp.business.handleCtg(nroCTG, tarjeta, esEspecial, true);
             },
 
             patenteChange: async (event) => {
@@ -547,14 +567,14 @@
             }
         },
 
-        handleCtg: async (nroCTG, tarjeta, esEspecial) => {
+        handleCtg: async (nroCTG, tarjeta, esEspecial, forzarActualizacion = false) => {
             try {
-                BlockUI();
+                BlockUI(forzarActualizacion ? 'Actualizando CPE desde AFIP...' : undefined);
 
                 CargaDeCupoUI.form.clearValidation();
                 CargaDeCupoUI.alerts.hideAlert();
 
-                const data = await CargaDeCupoAPI.services.obtenerCPE(nroCTG, tarjeta, esEspecial);
+                const data = await CargaDeCupoAPI.services.obtenerCPE(nroCTG, tarjeta, esEspecial, forzarActualizacion);
 
                 if (data.CodigoDeError === "1") {
                     CargaDeCupoUI.alerts.showAlert(data.Error, 'alert-info');

@@ -144,6 +144,9 @@
                     @Html.LabelFor(model => model.CTG, Textos.CTG + ":", new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
                         @Html.TextBoxFor(model => model.CTG, new { @class = "control input-medium", @type = "number" })
+                        <button type="button" id="btnActualizarCpe" class="btn btn-mini" title="@Textos.ActualizarCpe">
+                            <i class="icon-refresh"></i>
+                        </button>
                         @Html.ValidationMessageFor(model => model.CTG)
                         @Html.HiddenFor(model => model.CodEstab)
                         @Html.HiddenFor(model => model.RtteComercialCodigoSap)

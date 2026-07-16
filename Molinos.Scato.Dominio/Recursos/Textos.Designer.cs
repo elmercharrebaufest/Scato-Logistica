@@ -2680,6 +2680,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actualizar CPE.
+        /// </summary>
+        public static string ActualizarCpe {
+            get {
+                return ResourceManager.GetString("ActualizarCpe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actualizar Foto Carta de Porte.
         /// </summary>
         public static string ActualizarFotoCartaPorte {

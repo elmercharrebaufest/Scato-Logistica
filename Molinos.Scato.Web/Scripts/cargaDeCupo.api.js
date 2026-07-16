@@ -104,7 +104,7 @@ const CargaDeCupoAPI = {
         obtenerOrdenesFasonInsumos: async (patente) => {
             try {
                 const urls = CargaDeCupoAPI.urls.get();
-                if (!urls.obtenerOrdenesInsumos) throw new Error('URL obtener órdenes insumos no configurada');
+                if (!urls.obtenerOrdenesInsumos) throw new Error('URL obtener ï¿½rdenes insumos no configurada');
 
                 const params = new URLSearchParams({ patente: patente });
 
@@ -119,7 +119,7 @@ const CargaDeCupoAPI = {
             }
         },
 
-        obtenerCPE: async (numeroCtg, tarjeta, esEspecial) => {
+        obtenerCPE: async (numeroCtg, tarjeta, esEspecial, forzarActualizacion = false) => {
             try {
                 const urls = CargaDeCupoAPI.urls.get();
                 if (!urls.obtenerCpe) throw new Error('URL obtener CPE no configurada');
@@ -127,7 +127,8 @@ const CargaDeCupoAPI = {
                 const params = new URLSearchParams({
                     numeroCtg: numeroCtg,
                     tarjeta: tarjeta,
-                    esEpecial: esEspecial
+                    esEpecial: esEspecial,
+                    forzarActualizacion: forzarActualizacion
                 });
 
                 const response = await fetch(`${urls.obtenerCpe}?${params}`, {

@@ -87,7 +87,7 @@ namespace Molinos.Scato.Web.Controllers
                     var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
                     {
                         CentroId = centroId,
-                        TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
+                        TipoVehiculo = cpe.TipoCartaPorte == 75 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                         NroCtg = cpe.NroCtg,
                         FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now,
                         ForzarConsultaAfip = true

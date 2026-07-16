@@ -788,17 +788,18 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerCPE(DatosUsuario datosUsuario, long numeroCtg, string tarjeta = "", bool esEpecial = false)
+        public JsonResult ObtenerCPE(DatosUsuario datosUsuario, long numeroCtg, string tarjeta = "", bool esEpecial = false, bool forzarActualizacion = false)
         {
             try
             {
-                log.Debug("Obteniendo CTG {0} en carga de Cupo.", numeroCtg);
+                log.Debug("Obteniendo CTG {0} en carga de Cupo. ForzarActualizacion={1}, Usuario: {2}", numeroCtg, forzarActualizacion, datosUsuario.NombreUsuario);
                 var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital 
                 { 
                     NroCtg = numeroCtg, 
                     Usuario = datosUsuario.NombreUsuario, 
                     CentroId = datosUsuario.CentroId,
-                    IncluirImagen = true
+                    IncluirImagen = true,
+                    ForzarConsultaAfip = forzarActualizacion
                 }) as ResultadoCartaPorteElectronica;
 
                 // Capturar mensajes no bloqueantes de TODOS los intervinientes antes de que sean eliminados

@@ -190,6 +190,7 @@
     <Compile Include="Controllers\CargaDeCupoEsAptoParaAvanceAutomaticoReglasTest.cs" />
     <Compile Include="Controllers\CargaDeCupoEsCupoValidoParaAvanceAutomaticoTest.cs" />
     <Compile Include="Controllers\CargaDeCupoValidarCupoTest.cs" />
+    <Compile Include="Controllers\CargaDeCupoObtenerCPETest.cs" />
     <Compile Include="Controllers\AsignarTicketMunicipalControllerTest.cs" />
     <Compile Include="Controllers\BalanzaControllerTest.cs" />
     <Compile Include="Controllers\ClienteControllerTest.cs" />

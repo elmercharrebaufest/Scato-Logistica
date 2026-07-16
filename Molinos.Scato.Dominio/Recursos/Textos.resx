@@ -2169,6 +2169,9 @@
   <data name="AbmSuplencia" xml:space="preserve">
     <value>ABM Suplencias</value>
   </data>
+  <data name="ActualizarCpe" xml:space="preserve">
+    <value>Actualizar CPE</value>
+  </data>
   <data name="CTG" xml:space="preserve">
     <value>CTG</value>
   </data>
