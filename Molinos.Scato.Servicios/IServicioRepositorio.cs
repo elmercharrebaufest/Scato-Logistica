@@ -1369,6 +1369,9 @@ namespace Molinos.Scato.Servicios
         bool EsTarjetaEnRangoValido(string numero, int centroId);
 
         [OperationContract]
+        bool EsTarjetaSupervisor(string numero, int centroId, int puestoId);
+
+        [OperationContract]
         string ObtenerTarjetaRFIDAsignada(TipoDocumentoIngreso tipoDocumentoIngreso, string nroDocumentoIngreso);
 
         [OperationContract]
@@ -3186,9 +3189,6 @@ namespace Molinos.Scato.Servicios
 			string cuitTransportista = null, string numeroCTG = null, string patente = null, string cuitIntermediarioFlete = null, bool esAdmin = false);
 
         [OperationContract]
-        CategoriaDto ObtenerCategoriaPorClasificacion(string clasificacion);
-
-        [OperationContract]
         IList<LogValidacionAccesoStopBandasHorariasDto> ListarLogValidacionAccesoStopBandasHorarias(
             DateTime? desde,
             DateTime? hasta,
@@ -3201,5 +3201,37 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         IList<LogValidacionAccesoStopBandasHorariasDto> ListarBandaHorariaStopRechazados(string semaforo);
 
+        [OperationContract]
+        CategoriaDto ObtenerCategoriaPorClasificacion(string clasificacion);
+
+        [OperationContract]
+        IList<CamionPorDiaDto> ObtenerCamionesPorDia(FiltroDashboardCardlessDto filtro);
+
+        [OperationContract]
+        IList<PatentePorCamaraDto> ObtenerPatentePorCamara(FiltroDashboardCardlessDto filtro);
+
+        [OperationContract]
+        IList<ReconocimientoPorDiaSemanaDto> ObtenerReconocimientoPorDiaSemana(FiltroDashboardCardlessDto filtro);
+
+        [OperationContract]
+        IList<VehiculoPorDiaDto> ObtenerVehiculoPorDia(FiltroDashboardCardlessDto filtro);
+
+        [OperationContract]
+        IList<ReconocimientoPorProveedorDto> ObtenerReconocimientoPorProveedor(FiltroDashboardCardlessDto filtro);
+
+        [OperationContract]
+        IList<PromedioIntentosPorDiaDto> ObtenerPromedioIntentosPorDia(FiltroDashboardCardlessDto filtro);
+
+        [OperationContract]
+        ResumenIntentosDto ObtenerResumenIntentos(FiltroDashboardCardlessDto filtro);
+
+		[OperationContract]
+		IList<CapturaFallidaDto> ObtenerCapturasFallidas(FiltroCapturasFallidasDto filtro, int pagina);
+
+		[OperationContract]
+		IList<CapturaFallidaDto> ObtenerCapturasFallidasParaDescarga(FiltroCapturasFallidasDto filtro);
+
+		[OperationContract]
+		string ObtenerRutaImagenCaptura(int detalleId);
     }
 }

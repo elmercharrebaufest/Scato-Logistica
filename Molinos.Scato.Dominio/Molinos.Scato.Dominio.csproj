@@ -87,6 +87,7 @@
     <Compile Include="Comandos\ActualizarAsignacionAutomatismoGranoEnRecorrido .cs" />
     <Compile Include="Comandos\ActualizarLogIdentificacionVehicularResultado.cs" />
     <Compile Include="Comandos\AvanzarWorkflowPorIdentificacionVehicular.cs" />
+    <Compile Include="Comandos\CrearLogIdentificacionVehicular.cs" />
     <Compile Include="Comandos\RegistrarMarcaDeTiempo.cs" />
     <Compile Include="Comandos\ComandoImpresion.cs" />
     <Compile Include="Comandos\ActualizarRegistroJobEjecucion.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="Comandos\ConsultarCategoriaVehiculoGranos.cs" />
     <Compile Include="Comandos\Consultas\ConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarExcepcionPagoTicketMunicipal.cs" />
-    <Compile Include="Comandos\CrearLogIdentificacionVehicular.cs" />
     <Compile Include="Comandos\ModificarLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Comandos\CrearLogValidacionAccesoStopBandasHorarias.cs" />
     <Compile Include="Comandos\CrearLogValidacionAccesoStopRespuesta.cs" />
@@ -114,13 +114,11 @@
     <Compile Include="Comandos\ModificarRecorridoPorContingenciaPay.cs" />
     <Compile Include="Comandos\ModificarExcepcionPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\LiberarPagoTasaMunicipal.cs" />
-    <Compile Include="Comandos\ProcesarIdentificacionVehicular.cs" />
-    <Compile Include="Comandos\ResultadoServicio\ResultadoProcesarIdentificacionVehicular.cs" />
     <Compile Include="Comandos\ReiniciarIntercomunicador.cs" />
     <Compile Include="Comandos\ResultadoReiniciarIntercomunicador.cs" />
+    <Compile Include="Comandos\ResultadoServicio\ResultadoProcesarIdentificacionVehicular.cs" />
+    <Compile Include="Comandos\ResultadoValidarPatenteActiva.cs" />
     <Compile Include="Comandos\Stop\ValidarAccesoStopBandasHorarias.cs" />
-    <Compile Include="Comandos\Validaciones\ValidarVehiculoDetectado.cs" />
-    <Compile Include="Comandos\ResultadoServicio\ResultadoValidarVehiculoDetectado.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarCategoriaVehiculo.cs" />
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarEstadoTransmisionVisec.cs" />
     <Compile Include="Comandos\CrearExcepcionPagoTasaMunicipal.cs" />
@@ -131,6 +129,7 @@
     <Compile Include="Comandos\ResultadoServicio\ResultadoConsultarPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\ResultadoValidacionEjecutarWorkflow.cs" />
     <Compile Include="Comandos\ReprocesarPagoTasaMunicipal.cs" />
+    <Compile Include="Comandos\Validaciones\ValidarPatenteActiva.cs" />
     <Compile Include="Comandos\VerificarPagoTasaMunicipal.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenInsumos.cs" />
     <Compile Include="Comandos\Consultas\ConsultarOrdenesNoGranosCargaDeCupo.cs" />
@@ -1137,6 +1136,16 @@
     <Compile Include="Dto\ExcepcionAlDescuentoDto.cs" />
     <Compile Include="Dto\SugerenciaDto.cs" />
     <Compile Include="Dto\ColaImpresionDto.cs" />
+    <Compile Include="Dto\FiltroDashboardCardlessDto.cs" />
+    <Compile Include="Dto\FiltroCapturasFallidasDto.cs" />
+    <Compile Include="Dto\CamionPorDiaDto.cs" />
+    <Compile Include="Dto\PatentePorCamaraDto.cs" />
+    <Compile Include="Dto\ReconocimientoPorDiaSemanaDto.cs" />
+    <Compile Include="Dto\VehiculoPorDiaDto.cs" />
+    <Compile Include="Dto\ReconocimientoPorProveedorDto.cs" />
+    <Compile Include="Dto\PromedioIntentosPorDiaDto.cs" />
+    <Compile Include="Dto\ResumenIntentosDto.cs" />
+    <Compile Include="Dto\CapturaFallidaDto.cs" />
     <Compile Include="Dto\EstadoPlantaDto.cs" />
     <Compile Include="Dto\ImpTicketPesadaAduanaDto.cs" />
     <Compile Include="Dto\IngresoDeDatosDeExportacionDto.cs" />

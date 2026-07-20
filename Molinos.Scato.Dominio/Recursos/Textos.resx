@@ -10793,6 +10793,78 @@
   <data name="ReiniciarIntercomunicador" xml:space="preserve">
     <value>Reiniciar Servicio Windows "IntercomunicadorService"</value>
   </data>
+  <data name="DashboardCardless_Titulo" xml:space="preserve">
+    <value>Dashboard Cardless</value>
+  </data>
+  <data name="DashboardCardless_VerFotosFallidas" xml:space="preserve">
+    <value>Ver fotos fallidas</value>
+  </data>
+  <data name="DashboardCardless_FiltroPuestoDeTrabajo" xml:space="preserve">
+    <value>Puesto de Trabajo</value>
+  </data>
+  <data name="DashboardCardless_FiltroTodos" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="DashboardCardless_FiltroFechaDesde" xml:space="preserve">
+    <value>Fecha Desde</value>
+  </data>
+  <data name="DashboardCardless_FiltroFechaHasta" xml:space="preserve">
+    <value>Fecha Hasta</value>
+  </data>
+  <data name="DashboardCardless_FiltrarDatos" xml:space="preserve">
+    <value>Filtrar Datos</value>
+  </data>
+  <data name="DashboardCardless_CamionesPorDia" xml:space="preserve">
+    <value>Cantidad de Camiones Ingresados</value>
+  </data>
+  <data name="DashboardCardless_Acumulado" xml:space="preserve">
+    <value>Acumulado</value>
+  </data>
+  <data name="DashboardCardless_SinDatos" xml:space="preserve">
+    <value>Sin datos para el período seleccionado.</value>
+  </data>
+  <data name="DashboardCardless_PatentePorCamara" xml:space="preserve">
+    <value>Patentes por Cámara</value>
+  </data>
+  <data name="DashboardCardless_ReconocimientoPorDiaSemana" xml:space="preserve">
+    <value>Reconocimiento de Patente vs No Reconocimiento</value>
+  </data>
+  <data name="DashboardCardless_VehiculoPorDia" xml:space="preserve">
+    <value>Vehículo Presente vs No Presente</value>
+  </data>
+  <data name="DashboardCardless_ReconocimientoPorProveedor" xml:space="preserve">
+    <value>Reconocimiento por Proveedor</value>
+  </data>
+  <data name="DashboardCardless_PromedioIntentos" xml:space="preserve">
+    <value>Promedio de Intentos de Reconocimiento</value>
+  </data>
+  <data name="DashboardCardless_PromedioGeneral" xml:space="preserve">
+    <value>Promedio General</value>
+  </data>
+  <data name="DashboardCardless_MaxHoy" xml:space="preserve">
+    <value>Máx Hoy</value>
+  </data>
+  <data name="DashboardCardless_Intentos" xml:space="preserve">
+    <value>intentos</value>
+  </data>
+  <data name="DashboardCardless_GaleriaFallidas" xml:space="preserve">
+    <value>Galería de Capturas Fallidas</value>
+  </data>
+  <data name="DashboardCardless_GaleriaDesde" xml:space="preserve">
+    <value>Desde</value>
+  </data>
+  <data name="DashboardCardless_GaleriaHasta" xml:space="preserve">
+    <value>Hasta</value>
+  </data>
+  <data name="DashboardCardless_BuscarGaleria" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="DashboardCardless_DescargarTodo" xml:space="preserve">
+    <value>Descargar Todo</value>
+  </data>
+  <data name="DashboardCardless_SinCapturasFallidas" xml:space="preserve">
+    <value>Sin capturas fallidas para el período seleccionado.</value>
+  </data>
   <data name="PuestoDeTrabajo_SuscribirIdentificacionVehicular" xml:space="preserve">
     <value>Los datos se guardaron exitosamente, pero hubo un error al suscribir el codigo de identificacion vehicular: {0}</value>
   </data>

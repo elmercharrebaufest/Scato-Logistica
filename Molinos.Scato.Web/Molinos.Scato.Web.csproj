@@ -530,6 +530,7 @@
     </Compile>
     <Compile Include="Controllers\GenerarArchivoDeMovimientosController.cs" />
     <Compile Include="Controllers\GraficoDePlantaController.cs" />
+    <Compile Include="Controllers\DashboardCardlessController.cs" />
     <Compile Include="Controllers\IngresoDeDatosDeExportacionController.cs" />
     <Compile Include="Controllers\PanelServiciosWebController.cs" />
     <Compile Include="Controllers\FirmaController.cs" />
@@ -960,6 +961,7 @@
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\ControlCalado.js" />
     <Content Include="Scripts\graficoDePlantaCabezera.js" />
+    <Content Include="Scripts\dashboardCardless.js" />
     <Content Include="Scripts\actividadPorDispositivo.index.js" />
     <Content Include="Scripts\actividadPorDispositivo.js" />
     <Content Include="Scripts\ajusteStockBines.index.js" />
@@ -2269,6 +2271,14 @@
     <Content Include="Views\ModificarDocumentoDeIngreso\Fotos.cshtml" />
     <Content Include="Views\CargaDeCupo\Index.cshtml" />
     <Content Include="Views\GraficoDePlanta\_GraficoDePlantaCabezera.cshtml" />
+    <Content Include="Views\DashboardCardless\Index.cshtml" />
+    <Content Include="Views\DashboardCardless\_CamionesPorDia.cshtml" />
+    <Content Include="Views\DashboardCardless\_PatentePorCamara.cshtml" />
+    <Content Include="Views\DashboardCardless\_ReconocimientoPorDiaSemana.cshtml" />
+    <Content Include="Views\DashboardCardless\_VehiculoPorDia.cshtml" />
+    <Content Include="Views\DashboardCardless\_ReconocimientoPorProveedor.cshtml" />
+    <Content Include="Views\DashboardCardless\_PromedioIntentos.cshtml" />
+    <Content Include="Views\DashboardCardless\_GaleriaFallidas.cshtml" />
     <Content Include="Views\ListadoCupo\Index.cshtml" />
     <Content Include="Views\CargaDeCupo\Form.cshtml" />
     <Content Include="Views\ListadoCupo\Cabecera.cshtml" />

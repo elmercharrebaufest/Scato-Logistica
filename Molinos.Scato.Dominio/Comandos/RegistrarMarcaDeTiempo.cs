@@ -18,6 +18,7 @@ namespace Molinos.Scato.Dominio.Comandos
     {
         Inicio,
         Identificacion,
-        Fin
+        Fin,
+        InicioOFinPorSensor
     }
 }

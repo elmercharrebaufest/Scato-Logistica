@@ -313,5 +313,80 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(x => x.ObtenerGruposBarrerasPorCentro(It.IsAny<int>())).Returns(new List<VisualizacionBarreraDto>());
         }
 
+        // --- Ciclo 15: FirmwareGaritaIngreso sin CodigoConfigIdentificacionVehicular → error ---
+
+        [Test]
+        public void Crear_ConFirmwareGaritaIngreso_SinConfigIdentificacionVehicular_AgregaErrorModelState()
+        {
+            ConfigurarMocksSetearVista();
+            var model = new PuestoDeTrabajoDto
+            {
+                Firmware = "Molinos.Scato.Web.Firmware.FirmwareGaritaIngreso, Molinos.Scato.Web",
+                CodigoConfigIdentificacionVehicular = null
+            };
+            var datosUsuario = new DatosUsuario { CentroId = 1 };
+
+            target.Crear(datosUsuario, "[{\"Codigo\":\"Bar01\",\"Descripcion\":\"Bar1\"}]", "[{\"Codigo\":\"Bar01\",\"Descripcion\":\"Bar1\"}]", "[]", "[]", model, "[]");
+
+            Assert.That(target.ModelState.IsValid, Is.False);
+            Assert.That(target.ModelState.ContainsKey("CodigoConfigIdentificacionVehicular"), Is.True);
+        }
+
+        // --- Ciclo 16: FirmwareGaritaIngreso con CodigoConfigIdentificacionVehicular → sin error de validación ---
+
+        [Test]
+        public void Crear_ConFirmwareGaritaIngreso_ConConfigIdentificacionVehicular_NoAgregaError()
+        {
+            servComandosMock.Setup(s => s.Ejecutar(It.IsAny<CrearPuestoDeTrabajo>())).Returns(new Resultado());
+            var model = new PuestoDeTrabajoDto
+            {
+                Firmware = "Molinos.Scato.Web.Firmware.FirmwareGaritaIngreso, Molinos.Scato.Web",
+                CodigoConfigIdentificacionVehicular = "CFG-IDVEH-01"
+            };
+            var datosUsuario = new DatosUsuario { CentroId = 1 };
+
+            target.Crear(datosUsuario, "[{\"Codigo\":\"Bar01\",\"Descripcion\":\"Bar1\"}]", "[{\"Codigo\":\"Bar01\",\"Descripcion\":\"Bar1\"}]", "[]", "[]", model, "[]");
+
+            Assert.That(target.ModelState.ContainsKey("CodigoConfigIdentificacionVehicular"), Is.False);
+        }
+
+        // --- Ciclo 17: Otro firmware sin CodigoConfigIdentificacionVehicular → sin error de validación ---
+
+        [Test]
+        public void Crear_ConOtroFirmware_SinConfigIdentificacionVehicular_NoAgregaError()
+        {
+            servComandosMock.Setup(s => s.Ejecutar(It.IsAny<CrearPuestoDeTrabajo>())).Returns(new Resultado());
+            var model = new PuestoDeTrabajoDto
+            {
+                Firmware = "Molinos.Scato.Web.Firmware.FirmwarePuestoDesatendido, Molinos.Scato.Web",
+                CodigoConfigIdentificacionVehicular = null
+            };
+            var datosUsuario = new DatosUsuario { CentroId = 1 };
+
+            target.Crear(datosUsuario, "[{\"Codigo\":\"Bar01\",\"Descripcion\":\"Bar1\"}]", "[{\"Codigo\":\"Bar01\",\"Descripcion\":\"Bar1\"}]", "[]", "[]", model, "[]");
+
+            Assert.That(target.ModelState.ContainsKey("CodigoConfigIdentificacionVehicular"), Is.False);
+        }
+
+        // --- Ciclo 18: Modificar con FirmwareGaritaIngreso sin config → error ---
+
+        [Test]
+        public void Modificar_ConFirmwareGaritaIngreso_SinConfigIdentificacionVehicular_AgregaErrorModelState()
+        {
+            ConfigurarMocksSetearVista();
+            var model = new PuestoDeTrabajoDto
+            {
+                Id = 1,
+                NombrePuesto = "Garita",
+                Firmware = "Molinos.Scato.Web.Firmware.FirmwareGaritaIngreso, Molinos.Scato.Web",
+                CodigoConfigIdentificacionVehicular = null
+            };
+
+            target.Modificar(model, "[{\"Codigo\":\"Bar01\",\"Descripcion\":\"Bar1\"}]", "[{\"Codigo\":\"Bar01\",\"Descripcion\":\"Bar1\"}]", "[]", "[]", new DatosUsuario(), "[]");
+
+            Assert.That(target.ModelState.IsValid, Is.False);
+            Assert.That(target.ModelState.ContainsKey("CodigoConfigIdentificacionVehicular"), Is.True);
+        }
+
     }
 }

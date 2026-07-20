@@ -11815,6 +11815,222 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dashboard Cardless.
+        /// </summary>
+        public static string DashboardCardless_Titulo {
+            get {
+                return ResourceManager.GetString("DashboardCardless_Titulo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Acumulado.
+        /// </summary>
+        public static string DashboardCardless_Acumulado {
+            get {
+                return ResourceManager.GetString("DashboardCardless_Acumulado", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Buscar.
+        /// </summary>
+        public static string DashboardCardless_BuscarGaleria {
+            get {
+                return ResourceManager.GetString("DashboardCardless_BuscarGaleria", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cantidad de Camiones Ingresados.
+        /// </summary>
+        public static string DashboardCardless_CamionesPorDia {
+            get {
+                return ResourceManager.GetString("DashboardCardless_CamionesPorDia", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Descargar Todo.
+        /// </summary>
+        public static string DashboardCardless_DescargarTodo {
+            get {
+                return ResourceManager.GetString("DashboardCardless_DescargarTodo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Filtrar Datos.
+        /// </summary>
+        public static string DashboardCardless_FiltrarDatos {
+            get {
+                return ResourceManager.GetString("DashboardCardless_FiltrarDatos", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha Desde.
+        /// </summary>
+        public static string DashboardCardless_FiltroFechaDesde {
+            get {
+                return ResourceManager.GetString("DashboardCardless_FiltroFechaDesde", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha Hasta.
+        /// </summary>
+        public static string DashboardCardless_FiltroFechaHasta {
+            get {
+                return ResourceManager.GetString("DashboardCardless_FiltroFechaHasta", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Puesto de Trabajo.
+        /// </summary>
+        public static string DashboardCardless_FiltroPuestoDeTrabajo {
+            get {
+                return ResourceManager.GetString("DashboardCardless_FiltroPuestoDeTrabajo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Todos.
+        /// </summary>
+        public static string DashboardCardless_FiltroTodos {
+            get {
+                return ResourceManager.GetString("DashboardCardless_FiltroTodos", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Desde.
+        /// </summary>
+        public static string DashboardCardless_GaleriaDesde {
+            get {
+                return ResourceManager.GetString("DashboardCardless_GaleriaDesde", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Galería de Capturas Fallidas.
+        /// </summary>
+        public static string DashboardCardless_GaleriaFallidas {
+            get {
+                return ResourceManager.GetString("DashboardCardless_GaleriaFallidas", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hasta.
+        /// </summary>
+        public static string DashboardCardless_GaleriaHasta {
+            get {
+                return ResourceManager.GetString("DashboardCardless_GaleriaHasta", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to intentos.
+        /// </summary>
+        public static string DashboardCardless_Intentos {
+            get {
+                return ResourceManager.GetString("DashboardCardless_Intentos", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Máx Hoy.
+        /// </summary>
+        public static string DashboardCardless_MaxHoy {
+            get {
+                return ResourceManager.GetString("DashboardCardless_MaxHoy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Patentes por Cámara.
+        /// </summary>
+        public static string DashboardCardless_PatentePorCamara {
+            get {
+                return ResourceManager.GetString("DashboardCardless_PatentePorCamara", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Promedio General.
+        /// </summary>
+        public static string DashboardCardless_PromedioGeneral {
+            get {
+                return ResourceManager.GetString("DashboardCardless_PromedioGeneral", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Promedio de Intentos de Reconocimiento.
+        /// </summary>
+        public static string DashboardCardless_PromedioIntentos {
+            get {
+                return ResourceManager.GetString("DashboardCardless_PromedioIntentos", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reconocimiento de Patente vs No Reconocimiento.
+        /// </summary>
+        public static string DashboardCardless_ReconocimientoPorDiaSemana {
+            get {
+                return ResourceManager.GetString("DashboardCardless_ReconocimientoPorDiaSemana", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reconocimiento por Proveedor.
+        /// </summary>
+        public static string DashboardCardless_ReconocimientoPorProveedor {
+            get {
+                return ResourceManager.GetString("DashboardCardless_ReconocimientoPorProveedor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sin capturas fallidas para el período seleccionado.
+        /// </summary>
+        public static string DashboardCardless_SinCapturasFallidas {
+            get {
+                return ResourceManager.GetString("DashboardCardless_SinCapturasFallidas", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sin datos para el período seleccionado.
+        /// </summary>
+        public static string DashboardCardless_SinDatos {
+            get {
+                return ResourceManager.GetString("DashboardCardless_SinDatos", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Vehículo Presente vs No Presente.
+        /// </summary>
+        public static string DashboardCardless_VehiculoPorDia {
+            get {
+                return ResourceManager.GetString("DashboardCardless_VehiculoPorDia", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ver fotos fallidas.
+        /// </summary>
+        public static string DashboardCardless_VerFotosFallidas {
+            get {
+                return ResourceManager.GetString("DashboardCardless_VerFotosFallidas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Algún cuit/cuil no cumple con el largo esperado según formato. Validar los datos ingresados en la carga inicial de la Orden.
         /// </summary>
         public static string DatoConLongitudIncorrecta {

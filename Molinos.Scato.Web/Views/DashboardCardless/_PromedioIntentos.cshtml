@@ -1,0 +1,30 @@
+@using Molinos.Scato.Dominio.Recursos
+@{
+    Layout = null;
+}
+<div class="col-lg-12 bordeGrisCompleto">
+    <h4 class="text-center">@Textos.DashboardCardless_PromedioIntentos</h4>
+
+    <!-- KPIs resumen -->
+    <div class="row text-center" id="kpis-promedio">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h5>@Textos.DashboardCardless_PromedioGeneral</h5>
+                    <p id="kpi-promedio-general" class="h2">—</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h5>@Textos.DashboardCardless_MaxHoy</h5>
+                    <p id="kpi-max-hoy" class="h2">—</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="chart-promedio-intentos"></canvas>
+    <div id="promedio-sin-datos" class="text-center text-muted" style="display:none">@Textos.DashboardCardless_SinDatos</div>
+</div>

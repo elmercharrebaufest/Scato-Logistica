@@ -94,6 +94,15 @@
     <Compile Include="ConsultasEF\ListarDatosDeWorkflowsPendientesConsulta.cs" />
     <Compile Include="ConsultasEF\ListarHuellaDigital.cs" />
     <Compile Include="ConsultasEF\ListarEficienciaCalado.cs" />
+    <Compile Include="ConsultasEF\CamionesPorDiaConsulta.cs" />
+    <Compile Include="ConsultasEF\PatentePorCamaraConsulta.cs" />
+    <Compile Include="ConsultasEF\ReconocimientoPorDiaSemanaConsulta.cs" />
+    <Compile Include="ConsultasEF\VehiculoPorDiaConsulta.cs" />
+    <Compile Include="ConsultasEF\ReconocimientoPorProveedorConsulta.cs" />
+    <Compile Include="ConsultasEF\PromedioIntentosPorDiaConsulta.cs" />
+    <Compile Include="ConsultasEF\ResumenIntentosConsulta.cs" />
+    <Compile Include="ConsultasEF\CapturasFallidasConsulta.cs" />
+    <Compile Include="ConsultasEF\CapturasFallidasDescargaConsulta.cs" />
     <Compile Include="ConsultasEF\ListarEstadoDeCalle.cs" />
     <Compile Include="ConsultasEF\ListarMuestraDeInaseParaImpresionConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMuestraEnvioACamaraAuditoriaParaImpresionConsulta.cs" />

@@ -22,5 +22,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual decimal? Certeza { get; set; }
 
         public virtual bool Exitoso { get; set; }
+
+        public virtual string Error { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Molinos.Scato.Dominio.Entidades
 
         public virtual string Tarjeta { get; set; }
 
-        public virtual string Error { get; set; }
+        public virtual string ErrorDispositivo { get; set; }
 
         public virtual PuestoDeTrabajo PuestoDeTrabajo { get; set; }
 
@@ -26,6 +26,12 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual DateTime FechaEvento { get; set; }
 
         public virtual string ResultadoWorkflow { get; set; }
+
+        public virtual string PatenteLeida { get; set; }
+
+        public virtual int DiferenciaSustitucion { get; set; }
+
+        public virtual int? DuracionMecanismoSustitucionMs { get; set; }
 
         public virtual ICollection<LogIdentificacionVehicularDetalle> Detalles { get; set; }
     }

@@ -10,18 +10,6 @@ namespace Molinos.Scato.Dominio.Comandos.ResultadoServicio
         public int LogId { get; set; }
 
         [DataMember]
-        public bool AvanzarWorkflow { get; set; }
-
-        [DataMember]
-        public int? RecorridoId { get; set; }
-
-        [DataMember]
-        public int? PuestoDeTrabajoId { get; set; }
-
-        [DataMember]
-        public string ResultadoWorkflow { get; set; }
-
-        [DataMember]
         public LecturaPuestoDeTrabajoDto LecturaPuestoDeTrabajo { get; set; }
     }
 }

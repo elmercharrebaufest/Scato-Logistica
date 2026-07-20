@@ -40,7 +40,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 primeraLectura.ReconocimientoExitoso = reconocimientoExitoso;
             }
             
-            LogLecturaDeTarjeta log = new LogLecturaDeTarjeta
+            var log = new LogLecturaDeTarjeta
             {
                 Fecha = DateTime.Now,
                 Patente = comando.Patente,

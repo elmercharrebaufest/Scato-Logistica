@@ -550,6 +550,7 @@
     <Compile Include="Meta\ExistenciaUnitTestsTest.cs" />
     <Compile Include="Mock\FakeHttpMessageHandler.cs" />
     <Compile Include="Mock\NullLogger.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogIdentificacionVehicularTest.cs" />
     <Compile Include="Procesamiento\ProcesadorRegistrarMarcaDeTiempoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjetaPatenteTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLogIdentificacionVehicularResultadoTest.cs" />
@@ -558,13 +559,11 @@
     <Compile Include="Procesamiento\ProcesadorConsultarEscalablesTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarCPDigitalTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPDFCpeTest.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearLogIdentificacionVehicularTest.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirAsigRecorrCtrolCalidTest.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirMuestraInaseTest.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarClienteTest.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarMonitoreoServicioExternoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorPagarMercadoPagoTest.cs" />
-    <Compile Include="Procesamiento\ProcesadorProcesarIdentificacionVehicularTest.cs" />
     <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcaladoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorRetransmitirTransmisionASapTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarCargaDeCupoTest.cs" />
@@ -935,6 +934,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarValorCaladoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorSuscribirEventosTest.cs" />
     <Compile Include="Procesamiento\ProcesadorValidarOrdenCargaInternaFasonTests.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarPatenteActivaTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\AnalisisDeCalidad\Reference.cs">
       <AutoGen>True</AutoGen>

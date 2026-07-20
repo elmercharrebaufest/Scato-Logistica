@@ -796,5 +796,8 @@ namespace Molinos.Scato.Dominio.Seguridad
 
         [Display(ResourceType = typeof(Textos), Name = "ReiniciarIntercomunicador")]
         ReiniciarIntercomunicador = 714,
+
+        [Display(ResourceType = typeof(Textos), Name = "DashboardCardless_Titulo")]
+        DashboardCardless = 715,
     }
 }

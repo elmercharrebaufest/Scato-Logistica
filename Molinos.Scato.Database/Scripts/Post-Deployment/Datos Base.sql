@@ -435,6 +435,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 713) BEGIN INSERT INTO [Perm
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 714) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Reiniciar Servicio Intercomunicador', 0, 714, NULL); END
 
+IF NOT EXISTS (select 1 from Permiso where Codigo = 715) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Dashboard Cardless', 0, 715, NULL); END
+
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Extraviada') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Extraviada', 'Extrav.'); END
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Rota') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Rota', 'Rota'); END
 
@@ -1659,6 +1661,16 @@ END
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MarcaSustentable' AND  Nombre = 'PosicionImagenSustentableY' AND  Centro_Id IS NULL) 
 BEGIN 
 INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('MarcaSustentable', 'PosicionImagenSustentableY', '2800', NULL, GETDATE(), 'SCATO')   
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'Cardless' AND  Nombre = 'MaxSustituciones' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('Cardless', 'MaxSustituciones', '1', NULL, GETDATE(), 'SCATO')   
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'Cardless' AND  Nombre = 'SustitucionActiva' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('Cardless', 'SustitucionActiva', 'false', NULL, GETDATE(), 'SCATO')   
 END
 
 --Equivalencias de Característica de Calidad

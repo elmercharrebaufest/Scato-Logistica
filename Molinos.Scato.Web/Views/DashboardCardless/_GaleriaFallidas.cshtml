@@ -1,0 +1,41 @@
+@using Molinos.Scato.Dominio.Recursos
+@{
+    Layout = null;
+}
+<div class="col-lg-12 bordeGrisCompleto">
+    <h4 class="text-center">@Textos.DashboardCardless_GaleriaFallidas</h4>
+
+    <!-- Filtro propio de la galería -->
+    <div class="form-inline" style="margin-bottom:10px">
+        <div class="form-group">
+            <label>@Textos.DashboardCardless_GaleriaDesde</label>
+            <div class="input-group date" id="dp-galeria-desde">
+                <input type="text" class="form-control" id="galeria-fecha-desde" style="width:120px" />
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+        </div>
+        <div class="form-group" style="margin-left:10px">
+            <label>@Textos.DashboardCardless_GaleriaHasta</label>
+            <div class="input-group date" id="dp-galeria-hasta">
+                <input type="text" class="form-control" id="galeria-fecha-hasta" style="width:120px" />
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+        </div>
+        <button type="button" id="btn-buscar-galeria" class="btn btn-primary" style="margin-left:10px">
+            <span class="glyphicon glyphicon-search"></span> @Textos.DashboardCardless_BuscarGaleria
+        </button>
+        <button type="button" id="btn-descargar-galeria" class="btn btn-default" style="margin-left:5px">
+            <span class="glyphicon glyphicon-download-alt"></span> @Textos.DashboardCardless_DescargarTodo
+        </button>
+    </div>
+
+    <!-- Grid 3×3 -->
+    <div class="row" id="galeria-grid">
+        <div id="galeria-sin-datos" class="col-lg-12 text-center text-muted" style="display:none">
+            @Textos.DashboardCardless_SinCapturasFallidas
+        </div>
+    </div>
+
+    <!-- Paginación -->
+    <div class="text-center" id="galeria-paginacion" style="margin-top:10px"></div>
+</div>

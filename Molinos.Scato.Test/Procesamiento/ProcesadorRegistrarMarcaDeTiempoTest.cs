@@ -36,17 +36,18 @@ namespace Molinos.Scato.Test.Procesamiento
         }
 
         [Test]
-        public void Ejecutar_TipoInicio_LlamaRegistrarInicioPorSensor()
+        public void Ejecutar_TipoInicio_LlamaRegistrarInicioPorInstanciaWorkflow()
         {
+            var instanceId = Guid.NewGuid();
             var comando = new RegistrarMarcaDeTiempo
             {
                 Tipo = TipoRegistroMarcaDeTiempo.Inicio,
-                CodigoDispositivo = "SENSOR-01"
+                InstanceId = instanceId
             };
 
             var resultado = target.Ejecutar(comando);
 
-            marcaDeTiempoMock.Verify(m => m.RegistrarInicioPorSensor("SENSOR-01"), Times.Exactly(1));
+            marcaDeTiempoMock.Verify(m => m.RegistrarInicioPorInstanciaWorkflow(instanceId), Times.Exactly(1));
             Assert.That(resultado.HayErrores, Is.False);
         }
 
@@ -103,7 +104,7 @@ namespace Molinos.Scato.Test.Procesamiento
         }
 
         [Test]
-        public void Ejecutar_TipoFin_SinInstanceIdNiDispositivo_DevuelveError()
+        public void Ejecutar_TipoFin_SinInstanceId_DevuelveError()
         {
             var comando = new RegistrarMarcaDeTiempo
             {
@@ -113,37 +114,36 @@ namespace Molinos.Scato.Test.Procesamiento
             var resultado = target.Ejecutar(comando);
 
             marcaDeTiempoMock.Verify(m => m.RegistrarFinPorInstanciaWorkflow(It.IsAny<Guid>(), It.IsAny<int?>()), Times.Exactly(0));
-            marcaDeTiempoMock.Verify(m => m.RegistrarFinPorSensor(It.IsAny<string>()), Times.Exactly(0));
             Assert.That(resultado.HayErrores, Is.True);
         }
 
         [Test]
-        public void Ejecutar_TipoFin_ConCodigoDispositivo_LlamaRegistrarFinPorSensor()
+        public void Ejecutar_TipoInicioOFinPorSensor_LlamaRegistrarPorSensor()
         {
             var comando = new RegistrarMarcaDeTiempo
             {
-                Tipo              = TipoRegistroMarcaDeTiempo.Fin,
+                Tipo              = TipoRegistroMarcaDeTiempo.InicioOFinPorSensor,
                 CodigoDispositivo = "SENSOR-02"
             };
 
             var resultado = target.Ejecutar(comando);
 
-            marcaDeTiempoMock.Verify(m => m.RegistrarFinPorSensor("SENSOR-02"), Times.Exactly(1));
-            marcaDeTiempoMock.Verify(m => m.RegistrarFinPorInstanciaWorkflow(It.IsAny<Guid>(), It.IsAny<int?>()), Times.Exactly(0));
+            marcaDeTiempoMock.Verify(m => m.RegistrarPorSensor("SENSOR-02"), Times.Exactly(1));
             Assert.That(resultado.HayErrores, Is.False);
         }
 
         [Test]
         public void Ejecutar_TipoInicio_ExcepcionEnFachada_DevuelveError()
         {
+            var instanceId = Guid.NewGuid();
             marcaDeTiempoMock
-                .Setup(m => m.RegistrarInicioPorSensor(It.IsAny<string>()))
+                .Setup(m => m.RegistrarInicioPorInstanciaWorkflow(It.IsAny<Guid>()))
                 .Throws(new InvalidOperationException("DB error"));
 
             var comando = new RegistrarMarcaDeTiempo
             {
                 Tipo = TipoRegistroMarcaDeTiempo.Inicio,
-                CodigoDispositivo = "SENSOR-01"
+                InstanceId = instanceId
             };
 
             var resultado = target.Ejecutar(comando);

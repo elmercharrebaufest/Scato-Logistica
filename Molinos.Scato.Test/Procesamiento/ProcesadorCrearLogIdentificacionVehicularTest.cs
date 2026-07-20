@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
+using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Conversiones.Impl;
 using Molinos.Scato.Servicios.Procesamiento;
 using Molinos.Scato.Test.Mock;
@@ -17,14 +20,18 @@ namespace Molinos.Scato.Test.Procesamiento
     {
         private ProcesadorCrearLogIdentificacionVehicular target;
         private Mock<IRepositorio> repositorioMock;
+        private Mock<IServicioComandos> servicioComandosMock;
+        private Mock<IServicioRepositorio> servicioRepositorioMock;
         private ConversorAutoMapper conversor;
 
         [SetUp]
         public void SetUp()
         {
             repositorioMock = new Mock<IRepositorio>();
+            servicioComandosMock = new Mock<IServicioComandos>();
+            servicioRepositorioMock = new Mock<IServicioRepositorio>();
             conversor = FactoryConversor.ConversorAutoMapper;
-            target = new ProcesadorCrearLogIdentificacionVehicular(repositorioMock.Object, conversor, new NullLogger());
+            target = new ProcesadorCrearLogIdentificacionVehicular(repositorioMock.Object, conversor, new NullLogger(), servicioComandosMock.Object, servicioRepositorioMock.Object);
         }
 
         [Test]
@@ -60,7 +67,7 @@ namespace Molinos.Scato.Test.Procesamiento
             {
                 CodigoDispositivo = "DISP001",
                 Tarjeta = "TARJ001",
-                Error = null,
+                ErrorDispositivo = null,
                 Patente = "ABC123",
                 VehiculoPresente = true,
                 FechaEvento = fechaEvento,
@@ -72,8 +79,6 @@ namespace Molinos.Scato.Test.Procesamiento
 
             // Assert
             Assert.That(resultado, Is.Not.Null);
-            Assert.That(resultado.HayErrores, Is.False);
-            Assert.That(resultado, Is.InstanceOf<ResultadoCrear>());
 
             repositorioMock.Verify(r => r.Agregar(It.Is<LogIdentificacionVehicular>(
                 log => log.CodigoDispositivo == "DISP001" &&
@@ -97,7 +102,7 @@ namespace Molinos.Scato.Test.Procesamiento
             {
                 CodigoDispositivo = "DISP002",
                 Tarjeta = "TARJ002",
-                Error = null,
+                ErrorDispositivo = null,
                 Patente = "XYZ789",
                 VehiculoPresente = false,
                 FechaEvento = fechaEvento,
@@ -109,13 +114,12 @@ namespace Molinos.Scato.Test.Procesamiento
 
             // Assert
             Assert.That(resultado, Is.Not.Null);
-            Assert.That(resultado.HayErrores, Is.False);
-            Assert.That(resultado, Is.InstanceOf<ResultadoCrear>());
 
             repositorioMock.Verify(r => r.Agregar(It.Is<LogIdentificacionVehicular>(
                 log => log.CodigoDispositivo == "DISP002" &&
                        log.Patente == "XYZ789" &&
-                       log.VehiculoPresente == false
+                       log.VehiculoPresente == false &&
+                       log.ErrorDispositivo == "No se obtuvo información de los dispositivos"
             )), Times.Once());
 
             repositorioMock.Verify(r => r.Agregar(It.IsAny<LogIdentificacionVehicularDetalle>()), Times.Never());
@@ -131,7 +135,7 @@ namespace Molinos.Scato.Test.Procesamiento
             {
                 CodigoDispositivo = "DISP003",
                 Tarjeta = "TARJ003",
-                Error = "Error de comunicación con cámara",
+                ErrorDispositivo = "Error de comunicación con cámara",
                 Patente = null,
                 VehiculoPresente = false,
                 FechaEvento = fechaEvento,
@@ -143,10 +147,9 @@ namespace Molinos.Scato.Test.Procesamiento
 
             // Assert
             Assert.That(resultado, Is.Not.Null);
-            Assert.That(resultado.HayErrores, Is.False);
 
             repositorioMock.Verify(r => r.Agregar(It.Is<LogIdentificacionVehicular>(
-                log => log.Error == "Error de comunicación con cámara" &&
+                log => log.ErrorDispositivo == "No se obtuvo información de los dispositivos" &&
                        log.Patente == null
             )), Times.Once());
 
@@ -208,7 +211,6 @@ namespace Molinos.Scato.Test.Procesamiento
 
             // Assert
             Assert.That(resultado, Is.Not.Null);
-            Assert.That(resultado.HayErrores, Is.False);
             Assert.That(detalleGuardado1.Exitoso, Is.True, "El primer detalle debería ser exitoso por coincidencia de patente");
             Assert.That(detalleGuardado2.Exitoso, Is.False, "El segundo detalle debería ser no exitoso por no coincidir la patente");
         }
@@ -232,11 +234,145 @@ namespace Molinos.Scato.Test.Procesamiento
 
             // Assert
             Assert.That(resultado, Is.Not.Null);
-            Assert.That(resultado.HayErrores, Is.False);
 
-            repositorioMock.Verify(r => r.Agregar(It.IsAny<LogIdentificacionVehicular>()), Times.Once());
+            repositorioMock.Verify(r => r.Agregar(It.Is<LogIdentificacionVehicular>(
+                log => log.ErrorDispositivo == "No se obtuvo información de los dispositivos"
+            )), Times.Once());
             repositorioMock.Verify(r => r.Agregar(It.IsAny<LogIdentificacionVehicularDetalle>()), Times.Never());
             repositorioMock.Verify(r => r.GuardarCambios(), Times.Once());
+        }
+
+        [Test]
+        public void TestProcesamientoExitoso()
+        {
+            // Arrange
+            var puesto = new PuestoDeTrabajo
+            {
+                Id = 100,
+                NombrePuesto = "Puesto 1",
+                CodigoConfigIdentificacionVehicular = "DISP001",
+                Centro = new Centro { Id = 1 },
+                VideoCamaras = new List<VideoCamara>()
+            };
+
+            repositorioMock.Setup(r => r.ObtenerProyeccion<PuestoDeTrabajo, int?>(
+                    It.IsAny<Expression<Func<PuestoDeTrabajo, bool>>>(),
+                    It.IsAny<Expression<Func<PuestoDeTrabajo, int?>>>()
+                )).Returns((int?)100);
+            repositorioMock.Setup(r => r.ObtenerProyeccion<Recorrido, int>(
+                    It.IsAny<Expression<Func<Recorrido, bool>>>(),
+                    It.IsAny<Expression<Func<Recorrido, int>>>()
+                )).Returns(200);
+            repositorioMock.Setup(r => r.Obtener<PuestoDeTrabajo>(It.IsAny<object>()))
+                .Returns(puesto);
+
+            servicioComandosMock.Setup(s => s.Ejecutar(It.IsAny<Comando>()))
+                .Returns(new Resultado());
+            servicioRepositorioMock.Setup(s => s.EsTarjetaBloqueada(It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(false);
+            servicioRepositorioMock.Setup(s => s.EsTarjetaEnRangoValido(It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(true);
+
+            var comando = new CrearLogIdentificacionVehicular
+            {
+                CodigoDispositivo = "DISP001",
+                Tarjeta = "TARJ001",
+                Patente = "ABC123",
+                VehiculoPresente = true,
+                FechaEvento = DateTime.Now,
+                ErrorDispositivo = null,
+                Detalles = new List<ResultadoIntentoALPR>()
+            };
+
+            // Act
+            var resultado = target.Ejecutar(comando) as ResultadoProcesarIdentificacionVehicular;
+
+            // Assert
+            Assert.That(resultado, Is.Not.Null);
+            Assert.That(resultado.HayErrores, Is.False);
+            Assert.That(resultado.LecturaPuestoDeTrabajo, Is.Not.Null);
+            Assert.That(resultado.LecturaPuestoDeTrabajo.PuestoDeTrabajoId, Is.EqualTo(100));
+            repositorioMock.Verify(r => r.Agregar(It.IsAny<LogIdentificacionVehicular>()), Times.Once());
+            repositorioMock.Verify(r => r.GuardarCambios(), Times.AtLeastOnce());
+        }
+
+        [Test]
+        public void TestPuestoNoEncontrado()
+        {
+            // Arrange
+            repositorioMock.Setup(r => r.ObtenerProyeccion<PuestoDeTrabajo, int?>(
+                    It.IsAny<Expression<Func<PuestoDeTrabajo, bool>>>(),
+                    It.IsAny<Expression<Func<PuestoDeTrabajo, int?>>>()
+                )).Returns((int?)null);
+
+            var comando = new CrearLogIdentificacionVehicular
+            {
+                CodigoDispositivo = "DISP_INEXISTENTE",
+                Tarjeta = "TARJ001",
+                Patente = "ABC123",
+                VehiculoPresente = true,
+                FechaEvento = DateTime.Now,
+                ErrorDispositivo = null,
+                Detalles = new List<ResultadoIntentoALPR>()
+            };
+
+            // Act
+            var resultado = target.Ejecutar(comando) as ResultadoProcesarIdentificacionVehicular;
+
+            // Assert
+            Assert.That(resultado, Is.Not.Null);
+            Assert.That(resultado.HayErrores, Is.True);
+            Assert.That(resultado.LecturaPuestoDeTrabajo, Is.Null);
+            repositorioMock.Verify(r => r.Agregar(It.IsAny<LogIdentificacionVehicular>()), Times.Once());
+        }
+
+        [Test]
+        public void TestSinRecorridoActivo()
+        {
+            // Arrange
+            var puesto = new PuestoDeTrabajo
+            {
+                Id = 100,
+                NombrePuesto = "Puesto 1",
+                CodigoConfigIdentificacionVehicular = "DISP001",
+                Centro = new Centro { Id = 1 },
+                VideoCamaras = new List<VideoCamara>()
+            };
+
+            repositorioMock.Setup(r => r.ObtenerProyeccion<PuestoDeTrabajo, int?>(
+                    It.IsAny<Expression<Func<PuestoDeTrabajo, bool>>>(),
+                    It.IsAny<Expression<Func<PuestoDeTrabajo, int?>>>()
+                )).Returns((int?)100);
+            repositorioMock.Setup(r => r.ObtenerProyeccion<Recorrido, int>(
+                    It.IsAny<Expression<Func<Recorrido, bool>>>(),
+                    It.IsAny<Expression<Func<Recorrido, int>>>()
+                )).Returns(0);
+            repositorioMock.Setup(r => r.Obtener<PuestoDeTrabajo>(It.IsAny<object>()))
+                .Returns(puesto);
+
+            servicioComandosMock.Setup(s => s.Ejecutar(It.IsAny<Comando>()))
+                .Returns(new Resultado());
+
+            var comando = new CrearLogIdentificacionVehicular
+            {
+                CodigoDispositivo = "DISP001",
+                Tarjeta = null,
+                Patente = "ABC123",
+                VehiculoPresente = true,
+                FechaEvento = DateTime.Now,
+                ErrorDispositivo = null,
+                Detalles = new List<ResultadoIntentoALPR>()
+            };
+
+            // Act
+            var resultado = target.Ejecutar(comando) as ResultadoProcesarIdentificacionVehicular;
+
+            // Assert
+            Assert.That(resultado, Is.Not.Null);
+            Assert.That(resultado.HayErrores, Is.False);
+            Assert.That(resultado.LecturaPuestoDeTrabajo, Is.Not.Null);
+            Assert.That(resultado.LecturaPuestoDeTrabajo.PuestoDeTrabajoId, Is.EqualTo(100));
+            repositorioMock.Verify(r => r.Agregar(It.IsAny<LogIdentificacionVehicular>()), Times.Once());
         }
     }
 }

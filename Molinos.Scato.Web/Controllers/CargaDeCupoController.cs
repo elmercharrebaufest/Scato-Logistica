@@ -230,6 +230,7 @@ namespace Molinos.Scato.Web.Controllers
             else
             {
                 response.Success = true;
+                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo { Tipo = TipoRegistroMarcaDeTiempo.Fin, PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId });
             }
 
             Task.Run(() =>
@@ -724,7 +725,8 @@ namespace Molinos.Scato.Web.Controllers
             try
             {
                 log.Debug("Obteniendo CPE por patente {0} en carga de Cupo.", patente);
-                var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital 
+                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo { Tipo = TipoRegistroMarcaDeTiempo.Inicio, PuestoDeTrabajoId = datosUsuario .PuestoDeTrabajoId});
+                var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital
                 { 
                     Patente = patente, 
                     Usuario = datosUsuario.NombreUsuario, 
@@ -879,6 +881,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public JsonResult ObtenerOrdenesFasonInsumos(string patente, DatosUsuario datosUsuario)
         {
+            servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo { Tipo = TipoRegistroMarcaDeTiempo.Inicio, PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId });
             var response = servicioComandos.Ejecutar(new ConsultarOrdenesNoGranosCargaDeCupo
             {
                 Patente = patente,

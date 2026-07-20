@@ -105,6 +105,13 @@ namespace Molinos.Scato.Dominio
                 public const string MOAOperacionesListadoTicketPesada = "MOAOperaciones.ListadoTicketPesada";
                 public const string BalanzaACero = "BalanzaACero";
                 public const string LimpiarCacheCartaPorte = "LimpiarCacheCartaPorte";
+                public const string Cardless = "Cardless";
+            }
+
+            public struct Cardless
+            {
+                public const string MaxSustituciones = "MaxSustituciones";
+                public const string SustitucionActiva = "SustitucionActiva";
             }
 
             public struct ContingenciaPesosExcedidos

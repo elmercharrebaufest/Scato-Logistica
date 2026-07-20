@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Molinos.Scato.Dominio.Dto
 {
     public class ResultadoIntentoALPR
@@ -9,5 +11,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string RutaImagen { get; set; }
         public decimal? Certeza { get; set; }
         public bool Exitoso { get; set; }
+        [JsonProperty("Error")]
+        public string Error { get; set; }
     }
 }

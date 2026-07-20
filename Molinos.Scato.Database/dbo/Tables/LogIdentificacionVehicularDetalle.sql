@@ -9,8 +9,9 @@ CREATE TABLE [dbo].[LogIdentificacionVehicularDetalle]
     [Patente]                             NVARCHAR(20)    NULL,
     [Certeza]                             DECIMAL(5,2)    NULL,
     [Exitoso]                             BIT             NOT NULL,
+    [Error]                               NVARCHAR(MAX)   NULL,
 
-    CONSTRAINT [PK_LogIdentificacionVehicularDetalle] 
+    CONSTRAINT [PK_LogIdentificacionVehicularDetalle]
         PRIMARY KEY CLUSTERED ([Id] ASC),
 
     CONSTRAINT [FK_LogIdentificacionVehicularDetalle_Log] 

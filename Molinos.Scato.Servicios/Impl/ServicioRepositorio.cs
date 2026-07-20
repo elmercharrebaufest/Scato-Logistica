@@ -4845,6 +4845,11 @@ namespace Molinos.Scato.Servicios.Impl
                     date >= x.ValidoDesde && date <= x.ValidoHasta);
         }
 
+        public bool EsTarjetaSupervisor(string numero, int centroId, int puestoId)
+        {
+            return repositorio.Existe<TarjetaSupervisor>(x => x.Centro.Id == centroId && x.Numero == numero && x.PuestosDeTrabajoAsociados.Any(y => y.Id == puestoId));
+        }
+
         public string ObtenerTarjetaRFIDAsignada(TipoDocumentoIngreso tipoDocumentoIngreso, string nroDocumentoIngreso)
         {
             var tarjetaDeAcceso =
@@ -11928,6 +11933,57 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<LogValidacionAccesoStopBandasHorarias, LogValidacionAccesoStopBandasHorariasDto>(
                 f => f.Semaforo == semaforo
             );
+        }
+
+        public IList<CamionPorDiaDto> ObtenerCamionesPorDia(FiltroDashboardCardlessDto filtro)
+        {
+            return repositorio.ListarConsulta(new CamionesPorDiaConsulta(filtro));
+        }
+
+        public IList<PatentePorCamaraDto> ObtenerPatentePorCamara(FiltroDashboardCardlessDto filtro)
+        {
+            return repositorio.ListarConsulta(new PatentePorCamaraConsulta(filtro));
+        }
+
+        public IList<ReconocimientoPorDiaSemanaDto> ObtenerReconocimientoPorDiaSemana(FiltroDashboardCardlessDto filtro)
+        {
+            return repositorio.ListarConsulta(new ReconocimientoPorDiaSemanaConsulta(filtro));
+        }
+
+        public IList<VehiculoPorDiaDto> ObtenerVehiculoPorDia(FiltroDashboardCardlessDto filtro)
+        {
+            return repositorio.ListarConsulta(new VehiculoPorDiaConsulta(filtro));
+        }
+
+        public IList<ReconocimientoPorProveedorDto> ObtenerReconocimientoPorProveedor(FiltroDashboardCardlessDto filtro)
+        {
+            return repositorio.ListarConsulta(new ReconocimientoPorProveedorConsulta(filtro));
+        }
+
+        public IList<PromedioIntentosPorDiaDto> ObtenerPromedioIntentosPorDia(FiltroDashboardCardlessDto filtro)
+        {
+            return repositorio.ListarConsulta(new PromedioIntentosPorDiaConsulta(filtro));
+        }
+
+        public ResumenIntentosDto ObtenerResumenIntentos(FiltroDashboardCardlessDto filtro)
+        {
+            return repositorio.ObtenerConsultaEscalar(new ResumenIntentosConsulta(filtro));
+        }
+
+        public IList<CapturaFallidaDto> ObtenerCapturasFallidas(FiltroCapturasFallidasDto filtro, int pagina)
+        {
+            return repositorio.ListarConsulta(new CapturasFallidasConsulta(filtro, pagina));
+        }
+
+        public IList<CapturaFallidaDto> ObtenerCapturasFallidasParaDescarga(FiltroCapturasFallidasDto filtro)
+        {
+            return repositorio.ListarConsulta(new CapturasFallidasDescargaConsulta(filtro));
+        }
+
+        public string ObtenerRutaImagenCaptura(int detalleId)
+        {
+            var detalle = repositorio.Obtener<Molinos.Scato.Dominio.Entidades.LogIdentificacionVehicularDetalle>(detalleId);
+            return detalle?.RutaImagen;
         }
     }
 }

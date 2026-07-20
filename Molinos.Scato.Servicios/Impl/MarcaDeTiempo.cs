@@ -18,44 +18,44 @@ namespace Molinos.Scato.Servicios.Impl
             this.log = log;
         }
 
-        public void RegistrarInicioPorSensor(string codigoDispositivo)
+        public void RegistrarPorSensor(string codigoDispositivo)
         {
-            var sensorPuesto = ObtenerPuestoPorSensor(codigoDispositivo, TipoSensorMarcaTiempo.Inicio);
+            var sensorPuesto = repositorio.Obtener<SensorMarcaTiempoPorPuestoDeTrabajo>(s => s.CodigoSensor == codigoDispositivo);
             if (sensorPuesto == null)
                 return;
 
+            switch (sensorPuesto.TipoSensor)
+            {
+                case TipoSensorMarcaTiempo.Inicio:
+                    RegistrarInicioEnPuesto(sensorPuesto.PuestoDeTrabajoId);
+                    break;
+                case TipoSensorMarcaTiempo.Fin:
+                    RegistrarFinEnPuesto(sensorPuesto.PuestoDeTrabajoId);
+                    break;
+            }
+        }
+
+        private void RegistrarInicioEnPuesto(int puestoDeTrabajoId)
+        {
             repositorio.Agregar(new MarcaTiempoPorPuestoDeTrabajo
             {
-                PuestoDeTrabajoId = sensorPuesto.PuestoDeTrabajoId,
+                PuestoDeTrabajoId = puestoDeTrabajoId,
                 FechaInicio = DateTime.Now,
             });
-
             repositorio.GuardarCambios();
         }
 
-        public void RegistrarFinPorSensor(string codigoDispositivo)
+        private void RegistrarFinEnPuesto(int puestoDeTrabajoId)
         {
-            var sensorPuesto = ObtenerPuestoPorSensor(codigoDispositivo, TipoSensorMarcaTiempo.Fin);
-            if (sensorPuesto == null)
-                return;
-
             var registro = repositorio.ObtenerMasReciente<MarcaTiempoPorPuestoDeTrabajo>(
-                x => x.PuestoDeTrabajoId == sensorPuesto.PuestoDeTrabajoId
-                    && x.FechaInicio.HasValue
-                    && !x.FechaFin.HasValue,
+                x => x.PuestoDeTrabajoId == puestoDeTrabajoId
+                    && x.FechaInicio.HasValue,
                 x => x.FechaInicio.Value);
-
-            if (registro == null)
+            if (registro == null || registro.FechaFin.HasValue)
                 return;
 
             registro.FechaFin = DateTime.Now;
             repositorio.GuardarCambios();
-        }
-
-        private SensorMarcaTiempoPorPuestoDeTrabajo ObtenerPuestoPorSensor(string codigoDispositivo, TipoSensorMarcaTiempo tipoSensor)
-        {
-            return repositorio.Obtener<SensorMarcaTiempoPorPuestoDeTrabajo>(
-                s => s.CodigoSensor == codigoDispositivo && s.TipoSensor == tipoSensor);
         }
 
         public void RegistrarIdentificacion(int puestoDeTrabajoId, string numeroDeTarjeta, string patente, TipoIdentificacionPorPuesto tipoIdentificacion)
@@ -66,11 +66,9 @@ namespace Molinos.Scato.Servicios.Impl
 
             var registroExistente = repositorio.ObtenerMasReciente<MarcaTiempoPorPuestoDeTrabajo>(
                x => (x.PuestoDeTrabajoId == puestoDeTrabajoId || (x.PuestoDeTrabajoId == null && x.RecorridoId == recorrido.Id))
-                    && x.FechaInicio.HasValue 
-                    && !x.FechaIdentificacion.HasValue 
-                    && !x.FechaFin.HasValue, 
+                    && x.FechaInicio.HasValue,
                 x => x.FechaInicio.Value);
-            if (registroExistente == null)
+            if (registroExistente == null || registroExistente.FechaIdentificacion.HasValue || registroExistente.FechaFin.HasValue)
                 return;
 
             registroExistente.RecorridoId = recorrido.Id;
@@ -102,11 +100,10 @@ namespace Molinos.Scato.Servicios.Impl
 
             var registro = repositorio.ObtenerMasReciente<MarcaTiempoPorPuestoDeTrabajo>(
                 x => x.RecorridoId == recorrido.Id
-                    && x.FechaInicio.HasValue
-                    && !x.FechaFin.HasValue,
+                    && x.FechaInicio.HasValue,
                 x => x.FechaInicio.Value);
             log.Debug($"[RegistrarFinPorInstanciaWorkflow] MarcaTiempoPorPuestoDeTrabajo encontrada: {(registro != null ? registro.Id.ToString() : "null")}");
-            if (registro == null)
+            if (registro == null || registro.FechaFin.HasValue)
                 return;
 
             if(puestoDeTrabajoId.HasValue && !registro.PuestoDeTrabajoId.HasValue)
@@ -129,6 +126,30 @@ namespace Molinos.Scato.Servicios.Impl
                 RecorridoId = recorrido.Id
             });
 
+            repositorio.GuardarCambios();
+        }
+
+        public void RegistrarInicioPorPuestoDeTrabajo(int puestoDeTrabajoId)
+        {
+            repositorio.Agregar(new MarcaTiempoPorPuestoDeTrabajo
+            {
+                FechaInicio = DateTime.Now,
+                PuestoDeTrabajoId = puestoDeTrabajoId
+            });
+            repositorio.GuardarCambios();
+        }
+
+        public void RegistrarFinPorPuestoDeTrabajo(int puestoDeTrabajoId)
+        {
+            var registro = repositorio.ObtenerMasReciente<MarcaTiempoPorPuestoDeTrabajo>(
+                x => x.PuestoDeTrabajoId == puestoDeTrabajoId
+                    && x.FechaInicio.HasValue
+                    && !x.FechaFin.HasValue,
+                x => x.FechaInicio.Value);
+            if (registro == null)
+                return;
+
+            registro.FechaFin = DateTime.Now;
             repositorio.GuardarCambios();
         }
     }

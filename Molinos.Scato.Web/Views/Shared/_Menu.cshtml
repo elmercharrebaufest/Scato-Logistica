@@ -792,6 +792,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.DashboardCardless))
+                                {
+                                    <li>@Html.ActionLink(Textos.DashboardCardless_Titulo, "Index", "DashboardCardless")</li>
+                                }
                                 @if (PermisosHelper.Is(PermisosScato.MonitorCPECacheada))
                                 {
                                     <li>@Html.ActionLink(Textos.MonitorCPECacheada, "Index", "MonitorCPECacheada")</li>
