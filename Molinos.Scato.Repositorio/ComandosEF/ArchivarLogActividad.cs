@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Transactions;
 
 namespace Molinos.Scato.Repositorio.ComandosEF
 {
@@ -15,18 +16,24 @@ namespace Molinos.Scato.Repositorio.ComandosEF
 
         public int Ejecutar(DbContext contexto)
         {
-            return contexto.Database.ExecuteSqlCommand(
-                    @"DELETE LogActividad
-                        OUTPUT
-                            DELETED.Id,
-                            DELETED.WorkflowInstanceId,
-                            DELETED.Actividad,
-                            DELETED.Fecha,
-                            DELETED.ActividadXaml
-                        INTO LogActividadHistorico (Id, WorkflowInstanceId, Actividad, Fecha, ActividadXaml)
-                      WHERE WorkflowInstanceId = @instanceId",
-                new SqlParameter("@instanceId", workflowInstanceId)
-            );
+            var opciones = new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted };
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew, opciones))
+            {
+                contexto.Database.ExecuteSqlCommand(
+                    @"INSERT INTO LogActividadHistorico (Id, WorkflowInstanceId, Actividad, Fecha, ActividadXaml)
+                      SELECT Id, WorkflowInstanceId, Actividad, Fecha, ActividadXaml
+                      FROM LogActividad
+                      WHERE WorkflowInstanceId = {0}",
+                    this.workflowInstanceId);
+
+                var filasEliminadas = contexto.Database.ExecuteSqlCommand(
+                    @"DELETE FROM LogActividad
+                      WHERE WorkflowInstanceId = {0}",
+                    this.workflowInstanceId);
+
+                scope.Complete();
+                return filasEliminadas;
+            }
         }
     }
 }
