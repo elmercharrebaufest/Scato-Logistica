@@ -128,6 +128,7 @@ namespace Molinos.Scato.Dominio
             public struct AFIP
             {
                 public const string ConsultasParalelas = "ConsultasParalelas";
+                public const string CentrosCachearCPEAfip = "CentrosCachearCPEAfip";
             }
 
             public struct PreLote
@@ -366,12 +367,16 @@ namespace Molinos.Scato.Dominio
             
             public const string CachearCpeAFIPSanLorenzo = "CachearCpeAFIPSanLorenzo";
             public const string CachearCpeAFIPPorCentros = "CachearCpeAFIPPorCentros";
+            public const string CachearCpeAFIPSanLorenzoLiviano = "CachearCpeAFIPSanLorenzoLiviano";
+            public const string CachearCpeAFIPPorCentrosLiviano = "CachearCpeAFIPPorCentrosLiviano";
             public const string ActualizarCacheCpeAFIPSanLorenzo = "ActualizarCacheCpeAFIPSanLorenzo";
             public const string LimpiarCacheCartaPorteElectronicaDocumentosIngresados = "LimpiarCacheCartaPorteElectronicaDocumentosIngresados";
             public const string LimpiarCacheCartaPorteElectronicaDocumentosNoIngresados = "LimpiarCacheCartaPorteElectronicaDocumentosNoIngresados";
             public const string DefaultCronExpressionForCachearCpeAFIPSanLorenzo = "0 */15 * * * *";
             public const string DefaultCronExpressionForActualizarCacheCpeAFIPSanLorenzo = "0 0 * * * *";
             public const string DefaultCronExpressionForCachearCpeAFIPPorCentros = "0 0 * * * *";
+            public const string DefaultCronExpressionForCachearCpeAFIPSanLorenzoLiviano = "0 */15 * * * *";
+            public const string DefaultCronExpressionForCachearCpeAFIPPorCentrosLiviano = "0 0 * * * *";
             public const string DefaultCronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosIngresados = "0 0 * * * *";
             public const string DefaultCronExpressionForLimpiarCacheCartaPorteElectronicaDocumentosNoIngresados = "0 0 3 * * *";
         }

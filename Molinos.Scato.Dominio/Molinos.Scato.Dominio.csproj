@@ -233,6 +233,8 @@
     <Compile Include="Comandos\ConfirmarArriboDefinitivo.cs" />
     <Compile Include="Comandos\ConsultarCPEDummy.cs" />
     <Compile Include="Comandos\ConsultarCPEPorDestino.cs" />
+    <Compile Include="Comandos\CachearCPEAfip.cs" />
+    <Compile Include="Comandos\ResultadoCachearCPEAfip.cs" />
     <Compile Include="Comandos\ConsultarCPDigital.cs" />
     <Compile Include="Comandos\ConsultarDestinatarioCPE.cs" />
     <Compile Include="Comandos\ConsultarPDFCpe.cs" />

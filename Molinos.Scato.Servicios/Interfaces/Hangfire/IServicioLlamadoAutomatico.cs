@@ -26,6 +26,24 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         void CachearCpeAFIPPorCentros();
 
+        /// <summary>
+        /// Versión liviana de <see cref="CachearCpeAFIPSanLorenzo"/>: solo consulta AFIP y persiste
+        /// en CartaPorteElectronica (comando CachearCPEAfip), sin resolver Proveedores/Localidad/
+        /// Categoria/Chofer/Transportista ni renderizar el PDF a PNG. Mismo filtro de CTGs no
+        /// cacheadas, paralelismo y reintentos que la versión original.
+        /// </summary>
+        [OperationContract]
+        void CachearCpeAFIPSanLorenzoLiviano();
+
+        /// <summary>
+        /// Versión liviana de <see cref="CachearCpeAFIPPorCentros"/>: solo consulta AFIP y persiste
+        /// en CartaPorteElectronica (comando CachearCPEAfip), sin resolver Proveedores/Localidad/
+        /// Categoria/Chofer/Transportista ni renderizar el PDF a PNG. Mismo filtro de CTGs no
+        /// cacheadas, paralelismo y reintentos que la versión original.
+        /// </summary>
+        [OperationContract]
+        void CachearCpeAFIPPorCentrosLiviano();
+
         [OperationContract]
         void ActualizarCacheCpeAFIPSanLorenzo();
 

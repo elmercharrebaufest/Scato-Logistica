@@ -653,6 +653,9 @@
     <Compile Include="Procesamiento\ProcesadorAnularCPEDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDGDummy.cs" />
     <Compile Include="Procesamiento\AFIP\ProcesadorConfirmarCTGVencidas.cs" />
+    <Compile Include="Procesamiento\AFIP\CpeAfipRespuestaMapper.cs" />
+    <Compile Include="CartaPorteElectronicaCacheHelper.cs" />
+    <Compile Include="Procesamiento\AFIP\ProcesadorCachearCPEAfip.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCartaPorteByPass.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCaracteristicasAnalizadas.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearHuellaDigital.cs" />

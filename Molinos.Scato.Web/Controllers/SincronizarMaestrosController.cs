@@ -242,7 +242,7 @@ namespace Molinos.Scato.Web.Controllers
                              var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
                              {
                                  CentroId = centro,
-                                 TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
+                                 TipoVehiculo = cpe.TipoCartaPorte == 75 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                                  NroCtg = ctg,
                                  FechaUltimaActualizacion = cpe.FechaUltimaModificacion,
                                  ForzarConsultaAfip = true,
@@ -289,7 +289,7 @@ namespace Molinos.Scato.Web.Controllers
                     var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
                     {
                         CentroId = centro,
-                        TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
+                        TipoVehiculo = cpe.TipoCartaPorte == 75 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                         NroCtg = cpe.CTG.Value,
                         FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now,
                         IncluirImagen = false

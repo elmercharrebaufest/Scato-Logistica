@@ -943,6 +943,10 @@
     </Compile>
     <Compile Include="Servicios\ServicioHealthCheckTests.cs" />
     <Compile Include="Servicios\CalculadoraDescuentoTest.cs" />
+    <Compile Include="Servicios\CartaPorteElectronicaCacheHelperTest.cs" />
+    <Compile Include="Procesamiento\AFIP\CpeAfipRespuestaMapperTest.cs" />
+    <Compile Include="Procesamiento\AFIP\ProcesadorCachearCPEAfipTest.cs" />
+    <Compile Include="Servicios\ServicioLlamadoAutomaticoCachearCpeAfipLivianoTest.cs" />
     <Compile Include="Servicios\ServicioComandosTest.cs" />
     <Compile Include="Servicios\ServicioOperacionesTest.cs" />
     <Compile Include="Servicios\ServicioMercadoPagoTest.cs" />

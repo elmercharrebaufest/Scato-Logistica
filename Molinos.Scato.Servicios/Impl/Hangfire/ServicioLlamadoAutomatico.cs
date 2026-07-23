@@ -132,7 +132,8 @@ namespace Molinos.Scato.Servicios.Impl
 
         public void CachearCpeAFIPPorCentros()
         {
-            var centros = repositorio.ListarCentros();
+            var centros = ObtenerCentrosCachearCpeAfip();
+
             if (centros?.Any() == true)
             {
                 foreach (var centro in centros)
@@ -141,6 +142,51 @@ namespace Molinos.Scato.Servicios.Impl
                         CachearCpeAfip(centro.Id, 3, TipoCpeConsulta.Ambos);
                 }
             }
+        }
+
+        public void CachearCpeAFIPSanLorenzoLiviano()
+        {
+            CachearCpeAfipLiviano(Constantes.Centro.IdSanLorenzo, 3, TipoCpeConsulta.Ambos);
+        }
+
+        public void CachearCpeAFIPPorCentrosLiviano()
+        {
+            var centros = ObtenerCentrosCachearCpeAfip();
+            if (centros?.Any() == true)
+            {
+                foreach (var centro in centros)
+                {
+                    if (centro.Id != Constantes.Centro.IdSanLorenzo)
+                        CachearCpeAfipLiviano(centro.Id, 3, TipoCpeConsulta.Ambos);
+                }
+            }
+        }
+
+        private IList<CentroDto> ObtenerCentrosCachearCpeAfip()
+        {
+            IList<CentroDto> centros;
+
+            var config = repositorio.ObtenerConfiguracionGeneral(
+                Constantes.ConfiguracionGeneral.Pantalla.AFIP,
+                Constantes.ConfiguracionGeneral.AFIP.CentrosCachearCPEAfip);
+
+            if (config != null && !string.IsNullOrWhiteSpace(config.Valor))
+            {
+                var ids = config.Valor
+                    .Split(',')
+                    .Select(s => s.Trim())
+                    .Where(s => int.TryParse(s, out _))
+                    .Select(int.Parse)
+                    .ToList();
+
+                centros = repositorio.ListarCentrosPorIds(ids);
+            }
+            else
+            {
+                centros = repositorio.ListarCentrosPorCuitMolinos();
+            }
+
+            return centros;
         }
 
         public void ActualizarCacheCpeAFIPSanLorenzo()
@@ -591,6 +637,76 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 repositorio.ActualizarFechaEstadoCacheadoCPECentro(centro, cpesPendientes.Errores.FirstOrDefault().Value);
                 log.Error("Ocurrio un problema al realizar ConsultarCPEPorDestino: {0}", cpesPendientes.Errores.FirstOrDefault().Value);
+            }
+        }
+
+        /// <summary>
+        /// Versión liviana de <see cref="CachearCpeAfip"/>: usa el mismo filtro de CTGs no cacheadas,
+        /// paralelismo y reintentos, pero ejecuta CachearCPEAfip en lugar de ConsultarCPDigital. No
+        /// resuelve Proveedores/Localidad/Categoria/Chofer/Transportista (con sus sincronizaciones
+        /// SAP) ni renderiza el PDF a PNG, trabajo que ConsultarCPDigital hacía igual aunque
+        /// resultado.Cpe nunca se usaba en este job (solo se chequeaba HayErrores).
+        /// </summary>
+        private void CachearCpeAfipLiviano(int centro = 5, int reintentos = 3, TipoCpeConsulta tipoCpe = TipoCpeConsulta.Ambos)
+        {
+            var cpesPendientes = (ResultadoConsultaCpePorDestino)comandos.Ejecutar(
+                new ConsultarCPEPorDestino()
+                {
+                    CentroId = centro,
+                    TipoCpe = tipoCpe,
+                    FechaPartidaDesde = DateTime.Today,
+                    FechaPartidaHasta = DateTime.Today.AddDays(1)
+                });
+
+            if (!cpesPendientes.HayErrores)
+            {
+                repositorio.ActualizarFechaEstadoCacheadoCPECentro(centro, null);
+                var cpesNoCacheadas = repositorio.ObtenerCpesNoCacheadas(cpesPendientes.Cpes);
+                var consultasParaleloVal = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.AFIP, Constantes.ConfiguracionGeneral.AFIP.ConsultasParalelas);
+
+                var consultasParalelo = 0;
+                int.TryParse(consultasParaleloVal?.Valor, out consultasParalelo);
+                var maxParalelismo = consultasParalelo > 0 ? consultasParalelo : -1; // -1 = sin límite (valor válido)
+                var cpesPorCtg = cpesPendientes.Cpes.ToDictionary(x => x.Ctg);
+
+                log.Debug("Se inicia el proceso de cacheo liviano");
+                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = maxParalelismo }, (ctg) =>
+                {
+                    var intentos = 0;
+                    var ok = false;
+
+                    while (!ok && intentos < reintentos)
+                    {
+                        if (intentos > 0)
+                            Thread.Sleep(TimeSpan.FromSeconds(Math.Pow(2, intentos)));
+                        try
+                        {
+                            var cpe = cpesPorCtg[ctg];
+                            var resultado = comandos.Ejecutar(new CachearCPEAfip()
+                            {
+                                CentroId = centro,
+                                TipoVehiculo = cpe.TipoCartaPorte == 75 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
+                                NroCTG = ctg,
+                            });
+
+                            ok = !resultado.HayErrores;
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Error(string.Format("Ocurrio un problema al realizar el cache liviano de {0}", ctg), ex);
+                            ok = false;
+                        }
+                        finally
+                        {
+                            intentos++;
+                        }
+                    }
+                });
+            }
+            else
+            {
+                repositorio.ActualizarFechaEstadoCacheadoCPECentro(centro, cpesPendientes.Errores.FirstOrDefault().Value);
+                log.Error("Ocurrio un problema al realizar ConsultarCPEPorDestino (liviano): {0}", cpesPendientes.Errores.FirstOrDefault().Value);
             }
         }
 

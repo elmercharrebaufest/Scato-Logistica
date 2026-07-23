@@ -688,6 +688,16 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<Centro, CentroDto>();
         }
 
+        public IList<CentroDto> ListarCentrosPorIds(IList<int> ids)
+        {
+            return Listar<Centro, CentroDto>(f => ids.Contains(f.Id));
+        }
+
+        public IList<CentroDto> ListarCentrosPorCuitMolinos()
+        {
+            return Listar<Centro, CentroDto>(f => f.Cuit == Constantes.Proveedores.CuitMolinos);
+        }
+
         public IList<CentroDto> ListarCentrosPorUsuario(string nombreUsuario)
         {
             return Listar<Centro, CentroDto>(f => f.UsuariosAsociados.Any(x => x.NombreUsuario == nombreUsuario));

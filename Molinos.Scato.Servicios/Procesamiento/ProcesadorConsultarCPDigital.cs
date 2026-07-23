@@ -8,6 +8,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.Conversiones;
+using Molinos.Scato.Servicios.Helpers;
 using Ninject;
 using Ninject.Extensions.Logging;
 using PdfiumViewer;
@@ -26,7 +27,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private readonly IAccesoWsCtg accesoWsCtg;
         private readonly IServicioComandos servicioComandos;
         private IKernel kernel;
-        private readonly List<string> erroresNobloqueantes = new List<string>() { Constantes.AFIPCodigoDeError.ErrorPDFNoGenerado };
 
         private static readonly int _dpiX;
         private static readonly int _dpiY;
@@ -351,30 +351,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private bool ProcesarErroresAfip(dynamic respuesta, ResultadoCartaPorteElectronica resultado)
         {
-            if (respuesta == null)
-            {
-                resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, "No se obtuvo respuesta desde AFIP");
-                return true;
-            }
-
-            if (respuesta.errores == null || !((IEnumerable<dynamic>)respuesta.errores).Any())
-                return false;
-
-            var erroresNobloqueanteSet = new HashSet<string>(erroresNobloqueantes);
-            var errores = (IEnumerable<dynamic>)respuesta.errores;
-            var tieneErrorBloqueante = errores.Any(e => !erroresNobloqueanteSet.Contains((string)e.codigo));
-
-            if (tieneErrorBloqueante)
-            {
-                var errorNoExiste = errores.Any(e => (string)e.codigo == Constantes.AFIPCodigoDeError.NoExistenSolicitudes);
-                var mensaje = errorNoExiste ? "No se encuentran datos" : (string)errores.FirstOrDefault()?.descripcion;
-                resultado.Error(Constantes.AFIPCodigoDeError.NoExistenSolicitudes, mensaje);
-            }
-
-            foreach (var error in errores)
-                Log.Error($"ProcesadorConsultarCPDigital - ({error.codigo}) {error.descripcion}");
-
-            return tieneErrorBloqueante;
+            return CpeAfipRespuestaMapper.TieneErrorBloqueante(respuesta, resultado, Log);
         }
 
         private void ProcesarRespuestaExitosaAFIP(dynamic respuestaAFIP, int centroId, ResultadoCartaPorteElectronica resultado, bool incluirImagen = true)
@@ -732,156 +709,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private CartaPorteElectronica ConvertirResponseAFIPenCartaPorteElectronica(dynamic responseAFIP)
         {
-            if (responseAFIP == null) return null;
-
-            try
-            {
-                var cabeceraAFIP = responseAFIP.cabecera;
-                var origenAFIP = responseAFIP.origen;
-                var retiroProductorAFIP = responseAFIP.retiroProductor;
-                var intervinientesAFIP = responseAFIP.intervinientes;
-                var datosCargaAFIP = responseAFIP.datosCarga;
-                var destinoAFIP = responseAFIP.destino;
-                var destinatarioAFIP = responseAFIP.destinatario;
-                var transporteAFIP = responseAFIP.transporte;
-
-                // OrigenFerroviariaRespuesta (tren) no tiene nroRenspa: ese dato solo aplica al origen
-                // de tipo unidad productiva en automotor. Se resuelve explícitamente según el tipo real
-                // para evitar RuntimeBinderException al acceder vía dynamic.
-                string nroRenspa = origenAFIP is OrigenFerroviariaRespuesta ? null : (origenAFIP != null ? origenAFIP.nroRenspa : null);
-
-                // TransporteFerroviariaRespuesta (tren) no tiene dominio/cuitChofer/fechaHoraPartida/codigoTurno/tarifaReferencia:
-                // usa vagón y conductor en su lugar. Acceder a esos campos vía dynamic sobre este tipo
-                // lanza RuntimeBinderException, por eso se resuelven explícitamente según el tipo real.
-                string dominio = string.Empty;
-                long? cuitChofer = null;
-                DateTime? fechaPartida = null;
-                string codigoTurno = null;
-                double tarifaReferencia = 0;
-                int? codigoRamalAfip = null;
-                string numeroPrecinto = null;
-                long? nroOperativo = null;
-                long? cuitTransportistaTramo2 = null;
-
-                if (transporteAFIP is TransporteFerroviariaRespuesta transporteFerroviario)
-                {
-                    // El nro de vagón hace las veces de "dominio" para el vehículo ferroviario:
-                    // ConvertirCartaPorteDto usa este campo (via CartaPorte.Dominio.Split(',')) para
-                    // resolver la Patente del vagón. Sin esto, el vagón queda con Patente vacía.
-                    dominio = transporteFerroviario.nroVagonSpecified
-                        ? transporteFerroviario.nroVagon.ToString()
-                        : string.Empty;
-                    cuitChofer = transporteFerroviario.cuitConductor;
-                    fechaPartida = transporteFerroviario.fechaHoraPartidaTrenSpecified
-                        ? transporteFerroviario.fechaHoraPartidaTren
-                        : (DateTime?)null;
-                    // Ramal, precinto, nro de operativo y transportista de tramo 2 solo vienen en la
-                    // respuesta ferroviaria; sin esto, el formulario nunca recibe estos datos al
-                    // buscar CTG por tren.
-                    codigoRamalAfip = transporteFerroviario.ramal?.codigo;
-                    numeroPrecinto = transporteFerroviario.nroPrecinto != null && transporteFerroviario.nroPrecinto.Length > 0
-                        ? string.Join(",", transporteFerroviario.nroPrecinto)
-                        : null;
-                    nroOperativo = transporteFerroviario.nroOperativoSpecified
-                        ? transporteFerroviario.nroOperativo
-                        : (long?)null;
-                    cuitTransportistaTramo2 = transporteFerroviario.cuitTransportistaTramo2Specified
-                        ? transporteFerroviario.cuitTransportistaTramo2
-                        : (long?)null;
-                }
-                else if (transporteAFIP != null)
-                {
-                    if (transporteAFIP.dominio != null && transporteAFIP.dominio.Length > 0)
-                        dominio = string.Join(",", transporteAFIP.dominio);
-                    cuitChofer = transporteAFIP.cuitChofer;
-                    fechaPartida = transporteAFIP.fechaHoraPartida;
-                    codigoTurno = transporteAFIP.codigoTurno;
-                    if (transporteAFIP.tarifaReferencia != null)
-                        tarifaReferencia = Convert.ToDouble(transporteAFIP.tarifaReferencia);
-                }
-
-                var carta = new CartaPorteElectronica
-                {
-                    // cabecera
-                    TipoCartaPorte = cabeceraAFIP != null ? cabeceraAFIP.tipoCartaPorte : (int?)null,
-                    Sucursal = cabeceraAFIP != null ? cabeceraAFIP.sucursal : (int?)null,
-                    NroOrden = cabeceraAFIP != null ? cabeceraAFIP.nroOrden : (long?)null,
-                    NroCTG = cabeceraAFIP != null ? cabeceraAFIP.nroCTG : (long?)null,
-                    FechaEmision = cabeceraAFIP != null ? cabeceraAFIP.fechaEmision : (DateTime?)null,
-                    Estado = cabeceraAFIP != null ? cabeceraAFIP.estado : null,
-                    FechaCP = cabeceraAFIP != null ? cabeceraAFIP.fechaInicioEstado : (DateTime?)null,
-                    FechaVto = cabeceraAFIP != null ? cabeceraAFIP.fechaVencimiento : (DateTime?)null,
-                    Observacion = cabeceraAFIP != null ? cabeceraAFIP.observaciones : null,
-
-                    // origen
-                    Provincia = origenAFIP != null ? origenAFIP.codProvincia : (int?)null,
-                    Localidad = origenAFIP != null ? origenAFIP.codLocalidad : (int?)null,
-                    Domicilio = origenAFIP != null ? origenAFIP.domicilio : null,
-                    PlantaOrigen = origenAFIP != null ? origenAFIP.planta : (int?)null,
-                    CuitOrigen = origenAFIP != null ? origenAFIP.cuit : (long?)null,
-                    NroRenspa = nroRenspa,
-
-                    // correspondeRetiroProductor
-                    RetiroProductor = responseAFIP != null ? responseAFIP.correspondeRetiroProductor : (bool?)false,
-
-                    // retiroProductor
-                    CuitRemitenteComercialProductor = retiroProductorAFIP != null ? retiroProductorAFIP.cuitRemitenteComercialProductor : (long?)null,
-
-                    // intervinientes
-                    CuitRemitenteComercialVentaPrimaria = intervinientesAFIP != null ? intervinientesAFIP.cuitRemitenteComercialVentaPrimaria : (long?)null,
-                    CuitRemitenteComercialVentaSecundaria = intervinientesAFIP != null ? intervinientesAFIP.cuitRemitenteComercialVentaSecundaria : (long?)null,
-                    CuitIntermediario = retiroProductorAFIP != null ? retiroProductorAFIP.cuitRemitenteComercialProductor : (long?)0,
-                    CuitMercadoATermino = intervinientesAFIP != null ? intervinientesAFIP.cuitMercadoATermino : (long?)null,
-                    CuitCorredorVentaPrimaria = intervinientesAFIP != null ? intervinientesAFIP.cuitCorredorVentaPrimaria : (long?)null,
-                    CuitCorredorVentaSecundaria = intervinientesAFIP != null ? intervinientesAFIP.cuitCorredorVentaSecundaria : (long?)null,
-                    CuitRepresentanteEntregador = intervinientesAFIP != null ? intervinientesAFIP.cuitRepresentanteEntregador : (long?)null,
-                    CuitRepresentanteRecibidor = intervinientesAFIP != null ? intervinientesAFIP.cuitRepresentanteRecibidor : (long?)null,
-                    CuitRemitenteComercialVentaSecundaria2 = intervinientesAFIP != null ? intervinientesAFIP.cuitRemitenteComercialVentaSecundaria2 : (long?)null,
-
-                    // datosCarga
-                    Material = datosCargaAFIP != null ? datosCargaAFIP.codGrano : null,
-                    PesoBruto = datosCargaAFIP != null ? datosCargaAFIP.pesoBruto : (double?)null,
-                    PesoTara = datosCargaAFIP != null ? datosCargaAFIP.pesoTara : (double?)null,
-                    Cosecha = datosCargaAFIP != null ? datosCargaAFIP.cosecha : (int?)null,
-
-                    // destino
-                    CuitDestino = destinoAFIP != null ? destinoAFIP.cuit : (long?)null,
-                    LocalidadDestino = destinoAFIP != null ? destinoAFIP.codLocalidad : (int?)null,
-                    ProvinciaDestino = destinoAFIP != null ? destinoAFIP.codProvincia : (int?)null,
-                    PlantaDestino = destinoAFIP != null ? destinoAFIP.planta : (int?)null,
-
-                    // destinatario
-                    CuitDestinatario = destinatarioAFIP != null ? destinatarioAFIP.cuit : (long?)null,
-
-                    // transporte
-                    CuitTransportista = transporteAFIP != null ? transporteAFIP.cuitTransportista : (long?)null,
-                    Dominio = dominio,
-                    FechaPartida = fechaPartida,
-                    KmRecorrer = transporteAFIP != null ? transporteAFIP.kmRecorrer : (int?)null,
-                    CodigoTurno = codigoTurno,
-
-                    CuitChofer = cuitChofer,
-                    Tarifa = transporteAFIP != null && transporteAFIP.tarifa != null ? Convert.ToDouble(transporteAFIP.tarifa) : 0,
-                    CuitPagadorFlete = transporteAFIP != null ? transporteAFIP.cuitPagadorFlete : (long?)null,
-                    CuitIntermediarioFlete = transporteAFIP != null ? transporteAFIP.cuitIntermediarioFlete : (long?)null,
-                    MercaderiaFumigada = transporteAFIP != null ? transporteAFIP.mercaderiaFumigada : (bool?)null,
-                    FechaUltimaActualizacion = null,
-                    Pdf = responseAFIP != null ? responseAFIP.pdf : null,
-                    TarifaReferencia = tarifaReferencia,
-                    FechaCacheado = DateTime.Now,
-                    RamalFerroviario = codigoRamalAfip,
-                    NumeroPrecinto = numeroPrecinto,
-                    NroOperativo = nroOperativo,
-                    CuitTransportistaTramo2 = cuitTransportistaTramo2
-                };
-
-                return carta;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error en ConvertirResponseAFIPenCartaPorteElectronica");
-                return null;
-            }
+            return CpeAfipRespuestaMapper.ConvertirResponseAFIPenCartaPorteElectronica(responseAFIP, Log);
         }
 
         private byte[] ConvertirPDFenPNG(byte[] pdf)
@@ -901,29 +729,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void RegistrarCartaPorteElectronica(CartaPorteElectronica cpe)
         {
-            var cpeExistente = Repositorio.Obtener<CartaPorteElectronica>(x => x.NroCTG == cpe.NroCTG);
-
-            if (cpeExistente != null)
-                ActualizarCartaPorteElectronica(cpeExistente, cpe);
-            else
-                Repositorio.Agregar(cpe);
-
-            Repositorio.GuardarCambios();
-        }
-
-        private void ActualizarCartaPorteElectronica(CartaPorteElectronica destino, CartaPorteElectronica origen)
-        {
-            var idOriginal = destino.Id;
-
-            Conversor.Convertir(origen, destino);
-
-            destino.Id = idOriginal;
-            if (origen.Pdf != null)
-            {
-                destino.Pdf = origen.Pdf;
-            }
-            destino.FechaUltimaActualizacion = DateTime.Now;
-            destino.FechaCacheado = DateTime.Now;
+            CartaPorteElectronicaCacheHelper.Registrar(Repositorio, Conversor, cpe);
         }
 
         private int ObtenerConfiguracionInt(string pantalla, string nombre)

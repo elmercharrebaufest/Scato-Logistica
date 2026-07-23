@@ -202,6 +202,12 @@ namespace Molinos.Scato.Servicios
         IList<CentroDto> ListarCentros();
 
         [OperationContract]
+        IList<CentroDto> ListarCentrosPorIds(IList<int> ids);
+
+        [OperationContract]
+        IList<CentroDto> ListarCentrosPorCuitMolinos();
+
+        [OperationContract]
         IList<CentroDto> ListarCentrosPorUsuario(string nombreUsuario);
 
         [OperationContract]

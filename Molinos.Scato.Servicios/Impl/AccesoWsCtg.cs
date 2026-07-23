@@ -60,9 +60,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             //Obtengo el ultimo token creado
             var tiempo = DateTime.Now.AddMinutes(10);
-            var ticketDeAcceso = repositorio.Listar<TicketAccesoAfip>(x => x.Service == servicio && x.ExpirationTime > tiempo).LastOrDefault() ?? GenerarNuevoTicketDeAcceso(cuitRepresentado, resultado, servicio);
+            var ticketDeAcceso = repositorio.Listar<TicketAccesoAfip>(x => x.CuitRepresentado == cuitRepresentado && x.Service == servicio && x.ExpirationTime > tiempo).LastOrDefault() ?? GenerarNuevoTicketDeAcceso(cuitRepresentado, resultado, servicio);
             return ticketDeAcceso;
         }
+
         private TicketAccesoAfip GenerarNuevoTicketDeAcceso(string cuitRepresentado, Resultado resultado, string servicio)
         {
             TicketAccesoAfip ticketNuevo = null;
