@@ -563,6 +563,7 @@
     <Build Include="dbo\Tables\LogIdentificacionVehicular.sql" />
     <Build Include="dbo\Tables\LogIdentificacionVehicularDetalle.sql" />
     <Build Include="dbo\Tables\MarcaTiempoPorPuestoDeTrabajo.sql" />
+    <Build Include="dbo\Views\VehiculoView.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

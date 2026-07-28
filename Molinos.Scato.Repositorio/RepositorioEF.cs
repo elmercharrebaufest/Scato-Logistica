@@ -164,6 +164,16 @@ namespace Molinos.Scato.Repositorio
             return resultado.Select(proyeccion).DefaultIfEmpty(0).Sum();
         }
 
+        public int Promediar<TEntidad>(Expression<Func<TEntidad, decimal>> proyeccion, Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class
+        {
+            IQueryable<TEntidad> resultado = Set<TEntidad>();
+            if (filtro != null)
+            {
+                resultado = resultado.Where(filtro);
+            }
+            return (int)resultado.Select(proyeccion).DefaultIfEmpty(0).Average();
+        }
+
         public IList<TEntidad> Listar<TEntidad>(Expression<Func<TEntidad, bool>> condicion, int maxResultados) where TEntidad : class
         {
             IQueryable<TEntidad> resultado = Set<TEntidad>();

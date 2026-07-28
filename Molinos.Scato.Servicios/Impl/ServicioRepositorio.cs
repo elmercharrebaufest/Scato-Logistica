@@ -965,6 +965,22 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ObtenerConsultaEscalar(new ObtenerVehiculo(patente, acoplado, acoplado2));
         }
 
+        public PromedioTaraVehiculoDto ObtenerPromedioTaraPorVehiculo(int recorridoId)
+        {
+            try
+            {
+                return repositorio.ObtenerConsultaEscalar(new ObtenerPromedioTaraPorVehiculoConsulta(recorridoId));
+            }
+            catch (Exception ex)
+            {
+                log.Error(string.Format(CultureInfo.CurrentCulture,
+                    "Error al obtener promedio de tara para recorrido {0}. Detalle: {1}",
+                    recorridoId,
+                    ex));
+                throw;
+            }
+        }
+
         public ListaPaginada<DocumentoExternoDto> ListarDocumentos(string filtro, Paginacion paginacion)
         {
             Expression<Func<DocumentoExterno, bool>> expresionFiltro = null;

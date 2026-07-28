@@ -1668,6 +1668,16 @@ BEGIN
 INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('MarcaSustentable', 'PosicionImagenSustentableY', '2800', NULL, GETDATE(), 'SCATO')   
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'DiferenciaPesoTaraWFE' AND  Nombre = 'DiferenciaTolerancia' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('DiferenciaPesoTaraWFE', 'DiferenciaTolerancia', '600', NULL, GETDATE(), 'SCATO')   
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'DiferenciaPesoTaraWFE' AND  Nombre = 'ListaDistribucion' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('DiferenciaPesoTaraWFE', 'ListaDistribucion', 'edelacruz@baufest.com', NULL, GETDATE(), 'SCATO')   
+END
+
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'Cardless' AND  Nombre = 'MaxSustituciones' AND  Centro_Id IS NULL) 
 BEGIN 
 INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('Cardless', 'MaxSustituciones', '1', NULL, GETDATE(), 'SCATO')   
@@ -2014,4 +2024,11 @@ IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MOAOperacion
 BEGIN 
 INSERT INTO ConfiguracionGeneral(Pantalla, Nombre, Valor, Centro_Id, FechaCreacion, UsuarioCreacion) 
 VALUES ('MOAOperaciones.ListadoTicketPesada', 'TiposComerciales', '3,4,8', NULL, GETDATE(), 'SCATO')
+END
+
+--Configuracion general - PSP-770: habilitar envio SAP Z_SDMF_RFC_MOV_311
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'ServicioSap' AND Nombre = 'HabilitarEnvioMov311' AND Centro_Id IS NULL)
+BEGIN
+INSERT INTO ConfiguracionGeneral(Pantalla, Nombre, Valor, Centro_Id, FechaCreacion, UsuarioCreacion)
+VALUES ('ServicioSap', 'HabilitarEnvioMov311', 'true', NULL, GETDATE(), 'SCATO')
 END

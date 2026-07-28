@@ -1,0 +1,153 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.VerificarDesvioTara"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.VerificarDesvioTara_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>Ninject</AssemblyReference>
+      <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>Owin</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="VerificarDesvioTara" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" Name="correspondeEnvioMailDesvio" />
+      <Variable x:TypeArguments="x:String" Name="asuntoDesvioTara" />
+      <Variable x:TypeArguments="x:String" Name="bodyDesvioTara" />
+      <Variable x:TypeArguments="x:String" Name="destinoDesvioTara" />
+    </Sequence.Variables>
+    <local:VerificarDesvioTara sap2010:WorkflowViewState.IdRef="VerificarDesvioTara_1">
+      <local:VerificarDesvioTara.Asunto>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">asuntoDesvioTara</mca:CSharpReference>
+        </OutArgument>
+      </local:VerificarDesvioTara.Asunto>
+      <local:VerificarDesvioTara.Body>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">bodyDesvioTara</mca:CSharpReference>
+        </OutArgument>
+      </local:VerificarDesvioTara.Body>
+      <local:VerificarDesvioTara.Corresponde>
+        <OutArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpReference x:TypeArguments="x:Boolean">correspondeEnvioMailDesvio</mca:CSharpReference>
+        </OutArgument>
+      </local:VerificarDesvioTara.Corresponde>
+      <local:VerificarDesvioTara.Destino>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">destinoDesvioTara</mca:CSharpReference>
+        </OutArgument>
+      </local:VerificarDesvioTara.Destino>
+      <local:VerificarDesvioTara.InstanceId>
+        <InArgument x:TypeArguments="s:Guid">
+          <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+        </InArgument>
+      </local:VerificarDesvioTara.InstanceId>
+    </local:VerificarDesvioTara>
+    <If sap2010:WorkflowViewState.IdRef="If_EnviarMailDesvioTara">
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">correspondeEnvioMailDesvio</mca:CSharpValue>
+        </InArgument>
+      </If.Condition>
+      <If.Then>
+        <local:EnviarMail Attachments="{x:Null}" CC="{x:Null}" Error="{x:Null}" From="{x:Null}" sap2010:WorkflowViewState.IdRef="EnviarMail_DesvioTara">
+          <local:EnviarMail.Body>
+            <InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">bodyDesvioTara</mca:CSharpValue>
+            </InArgument>
+          </local:EnviarMail.Body>
+          <local:EnviarMail.InstanceId>
+            <InArgument x:TypeArguments="s:Guid">
+              <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+            </InArgument>
+          </local:EnviarMail.InstanceId>
+          <local:EnviarMail.Subject>
+            <InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">asuntoDesvioTara</mca:CSharpValue>
+            </InArgument>
+          </local:EnviarMail.Subject>
+          <local:EnviarMail.To>
+            <InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">destinoDesvioTara</mca:CSharpValue>
+            </InArgument>
+          </local:EnviarMail.To>
+          <local:EnviarMail.Tokens>
+            <InArgument x:TypeArguments="scg:IDictionary(x:String, x:String)">
+              <mca:CSharpValue x:TypeArguments="scg:IDictionary(x:String, x:String)">new Dictionary&lt;String, String&gt; { }</mca:CSharpValue>
+            </InArgument>
+          </local:EnviarMail.Tokens>
+        </local:EnviarMail>
+      </If.Then>
+    </If>
+    <sads:DebugSymbol.Symbol>d0BDOlxSZXBvXFNjYXRvXE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcVmVyaWZpY2FyRGVzdmlvVGFyYS54YW1sD0IDiQEOAgEBSQVjIQIBKGQFhwEKAgECVgtWbAIBQVELUV8CATtMC0xhAgE1WwtbYgIBL2ALYFECASlnC2dkAgEDawmFARwCAQmCAQ+CAZABAgEifQ99XgIBHG4PblsCARZ4D3hdAgEQcw9zVQIBCg==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="VerificarDesvioTara_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="EnviarMail_DesvioTara" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_EnviarMailDesvioTara" sap:VirtualizedContainerService.HintSize="464,214.666666666667" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,400.666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.VerificarDesvioTara_1" sap:VirtualizedContainerService.HintSize="526,480.666666666667" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

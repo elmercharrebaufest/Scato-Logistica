@@ -283,6 +283,9 @@ namespace Molinos.Scato.Servicios
         CategoriaVehiculoDto BuscarCategoriaVehiculo(string patente, string acoplado, string acoplado2);
 
         [OperationContract]
+        PromedioTaraVehiculoDto ObtenerPromedioTaraPorVehiculo(int recorridoId);
+
+        [OperationContract]
         ListaPaginada<DocumentoExternoDto> ListarDocumentos(string filtro, Paginacion paginacion);
 
         [OperationContract]

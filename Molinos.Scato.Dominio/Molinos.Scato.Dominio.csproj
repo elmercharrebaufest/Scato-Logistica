@@ -848,6 +848,7 @@
     <Compile Include="Dto\HealthCheck\HealthCheckConfigDto.cs" />
     <Compile Include="Dto\HealthCheck\HealthCheckResult.cs" />
     <Compile Include="Dto\RecorridoCpeDto.cs" />
+    <Compile Include="Dto\PromedioTaraVehiculoDto.cs" />
     <Compile Include="Dto\RegistroJobEjecucionDto.cs" />
     <Compile Include="Dto\CargaDeCupoResponseDto.cs" />
     <Compile Include="Dto\PagosTasaMunicipalDto.cs" />

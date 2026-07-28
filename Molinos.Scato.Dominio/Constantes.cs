@@ -106,6 +106,7 @@ namespace Molinos.Scato.Dominio
                 public const string BalanzaACero = "BalanzaACero";
                 public const string LimpiarCacheCartaPorte = "LimpiarCacheCartaPorte";
                 public const string Cardless = "Cardless";
+                public const string DiferenciaPesoTaraWFE = "DiferenciaPesoTaraWFE";
             }
 
             public struct Cardless
@@ -238,6 +239,17 @@ namespace Molinos.Scato.Dominio
                 public const string DiasLimiteDeBusqueda = "DiasLimiteDeBusqueda";
                 public const string DiasInicioDeBusquedaDeRecorrido = "DiasInicioDeBusquedaDeRecorrido";
 
+            }
+	    
+            public struct DiferenciaPesoTaraWFE
+            {
+                public const string DiferenciaTolerancia = "DiferenciaTolerancia";
+                public const string ListaDistribucion = "ListaDistribucion";
+            }
+
+            public struct ServicioSap
+            {
+                public const string HabilitarEnvioMov311 = "HabilitarEnvioMov311";
             }
         }
 

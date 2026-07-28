@@ -108,6 +108,8 @@ namespace Molinos.Scato.Repositorio
 
         decimal Sumar<TEntidad>(Expression<Func<TEntidad, decimal>> proyeccion, Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class;
 
+        int Promediar<TEntidad>(Expression<Func<TEntidad, decimal>> proyeccion, Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class;
+
         /// <summary>
         /// Lista todas las entidades que cumplen con la condicion devolviendo solo una pagina de resultados
         /// </summary>

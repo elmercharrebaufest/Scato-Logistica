@@ -223,6 +223,7 @@
     <Compile Include="Internas\ValidacionLimiteDeCreditoVentaEnSAP.cs" />
     <Compile Include="Internas\VerificarCorrespondeCaladoEnPlanta.cs" />
     <Compile Include="Internas\VerificarCupoTransmitido.cs" />
+    <Compile Include="Internas\VerificarDesvioTara.cs" />
     <Compile Include="Internas\VerificarReimpresion.cs" />
     <Compile Include="Internas\CrearRemitoBodegaVino.cs" />
     <Compile Include="Internas\VerificarCorrespondeRegistrarMuestreoYPesaje.cs" />
@@ -918,6 +919,12 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="PesadaTara.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificarDesvioTara.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

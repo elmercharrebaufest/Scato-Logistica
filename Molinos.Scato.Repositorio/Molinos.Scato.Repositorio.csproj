@@ -127,6 +127,7 @@
     <Compile Include="ConsultasEF\ObtenerDisponibilidadPostCalado.cs" />
     <Compile Include="ConsultasEF\ObtenerSiguienteCalle.cs" />
     <Compile Include="ConsultasEF\ObtenerCallePostCalado.cs" />
+    <Compile Include="ConsultasEF\ObtenerPromedioTaraPorVehiculoConsulta.cs" />
     <Compile Include="ConsultasEF\ObtenerDatosEmbarcandoPuerto.cs" />
     <Compile Include="ConsultasEF\ListarReportePesadaSeisHoras.cs" />
     <Compile Include="ConsultasEF\ListarReporteCargasPuerto.cs" />
