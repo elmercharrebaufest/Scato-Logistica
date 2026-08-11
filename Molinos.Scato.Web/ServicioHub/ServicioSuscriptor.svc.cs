@@ -414,7 +414,10 @@ namespace Molinos.Scato.Web.ServicioHub
                             var fotoRuta = string.Empty;
                             if (!fotoTemporal)
                             {
-                                fotoRuta = GuardarFotoLogALPR(resultadoConPatente.Imagen, fileName);
+                                if (DebeGuardarFotoLogALPR())
+                                {
+                                    fotoRuta = GuardarFotoLogALPR(resultadoConPatente.Imagen, fileName);
+                                }
                             }
                             lecturaPuestoDeTrabajo.PatenteLeida = resultadoConPatente.Patente;
                             lecturaPuestoDeTrabajo.OcrActivo = true;
@@ -960,6 +963,14 @@ namespace Molinos.Scato.Web.ServicioHub
 
             if (resultado != null && !resultado.HayErrores)
                 ProcesarLecturaPuesto(notificacion, resultado.LecturaPuestoDeTrabajo);
+        }
+
+        private bool DebeGuardarFotoLogALPR()
+        {
+            var configuracion = servicio.ObtenerConfiguracionGeneral(
+                Constantes.ConfiguracionGeneral.Pantalla.GuardarFotosALPR,
+                Constantes.ConfiguracionGeneral.ALPR.HabilitarGuardado);
+            return configuracion == null || !string.Equals(configuracion.Valor, "0", StringComparison.OrdinalIgnoreCase);
         }
 
         private string GuardarFotoLogALPR(byte[] imagen, string fileName)

@@ -107,6 +107,8 @@ namespace Molinos.Scato.Dominio
                 public const string LimpiarCacheCartaPorte = "LimpiarCacheCartaPorte";
                 public const string Cardless = "Cardless";
                 public const string DiferenciaPesoTaraWFE = "DiferenciaPesoTaraWFE";
+                public const string GuardarFotosALPR = "GuardarFotosALPR";
+                
             }
 
             public struct Cardless
@@ -222,6 +224,11 @@ namespace Molinos.Scato.Dominio
                 public const string ImagenSustentableBase64 = "ImagenSustentableBase64";
                 public const string PosicionImagenSustentableX = "PosicionImagenSustentableX";
                 public const string PosicionImagenSustentableY = "PosicionImagenSustentableY";
+            }
+
+            public struct ALPR
+            {
+                public const string HabilitarGuardado = "HabilitarGuardadoALPR";
             }
             
             public struct MOAOperacionesListadoTicketPesada

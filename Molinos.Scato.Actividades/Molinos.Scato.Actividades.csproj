@@ -96,6 +96,7 @@
     <Compile Include="ActualizarCupo.cs" />
     <Compile Include="ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Internas\CrearCartaPorteByPass.cs" />
+    <Compile Include="Internas\ExisteExcepcionAlControlByPass.cs" />
     <Compile Include="Internas\ObtenerDatosSalida.cs" />
     <Compile Include="Internas\ValidarPagoTasaMunicipalDemorado.cs" />
     <Compile Include="Internas\InformarPagoTasaMunicipal.cs" />
@@ -1393,6 +1394,12 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="CaladoV2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificacionSalidaFleteByPass.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

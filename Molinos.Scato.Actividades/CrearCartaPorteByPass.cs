@@ -129,7 +129,8 @@ namespace Molinos.Scato.Actividades
                 orden.TipoCategoriaId = categoria.Id;
                 orden.TipoCategoria = categoria.Clasificacion;
                 orden.KmRecorrer = int.TryParse(orden.KmARecorrer, out var kmARecorrer) ? kmARecorrer : 0;
-                orden.FechaCP = DateTime.Now;   
+                orden.FechaCP = DateTime.Now;
+                orden.Observacion = string.Empty;
                 logger.Debug($"Datos de la carta de porte: ProvinciaCodigoSap: {orden.ProvinciaCodigoSap}, ProcedenciaCodigoSap: {orden.ProcedenciaCodigoSap}, DestinoLocalidadCodigoAfip: {orden.DestinoLocalidadCodigoAfip}, DestinoProvinciaCodigoAfip: {orden.DestinoProvinciaCodigoAfip}, DestinoPlantaAfip: {orden.DestinoPlantaAfip}, TipoComercialId: {orden.TipoComercialId}, ProcedenciaId: {orden.ProcedenciaId}, DestinoId: {orden.DestinoId}");
                 logger.Debug($"Km a recorrer: {orden.KmARecorrer}, Tarifa: {orden.TarifaTonelada}, Cupo: {orden.Cupo}");
 

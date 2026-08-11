@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
@@ -24,7 +16,16 @@ using Molinos.Scato.Web.Filtros;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using Ninject.Planning;
 using NPOI.Util;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -268,8 +269,14 @@ namespace Molinos.Scato.Web.Controllers
                     SetearVista(workflowObj, datosUsuario.CentroId);
                     return View(orden);
                 }
-               
-                var tieneException = ExisteExcepcionAlControlParaCartaPorte(servicio, orden.MaterialId, orden.TransportistaId ?? 0, orden.IntermediarioFleteId, datosUsuario.CentroId, DateTime.Today, orden.DestinoId, null);
+
+                var centro = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.CrearCartaPorteByPass, Constantes.ConfiguracionGeneral.CrearCartaPorteByPass.Centro);
+                bool tieneException = false;
+                if (centro != null && int.TryParse(centro.Valor, out int destinoCentroId))
+                {
+                    tieneException = ExisteExcepcionAlControlParaCartaPorte(servicio, orden.MaterialId, orden.TransportistaId ?? 0, orden.IntermediarioFleteId, datosUsuario.CentroId, DateTime.Today, destinoCentroId, null);
+                }
+
                 var transportista = servicio.ObtenerTransportista(orden.TransportistaId ?? 0);
                 var proveedor = servicio.ObtenerProveedor(orden.IntermediarioFleteId);
 

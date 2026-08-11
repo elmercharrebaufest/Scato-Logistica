@@ -99,7 +99,7 @@ namespace Molinos.Scato.Test.Actividades
         }
 
         [Test]
-        public void CuandoSeEjecuta_BlancaIntervinientesYFuerzaDestinatarioYEntregador()
+        public void CuandoSeEjecuta_BlancaIntervinientesYFuerzaDestinatarioYEntregadorYObservacion()
         {
             var result = host.TestActivity();
 
@@ -127,6 +127,7 @@ namespace Molinos.Scato.Test.Actividades
                     c.Orden.Destinatario == "MOLINOS AGRO S.A." &&
                     c.Orden.DestinatarioId == 77 &&
                     c.Orden.DestinatarioCuil == Constantes.ValoresPorDefecto.CuitMOA.ToString() &&
+                    c.Orden.Observacion == string.Empty &&
                     c.Orden.Intermediario == string.Empty &&
                     c.Orden.IntermediarioId == null &&
                     c.Orden.IntermediarioCodigoSap == string.Empty &&
@@ -147,6 +148,7 @@ namespace Molinos.Scato.Test.Actividades
                 DestinoProvincia = "BA",
                 DestinoLocalidadCodigoSap = "LOC01",
                 KmARecorrer = "250",
+                Observacion = "Observacion previa",
                 VehiculoDemorado = false,
                 Intermediario = "INTERMEDIARIO PREVIO",
                 IntermediarioId = 999,

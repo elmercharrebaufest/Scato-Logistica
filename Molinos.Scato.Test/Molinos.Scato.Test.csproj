@@ -305,7 +305,6 @@
     <Compile Include="Actividades\DarDeAltaCtgAutomaticaTest.cs" />
     <Compile Include="Actividades\CrearCartaPorteTest.cs" />
     <Compile Include="Actividades\CrearCartaPorteByPassTest.cs" />
-    <Compile Include="Actividades\CrearCartaPorteByPassTest.cs" />
     <Compile Include="Actividades\ControlarPesoTest.cs" />
     <Compile Include="Actividades\ControlarTiempoEnTransitoTest.cs" />
     <Compile Include="Actividades\AutorizarTiempoEnTransitoTest.cs" />
@@ -382,6 +381,7 @@
     <Compile Include="Controllers\CaladoAntiguoControllerTest.cs" />
     <Compile Include="Controllers\CamaraControllerTest.cs" />
     <Compile Include="Controllers\CargarCartaPorteControllerTest.cs" />
+    <Compile Include="Controllers\CargarCartaPorteByPassControllerTest.cs" />
     <Compile Include="Controllers\CargarCartaPortePrestamoControllerTest.cs" />
     <Compile Include="Controllers\CargarHojaDeRutaControllerTest.cs" />
     <Compile Include="Controllers\CargarOrdenDeDescargaFasonControllerTest.cs" />
@@ -854,7 +854,6 @@
     <Compile Include="Procesamiento\ProcesadorCrearSuplenciaTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearVagonesTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCartaPorteTest.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearCartaPorteByPassTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCartaPorteByPassTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAnalisisDeCalidadTest.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearBocaDestinoTest.cs" />

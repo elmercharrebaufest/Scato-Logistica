@@ -234,6 +234,26 @@
     <Content Include="log4net.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Prod\SLO.EgresoPorExportacionFCA.xamlx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Prod\SLO.IngresoPorImpoGranos.xamlx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Prod\SLO.IngresoPorCompraDeGranosCaladaExterna.xamlx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Prod\SLO.IngresoPorRedespachoDeGranosCaladaExterna.xamlx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Prod\SLO.IngresoPorCompraDeGranos.xamlx">
       <SubType>Designer</SubType>
     </Content>
@@ -290,6 +310,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Prod\SLO.EgresosVarios.xamlx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Prod\SLO.SalidaMercaderiaConSAP.xamlx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

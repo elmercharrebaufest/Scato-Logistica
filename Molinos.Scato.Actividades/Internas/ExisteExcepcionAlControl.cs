@@ -40,14 +40,14 @@ namespace Molinos.Scato.Actividades.Internas
                 : ExisteExcepcionAlControlParaOrdenes(repositorio, materialId, transportistaId, intermediarioId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId);
         }
 
-        private bool ExisteExcepcionAlControlParaOrdenes(IServicioRepositorio repositorio, int materialId, int transportistaId, int intermediarioId, int centroId, DateTime date, int? centroDestinoId, int? clienteDestinoId)
+        protected bool ExisteExcepcionAlControlParaOrdenes(IServicioRepositorio repositorio, int materialId, int transportistaId, int intermediarioId, int centroId, DateTime date, int? centroDestinoId, int? clienteDestinoId)
         {
             return intermediarioId > 0
                 ? repositorio.BuscarExcepcionAlControlProveedor(materialId, intermediarioId, centroId, date, centroDestinoId, clienteDestinoId)
                 : repositorio.BuscarExcepcionAlControl(materialId, transportistaId, centroId, date, centroDestinoId, clienteDestinoId);
         }
 
-        private bool ExisteExcepcionAlControlParaCartaPorte(IServicioRepositorio repositorio, int materialId, int transportistaId, int intermediarioId, int centroId, DateTime date, int? centroDestinoId, int? clienteDestinoId)
+        protected bool ExisteExcepcionAlControlParaCartaPorte(IServicioRepositorio repositorio, int materialId, int transportistaId, int intermediarioId, int centroId, DateTime date, int? centroDestinoId, int? clienteDestinoId)
         {
             return intermediarioId > 0
                 ? repositorio.ExisteExcepcionAlControlProveedorParaCartaPorte(materialId, intermediarioId, centroId, date, centroDestinoId, clienteDestinoId)
