@@ -3,7 +3,9 @@ using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Servicios;
 using System;
 using System.Activities;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.ServiceModel;
 using Ninject.Extensions.Logging;
 
@@ -36,6 +38,19 @@ namespace Molinos.Scato.Actividades.Internas
                 servicioRepositorio,
                 Constantes.ConfiguracionGeneral.Pantalla.DiferenciaPesoTaraWFE,
                 Constantes.ConfiguracionGeneral.DiferenciaPesoTaraWFE.ListaDistribucion);
+
+                var codigosSapMateriales = ObtenerCodigosSapMaterialesConfigurados(servicioRepositorio);
+                var codigoSapMaterial = recorrido.Material != null ? recorrido.Material.CodigoSAP : string.Empty;
+                if (!CorrespondeControlarMaterial(codigoSapMaterial, codigosSapMateriales))
+                {
+                    Corresponde.Set(context, false);
+                    Asunto.Set(context, string.Format(CultureInfo.CurrentCulture, "Desvio tara - {0}", recorrido.Patente));
+                    Destino.Set(context, destino);
+                    Body.Set(context, string.Format(CultureInfo.CurrentCulture,
+                        "No se realiza control de promedio de tara para el material '{0}'.",
+                        string.IsNullOrWhiteSpace(codigoSapMaterial) ? "(sin codigo SAP)" : codigoSapMaterial));
+                    return;
+                }
 
                 var umbralKg = int.Parse(ObtenerConfiguracionRequerida(
                 servicioRepositorio,
@@ -86,22 +101,27 @@ namespace Molinos.Scato.Actividades.Internas
         private static string GenerarBody(RecorridoDto recorrido, string patenteCamion, string patenteAcoplado, string chofer, string choferDocumento, int taraActual, int promedioTara, int desvioKg, int umbralKg, bool corresponde)
         {
             var resultado = corresponde ? "SUPERA UMBRAL" : "DENTRO DE UMBRAL";
+            var materialDescripcion = (recorrido.Material != null && !string.IsNullOrWhiteSpace(recorrido.Material.Descripcion))
+                ? recorrido.Material.Descripcion
+                : "(sin material)";
 
             return string.Format(CultureInfo.CurrentCulture,
                 "<b>Verificacion de Desvio de Tara</b><br/>" +
                 "Patente: <b>{0}</b><br/>" +
                 "Acoplado: <b>{1}</b><br/>" +
                 "Nro de Documento: <b>{2}</b><br/>" +
-                "Chofer: <b>{3}</b><br/>" +
-                "Nro Documento Chofer: <b>{4}</b><br/>" +
-                "Tara actual: <b>{5:N0}</b> kg<br/>" +
-                "Promedio historico: <b>{6:N0}</b> kg<br/>" +
-                "Desvio absoluto: <b>{7:N0}</b> kg<br/>" +
-                "Umbral configurado: <b>{8:N0}</b> kg<br/>" +
-                "Resultado: <b>{9}</b>",
+                "Material: <b>{3}</b><br/>" +
+                "Chofer: <b>{4}</b><br/>" +
+                "Nro Documento Chofer: <b>{5}</b><br/>" +
+                "Tara actual: <b>{6:N0}</b> kg<br/>" +
+                "Promedio historico: <b>{7:N0}</b> kg<br/>" +
+                "Desvio absoluto: <b>{8:N0}</b> kg<br/>" +
+                "Umbral configurado: <b>{9:N0}</b> kg<br/>" +
+                "Resultado: <b>{10}</b>",
                 patenteCamion,
                 patenteAcoplado,
                 recorrido.NumeroDocumentoIngreso,
+                materialDescripcion,
                 chofer,
                 choferDocumento,
                 taraActual,
@@ -198,6 +218,33 @@ namespace Molinos.Scato.Actividades.Internas
 
             throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
                 "La configuracion '{0}/{1}' no es un decimal valido. Valor: {2}.", pantalla, nombre, valor));
+        }
+
+        private static ISet<string> ObtenerCodigosSapMaterialesConfigurados(IServicioRepositorio servicioRepositorio)
+        {
+            var configuracion = servicioRepositorio.ObtenerConfiguracionGeneral(
+                Constantes.ConfiguracionGeneral.Pantalla.DiferenciaPesoTaraWFE,
+                Constantes.ConfiguracionGeneral.DiferenciaPesoTaraWFE.CodigoSAPMateriales);
+
+            if (configuracion == null || string.IsNullOrWhiteSpace(configuracion.Valor))
+            {
+                return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+
+            return new HashSet<string>(
+                configuracion.Valor
+                    .Split(',')
+                    .Select(codigo => codigo.Trim())
+                    .Where(codigo => !string.IsNullOrWhiteSpace(codigo)),
+                StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static bool CorrespondeControlarMaterial(string codigoSapMaterial, ISet<string> codigosSapMateriales)
+        {
+            return !string.IsNullOrWhiteSpace(codigoSapMaterial)
+                && codigosSapMateriales != null
+                && codigosSapMateriales.Count > 0
+                && codigosSapMateriales.Contains(codigoSapMaterial.Trim());
         }
     }
 }

@@ -252,6 +252,7 @@ namespace Molinos.Scato.Dominio
             {
                 public const string DiferenciaTolerancia = "DiferenciaTolerancia";
                 public const string ListaDistribucion = "ListaDistribucion";
+                public const string CodigoSAPMateriales = "CodigoSAPMateriales";
             }
 
             public struct ServicioSap

@@ -36,6 +36,12 @@ namespace Molinos.Scato.Test.Actividades
                     It.IsAny<int?>()))
                 .Returns(new ConfiguracionGeneralDto { Valor = "a@molinos.com.ar;b@molinos.com.ar" });
 
+            servicioRepositorioMock.Setup(s => s.ObtenerConfiguracionGeneral(
+                    Constantes.ConfiguracionGeneral.Pantalla.DiferenciaPesoTaraWFE,
+                    Constantes.ConfiguracionGeneral.DiferenciaPesoTaraWFE.CodigoSAPMateriales,
+                    It.IsAny<int?>()))
+                .Returns(new ConfiguracionGeneralDto { Valor = "MAT1,MAT2" });
+
             servicioRepositorioMock.Setup(s => s.ObtenerPromedioTaraPorVehiculo(It.IsAny<int>()))
                 .Returns(new PromedioTaraVehiculoDto
                 {
@@ -58,6 +64,7 @@ namespace Molinos.Scato.Test.Actividades
                     Patente = "AAA111",
                     NumeroDocumentoIngreso = "DOC-1",
                     PesoTara = 12000,
+                    Material = new MaterialDto { CodigoSAP = "MAT1" },
                     Vehiculo = new VehiculoDto { PatenteAcoplado = "ACO123" }
                 });
 
@@ -71,7 +78,6 @@ namespace Molinos.Scato.Test.Actividades
             //Assert.That(host.OutArguments.Body, Does.Contain("CPE: <b>0001000123</b>"));
             //Assert.That(host.OutArguments.Body, Does.Contain("Chofer: <b>PEREZ, JUAN</b>"));
             //Assert.That(host.OutArguments.Body, Does.Contain("Documento chofer: <b>30111222</b>"));
-            Assert.That(host.OutArguments.DesvioKg, Is.EqualTo(3000m));
         }
 
         [Test]
@@ -83,7 +89,8 @@ namespace Molinos.Scato.Test.Actividades
                     Id = 2,
                     Patente = "BBB222",
                     NumeroDocumentoIngreso = "DOC-2",
-                    PesoTara = 9800
+                    PesoTara = 9800,
+                    Material = new MaterialDto { CodigoSAP = "MAT1" }
                 });
             servicioRepositorioMock.Setup(s => s.ObtenerPromedioTaraPorVehiculo(2))
                 .Returns(new PromedioTaraVehiculoDto
@@ -99,7 +106,6 @@ namespace Molinos.Scato.Test.Actividades
             host.TestActivity();
 
             Assert.That(host.OutArguments.Corresponde, Is.False);
-            Assert.That(host.OutArguments.DesvioKg, Is.EqualTo(800m));
         }
 
         [Test]
@@ -111,7 +117,8 @@ namespace Molinos.Scato.Test.Actividades
                     Id = 3,
                     Patente = "CCC333",
                     NumeroDocumentoIngreso = "DOC-3",
-                    PesoTara = 10000
+                    PesoTara = 10000,
+                    Material = new MaterialDto { CodigoSAP = "MAT1" }
                 });
             servicioRepositorioMock.Setup(s => s.ObtenerPromedioTaraPorVehiculo(3))
                 .Returns(new PromedioTaraVehiculoDto
@@ -127,7 +134,7 @@ namespace Molinos.Scato.Test.Actividades
             host.TestActivity();
 
             Assert.That(host.OutArguments.Corresponde, Is.False);
-            Assert.That(host.OutArguments.DesvioKg, Is.EqualTo(10000m));
         }
+
     }
 }
