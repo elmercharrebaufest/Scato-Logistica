@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Molinos.Scato.Web.Impl
+namespace Molinos.Scato.Web.Firmware
 {
     public class FirmwareFactory : IFirmwareFactory
     {

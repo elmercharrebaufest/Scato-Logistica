@@ -1,43 +1,52 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
-using Molinos.Scato.Web.ServicioHub;
+using Molinos.Scato.Web.ServicioHub.Client;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Firmware
 {
     public class FirmwarePuestoDesatendido : FirmwareBase
     {
-        public FirmwarePuestoDesatendido(ILogger log, 
+        public FirmwarePuestoDesatendido(
+            ILogger log, 
             IServicioRepositorio servicioRepositorio, 
             IListaDeWorkflows workflows,
             IServicioComandos comandos,
             IServicioOrquestador servicioOrquestador,
             IServicioActividadFactory<IEjecutarService> factory,
             IRecorridoWorkflow recorridoWorkflow,
-            HubClientFactory hubClientFactory) : base(
-                log, servicioRepositorio, workflows, comandos, servicioOrquestador, factory, hubClientFactory, recorridoWorkflow)
+            HubClients hubClients) 
+            : base(
+                log, 
+                servicioRepositorio, 
+                workflows, 
+                comandos, 
+                servicioOrquestador, 
+                factory, 
+                hubClients, 
+                recorridoWorkflow)
         {
         }
 
-        public override void ProcesarEvento(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        public override string ProcesarEvento(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
         {
+            var resultadoEjecucion = string.Empty;
             if (!lecturaPuestoDeTrabajo.TarjetaValida)
             {
                 NotificarMensajeErrorPorSignalR(lecturaPuestoDeTrabajo);
-                log.Info("Fin - La tarjeta: {0} no es valida: {1}",
-                         lecturaPuestoDeTrabajo.NumeroDeTarjeta,
-                         lecturaPuestoDeTrabajo.MensajeError);
+                resultadoEjecucion = lecturaPuestoDeTrabajo.MensajeError;
             }
             else
             {
                 var recorrido = ObtenerRecorrido(lecturaPuestoDeTrabajo);
-                EjecutarPuestoDesatendido(lecturaPuestoDeTrabajo, recorrido);
+                resultadoEjecucion = EjecutarPuestoDesatendido(lecturaPuestoDeTrabajo, recorrido);
             }
+
             NotificarLecturaPorSignalR(lecturaPuestoDeTrabajo);
+            return resultadoEjecucion;
         }
     }
 }

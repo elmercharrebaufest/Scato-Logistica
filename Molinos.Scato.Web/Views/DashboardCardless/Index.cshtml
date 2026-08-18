@@ -1,4 +1,4 @@
-@using Molinos.Scato.Dominio.Dto
+﻿@using Molinos.Scato.Dominio.Dto
 @using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Web.Helpers
 @model Molinos.Scato.Dominio.Dto.FiltroDashboardCardlessDto
@@ -11,6 +11,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+<link href="~/Content/dashboardCardless.css" rel="stylesheet" />
 
 <div id="dashboard-cardless-links"
      data-url-camiones="@Url.Action("ObtenerCamionesPorDia")"
@@ -25,598 +26,6 @@
      data-url-img-fallback="@Url.Content("~/Content/images/pageError.png")">
 </div>
 
-<style>
-    :root {
-        --dc-bg: #f6f7f9;
-        --dc-card: #ffffff;
-        --dc-border: #e5e7eb;
-        --dc-text: #0f172a;
-        --dc-muted: #64748b;
-        --dc-green: #078425;
-        --dc-green-soft: #dcfce7;
-        --dc-red: #c0392b;
-        --dc-red-soft: #fee2e2;
-    }
-
-    .dc-wrapper {
-        background: var(--dc-bg);
-        font-family: 'Inter', sans-serif;
-        color: var(--dc-text);
-        padding: 28px 32px 48px;
-        min-height: calc(100vh - 60px);
-    }
-
-    /* Header */
-    .dc-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 24px;
-    }
-
-    .dc-title {
-        margin: 0;
-        font-size: 26px;
-        font-weight: 800;
-        color: #111827;
-        letter-spacing: -0.03em;
-    }
-
-    .dc-btn-galeria {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: var(--dc-red);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 18px;
-        font-family: 'Inter', sans-serif;
-        font-size: 13px;
-        font-weight: 700;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background 0.18s;
-    }
-
-    .dc-btn-galeria:hover {
-        background: #a93226;
-        color: #fff;
-        text-decoration: none;
-    }
-
-    /* Filtros */
-    .dc-filter-bar {
-        background: var(--dc-card);
-        border: 1px solid var(--dc-border);
-        border-radius: 14px;
-        padding: 18px 24px;
-        display: flex;
-        align-items: flex-end;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin-bottom: 28px;
-        box-shadow: 0 1px 3px rgba(15,23,42,.05);
-    }
-
-    .dc-filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .dc-filter-label {
-        height: 14px;
-        line-height: 14px;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-        color: var(--dc-muted);
-    }
-
-    .dc-filter-bar .form-control,
-    .dc-filter-bar select {
-        font-family: 'Inter', sans-serif;
-        font-size: 13px;
-        border-radius: 8px !important;
-        border: 1px solid var(--dc-border);
-        height: 38px !important;
-        box-sizing: border-box;
-        line-height: 1.5;
-    }
-
-    .dc-filter-bar .input-group-addon {
-        border-radius: 0 8px 8px 0 !important;
-        border-color: var(--dc-border);
-    }
-
-    .dc-btn-filter {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        background: var(--dc-green);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 0 20px;
-        height: 38px !important;
-        box-sizing: border-box;
-        -webkit-appearance: none;
-        appearance: none;
-        font-family: 'Inter', sans-serif;
-        font-size: 13px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background 0.18s;
-    }
-
-    .dc-btn-filter:hover {
-        background: #056b1d;
-    }
-
-    /* Cards */
-    .dc-card {
-        background: var(--dc-card);
-        border: 1px solid var(--dc-border);
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: 0 1px 3px rgba(15,23,42,.06);
-    }
-
-    .dc-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 18px;
-    }
-
-    .dc-card-title {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin: 0;
-        font-size: 13px;
-        font-weight: 800;
-        letter-spacing: .07em;
-        text-transform: uppercase;
-        color: #111827;
-    }
-
-    .dc-card-title .material-icons-round {
-        color: var(--dc-green);
-        font-size: 19px;
-    }
-
-    .dc-badge-acumulado {
-        background: var(--dc-green-soft);
-        color: #166534;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: .06em;
-        padding: 4px 10px;
-        border-radius: 5px;
-        text-transform: uppercase;
-    }
-
-    /* Grid principal */
-    .dc-grid-row {
-        display: grid;
-        gap: 24px;
-        margin-bottom: 24px;
-    }
-
-    .dc-grid-row-top {
-        grid-template-columns: 3fr 2fr;
-    }
-
-    .dc-grid-row-mid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .dc-grid-row-bot {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    /* KPIs promedio */
-    .dc-kpi-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .dc-kpi-box {
-        background: #f8fafc;
-        border: 1px solid var(--dc-border);
-        border-radius: 10px;
-        padding: 12px 16px;
-        text-align: center;
-    }
-
-    .dc-kpi-label {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: .07em;
-        text-transform: uppercase;
-        color: var(--dc-muted);
-        margin-bottom: 4px;
-    }
-
-    .dc-kpi-value {
-        font-size: 26px;
-        font-weight: 800;
-        color: #111827;
-        line-height: 1;
-    }
-
-    .dc-kpi-unit {
-        font-size: 11px;
-        color: var(--dc-muted);
-        font-weight: 500;
-        margin-top: 2px;
-    }
-
-    .dc-kpi-value-red {
-        color: var(--dc-red);
-    }
-
-    /* Modal galería */
-    .dc-modal-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.55);
-        z-index: 9000;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .dc-modal-overlay.dc-modal-open {
-        display: flex;
-    }
-
-    .dc-modal-box {
-        background: #fff;
-        border-radius: 18px;
-        width: 92%;
-        max-width: 1100px;
-        max-height: 88vh;
-        overflow-y: auto;
-        padding: 32px;
-        position: relative;
-        box-shadow: 0 20px 60px rgba(0,0,0,.18);
-    }
-
-    .dc-modal-close {
-        position: absolute;
-        top: 16px;
-        right: 18px;
-        background: #f3f4f6;
-        border: none;
-        border-radius: 50%;
-        width: 34px;
-        height: 34px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        color: #334155;
-        font-size: 20px;
-        transition: background 0.15s;
-    }
-
-    .dc-modal-close:hover {
-        background: #e5e7eb;
-    }
-
-    /* Sin datos */
-    .dc-empty {
-        font-size: 13px;
-        color: var(--dc-muted);
-        text-align: center;
-        padding: 20px 0;
-        display: none;
-    }
-
-    /* ── Responsive ─────────────────────────────────────────────────────────── */
-
-    /* Navbar: mejoras solo en esta pantalla */
-    .navbar .cabezalApp {
-        display: flex !important;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 4px 8px;
-    }
-
-    .navbar .cabezalApp .brand {
-        flex-shrink: 0;
-    }
-
-    .navbar .cabezalApp .nav {
-        flex-wrap: wrap;
-    }
-
-    .navbar .cabezalApp .nav.pull-right {
-        margin-left: auto;
-    }
-
-    /* Tablet grande – el menú se contrae un poco */
-    @@media (max-width: 1024px) {
-        .navbar .cabezalApp .nav > li > a,
-        .navbar .cabezalApp .nav > li > .dropdown-toggle {
-            padding-left: 8px;
-            padding-right: 8px;
-            font-size: 12px;
-        }
-    }
-
-    /* Tablet – menú en segunda fila */
-    @@media (max-width: 767px) {
-        .navbar .cabezalApp {
-            padding: 4px 8px;
-        }
-        .navbar .cabezalApp .brand {
-            margin-right: auto;
-        }
-        .navbar .cabezalApp .nav,
-        .navbar .cabezalApp .nav-pills {
-            width: 100%;
-            margin: 0;
-            padding: 2px 0;
-            border-top: 1px solid rgba(255,255,255,.15);
-        }
-        .navbar .cabezalApp .nav > li {
-            float: none;
-            display: inline-block;
-        }
-        .navbar .cabezalApp .nav > li > a,
-        .navbar .cabezalApp .nav > li > .dropdown-toggle {
-            padding: 6px 10px;
-            font-size: 12px;
-        }
-        .navbar .cabezalApp .navbar-text {
-            font-size: 11px;
-            line-height: 1.3;
-            margin: 4px 0;
-        }
-    }
-
-    /* Grillas de contenido */
-    @@media (max-width: 991px) {
-        .dc-grid-row-top {
-            grid-template-columns: 1fr;
-        }
-        .dc-grid-row-mid,
-        .dc-grid-row-bot {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* Filtros: 2 columnas en tablet */
-    @@media (min-width: 480px) and (max-width: 991px) {
-        .dc-filter-bar {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: end;
-            gap: 12px 16px;
-        }
-        .dc-filter-group {
-            width: 100%;
-        }
-        .dc-filter-group:last-child {
-            grid-column: 1 / -1;
-        }
-        .dc-filter-group .form-control,
-        .dc-filter-group select,
-        .dc-filter-group input[type="date"] {
-            width: 100% !important;
-        }
-        .dc-btn-filter {
-            width: 100%;
-            justify-content: center;
-        }
-    }
-
-    /* Filtros: 1 columna en móvil */
-    @@media (max-width: 479px) {
-        .dc-wrapper {
-            padding: 12px 10px 28px;
-        }
-        .dc-header {
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .dc-title {
-            font-size: 20px;
-        }
-        .dc-btn-galeria {
-            width: 100%;
-            justify-content: center;
-        }
-        .dc-filter-bar {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 10px;
-            padding: 14px 16px;
-        }
-        .dc-filter-group {
-            width: 100%;
-        }
-        .dc-filter-group .form-control,
-        .dc-filter-group select,
-        .dc-filter-group input[type="date"] {
-            width: 100% !important;
-            min-width: 0 !important;
-        }
-        .dc-btn-filter {
-            width: 100%;
-            justify-content: center;
-        }
-    }
-
-    @@media (max-width: 480px) {
-        .dc-kpi-row {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* ── Galería de capturas ────────────────────────────────────────── */
-    .galeria-grid-inner {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-    }
-
-    .galeria-card {
-        background: #f8fafc;
-        border: 1px solid var(--dc-border);
-        border-radius: 10px;
-        overflow: hidden;
-        cursor: pointer;
-        transition: box-shadow 0.15s, transform 0.15s;
-    }
-
-    .galeria-card:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,.14);
-        transform: translateY(-2px);
-    }
-
-    .galeria-card-img-wrap {
-        background: #e5e7eb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 160px;
-        overflow: hidden;
-    }
-
-    .galeria-card-img-wrap img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    .galeria-card-footer {
-        padding: 6px 10px;
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--dc-muted);
-        text-align: center;
-        background: #fff;
-        border-top: 1px solid var(--dc-border);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .galeria-pagination {
-        display: flex;
-        justify-content: center;
-        gap: 4px;
-        flex-wrap: wrap;
-        margin-top: 14px;
-    }
-
-    .galeria-pagination button {
-        min-width: 34px;
-        height: 34px;
-        padding: 0 8px;
-        border-radius: 8px;
-        border: 1px solid var(--dc-border);
-        background: #fff;
-        color: var(--dc-text);
-        font-family: 'Inter', sans-serif;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.15s, color 0.15s;
-    }
-
-    .galeria-pagination button:hover:not(:disabled):not(.active) {
-        background: #f1f5f9;
-    }
-
-    .galeria-pagination button.active {
-        background: var(--dc-green);
-        color: #fff;
-        border-color: var(--dc-green);
-    }
-
-    .galeria-pagination button:disabled {
-        opacity: 0.4;
-        cursor: default;
-    }
-
-    .galeria-lightbox {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.82);
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .galeria-lightbox.open {
-        display: flex;
-    }
-
-    .galeria-lightbox-inner {
-        position: relative;
-        max-width: 90vw;
-        max-height: 90vh;
-        text-align: center;
-    }
-
-    .galeria-lightbox-inner img {
-        max-width: 88vw;
-        max-height: 82vh;
-        border-radius: 8px;
-        box-shadow: 0 8px 40px rgba(0,0,0,.5);
-        display: block;
-        margin: 0 auto;
-    }
-
-    .galeria-lightbox-close {
-        position: absolute;
-        top: -14px;
-        right: -14px;
-        background: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 34px;
-        height: 34px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        color: #334155;
-        font-size: 20px;
-        box-shadow: 0 2px 8px rgba(0,0,0,.2);
-    }
-
-    .galeria-lightbox-caption {
-        color: #fff;
-        font-size: 12px;
-        font-weight: 600;
-        margin-top: 8px;
-        font-family: 'Inter', sans-serif;
-    }
-
-    @@media (max-width: 700px) {
-        .galeria-grid-inner {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @@media (max-width: 480px) {
-        .galeria-grid-inner {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
 
 <div class="dc-wrapper">
 
@@ -659,7 +68,7 @@
         </div>
     </div>
 
-    <!-- Fila 1: Camiones (grande) + Cámara (pequeño) -->
+    <!-- Fila 1: Camiones (sin acumulado) + Proveedor -->
     <div class="dc-grid-row dc-grid-row-top">
         <div class="dc-card">
             <div class="dc-card-header">
@@ -667,8 +76,11 @@
                     <span class="material-icons-round">local_shipping</span>
                     @Textos.DashboardCardless_CamionesPorDia
                 </h2>
-                <span class="dc-badge-acumulado">@Textos.DashboardCardless_Acumulado</span>
+                <button type="button" class="dc-btn-expand" data-chart-key="camiones" data-chart-title="@Textos.DashboardCardless_CamionesPorDia" title="Ampliar">
+                    <span class="material-icons-round">open_in_full</span>
+                </button>
             </div>
+            <p class="dc-card-subtitle">@Textos.DashboardCardless_SubtituloCamionesPorDia</p>
             <canvas id="chart-camiones-por-dia"></canvas>
             <div id="camiones-sin-datos" class="dc-empty">@Textos.DashboardCardless_SinDatos</div>
         </div>
@@ -676,51 +88,67 @@
         <div class="dc-card">
             <div class="dc-card-header">
                 <h2 class="dc-card-title">
-                    <span class="material-icons-round">videocam</span>
-                    @Textos.DashboardCardless_PatentePorCamara
+                    <span class="material-icons-round">speed</span>
+                    @Textos.DashboardCardless_ReconocimientoPorProveedor
                 </h2>
+                <button type="button" class="dc-btn-expand" data-chart-key="proveedor" data-chart-title="@Textos.DashboardCardless_ReconocimientoPorProveedor" title="Ampliar">
+                    <span class="material-icons-round">open_in_full</span>
+                </button>
             </div>
-            <canvas id="chart-patente-por-camara"></canvas>
-            <div id="camara-sin-datos" class="dc-empty">@Textos.DashboardCardless_SinDatos</div>
+            <p class="dc-card-subtitle">@Textos.DashboardCardless_SubtituloReconocimientoPorProveedor</p>
+            <canvas id="chart-reconocimiento-proveedor"></canvas>
+            <div id="proveedor-sin-datos" class="dc-empty">@Textos.DashboardCardless_SinDatos</div>
         </div>
     </div>
 
-    <!-- Fila 2: Reconocimiento + Vehículo -->
+    <!-- Fila 2: Torta cámaras + Reconocimiento patentes -->
     <div class="dc-grid-row dc-grid-row-mid">
+        <div class="dc-card">
+            <div class="dc-card-header">
+                <h2 class="dc-card-title">
+                    <span class="material-icons-round">videocam</span>
+                    @Textos.DashboardCardless_PatentePorCamara
+                </h2>
+                <button type="button" class="dc-btn-expand" data-chart-key="camara" data-chart-title="@Textos.DashboardCardless_PatentePorCamara" title="Ampliar">
+                    <span class="material-icons-round">open_in_full</span>
+                </button>
+            </div>
+            <p class="dc-card-subtitle">@Textos.DashboardCardless_SubtituloPatentePorCamara</p>
+            <canvas id="chart-patente-por-camara"></canvas>
+            <div id="camara-sin-datos" class="dc-empty">@Textos.DashboardCardless_SinDatos</div>
+        </div>
+
         <div class="dc-card">
             <div class="dc-card-header">
                 <h2 class="dc-card-title">
                     <span class="material-icons-round">grid_view</span>
                     @Textos.DashboardCardless_ReconocimientoPorDiaSemana
                 </h2>
+                <button type="button" class="dc-btn-expand" data-chart-key="diasemana" data-chart-title="@Textos.DashboardCardless_ReconocimientoPorDiaSemana" title="Ampliar">
+                    <span class="material-icons-round">open_in_full</span>
+                </button>
             </div>
+            <p class="dc-card-subtitle">@Textos.DashboardCardless_SubtituloReconocimientoPorDiaSemana</p>
             <canvas id="chart-reconocimiento-diasemana"></canvas>
             <div id="diasemana-sin-datos" class="dc-empty">@Textos.DashboardCardless_SinDatos</div>
         </div>
+    </div>
 
+    <!-- Fila 3: Vehículo + Promedio de intentos -->
+    <div class="dc-grid-row dc-grid-row-bot">
         <div class="dc-card">
             <div class="dc-card-header">
                 <h2 class="dc-card-title">
                     <span class="material-icons-round">directions_car</span>
                     @Textos.DashboardCardless_VehiculoPorDia
                 </h2>
+                <button type="button" class="dc-btn-expand" data-chart-key="vehiculo" data-chart-title="@Textos.DashboardCardless_VehiculoPorDia" title="Ampliar">
+                    <span class="material-icons-round">open_in_full</span>
+                </button>
             </div>
+            <p class="dc-card-subtitle">@Textos.DashboardCardless_SubtituloVehiculoPorDia</p>
             <canvas id="chart-vehiculo-por-dia"></canvas>
             <div id="vehiculo-sin-datos" class="dc-empty">@Textos.DashboardCardless_SinDatos</div>
-        </div>
-    </div>
-
-    <!-- Fila 3: Proveedor + Promedio -->
-    <div class="dc-grid-row dc-grid-row-bot">
-        <div class="dc-card">
-            <div class="dc-card-header">
-                <h2 class="dc-card-title">
-                    <span class="material-icons-round">speed</span>
-                    @Textos.DashboardCardless_ReconocimientoPorProveedor
-                </h2>
-            </div>
-            <canvas id="chart-reconocimiento-proveedor"></canvas>
-            <div id="proveedor-sin-datos" class="dc-empty">@Textos.DashboardCardless_SinDatos</div>
         </div>
 
         <div class="dc-card">
@@ -729,7 +157,11 @@
                     <span class="material-icons-round">autorenew</span>
                     @Textos.DashboardCardless_PromedioIntentos
                 </h2>
+                <button type="button" class="dc-btn-expand" data-chart-key="promedio" data-chart-title="@Textos.DashboardCardless_PromedioIntentos" title="Ampliar">
+                    <span class="material-icons-round">open_in_full</span>
+                </button>
             </div>
+            <p class="dc-card-subtitle">@Textos.DashboardCardless_SubtituloPromedioIntentos</p>
             <div class="dc-kpi-row" id="kpis-promedio">
                 <div class="dc-kpi-box">
                     <div class="dc-kpi-label">@Textos.DashboardCardless_PromedioGeneral</div>
@@ -747,7 +179,7 @@
         </div>
     </div>
 
-</div>
+    </div>
 
 <!-- Modal Galería de Capturas Fallidas -->
 <div class="dc-modal-overlay" id="modal-galeria">
@@ -761,6 +193,13 @@
         </h2>
 
         <div class="form-inline" style="margin-bottom:16px; display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+            <div class="dc-filter-group">
+                <span class="dc-filter-label">@Textos.DashboardCardless_PuestoDeTrabajo</span>
+                @Html.DropDownList("galeria-puesto",
+                    (SelectList)ViewBag.Puestos,
+                    Textos.DashboardCardless_FiltroTodos,
+                    new { @class = "form-control", id = "galeria-puesto", style = "min-width:180px" })
+            </div>
             <div class="dc-filter-group">
                 <span class="dc-filter-label">@Textos.DashboardCardless_GaleriaDesde</span>
                 <input type="date" class="form-control" id="galeria-fecha-desde" style="width:145px" />
@@ -800,6 +239,21 @@
     </div>
 </div>
 
+<!-- Modal Ampliar Gráfico -->
+<div class="dc-chart-expand-overlay" id="dc-chart-expand-overlay">
+    <div class="dc-chart-expand-box">
+        <div class="dc-chart-expand-header">
+            <h2 class="dc-chart-expand-title" id="dc-chart-expand-title-text"></h2>
+            <button class="dc-modal-close" id="btn-cerrar-expand" title="Cerrar">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+        <div class="dc-chart-expand-canvas-wrap">
+            <canvas id="chart-expand-canvas"></canvas>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="@Url.Script("~/Scripts/dashboardCardless.js")"></script>
 <script type="text/javascript">
     $(function () {
@@ -807,6 +261,7 @@
 
         // Modal galería
         $('#btn-abrir-galeria').on('click', function () {
+            $('#galeria-puesto').val($('#filtro-puesto').val());
             $('#modal-galeria').addClass('dc-modal-open');
         });
 

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Configuration;
-using Microsoft.AspNet.SignalR.Client;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Web.ServicioHub.Client;
 using Ninject.Extensions.Logging;
+using System;
 
 namespace Molinos.Scato.Web.ServicioHub
 {
@@ -12,15 +11,18 @@ namespace Molinos.Scato.Web.ServicioHub
     {
         private readonly ILogger log;
         private readonly IServicioComandos servicioComandos;
-        private readonly HubClientNotificar hubClientNotificar;
-        private readonly HubClientNotificar hubClientNotificarLectura;
+        private readonly IHubClient hubClientNotificar;
+        private readonly IHubClient hubClientNotificarLectura;
 
-        public ServicioNotificarUsuario(ILogger log, IServicioComandos servicioComandos, HubClientFactory hubClientFactory)
+        public ServicioNotificarUsuario(
+            ILogger log,
+            IServicioComandos servicioComandos,
+            HubClients hubClients)
         {
             this.log = log;
             this.servicioComandos = servicioComandos;
-            this.hubClientNotificar = hubClientFactory.GetClientNotificar("notificarUsuario");
-            this.hubClientNotificarLectura = hubClientFactory.GetClientNotificar("notificarLectura");
+            this.hubClientNotificar = hubClients.Notificar;
+            this.hubClientNotificarLectura = hubClients.Lectura;
         }
 
         public void Notificar(NotificacionDto notificacion)

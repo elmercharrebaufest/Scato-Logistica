@@ -8,6 +8,10 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.AfipCTGWebService;
 using Molinos.Scato.Servicios.AfipWebService;
+using Molinos.Scato.Servicios.Almacenamiento.Impl;
+using Molinos.Scato.Servicios.Almacenamiento.Interfaces;
+using Molinos.Scato.Servicios.ColasFIFO.Impl;
+using Molinos.Scato.Servicios.ColasFIFO.Interfaces;
 using Molinos.Scato.Servicios.ComplianceWebServiceV2;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Conversiones.Impl;
@@ -17,8 +21,8 @@ using Molinos.Scato.Servicios.Estrategias;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
 using Molinos.Scato.Servicios.Imp;
 using Molinos.Scato.Servicios.Impl;
-using Molinos.Scato.Servicios.Interfaces;
 using Molinos.Scato.Servicios.Impl.Hangfire;
+using Molinos.Scato.Servicios.Interfaces;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.Procesamiento;
 using Molinos.Scato.Servicios.ServicioImpresion;
@@ -65,14 +69,16 @@ namespace Molinos.Scato.Dependencias
             Bind<IRestClientFactory, RestClientFactory>().To<RestClientFactory>().InSingletonScope();
             Bind<IValidatorEntity<OrdenCargaFasDto>>().To<OrdenCargaFasValidator>();
             Bind<ICategorizadorVehiculo, CategorizadorVehiculo>().To<CategorizadorVehiculo>().InScope(ctx => OperationContext.Current);
+            Bind<IServicioSincronizacionBandaHorariaStopRechazados, ServicioSincronizacionBandaHorariaStopRechazados>().To<ServicioSincronizacionBandaHorariaStopRechazados>().InScope(ctx => OperationContext.Current);
+
+            Bind<IServicioHealthCheck, ServicioHealthCheck>().To<ServicioHealthCheck>().InScope(ctx => OperationContext.Current);
             Bind<IBackgroundJobClient>().To<BackgroundJobClient>().InSingletonScope();
             Bind<IServicioHangfireQueue, ServicioHangfireQueue>().To<ServicioHangfireQueue>().InScope(ctx => OperationContext.Current);
             Bind<IHangfireQueue, HangfireQueue>().To<HangfireQueue>().InScope(ctx => OperationContext.Current);
 
-            Bind<IServicioSincronizacionBandaHorariaStopRechazados, ServicioSincronizacionBandaHorariaStopRechazados>().To<ServicioSincronizacionBandaHorariaStopRechazados>().InScope(ctx => OperationContext.Current);
-
-            Bind<IServicioHealthCheck, ServicioHealthCheck>().To<ServicioHealthCheck>().InScope(ctx => OperationContext.Current);
             Bind<IMarcaDeTiempo, MarcaDeTiempo>().To<MarcaDeTiempo>().InScope(ctx => OperationContext.Current);
+            Bind<IColaIdentificacionVehicular>().To<SqlColaIdentificacionVehicular>().InScope(ctx => OperationContext.Current);
+            Bind<IAlmacenamientoFotos>().To<FileSystemAlmacenamientoFotos>().InScope(ctx => OperationContext.Current);
 
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<LoginCMS>("LoginCms");

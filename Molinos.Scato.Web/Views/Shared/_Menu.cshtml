@@ -33,6 +33,7 @@
         }
     });
     var grupos = "@Html.Raw(ViewBag.Grupos)";
+    var suscripcionPanelContigencia = "@Html.Raw(ViewBag.SuscripcionPanelContigencia)";
 </script>
 
 <link href="~/Styles/area/PanelMonitoreoServicioExterno/panelMonitoreoServicioExterno.css" rel="stylesheet" />
@@ -795,6 +796,10 @@
                                 @if (PermisosHelper.Is(PermisosScato.DashboardCardless))
                                 {
                                     <li>@Html.ActionLink(Textos.DashboardCardless_Titulo, "Index", "DashboardCardless")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PanelAvanceCamionPorPuesto))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelAvanceCamionPorPuesto_Titulo, "Index", "PanelAvanceCamionPorPuesto")</li>
                                 }
                                 @if (PermisosHelper.Is(PermisosScato.MonitorCPECacheada))
                                 {

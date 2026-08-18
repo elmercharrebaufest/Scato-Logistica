@@ -1,0 +1,1082 @@
+@using Molinos.Scato.Web.Helpers
+@using Resources = Molinos.Scato.Dominio.Recursos
+@{
+    ViewBag.Title = Resources.Textos.ResolucionContingencia_Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var logId          = (int)ViewBag.LogId;
+    var patenteLeida   = (string)ViewBag.PatenteLeida  ?? string.Empty;
+    var puestoNombre   = (string)ViewBag.PuestoNombre  ?? string.Empty;
+    var workflowNombre = (string)ViewBag.WorkflowNombre ?? string.Empty;
+    var transportista  = (string)ViewBag.Transportista ?? string.Empty;
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+
+<style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* ── Header ─────────────────────────────────────────── */
+    .rc-header {
+        background: linear-gradient(135deg, #1ea33b 0%, #078425 60%, #05601a 100%);
+        padding: 22px 51px 18px;
+        margin: -5px -5px 0;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    }
+
+    .rc-header-title {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+
+    .rc-header-title span {
+        font-weight: 400;
+    }
+
+    .rc-header-subtitle {
+        margin: 4px 0 0;
+        font-size: 13px;
+        font-weight: 500;
+        opacity: .85;
+    }
+
+    /* ── Action bar ──────────────────────────────────────── */
+    .rc-action-bar {
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 14px 51px;
+        margin: 0 -15px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        box-shadow: 0 1px 3px rgba(15,23,42,.06);
+    }
+
+    .rc-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .rc-field-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        color: #64748b;
+    }
+
+    .rc-patente-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #1d4ed8;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: .08em;
+        padding: 0 24px;
+        border-radius: 8px;
+        min-width: 220px;
+        height: 48px;
+    }
+
+    .rc-input-patente {
+        height: 48px !important;
+        margin: -5px !important;
+        border: 1.5px solid #d1d5db;
+        border-radius: 8px;
+        padding: 0 16px;
+        font-family: 'Inter', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+        min-width: 220px;
+        outline: none;
+        transition: border-color .15s;
+        text-transform: uppercase;
+    }
+
+    .rc-input-patente:focus { border-color: #078425; }
+
+    .rc-input-patente::placeholder {
+        color: #9ca3af;
+        font-weight: 400;
+        text-transform: none;
+    }
+
+    .rc-btn-salir {
+        height: 48px;
+        padding: 0 22px;
+        background: none;
+        border: 1.5px solid #078425;
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #078425;
+        cursor: pointer;
+        transition: background .15s, color .15s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .rc-btn-salir:hover {
+        background: #f0fdf4;
+        color: #056b1e;
+        text-decoration: none;
+    }
+
+    .rc-btn-avanzar {
+        height: 48px;
+        padding: 0 26px;
+        background: #078425;
+        border: none;
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background .15s;
+    }
+
+    .rc-btn-avanzar:hover { background: #056b1e; }
+    .rc-btn-avanzar:disabled { background: #9ca3af; cursor: not-allowed; }
+
+    /* intercomunicador */
+    .rc-intercom-group {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .rc-intercom-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        color: #64748b;
+    }
+
+    .rc-toggle-wrap {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .rc-toggle {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 24px;
+    }
+
+    .rc-toggle input { opacity: 0; width: 0; height: 0; }
+
+    .rc-toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background: #ccc;
+        border-radius: 24px;
+        transition: .3s;
+    }
+
+    .rc-toggle-slider::before {
+        content: '';
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        left: 3px;
+        bottom: 3px;
+        background: #fff;
+        border-radius: 50%;
+        transition: .3s;
+    }
+
+    .rc-toggle input:checked + .rc-toggle-slider { background: #078425; }
+    .rc-toggle input:checked + .rc-toggle-slider::before { transform: translateX(22px); }
+
+    .rc-intercom-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #e5e7eb;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+    .rc-intercom-icon:hover { background: #d1d5db; }
+    .rc-intercom-icon .material-icons-round { font-size: 18px; color: #374151; }
+
+    /* ── Content grid ─────────────────────────────────────── */
+    .rc-content {
+        padding: 28px 0 48px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: stretch;
+    }
+
+    .rc-panel-full {
+        grid-column: 1 / -1;
+    }
+
+    .rc-panel {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(15,23,42,.06);
+    }
+
+    .rc-panel-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        color: #64748b;
+    }
+
+    .rc-panel-body {
+        padding: 12px 16px;
+    }
+
+    /* patentes list */
+    .rc-patente-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .rc-patente-list li a {
+        color: #1d4ed8;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-decoration: none;
+        display: block;
+        padding: 6px 4px;
+        border-radius: 6px;
+        transition: background .12s;
+    }
+
+    .rc-patente-list li a:hover {
+        background: #eff6ff;
+        text-decoration: none;
+    }
+
+    .rc-patente-list.rc-empty {
+        padding: 12px 4px;
+        color: #9ca3af;
+        font-size: 13px;
+        font-style: italic;
+    }
+
+    /* image panel */
+    .rc-image-placeholder {
+        min-height: 300px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: #9ca3af;
+        background: #fafafa;
+    }
+
+    .rc-image-placeholder .material-icons-round {
+        font-size: 48px;
+        opacity: .4;
+    }
+
+    .rc-image-placeholder span.rc-ph-text {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    /* zoom viewer */
+    .rc-zoom-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-bottom: 1px solid #f3f4f6;
+        background: #f8fafc;
+    }
+
+    .rc-zoom-btn {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+        color: #374151;
+        line-height: 1;
+        transition: background .12s;
+        padding: 0;
+        flex-shrink: 0;
+    }
+
+    .rc-zoom-btn:hover { background: #f3f4f6; }
+    .rc-zoom-btn .material-icons-round { font-size: 16px; }
+
+    .rc-zoom-level {
+        font-size: 11px;
+        font-weight: 700;
+        color: #6b7280;
+        min-width: 38px;
+        text-align: center;
+    }
+
+    .rc-thumb-strip {
+        display: flex;
+        gap: 6px;
+        padding: 6px 10px;
+        border-bottom: 1px solid #f3f4f6;
+        background: #f8fafc;
+        overflow-x: auto;
+        flex-shrink: 0;
+    }
+
+    .rc-thumb {
+        width: 52px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        opacity: .7;
+        transition: opacity .15s, border-color .15s;
+        flex-shrink: 0;
+    }
+
+    .rc-thumb:hover  { opacity: 1; }
+    .rc-thumb.active { border-color: #078425; opacity: 1; }
+
+    .rc-zoom-viewport {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
+        background: #f0f0f0;
+        cursor: grab;
+        min-height: 240px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .rc-zoom-viewport.grabbing { cursor: grabbing; }
+
+    .rc-zoom-img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+        transform-origin: 0 0;
+        will-change: transform;
+        user-select: none;
+        -webkit-user-drag: none;
+        pointer-events: none;
+    }
+
+    .rc-zoom-hint {
+        position: absolute;
+        bottom: 8px;
+        right: 10px;
+        font-size: 10px;
+        color: #9ca3af;
+        background: rgba(255,255,255,.7);
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    /* streaming */
+    .rc-streaming-panel {
+        background: #1e2937;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rc-streaming-panel .rc-panel-header {
+        background: #1e2937;
+        border-color: #2d3f52;
+        color: #94a3b8;
+    }
+
+    .rc-live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(16,185,129,.2);
+        color: #34d399;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .08em;
+        padding: 3px 9px;
+        border-radius: 20px;
+        margin-bottom: 0;
+    }
+
+    .rc-live-badge::before {
+        content: '';
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        background: #34d399;
+        border-radius: 50%;
+        animation: rc-pulse 1.2s infinite;
+    }
+
+    @@keyframes rc-pulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: .35; }
+    }
+
+    .rc-streaming-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 16px;
+        gap: 14px;
+        min-height: 0;
+    }
+
+    .rc-play-btn {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.12);
+        border: 2px solid rgba(255,255,255,.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+    .rc-play-btn:hover { background: rgba(255,255,255,.22); }
+    .rc-play-btn .material-icons-round { color: #fff; font-size: 30px; }
+
+    .rc-camara-text {
+        color: #cbd5e1;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* grid de cámaras en vivo */
+    .rc-camaras-grid {
+        flex: 1;
+        display: grid;
+        gap: 4px;
+        padding: 8px;
+        width: 100%;
+        min-height: 260px;
+    }
+
+    .rc-camara-slot {
+        position: relative;
+        background: #000;
+        border-radius: 6px;
+        overflow: hidden;
+        min-height: 120px;
+    }
+
+    .rc-camara-slot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .rc-camara-label {
+        position: absolute;
+        top: 5px;
+        left: 6px;
+        background: rgba(0,0,0,.55);
+        color: #e2e8f0;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        letter-spacing: .05em;
+    }
+
+    .rc-camara-error {
+        color: #64748b;
+        font-size: 12px;
+        font-style: italic;
+        text-align: center;
+        padding: 16px;
+    }
+
+    /* expand button on camera slot */
+    .rc-camara-expand-btn {
+        position: absolute;
+        top: 5px;
+        right: 6px;
+        width: 26px;
+        height: 26px;
+        border: none;
+        border-radius: 5px;
+        background: rgba(0,0,0,.55);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: background .15s;
+        z-index: 2;
+    }
+
+    .rc-camara-expand-btn:hover { background: rgba(0,0,0,.8); }
+    .rc-camara-expand-btn .material-icons-round { font-size: 16px; color: #e2e8f0; }
+
+    /* camera fullscreen modal */
+    .rc-camara-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.85);
+        z-index: 9000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .rc-camara-modal-overlay.open { display: flex; }
+
+    .rc-camara-modal-box {
+        position: relative;
+        max-width: 90vw;
+        max-height: 90vh;
+        background: #1e2937;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rc-camara-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 14px;
+        background: #253447;
+        flex-shrink: 0;
+    }
+
+    .rc-camara-modal-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #94a3b8;
+        letter-spacing: .06em;
+    }
+
+    .rc-camara-modal-close {
+        width: 28px;
+        height: 28px;
+        border: none;
+        border-radius: 6px;
+        background: rgba(255,255,255,.1);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: background .15s;
+    }
+
+    .rc-camara-modal-close:hover { background: rgba(255,255,255,.2); }
+    .rc-camara-modal-close .material-icons-round { font-size: 18px; color: #e2e8f0; }
+
+    .rc-camara-modal-img {
+        display: block;
+        max-width: 90vw;
+        max-height: calc(90vh - 44px);
+        object-fit: contain;
+    }
+
+    /* alert */
+    .rc-alert {
+        padding: 12px 16px;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 8px 0 0;
+    }
+
+    .rc-alert-success { background: #dcfce7; color: #166534; }
+    .rc-alert-error   { background: #fee2e2; color: #991b1b; }
+    .rc-alert .material-icons-round { font-size: 18px; }
+</style>
+
+<!-- Header -->
+<div class="rc-header">
+    <h1 class="rc-header-title">
+        @Resources.Textos.ResolucionContingencia_HeaderPantalla <span><strong>@Resources.Textos.ResolucionContingencia_Titulo</strong></span>
+    </h1>
+    <p class="rc-header-subtitle">@Resources.Textos.ResolucionContingencia_Subtitulo</p>
+</div>
+
+<!-- Alert zone -->
+<div id="rc-alert" style="display:none;margin-top:10px;"></div>
+
+<!-- Action bar -->
+<div class="rc-action-bar">
+    <div class="rc-field-group">
+        <span class="rc-field-label">@Resources.Textos.ResolucionContingencia_PatenteLeida</span>
+        <div class="rc-patente-badge">@patenteLeida</div>
+    </div>
+
+    <div class="rc-field-group">
+        <span class="rc-field-label">@Resources.Textos.ResolucionContingencia_PatenteReal</span>
+        <input type="text"
+               id="rc-patente-real"
+               class="rc-input-patente"
+               placeholder="@Resources.Textos.ResolucionContingencia_IngresarPatente"
+               value="@patenteLeida"
+               maxlength="10" />
+    </div>
+
+    <div class="rc-field-group">
+        <span class="rc-field-label">&nbsp;</span>
+        <button type="button" id="rc-btn-avanzar" class="rc-btn-avanzar"
+                data-log-id="@logId"
+                data-avanzar-url="@Url.Action("AvanzarManual", "PanelAvanceCamionPorPuesto")">
+            <span class="material-icons-round" style="font-size:18px;">arrow_forward</span>
+            @Resources.Textos.ResolucionContingencia_Avanzar
+        </button>
+    </div>
+
+    <div class="rc-field-group">
+        <span class="rc-field-label">&nbsp;</span>
+        <button type="button" id="rc-btn-salir" class="rc-btn-salir"
+                data-log-id="@logId"
+                data-liberar-url="@Url.Action("LiberarContingencia", "PanelAvanceCamionPorPuesto")"
+                data-index-url="@Url.Action("Index", "PanelAvanceCamionPorPuesto")">
+            @Resources.Textos.ResolucionContingencia_Salir
+        </button>
+    </div>
+
+    <!-- Intercomunicador -->
+    <div class="rc-intercom-group" style="display:none;">
+        <span class="rc-intercom-label">@Resources.Textos.ResolucionContingencia_Intercomunicador</span>
+        <div class="rc-toggle-wrap">
+            <label class="rc-toggle">
+                <input type="checkbox" id="rc-intercom-toggle" />
+                <span class="rc-toggle-slider"></span>
+            </label>
+            <div class="rc-intercom-icon" title="@Resources.Textos.ResolucionContingencia_Intercomunicador">
+                <span class="material-icons-round">headset_mic</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="rc-content">
+
+    <!-- Imagen tomada (con zoom) -->
+    <div class="rc-panel" id="rc-imagen-panel">
+        <div class="rc-panel-header">@Resources.Textos.ResolucionContingencia_ImagenZoom</div>
+
+        <!-- zoom toolbar (hidden until image loads) -->
+        <div class="rc-zoom-toolbar" id="rc-zoom-toolbar" style="display:none;">
+            <button type="button" class="rc-zoom-btn" id="rc-zoom-in"  title="@Resources.Textos.ResolucionContingencia_AcercarTitle">
+                <span class="material-icons-round">add</span>
+            </button>
+            <button type="button" class="rc-zoom-btn" id="rc-zoom-out" title="@Resources.Textos.ResolucionContingencia_AlejarTitle">
+                <span class="material-icons-round">remove</span>
+            </button>
+            <button type="button" class="rc-zoom-btn" id="rc-zoom-reset" title="@Resources.Textos.ResolucionContingencia_TamanioOriginalTitle">
+                <span class="material-icons-round">fit_screen</span>
+            </button>
+            <span class="rc-zoom-level" id="rc-zoom-level">100%</span>
+        </div>
+
+        <!-- thumbnail strip (hidden until >1 image) -->
+        <div class="rc-thumb-strip" id="rc-thumb-strip" style="display:none;"></div>
+
+        <!-- placeholder shown before load -->
+        <div class="rc-image-placeholder" id="rc-imagen-container">
+            <span class="material-icons-round">photo_camera</span>
+            <span class="rc-ph-text">@Resources.Textos.ResolucionContingencia_SinImagen</span>
+        </div>
+
+        <!-- zoom viewport (hidden until image loads) -->
+        <div class="rc-zoom-viewport" id="rc-zoom-viewport" style="display:none;">
+            <img id="rc-zoom-img" class="rc-zoom-img" src="" alt="@Resources.Textos.ResolucionContingencia_FotoCapturadaAlt" />
+            <span class="rc-zoom-hint">@Resources.Textos.ResolucionContingencia_ZoomHint</span>
+        </div>
+    </div>
+
+    <!-- Streaming -->
+    <div class="rc-panel rc-streaming-panel">
+        <div class="rc-panel-header" style="display:flex;align-items:center;gap:10px;">
+            <span class="rc-live-badge">@Resources.Textos.ResolucionContingencia_EnVivo</span>
+        </div>
+        <div id="rc-camaras-container" class="rc-streaming-body">
+            <span class="material-icons-round" style="color:#475569;font-size:36px;">videocam_off</span>
+            <span class="rc-camara-text">@Resources.Textos.ResolucionContingencia_CamaraPuesto</span>
+        </div>
+    </div>
+
+    <!-- Patentes de la etapa anterior (fila completa debajo) -->
+    <div class="rc-panel rc-panel-full" style="display:none;">
+        <div class="rc-panel-header">@Resources.Textos.ResolucionContingencia_PatentesEtapaAnterior</div>
+        <div class="rc-panel-body">
+            <ul class="rc-patente-list rc-empty">
+                <li>@Resources.Textos.ResolucionContingencia_SinPatentesAnteriores</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal fullscreen cámara -->
+<div class="rc-camara-modal-overlay" id="rc-camara-modal">
+    <div class="rc-camara-modal-box">
+        <div class="rc-camara-modal-header">
+            <span class="rc-camara-modal-label" id="rc-camara-modal-label"></span>
+            <button type="button" class="rc-camara-modal-close" id="rc-camara-modal-close" title="@Resources.Textos.ResolucionContingencia_Cerrar">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+        <img class="rc-camara-modal-img" id="rc-camara-modal-img" src="" alt="" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function ($) {
+        'use strict';
+
+        var $alert      = $('#rc-alert');
+        var $btnAvanzar = $('#rc-btn-avanzar');
+        var $btnSalir   = $('#rc-btn-salir');
+
+        var msgErrorDatosLog  = '@Resources.Textos.ResolucionContingencia_ErrorDatosLog';
+        var msgAvanzando      = '@Resources.Textos.ResolucionContingencia_Avanzando';
+        var msgCamionAvanzado = '@Resources.Textos.ResolucionContingencia_CamionAvanzado';
+        var msgErrorAvanzar   = '@Resources.Textos.ResolucionContingencia_ErrorAvanzar';
+        var msgErrorComun     = '@Resources.Textos.ResolucionContingencia_ErrorComunicacion';
+        var msgErrorPatenteRequerida = '@Resources.Textos.ResolucionContingencia_ErrorPatenteRequerida';
+        var lblAvanzar        = '@Resources.Textos.ResolucionContingencia_Avanzar';
+        var lblCamaraPrefix   = '@Resources.Textos.ResolucionContingencia_CamaraPrefix';
+
+        // Clic en patente anterior → rellena el input
+        $(document).on('click', '.rc-patente-prev', function (e) {
+            e.preventDefault();
+            var p = $(this).data('patente');
+            $('#rc-patente-real').val(p);
+        });
+
+        // Salir: libera el registro (Atendido→0) antes de redirigir
+        $btnSalir.on('click', function () {
+            var $btn      = $(this);
+            var logId     = $btn.data('logId');
+            var liberarUrl = $btn.data('liberarUrl');
+            var indexUrl  = $btn.data('indexUrl');
+
+            if (!logId || !liberarUrl) {
+                window.location.href = indexUrl;
+                return;
+            }
+
+            $btn.prop('disabled', true);
+
+            $.ajax({
+                url:  liberarUrl,
+                type: 'POST',
+                data: { logId: logId },
+                complete: function () {
+                    window.location.href = indexUrl;
+                }
+            });
+        });
+
+        // Avanzar
+        $btnAvanzar.on('click', function () {
+            var $btn          = $(this);
+            var logId         = $btn.data('logId');
+            var avanzarUrl    = $btn.data('avanzarUrl');
+            var patenteReal   = $.trim($('#rc-patente-real').val());
+
+            if (!logId) {
+                mostrarAlerta('error', msgErrorDatosLog);
+                return;
+            }
+
+            if (!patenteReal) {
+                mostrarAlerta('error', msgErrorPatenteRequerida);
+                $('#rc-patente-real').focus();
+                return;
+            }
+
+            $btn.prop('disabled', true).html(
+                '<span class="material-icons-round" style="font-size:18px;animation:spin 1s linear infinite;">autorenew</span> ' + msgAvanzando
+            );
+
+            $.ajax({
+                url: avanzarUrl,
+                type: 'POST',
+                data: {
+                    logId:            logId,
+                    patenteIngresada: patenteReal,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (resp) {
+                    if (resp && resp.ok) {
+                        mostrarAlerta('success', resp.mensaje || msgCamionAvanzado);
+                    } else {
+                        mostrarAlerta('error', (resp && resp.mensaje) ? resp.mensaje : msgErrorAvanzar);
+                    }
+                    setTimeout(function () {
+                        window.location.href = '@Url.Action("Index", "PanelAvanceCamionPorPuesto")';
+                    }, 5000);
+                },
+                error: function () {
+                    mostrarAlerta('error', msgErrorComun);
+                    setTimeout(function () {
+                        window.location.href = '@Url.Action("Index", "PanelAvanceCamionPorPuesto")';
+                    }, 5000);
+                }
+            });
+        });
+
+        function mostrarAlerta(tipo, mensaje) {
+            var icon = tipo === 'success' ? 'check_circle' : 'error';
+            $alert
+                .removeClass('rc-alert-success rc-alert-error')
+                .addClass('rc-alert rc-alert-' + tipo)
+                .html('<span class="material-icons-round">' + icon + '</span> ' + mensaje)
+                .show();
+
+            if (tipo !== 'success') {
+                setTimeout(function () {
+                    $alert.fadeOut(400, function () { $alert.removeClass('rc-alert'); });
+                }, 5000);
+            }
+        }
+
+        // ── Cámaras en vivo ────────────────────────────────────────
+        var camarasUrl = '@Url.Action("ObtenerCamaras", "PanelAvanceCamionPorPuesto")';
+
+        function cargarCamaras() {
+            $.getJSON(camarasUrl, { logId: @logId }, function (camaras) {
+                var $container = $('#rc-camaras-container');
+                if (!camaras || camaras.length === 0) {
+                    return; // deja el placeholder original
+                }
+
+                var cols = camaras.length === 1 ? 1 : 2;
+                var rows = Math.ceil(camaras.length / cols);
+
+                $container
+                    .removeClass('rc-streaming-body')
+                    .addClass('rc-camaras-grid')
+                    .css('grid-template-columns', 'repeat(' + cols + ', 1fr)')
+                    .css('grid-template-rows', 'repeat(' + rows + ', 1fr)')
+                    .empty();
+
+                $.each(camaras, function (_, cam) {
+                    var $slot = $('<div class="rc-camara-slot">');
+                    $('<img>')
+                        .attr('src', cam.Directorio)
+                        .attr('alt', cam.Codigo)
+                        .appendTo($slot);
+                    $('<div class="rc-camara-label">').text(cam.Codigo).appendTo($slot);
+                    var $expandBtn = $('<button type="button" class="rc-camara-expand-btn">')
+                        .attr('title', '@Resources.Textos.ResolucionContingencia_AmpliaCamara')
+                        .html('<span class="material-icons-round">open_in_full</span>')
+                        .on('click', (function (src, codigo) {
+                            return function (e) {
+                                e.stopPropagation();
+                                $('#rc-camara-modal-img').attr('src', src);
+                                $('#rc-camara-modal-label').text(codigo);
+                                $('#rc-camara-modal').addClass('open');
+                            };
+                        })(cam.Directorio, cam.Codigo));
+                    $slot.append($expandBtn);
+                    $container.append($slot);
+                });
+            });
+        }
+
+        cargarCamaras();
+
+        // ── Modal fullscreen cámara ─────────────────────────────────
+        $('#rc-camara-modal-close').on('click', function () {
+            $('#rc-camara-modal').removeClass('open');
+            $('#rc-camara-modal-img').attr('src', '');
+        });
+        $('#rc-camara-modal').on('click', function (e) {
+            if ($(e.target).is('#rc-camara-modal')) {
+                $(this).removeClass('open');
+                $('#rc-camara-modal-img').attr('src', '');
+            }
+        });
+
+        // ── Imágenes con zoom ───────────────────────────────────────
+        var imagenesUrl = '@Url.Action("ObtenerImagenes", "PanelAvanceCamionPorPuesto")';
+
+        var $viewport  = $('#rc-zoom-viewport');
+        var $img       = $('#rc-zoom-img');
+        var $toolbar   = $('#rc-zoom-toolbar');
+        var $thumbStrip = $('#rc-thumb-strip');
+        var $placeholder = $('#rc-imagen-container');
+        var $zoomLevel = $('#rc-zoom-level');
+
+        var scale  = 1;
+        var minScale = 0.25;
+        var maxScale = 8;
+        var panX = 0, panY = 0;
+        var isDragging = false, dragStartX, dragStartY, panStartX, panStartY;
+
+        function applyTransform() {
+            $img.css('transform', 'translate(' + panX + 'px,' + panY + 'px) scale(' + scale + ')');
+            $zoomLevel.text(Math.round(scale * 100) + '%');
+        }
+
+        function clampPan() {
+            var vw = $viewport.width(),  vh = $viewport.height();
+            var iw = $img[0].naturalWidth  * scale;
+            var ih = $img[0].naturalHeight * scale;
+            var maxX =  Math.max(0, (iw - vw) / 2);
+            var maxY =  Math.max(0, (ih - vh) / 2);
+            panX = Math.min(maxX, Math.max(-maxX, panX));
+            panY = Math.min(maxY, Math.max(-maxY, panY));
+        }
+
+        function resetZoom() {
+            scale = 1; panX = 0; panY = 0;
+            applyTransform();
+        }
+
+        // Mouse wheel zoom
+        $viewport.on('wheel', function (e) {
+            e.preventDefault();
+            var delta = e.originalEvent.deltaY < 0 ? 1.15 : (1 / 1.15);
+            var newScale = Math.min(maxScale, Math.max(minScale, scale * delta));
+
+            // zoom toward cursor
+            var rect = $viewport[0].getBoundingClientRect();
+            var cx = e.originalEvent.clientX - rect.left - $viewport.width()  / 2;
+            var cy = e.originalEvent.clientY - rect.top  - $viewport.height() / 2;
+            panX = cx - (cx - panX) * (newScale / scale);
+            panY = cy - (cy - panY) * (newScale / scale);
+            scale = newScale;
+            clampPan();
+            applyTransform();
+        });
+
+        // Drag to pan
+        $viewport.on('mousedown', function (e) {
+            if (e.button !== 0) return;
+            isDragging = true;
+            dragStartX = e.clientX; dragStartY = e.clientY;
+            panStartX  = panX;      panStartY  = panY;
+            $viewport.addClass('grabbing');
+        });
+        $(document).on('mousemove.rcZoom', function (e) {
+            if (!isDragging) return;
+            panX = panStartX + (e.clientX - dragStartX);
+            panY = panStartY + (e.clientY - dragStartY);
+            clampPan();
+            applyTransform();
+        }).on('mouseup.rcZoom mouseleave.rcZoom', function () {
+            if (isDragging) { isDragging = false; $viewport.removeClass('grabbing'); }
+        });
+
+        // Touch pinch-to-zoom
+        var lastDist = null;
+        $viewport.on('touchstart', function (e) {
+            if (e.originalEvent.touches.length === 2) {
+                var t = e.originalEvent.touches;
+                lastDist = Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+            }
+        }).on('touchmove', function (e) {
+            if (e.originalEvent.touches.length === 2 && lastDist) {
+                e.preventDefault();
+                var t = e.originalEvent.touches;
+                var dist = Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+                scale = Math.min(maxScale, Math.max(minScale, scale * (dist / lastDist)));
+                lastDist = dist;
+                clampPan();
+                applyTransform();
+            }
+        }).on('touchend', function () { lastDist = null; });
+
+        // Toolbar buttons
+        $('#rc-zoom-in').on('click',    function () { scale = Math.min(maxScale, scale * 1.3); clampPan(); applyTransform(); });
+        $('#rc-zoom-out').on('click',   function () { scale = Math.max(minScale, scale / 1.3); clampPan(); applyTransform(); });
+        $('#rc-zoom-reset').on('click', resetZoom);
+
+        function mostrarImagen(url) {
+            $img.attr('src', url);
+            $placeholder.hide();
+            $toolbar.show();
+            $viewport.show();
+            resetZoom();
+        }
+
+        function cargarImagenes() {
+            $.getJSON(imagenesUrl, { logId: @logId }, function (imagenes) {
+                if (!imagenes || imagenes.length === 0) return;
+
+                // show first image
+                mostrarImagen(imagenes[0].Url);
+
+                // thumbnail strip when more than one image
+                if (imagenes.length > 1) {
+                    $thumbStrip.empty().show();
+                    $.each(imagenes, function (idx, img) {
+                        $('<img class="rc-thumb" />')
+                            .attr('src', img.Url)
+                            .attr('title', img.Codigo || (lblCamaraPrefix + (idx + 1)))
+                            .toggleClass('active', idx === 0)
+                            .on('click', function () {
+                                $('.rc-thumb').removeClass('active');
+                                $(this).addClass('active');
+                                mostrarImagen(img.Url);
+                            })
+                            .appendTo($thumbStrip);
+                    });
+                }
+            });
+        }
+
+        cargarImagenes();
+
+    }(jQuery));
+</script>

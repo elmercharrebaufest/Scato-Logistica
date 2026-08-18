@@ -133,7 +133,7 @@ namespace Molinos.Scato.Web.Controllers
 
         private void ValidarTarjeta(ValoresPagarConMercadoPagoDto valoresDeEntrada, ResultadoPagarMercadoPago resultadoPago)
         {
-            var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { valoresDeEntrada.NumeroDeTarjeta });
+            var recorrido = servicio.ObtenerDatosRecorridoActivo(null, valoresDeEntrada.NumeroDeTarjeta);
             if (recorrido == null)
             {
                 var mensaje = "Error al obtener el vehículo por tarjeta: " + valoresDeEntrada.NumeroDeTarjeta;
@@ -154,7 +154,7 @@ namespace Molinos.Scato.Web.Controllers
 
         private PagoConMercadoPagoDto ValidarPago(ValoresPagarConMercadoPagoDto valoresDeEntrada, ResultadoPagarMercadoPago resultadoPago)
         {
-            var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { valoresDeEntrada.NumeroDeTarjeta });
+            var recorrido = servicio.ObtenerDatosRecorridoActivo(null, valoresDeEntrada.NumeroDeTarjeta);
             var pago = servicio.ObtenerPagoConMercadoPagoPorRecorridoId(recorrido.Id);
             if (pago == null)
             {

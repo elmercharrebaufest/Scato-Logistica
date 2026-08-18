@@ -46,7 +46,7 @@ namespace Molinos.Scato.Test.Servicios
 
             conversor = FactoryConversor.ConversorAutoMapper;
             config.Setup(s => s.AppSettings).Returns(new NameValueCollection { { "TiempoDeDemoraExportaciones", "60" } });
-            target = new ServicioRepositorio(repositorioMock.Object, conversor, new NullLogger(), firmaMock.Object, calculadora.Object, config.Object, orquestador.Object, administrador);
+            target = new ServicioRepositorio(repositorioMock.Object, conversor, new NullLogger(), firmaMock.Object, calculadora.Object, config.Object, orquestador.Object, administrador, null);
         }
 
         [Test]
@@ -1158,7 +1158,7 @@ namespace Molinos.Scato.Test.Servicios
                                Id = 1,
                                LaboratorioRazonSocial = "Lab"
                            });
-            target = new ServicioRepositorio(repositorioMock.Object, conversor, new NullLogger(), firmaMock.Object, calculadora.Object, null, orquestador.Object, administrador);
+            target = new ServicioRepositorio(repositorioMock.Object, conversor, new NullLogger(), firmaMock.Object, calculadora.Object, null, orquestador.Object, administrador, null);
             var result = target.ObtenerCartaDePorteRegistradaServicioMonsanto(guid, TipoVehiculo.Camión);
 
             Assert.NotNull(result);
@@ -1191,7 +1191,7 @@ namespace Molinos.Scato.Test.Servicios
                                It.IsAny<Expression<Func<CartaDePorteRegistradaServicioMonsanto, int>>>()))
                            .Returns(new CartaDePorteRegistradaServicioMonsanto());
 
-            target = new ServicioRepositorio(repositorioMock.Object, convert.Object, new NullLogger(), firmaMock.Object, null, null, null, administrador);
+            target = new ServicioRepositorio(repositorioMock.Object, convert.Object, new NullLogger(), firmaMock.Object, null, null, null, administrador, null);
             var result = target.ObtenerCartaDePorteRegistradaServicioMonsanto(guid, TipoVehiculo.Tren);
 
             Assert.NotNull(result);
@@ -1242,7 +1242,7 @@ namespace Molinos.Scato.Test.Servicios
                    .Returns(new HumedimetroDto { CentroId = 1, Codigo = "H" });
             repositorioMock.Setup(s => s.Obtener<Humedimetro>(It.IsAny<Expression<Func<Humedimetro, bool>>>()))
                            .Returns(new Humedimetro { Centro = new Centro { Id = 1 } , Codigo = "H" });
-            target = new ServicioRepositorio(repositorioMock.Object, conversor, new NullLogger(), firmaMock.Object, calculadora.Object, null, null, administrador);
+            target = new ServicioRepositorio(repositorioMock.Object, conversor, new NullLogger(), firmaMock.Object, calculadora.Object, null, null, administrador, null);
             var result = target.ObtenerHumedimetroPorNombrePc(1, "P");
             Assert.NotNull(result);
             Assert.AreEqual(result.CentroId, 1);
@@ -2701,7 +2701,7 @@ namespace Molinos.Scato.Test.Servicios
                                NumeroDocumentoIngreso = "1234"
                            });
 
-            var result = target.ObtenerDatosRecorridoActivo("aaa111", new List<string> { "1" });
+            var result = target.ObtenerDatosRecorridoActivo("aaa111", "1");
 
             Assert.NotNull(result);
             Assert.AreEqual(result.Patente, "AAA111");

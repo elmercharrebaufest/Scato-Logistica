@@ -1,5 +1,7 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using System.Linq;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
@@ -28,7 +30,30 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(CrearNotificacion comando, Resultado resultado)
         {
+        }
 
+        protected override void Finally(CrearNotificacion comando, int id)
+        {
+            if (comando.Dto.TipoAlerta != TipoAlerta.Automatica
+                || !comando.Dto.PuestoId.HasValue
+                || !comando.Dto.Leido)
+                return;
+
+            var puestoId = comando.Dto.PuestoId.Value;
+            var previas = Repositorio.Listar<Notificacion>(
+                x => x.PuestoId == puestoId
+                  && x.TipoAlerta == TipoAlerta.Automatica
+                  && !x.Leido
+                  && x.Id != id);
+
+            if (!previas.Any())
+                return;
+
+            foreach (var notificacion in previas)
+            {
+                notificacion.Leido = true;
+            }
+            Repositorio.GuardarCambios();
         }
     }
 }

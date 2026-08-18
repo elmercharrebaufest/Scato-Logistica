@@ -175,9 +175,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Almacenamiento\Impl\FileSystemAlmacenamientoFotos.cs" />
+    <Compile Include="Almacenamiento\Interfaces\IAlmacenamientoFotos.cs" />
     <Compile Include="Behavior\AiErrorHandlerBehaviorAttribute.cs" />
     <Compile Include="Behavior\BehaviorMonsanto.cs" />
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
+    <Compile Include="ColasFIFO\Interfaces\IColaIdentificacionVehicular.cs" />
+    <Compile Include="ColasFIFO\Impl\SqlColaIdentificacionVehicular.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AsignacionAutomatismoGranoEnRecorridoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AsignacionNoGranoEnRecorridoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoTipoLlamadoMappingProfile.cs" />
@@ -618,9 +622,16 @@
     <Compile Include="Procesamiento\ProcesadoLimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLogAvanceManualCamionResolucion.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLogIdentificacionVehicularResultado.cs" />
-    <Compile Include="Procesamiento\ProcesadorAvanzarWorkflowPorIdentificacionVehicular.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogAvanceManualCamion.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogIdentificacionVehicular.cs" />
+    <Compile Include="Procesamiento\ProcesadorDesencolarIdentificacionVehicular.cs" />
+    <Compile Include="Procesamiento\ProcesadorEncolarIdentificacionVehicular.cs" />
+    <Compile Include="Procesamiento\ProcesadorGuardarFotoIdentificacionVehicular.cs" />
+    <Compile Include="Procesamiento\ProcesadorLiberarLogAvanceManualCamion.cs" />
+    <Compile Include="Procesamiento\ProcesadorLiberarLogAvanceManualCamionConMotivo.cs" />
+    <Compile Include="Procesamiento\ProcesadorMarcarLogAvanceManualCamionEditando.cs" />
     <Compile Include="Procesamiento\ProcesadorRegistrarMarcaDeTiempo.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPanelPagoMunicipal.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarExcepcionPagoTicketMunicipal.cs" />

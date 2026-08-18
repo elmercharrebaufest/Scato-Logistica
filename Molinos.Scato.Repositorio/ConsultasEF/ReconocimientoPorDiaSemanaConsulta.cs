@@ -24,13 +24,33 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
             const string sql = @"
                 SELECT
-                    CAST(l.FechaEvento AS DATE)                                                  AS Fecha,
-                    SUM(CASE WHEN l.Patente IS NOT NULL AND l.Patente <> '' THEN 1 ELSE 0 END) AS Reconocidos,
-                    SUM(CASE WHEN l.Patente IS     NULL  OR  l.Patente  = '' THEN 1 ELSE 0 END) AS NoReconocidos
+                    CAST(l.FechaEvento AS DATE) AS Fecha,
+
+                    SUM(
+                        CASE
+                            WHEN l.Recorrido_Id IS NOT NULL
+                             AND l.PuestoDeTrabajo_Id IS NOT NULL
+                            THEN 1
+                            ELSE 0
+                        END
+                    ) AS Reconocidos,
+
+                    SUM(
+                        CASE
+                            WHEN l.Recorrido_Id IS NULL
+                              OR l.PuestoDeTrabajo_Id IS NULL
+                            THEN 1
+                            ELSE 0
+                        END
+                    ) AS NoReconocidos
+
                 FROM LogIdentificacionVehicular l
                 WHERE l.FechaEvento >= @FechaDesde
-                  AND l.FechaEvento <  DATEADD(DAY, 1, @FechaHasta)
-                  AND (@PuestoDeTrabajoId IS NULL OR l.PuestoDeTrabajo_Id = @PuestoDeTrabajoId)
+                  AND l.FechaEvento < DATEADD(DAY, 1, @FechaHasta)
+                  AND (
+                        @PuestoDeTrabajoId IS NULL
+                        OR l.PuestoDeTrabajo_Id = @PuestoDeTrabajoId
+                      )
                 GROUP BY CAST(l.FechaEvento AS DATE)
                 ORDER BY Fecha;";
 
@@ -38,7 +58,10 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 sql,
                 new SqlParameter("@FechaDesde", fechaDesde.Date),
                 new SqlParameter("@FechaHasta", fechaHasta.Date),
-                new SqlParameter("@PuestoDeTrabajoId", (object)puestoDeTrabajoId ?? DBNull.Value)
+                new SqlParameter(
+                    "@PuestoDeTrabajoId",
+                    (object)puestoDeTrabajoId ?? DBNull.Value
+                )
             ).ToList();
         }
     }

@@ -11815,15 +11815,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dashboard Cardless.
-        /// </summary>
-        public static string DashboardCardless_Titulo {
-            get {
-                return ResourceManager.GetString("DashboardCardless_Titulo", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Acumulado.
         /// </summary>
         public static string DashboardCardless_Acumulado {
@@ -11831,7 +11822,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_Acumulado", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Buscar.
         /// </summary>
@@ -11840,7 +11831,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_BuscarGaleria", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cantidad de Camiones Ingresados.
         /// </summary>
@@ -11849,7 +11840,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_CamionesPorDia", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Descargar Todo.
         /// </summary>
@@ -11858,7 +11849,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_DescargarTodo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Filtrar Datos.
         /// </summary>
@@ -11867,7 +11858,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_FiltrarDatos", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fecha Desde.
         /// </summary>
@@ -11876,7 +11867,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_FiltroFechaDesde", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fecha Hasta.
         /// </summary>
@@ -11885,7 +11876,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_FiltroFechaHasta", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Puesto de Trabajo.
         /// </summary>
@@ -11894,7 +11885,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_FiltroPuestoDeTrabajo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Todos.
         /// </summary>
@@ -11903,7 +11894,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_FiltroTodos", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Desde.
         /// </summary>
@@ -11912,7 +11903,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_GaleriaDesde", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Galería de Capturas Fallidas.
         /// </summary>
@@ -11921,7 +11912,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_GaleriaFallidas", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hasta.
         /// </summary>
@@ -11930,7 +11921,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_GaleriaHasta", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to intentos.
         /// </summary>
@@ -11939,7 +11930,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_Intentos", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Máx Hoy.
         /// </summary>
@@ -11948,7 +11939,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_MaxHoy", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Patentes por Cámara.
         /// </summary>
@@ -11957,7 +11948,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_PatentePorCamara", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Promedio General.
         /// </summary>
@@ -11966,7 +11957,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_PromedioGeneral", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Promedio de Intentos de Reconocimiento.
         /// </summary>
@@ -11975,7 +11966,16 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_PromedioIntentos", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Puesto de Trabajo.
+        /// </summary>
+        public static string DashboardCardless_PuestoDeTrabajo {
+            get {
+                return ResourceManager.GetString("DashboardCardless_PuestoDeTrabajo", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Reconocimiento de Patente vs No Reconocimiento.
         /// </summary>
@@ -11984,7 +11984,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_ReconocimientoPorDiaSemana", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reconocimiento por Proveedor.
         /// </summary>
@@ -11993,25 +11993,88 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_ReconocimientoPorProveedor", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Sin capturas fallidas para el período seleccionado.
+        ///   Looks up a localized string similar to Sin capturas fallidas para el período seleccionado..
         /// </summary>
         public static string DashboardCardless_SinCapturasFallidas {
             get {
                 return ResourceManager.GetString("DashboardCardless_SinCapturasFallidas", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Sin datos para el período seleccionado.
+        ///   Looks up a localized string similar to Sin datos para el período seleccionado..
         /// </summary>
         public static string DashboardCardless_SinDatos {
             get {
                 return ResourceManager.GetString("DashboardCardless_SinDatos", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cantidad de vehículos detectados al pasar por el puesto seleccionado..
+        /// </summary>
+        public static string DashboardCardless_SubtituloCamionesPorDia {
+            get {
+                return ResourceManager.GetString("DashboardCardless_SubtituloCamionesPorDia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proporción de patentes leídas exitosamente por cada cámara conectada al puesto de trabajo según filtro del encabezado.
+        /// </summary>
+        public static string DashboardCardless_SubtituloPatentePorCamara {
+            get {
+                return ResourceManager.GetString("DashboardCardless_SubtituloPatentePorCamara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promedio de intentos de reconocimiento.
+        /// </summary>
+        public static string DashboardCardless_SubtituloPromedioIntentos {
+            get {
+                return ResourceManager.GetString("DashboardCardless_SubtituloPromedioIntentos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cantidad de patentes reconocidas (tiene un formato válido y está en circuito) o no.
+        /// </summary>
+        public static string DashboardCardless_SubtituloReconocimientoPorDiaSemana {
+            get {
+                return ResourceManager.GetString("DashboardCardless_SubtituloReconocimientoPorDiaSemana", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proporción de reconocimientos exitosos de patentes por proveedor.
+        /// </summary>
+        public static string DashboardCardless_SubtituloReconocimientoPorProveedor {
+            get {
+                return ResourceManager.GetString("DashboardCardless_SubtituloReconocimientoPorProveedor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cantidad de vehículos detectados por el sensor de presencia.
+        /// </summary>
+        public static string DashboardCardless_SubtituloVehiculoPorDia {
+            get {
+                return ResourceManager.GetString("DashboardCardless_SubtituloVehiculoPorDia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dashboard Cardless.
+        /// </summary>
+        public static string DashboardCardless_Titulo {
+            get {
+                return ResourceManager.GetString("DashboardCardless_Titulo", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Vehículo Presente vs No Presente.
         /// </summary>
@@ -12020,7 +12083,7 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("DashboardCardless_VehiculoPorDia", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ver fotos fallidas.
         /// </summary>
@@ -19883,6 +19946,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No se pudo cargar la foto tomada.
+        /// </summary>
+        public static string ListaDeTareasAutomatizadaV2_NoSePudoCargarFoto {
+            get {
+                return ResourceManager.GetString("ListaDeTareasAutomatizadaV2_NoSePudoCargarFoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Listado de Cambio de Modalidad de Puesto de Trabajo.
         /// </summary>
         public static string ListadoCambioDeModalidadDePuestoDeTrabajo_Titulo {
@@ -24728,6 +24800,348 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Avanzar.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_BtnAvanzar {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_BtnAvanzar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editar.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_BtnEditar {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_BtnEditar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eliminar.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_BtnEliminar {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_BtnEliminar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispositivo.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColDispositivo {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColDispositivo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to En espera.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColEnEspera {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColEnEspera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estado.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColEstado {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColEstado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha y hora de Alerta.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColFechaAlerta {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColFechaAlerta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ordenado de menor a mayor.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColFechaAlertaOrden {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColFechaAlertaOrden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inicio.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColInicio {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColInicio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patente.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColPatente {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColPatente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Puesto.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColPuesto {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColPuesto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transportista.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColTransportista {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColTransportista", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuario Editando.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColUsuarioEditando {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColUsuarioEditando", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ColWorkflow {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ColWorkflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editando.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_EstadoEditando {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_EstadoEditando", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pendiente.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_EstadoPendiente {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_EstadoPendiente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Esta acción ejecutará el workflow. Si las condiciones se cumplen, puede abrir la barrera físicamente..
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalAdvertencia {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalAdvertencia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancelar.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalCancelar {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalCancelar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirmar.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalConfirmar {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalConfirmar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patente.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLblPatente {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLblPatente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Puesto destino.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLblPuestoDestino {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLblPuestoDestino", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transportista.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLblTransportista {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLblTransportista", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLblWorkflow {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLblWorkflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Esta acción moverá el registro al estado Liberado. No se puede deshacer..
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLiberarAdvertencia {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLiberarAdvertencia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Liberar.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLiberarBtn {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLiberarBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Motivo.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLiberarLblMotivo {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLiberarLblMotivo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Puesto.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLiberarLblPuesto {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLiberarLblPuesto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ingrese el motivo de la liberación....
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLiberarMotivoPlaceholder {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLiberarMotivoPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El motivo es obligatorio para liberar el registro..
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLiberarMotivoRequerido {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLiberarMotivoRequerido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Liberar registro.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalLiberarTitulo {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalLiberarTitulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Editar registro.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_ModalTitulo {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_ModalTitulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to de.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_PaginadorDe {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_PaginadorDe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mostrando.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_PaginadorMostrando {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_PaginadorMostrando", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Por página:.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_PaginadorPorPagina {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_PaginadorPorPagina", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sin registros pendientes.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_PaginadorSinRegistros {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_PaginadorSinRegistros", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Camiones en espera.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_SeccionCamionesEnEspera {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_SeccionCamionesEnEspera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grilla de alerta por Contingencia — listado de puestos con alerta activa.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_Subtitulo {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_Subtitulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PCIV · Panel de Control de Identificación Vehicular.
+        /// </summary>
+        public static string PanelAvanceCamionPorPuesto_Titulo {
+            get {
+                return ResourceManager.GetString("PanelAvanceCamionPorPuesto_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Panel de Control de Baja de CTG.
         /// </summary>
         public static string PanelBajaCtgDefinitiva {
@@ -27813,6 +28227,267 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Resetear {
             get {
                 return ResourceManager.GetString("Resetear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acercar (+).
+        /// </summary>
+        public static string ResolucionContingencia_AcercarTitle {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_AcercarTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alejar (-).
+        /// </summary>
+        public static string ResolucionContingencia_AlejarTitle {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_AlejarTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ampliar cámara.
+        /// </summary>
+        public static string ResolucionContingencia_AmpliaCamara {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_AmpliaCamara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avanzando....
+        /// </summary>
+        public static string ResolucionContingencia_Avanzando {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_Avanzando", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AVANZAR.
+        /// </summary>
+        public static string ResolucionContingencia_Avanzar {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_Avanzar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cámara .
+        /// </summary>
+        public static string ResolucionContingencia_CamaraPrefix {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_CamaraPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cámara del puesto.
+        /// </summary>
+        public static string ResolucionContingencia_CamaraPuesto {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_CamaraPuesto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El camión fue avanzado correctamente..
+        /// </summary>
+        public static string ResolucionContingencia_CamionAvanzado {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_CamionAvanzado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cerrar.
+        /// </summary>
+        public static string ResolucionContingencia_Cerrar {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_Cerrar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EN VIVO.
+        /// </summary>
+        public static string ResolucionContingencia_EnVivo {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_EnVivo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocurrió un error al avanzar el camión..
+        /// </summary>
+        public static string ResolucionContingencia_ErrorAvanzar {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_ErrorAvanzar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error de comunicación con el servidor..
+        /// </summary>
+        public static string ResolucionContingencia_ErrorComunicacion {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_ErrorComunicacion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datos de log no disponibles..
+        /// </summary>
+        public static string ResolucionContingencia_ErrorDatosLog {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_ErrorDatosLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debe ingresar la patente del camión antes de avanzar..
+        /// </summary>
+        public static string ResolucionContingencia_ErrorPatenteRequerida {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_ErrorPatenteRequerida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Foto capturada.
+        /// </summary>
+        public static string ResolucionContingencia_FotoCapturadaAlt {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_FotoCapturadaAlt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pantalla de.
+        /// </summary>
+        public static string ResolucionContingencia_HeaderPantalla {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_HeaderPantalla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Imagen tomada (con zoom).
+        /// </summary>
+        public static string ResolucionContingencia_ImagenZoom {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_ImagenZoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ingresar patente.
+        /// </summary>
+        public static string ResolucionContingencia_IngresarPatente {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_IngresarPatente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Intercomunicador.
+        /// </summary>
+        public static string ResolucionContingencia_Intercomunicador {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_Intercomunicador", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patente Leída.
+        /// </summary>
+        public static string ResolucionContingencia_PatenteLeida {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_PatenteLeida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patente Real.
+        /// </summary>
+        public static string ResolucionContingencia_PatenteReal {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_PatenteReal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patentes de la etapa anterior.
+        /// </summary>
+        public static string ResolucionContingencia_PatentesEtapaAnterior {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_PatentesEtapaAnterior", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SALIR.
+        /// </summary>
+        public static string ResolucionContingencia_Salir {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_Salir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sin imagen disponible.
+        /// </summary>
+        public static string ResolucionContingencia_SinImagen {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_SinImagen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sin patentes anteriores.
+        /// </summary>
+        public static string ResolucionContingencia_SinPatentesAnteriores {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_SinPatentesAnteriores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificá la patente detectada y confirmá el ingreso del vehículo.
+        /// </summary>
+        public static string ResolucionContingencia_Subtitulo {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_Subtitulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tamaño original.
+        /// </summary>
+        public static string ResolucionContingencia_TamanioOriginalTitle {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_TamanioOriginalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resolución de Contingencia.
+        /// </summary>
+        public static string ResolucionContingencia_Titulo {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rueda del mouse · arrastrar para mover.
+        /// </summary>
+        public static string ResolucionContingencia_ZoomHint {
+            get {
+                return ResourceManager.GetString("ResolucionContingencia_ZoomHint", resourceCulture);
             }
         }
         

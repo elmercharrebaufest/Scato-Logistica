@@ -205,6 +205,7 @@
     <Compile Include="Controllers\PesoMaximoPorTipoVehiculoControllerTest.cs" />
     <Compile Include="Controllers\KmPorProveedorControllerTest.cs" />
     <Compile Include="Controllers\PanelDeControlBajaCtgDefinitivaControllerTest.cs" />
+    <Compile Include="Controllers\PanelAvanceCamionPorPuestoControllerTest.cs" />
     <Compile Include="Controllers\ExcepcionAlDescuentoControllerTest.cs" />
     <Compile Include="Controllers\SugerenciaControllerTest.cs" />
     <Compile Include="Controllers\GenerarArchivoDeMovimientosControllerTest.cs" />
@@ -390,6 +391,7 @@
     <Compile Include="Controllers\CasilleroControllerTest.cs" />
     <Compile Include="Controllers\CiuAnuladoControllerTest.cs" />
     <Compile Include="Controllers\DocumentoDeOrigenControllerTest.cs" />
+    <Compile Include="Controllers\DashboardCardlessControllerTest.cs" />
     <Compile Include="Controllers\ExistePedidoDeTrasladoControllerTest.cs" />
     <Compile Include="Controllers\IngresoNumeroCotControllerTest.cs" />
     <Compile Include="Controllers\ListaDeCamionesControllerTest.cs" />
@@ -557,7 +559,6 @@
     <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjetaPatenteTest.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLogIdentificacionVehicularResultadoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorAgregarMarcaSustentableTest.cs" />
-    <Compile Include="Procesamiento\ProcesadorAvanzarWorkflowPorIdentificacionVehicularTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarEscalablesTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarCPDigitalTest.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPDFCpeTest.cs" />
@@ -942,6 +943,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\MarcaDeTiempoTest.cs" />
     <Compile Include="Servicios\ServicioHealthCheckTests.cs" />
     <Compile Include="Servicios\CalculadoraDescuentoTest.cs" />
     <Compile Include="Servicios\CartaPorteElectronicaCacheHelperTest.cs" />

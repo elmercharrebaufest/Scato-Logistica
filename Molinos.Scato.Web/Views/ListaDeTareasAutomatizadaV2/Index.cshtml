@@ -1,0 +1,61 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Models
+@model List<PuestoCaladoModel>
+
+@{
+    ViewBag.Title = Textos.ListaDeTareasAutomatizada_Titulo;
+}
+
+<link rel="stylesheet" href="@Url.Content("~/Content/listaDeTareasAutomatizadaV2.css")" />
+
+<input type="hidden" id="home" name="home" value="@Url.Action("Index", "ListaDeCamiones")" />
+
+<div class="lta-v2">
+    <header class="lta-v2__header">
+        <h1 class="lta-v2__title">@Textos.Menu_Administracion - @Textos.ListaDeTareasAutomatizada_Titulo</h1>
+        <div class="lta-v2__actions">
+            <a href="@Url.Action("Index", "ListaDeCamiones", new { venimosDeListaDeTareasAutomatizada = true })" class="lta-v2__btn lta-v2__btn--primary">
+                <span class="lta-v2__icon">&#9776;</span> @Textos.ListaDeCamiones_Titulo
+            </a>
+            @if (ViewBag.PantallaPrincipal)
+            {
+                <span id="btnPantallaPrincipal" class="lta-v2__btn lta-v2__btn--secondary lta-v2__btn--active">
+                    @Textos.ListaDeCamiones_VersionTareas
+                </span>
+            }
+        </div>
+    </header>
+
+    @if (ViewBag.AlertarAnalisisObligatorio)
+    {
+        <div class="lta-v2__banner">
+            @Textos.AnalisisObligatorio_AvisoListaTareasAutomatizadas @ViewBag.MaterialAlertarAnalisisObligatorio
+        </div>
+    }
+
+    <main class="lta-v2__main" id="lta-v2-container">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="lta-v2__empty">No hay puestos de trabajo configurados</div>
+        }
+        else
+        {
+            foreach (var puesto in Model)
+            {
+                @Html.Partial("_PuestoCard", puesto)
+            }
+        }
+    </main>
+</div>
+
+<script>
+    window.ltaV2Config = {
+        urls: {
+            aceptar: '@Url.Action("Index")',
+            omitir: '@Url.Action("OmitirCamion")',
+            validar: '@Url.Action("ValidarPatente")'
+        },
+    };
+</script>
+<script src="@Url.Content("~/Scripts/listaDeTareasAutomatizadaV2.js")"></script>
+

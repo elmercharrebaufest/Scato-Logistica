@@ -1,4 +1,4 @@
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
@@ -10,6 +10,7 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Molinos.Scato.Dominio;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -17,8 +18,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
     {
         private readonly IServicioComandos _servicioComandos;
         private readonly IServicioRepositorio _servicioRepositorio;
-        private int? _puestoId;
-        private RecorridoDto _recorrido;
+        private PuestoDeTrabajo _puesto;
+        private DatosRecorridoDto _recorrido;
 
         public ProcesadorCrearLogIdentificacionVehicular(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos, IServicioRepositorio servicioRepositorio)
             : base(repositorio, conversor, log)
@@ -35,27 +36,25 @@ namespace Molinos.Scato.Servicios.Procesamiento
             try
             {
                 var logId = CrearLogAuditoria(comando);
-                resultado.LogId = logId;
 
-                if (!Validar(comando, resultado))
+                if (!Validar(comando, resultado, logId))
                 {
-                    ActualizarLogAuditoria(logId, resultado.Errores.Values.FirstOrDefault(), _puestoId, null);
+                    ActualizarLogAuditoria(logId, resultado.Errores.Values.FirstOrDefault(), _puesto?.Id, _recorrido?.Id);
                     return resultado;
                 }
 
                 _servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
                 {
                     Tipo = TipoRegistroMarcaDeTiempo.Identificacion,
-                    PuestoDeTrabajoId = _puestoId,
+                    PuestoDeTrabajoId = _puesto.Id,
                     NumeroDeTarjeta = comando.Tarjeta,
                     Patente = comando.Patente,
                     Trigger = comando.Trigger,
                 });
 
-                _recorrido = ObtenerRecorrido(comando.Trigger, comando.Patente, comando.Tarjeta);
-                ActualizarLogAuditoria(logId, "Listo para avanzar workflow", _puestoId, _recorrido?.Id);
+                ActualizarLogAuditoria(logId, "Listo para avanzar workflow", _puesto.Id, _recorrido?.Id);
 
-                resultado.LecturaPuestoDeTrabajo = CrearLecturaPuestoDeTrabajo(comando, _recorrido?.Id);
+                resultado.LecturaPuestoDeTrabajo = CrearLecturaPuestoDeTrabajo(comando, logId);
             }
             catch (Exception ex)
             {
@@ -111,12 +110,32 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return log.Id;
         }
 
-        private bool Validar(CrearLogIdentificacionVehicular comando, ResultadoProcesarIdentificacionVehicular resultado)
+        private bool Validar(CrearLogIdentificacionVehicular comando, ResultadoProcesarIdentificacionVehicular resultado, int logId)
         {
-            _puestoId = Repositorio.ObtenerProyeccion<PuestoDeTrabajo, int?>(p => p.CodigoConfigIdentificacionVehicular == comando.CodigoDispositivo, p => p.Id);
-            if (!_puestoId.HasValue)
+            _puesto = Repositorio.ObtenerPrimero<PuestoDeTrabajo>(p => p.CodigoConfigIdentificacionVehicular == comando.CodigoDispositivo);
+            if (_puesto == null)
             {
                 resultado.Error(nameof(CrearLogIdentificacionVehicular), "Puesto no encontrado");
+                return false;
+            }
+
+            _recorrido = _servicioRepositorio.ObtenerDatosRecorridoActivoPorTarjetaOPatente(comando.Trigger, comando.Patente, comando.Tarjeta);
+            if (comando.Trigger == TipoIdentificacionPorPuesto.IngresoPorPatente && _recorrido == null && _puesto.AplicaContingenciaIdentificacionVehicularPorPanelAvanceManual)
+            {
+                resultado.Error(nameof(CrearLogIdentificacionVehicular), Constantes.ResultadoProcesoIdentificacionVehicular.EnviadoAContingencia);
+
+                _servicioComandos.Ejecutar(new CrearLogAvanceManualCamion
+                    {
+                        PuestoDeTrabajoId = _puesto.Id,
+                        NombreUsuario = null,
+                        MotivoFallo = Constantes.ResultadoProcesoIdentificacionVehicular.EnviadoAContingencia,
+                        PatenteLeida = comando.Patente,
+                        Tarjeta = comando.Tarjeta,
+                        LogIdentificacionVehicularOrigenId = logId
+                    });
+
+                resultado.EnviadoAContingencia = true;
+                resultado.PuestosDeTrabajoId = new System.Collections.Generic.List<int> { _puesto.Id };
                 return false;
             }
 
@@ -134,46 +153,33 @@ namespace Molinos.Scato.Servicios.Procesamiento
             });
         }
 
-        private RecorridoDto ObtenerRecorrido(TipoIdentificacionPorPuesto tipoIdentificacion, string patente, string tarjeta)
+        private LecturaPuestoDeTrabajoDto CrearLecturaPuestoDeTrabajo(CrearLogIdentificacionVehicular comando, int? logId)
         {
-            Recorrido recorrido = null;
-
-            if (tipoIdentificacion == TipoIdentificacionPorPuesto.IngresoPorLectura)
-                recorrido = Repositorio.Obtener<Recorrido>(r => !r.Terminado && r.TarjetaDeAcceso == tarjeta);
-
-            if (tipoIdentificacion == TipoIdentificacionPorPuesto.IngresoPorPatente)
-                recorrido = Repositorio.Obtener<Recorrido>(r => !r.Terminado && r.Patente == patente);
-
-            return recorrido != null ? Conversor.Convertir<Recorrido, RecorridoDto>(recorrido) : null;
-        }
-
-        private LecturaPuestoDeTrabajoDto CrearLecturaPuestoDeTrabajo(CrearLogIdentificacionVehicular comando, int? recorridoId)
-        {
-            var puesto = Repositorio.Obtener<PuestoDeTrabajo>(_puestoId);
             var lecturaPuestoDeTrabajo = new LecturaPuestoDeTrabajoDto
             {
-                PuestoDeTrabajoId = puesto.Id,
-                CentroId = puesto.Centro.Id,
+                PuestoDeTrabajoId = _puesto.Id,
+                CentroId = _puesto.Centro.Id,
                 NumeroDeTarjeta = comando.Tarjeta,
-                PuestoDeTrabajoPidePantente = puesto.PidePatente,
-                PuestoDeTrabajoImprimeTarjetaDeAcceso = puesto.ImprimeTarjetaDeAcceso,
-                Entrada = puesto.Entradas(),
-                Salida = puesto.CierresEntrada(),
-                Automatizado = puesto.AutomatizadoFull && !puesto.PausaAutoFull,
-                VideoCamaras = !puesto.PidePatente || puesto.FotoAlMarcarTarjeta ? Conversor.ConvertirList<VideoCamara, VideoCamaraDto>(puesto.VideoCamaras.ToList()) : new List<VideoCamaraDto>(),
+                PuestoDeTrabajoPidePantente = _puesto.PidePatente,
+                PuestoDeTrabajoImprimeTarjetaDeAcceso = _puesto.ImprimeTarjetaDeAcceso,
+                Entrada = _puesto.Entradas(),
+                Salida = _puesto.CierresEntrada(),
+                Automatizado = _puesto.AutomatizadoFull && !_puesto.PausaAutoFull,
+                VideoCamaras = !_puesto.PidePatente || _puesto.FotoAlMarcarTarjeta ? Conversor.ConvertirList<VideoCamara, VideoCamaraDto>(_puesto.VideoCamaras.ToList()) : new List<VideoCamaraDto>(),
                 CodigoDispositivo = comando.CodigoDispositivo,
-                Firmware = puesto.Firmware,
+                Firmware = _puesto.Firmware,
                 TarjetaValida = true,
-                Patente = _recorrido != null ? _recorrido.Patente : null, // TODO: Modificar para cardless
-                //PatenteLeida = comando.Patente, // TODO: Viene de la toma de foto por ALPR
-                //ReconocimientoExitoso = recorridoId.HasValue, // TODO: Viene de la toma de foto por ALPR
-                //OcrActivo = true, // TODO: Viene de la toma de foto por ALPR
+                Patente = _recorrido != null ? _recorrido.Patente : null,
+                ReconocimientoExitoso = _recorrido != null && _recorrido.Patente == comando.Patente,
+                PatenteLeida = comando.Patente,
+                TipoIdentificacion = comando.Trigger,
+                LogIdentificacionVehicularId = logId,
             };
 
             if (comando.Trigger == TipoIdentificacionPorPuesto.IngresoPorLectura)
             {
-                ValidarTarjeta(lecturaPuestoDeTrabajo, puesto);
-                EncolamientoLecturaTarjeta(lecturaPuestoDeTrabajo, puesto);
+                ValidarTarjeta(lecturaPuestoDeTrabajo, _puesto);
+                EncolamientoLecturaTarjeta(lecturaPuestoDeTrabajo, _puesto);
             }
 
             return lecturaPuestoDeTrabajo;
@@ -204,6 +210,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 lecturaPuestoDeTrabajo.EsTarjetaSupervisor = true;
                 lecturaPuestoDeTrabajo.DispositivosSupervisor = puesto.EntradasSupervisor();
                 lecturaPuestoDeTrabajo.MensajeError = string.Format(Textos.Error_TarjetaSupervisor, lecturaPuestoDeTrabajo.NumeroDeTarjeta, puesto.NombrePuesto, lecturaPuestoDeTrabajo.CodigoDispositivo);
+                return;
+            }
+
+            var esTarjetaEnUso = puesto.ImprimeTarjetaDeAcceso && !string.IsNullOrEmpty(lecturaPuestoDeTrabajo.Patente);
+            if (esTarjetaEnUso)
+            {
+                lecturaPuestoDeTrabajo.TarjetaValida = false;
+                lecturaPuestoDeTrabajo.MensajeError = string.Format(Textos.Error_TarjetaEnUso, lecturaPuestoDeTrabajo.NumeroDeTarjeta, puesto.NombrePuesto, lecturaPuestoDeTrabajo.CodigoDispositivo);
+                return;
             }
         }
 

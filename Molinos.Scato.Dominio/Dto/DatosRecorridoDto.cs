@@ -1,5 +1,4 @@
-﻿using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Enums;
+﻿using Molinos.Scato.Dominio.Enums;
 using System;
 
 namespace Molinos.Scato.Dominio.Dto
@@ -13,7 +12,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string NumeroDocumentoIngreso { get; set; }
         public string CentroCodigoSap { get; set; }
         public int WorkflowId { get; set; }
-
         public int Id { get; set; }
         public bool AdvertirCaladoEnPlanta { get; set; }
         public string CartaDePorte { get; set; }
@@ -27,7 +25,6 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoVehiculo TipoVehiculo { get; set; }
         public TipoDeWorkflow TipoDeWorkflow { get; set; }
         public bool SinRecorrido { get; set; }
-
         public string ProximaAccion { get; set; }
         public string ProximaAccionMensaje { get; set; }
         public string Calle { get; set; }

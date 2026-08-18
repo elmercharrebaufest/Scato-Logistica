@@ -77,7 +77,7 @@ namespace Molinos.Scato.Web.Controllers
 
             //No volvemos a validar el numero de tarjeta en el post porque inferimos que ,si tiene un recorrido asignado,
             //paso por las validaciones de Asignacion de tarjeta y si no tiene, la siguiente validacion se encargara:
-            var recorrido = servicio.ObtenerDatosRecorridoActivo(patente, new List<string> { puesto.Lectura });
+            var recorrido = servicio.ObtenerDatosRecorridoActivo(patente, puesto.Lectura);
             var proximaActividad = new ProximaAccionDto();
             if (recorrido != null)
             {

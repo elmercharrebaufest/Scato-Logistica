@@ -4,6 +4,6 @@ namespace Molinos.Scato.Servicios
 {
     public interface IFirmware
     {
-        void Ejecutar(LecturaPuestoDeTrabajoDto lecturaDetarjeta);
+        string Ejecutar(LecturaPuestoDeTrabajoDto lecturaDetarjeta);
     }
 }

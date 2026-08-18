@@ -9,7 +9,7 @@ CREATE TABLE [dbo].[LogIdentificacionVehicular]
     [Patente]                       NVARCHAR(20)  NULL,
     [VehiculoPresente]              BIT           NOT NULL,
     [FechaEvento]                   DATETIME      NOT NULL,
-    [ResultadoWorkflow]             NVARCHAR(200) NULL,
+    [ResultadoWorkflow]             NVARCHAR(MAX) NULL,
     [PatenteLeida]                  NVARCHAR(20)  NULL,
     [DiferenciaSustitucion]         INT           NOT NULL DEFAULT 0,
     [DuracionMecanismoSustitucionMs]   INT           NULL,

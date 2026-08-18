@@ -417,6 +417,7 @@
     <Compile Include="Controllers\EmbarquesPorBuquesController.cs" />
     <Compile Include="Controllers\EtiquetaPuertoController.cs" />
     <Compile Include="Controllers\CamionesPendientesNoGranosController.cs" />
+    <Compile Include="Controllers\PanelAvanceCamionPorPuestoController.cs" />
     <Compile Include="Controllers\PanelDeControlTransaccionesVisecController.cs" />
     <Compile Include="Controllers\PanelDeControlPagoMunicipalController.cs" />
     <Compile Include="Controllers\PanelMonitoreoServicioExternoController.cs" />
@@ -575,6 +576,7 @@
     <Compile Include="Controllers\ExportacionDeArchivosController.cs" />
     <Compile Include="Controllers\ReporteControlDeBalanzaController.cs" />
     <Compile Include="Controllers\ListaDeTareasAutomatizadaController.cs" />
+    <Compile Include="Controllers\ListaDeTareasAutomatizadaV2Controller.cs" />
     <Compile Include="Controllers\ImprimirTarjetaDeAccesoController.cs" />
     <Compile Include="Controllers\PuestoComandoController.cs" />
     <Compile Include="Controllers\ControlDeTiempoController.cs" />
@@ -690,6 +692,7 @@
     <Compile Include="Firmware\FirmwarePuestoDesatendido.cs" />
     <Compile Include="Firmware\FirmwarePuestoRequiereOperario.cs" />
     <Compile Include="Firmware\FirmwarePuestoBalanzaAutomatico.cs" />
+    <Compile Include="Firmware\FirmwarePuestoCalado.cs" />
     <Compile Include="Firmware\IRecorridoWorkflow.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\ExtensionesCheckBoxListFor.cs" />
@@ -739,6 +742,7 @@
     <Compile Include="Models\ResumenDeRecepcionModel.cs" />
     <Compile Include="Models\FiltroRecorridoModel.cs" />
     <Compile Include="Models\TemplateViewModel.cs" />
+    <Compile Include="Models\PuestoCaladoModel.cs" />
     <Compile Include="Models\ValidarContratoModel.cs" />
     <Compile Include="Models\IngresoDeLoteModel.cs" />
     <Compile Include="Models\MicromuestraModel.cs" />
@@ -763,15 +767,18 @@
     <Compile Include="Models\Pesada.cs" />
     <Compile Include="Models\DatosUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServicioHub\FirmwareFactory.cs" />
-    <Compile Include="ServicioHub\HubClient.cs" />
-    <Compile Include="ServicioHub\HubClientFactory.cs" />
-    <Compile Include="ServicioHub\HubClientNotificar.cs" />
+    <Compile Include="Firmware\FirmwareFactory.cs" />
+    <Compile Include="ServicioHub\Client\HubClients.cs" />
+    <Compile Include="ServicioHub\Client\HubContextClient.cs" />
+    <Compile Include="ServicioHub\Client\IHubClient.cs" />
+    <Compile Include="ServicioHub\Server\NotificaLecturaBroadcaster.cs" />
+    <Compile Include="ServicioHub\Server\NotificarUsuarioBroadcaster.cs" />
+    <Compile Include="ServicioHub\Server\PanelAvanceCamionHub.cs" />
     <Compile Include="ServicioHub\ServicioSuscriptor.svc.cs">
       <DependentUpon>ServicioSuscriptor.svc</DependentUpon>
     </Compile>
-    <Compile Include="ServicioHub\NotificarLectura.cs" />
-    <Compile Include="ServicioHub\NotificarUsuario.cs" />
+    <Compile Include="ServicioHub\Server\NotificarLectura.cs" />
+    <Compile Include="ServicioHub\Server\NotificarUsuario.cs" />
     <Compile Include="ServicioHub\ServicioNotificarUsuario.svc.cs">
       <DependentUpon>ServicioNotificarUsuario.svc</DependentUpon>
     </Compile>
@@ -792,6 +799,7 @@
     <Content Include="Content\Chart.min.css" />
     <Content Include="Content\colorPicker.css" />
     <Content Include="Content\columna.css" />
+    <Content Include="Content\dashboardCardless.css" />
     <Content Include="Content\fa-brands.css" />
     <Content Include="Content\fa-brands.min.css" />
     <Content Include="Content\fa-regular.css" />
@@ -804,9 +812,11 @@
     <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\fonts\icomoon.svg" />
     <Content Include="Content\icomoon.css" />
+    <Content Include="Content\listaDeTareasAutomatizadaV2.css" />
     <Content Include="Content\images\barcode.png" />
     <Content Include="Content\images\pageError.png" />
     <Content Include="Content\images\qaimage.png" />
+    <Content Include="Content\panelAvanceCamionPorPuesto.css" />
     <Content Include="Content\pesadaCargaExportacion.css" />
     <Content Include="Content\fotos.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
@@ -911,7 +921,9 @@
     <Content Include="Scripts\excepcionAlControlProveedor.js" />
     <Content Include="Scripts\huellaDigital.js" />
     <Content Include="Scripts\intercomunicadorReinicio.js" />
+    <Content Include="Scripts\listaDeTareasAutomatizadaV2.js" />
     <Content Include="Scripts\listarHuellaDigital.js" />
+    <Content Include="Scripts\panelAvanceCamionPorPuesto.js" />
     <Content Include="Scripts\panelDePagoMunicipal.index.js" />
     <Content Include="Scripts\panelDePagoMunicipal.listar.js" />
     <Content Include="Scripts\panelMonitoreoServicioExternoHubClient.js" />
@@ -2060,6 +2072,7 @@
     <Content Include="Views\ReporteControlDeBalanza\Index.cshtml" />
     <Content Include="Views\ReporteControlDeBalanza\Listar.cshtml" />
     <Content Include="Views\ListaDeTareasAutomatizada\Index.cshtml" />
+    <Content Include="Views\ListaDeTareasAutomatizadaV2\Index.cshtml" />
     <Content Include="Views\BalanzaACero\Index.cshtml" />
     <Content Include="Views\ServicioSapMov291\Index.cshtml" />
     <Content Include="Views\ExportacionDeArchivos\Index.cshtml" />
@@ -2535,6 +2548,10 @@
     <Content Include="Views\Intercomunicador\Index.cshtml" />
     <Content Include="Views\ReporteMoaStop\Index.cshtml" />
     <Content Include="Views\ReporteMoaStop\Listar.cshtml" />
+    <Content Include="Views\ListaDeTareasAutomatizadaV2\_PuestoCard.cshtml" />
+    <Content Include="Views\PanelAvanceCamionPorPuesto\Index.cshtml" />
+    <Content Include="Views\PanelAvanceCamionPorPuesto\Listar.cshtml" />
+    <Content Include="Views\PanelAvanceCamionPorPuesto\ResolucionContingencia.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

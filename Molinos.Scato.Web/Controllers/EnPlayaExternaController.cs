@@ -77,7 +77,7 @@ namespace Molinos.Scato.Web.Controllers
 
                 var recorrido = servicio.ObtenerRecorridoPorGuid(observacion.WorkflowInstanceId);
                 log.Debug("Procesando En Playa Externa para el recorrido: {0}", recorrido.Id);
-                var recorridoActivo = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { recorrido.TarjetaDeAcceso });
+                var recorridoActivo = servicio.ObtenerDatosRecorridoActivo(null, recorrido.TarjetaDeAcceso);
                 if (recorridoActivo != null && !recorridoActivo.Rechazado)
                 {
                     var resultadoPagoTasaMunicipal = comandos.Ejecutar(new VerificarPagoTasaMunicipal

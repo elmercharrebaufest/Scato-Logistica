@@ -4,11 +4,14 @@ using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.ColasFIFO.Impl;
+using Molinos.Scato.Servicios.ColasFIFO.Interfaces;
 using Molinos.Scato.Servicios.GestionarCartasDePortePE;
 using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Modules;
+using Ninject.Web.Common;
 
 namespace Molinos.Scato.Dependencias
 {
@@ -24,14 +27,13 @@ namespace Molinos.Scato.Dependencias
             */
             // Comunicacion Directa 
             Bind<IConfiguracionProvider, ConfiguracionProvider>().To<ConfiguracionProvider>().InSingletonScope();
+            Bind<IColaIdentificacionVehicular>().To<SqlColaIdentificacionVehicular>().InRequestScope();
             // Fin comunicacion directa
 
             // Comunicacion por WCF
-            this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<IServicioRepositorio>("ServicioRepositorio");
             this.BindChannelFactory<IServicioWorkflows>("ServicioWorkflows");
             this.BindChannelFactory<IServicioComandos>("ServicioComandos");
-            this.BindChannelFactory<IServicioSuscriptor>("ServicioSuscriptor");
             this.BindChannelFactory<IListaDeWorkflows>("ListaDeWorkflows");
             this.BindChannelFactory<IServicioSapAsincronico>("ServicioSapAsincronico");
             this.BindChannelFactory<IFirmaProvider>("FirmaProvider");

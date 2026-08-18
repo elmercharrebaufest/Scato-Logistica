@@ -42,7 +42,7 @@ namespace Molinos.Scato.Test.Controllers
                     new WorkflowInfoDto {Codigo = "C2", Descripcion = "D2", ActividadInicial = "A2"}
                 };
             servRepositorioMock.Setup(s => s.ListarWorkflowsPorUsuarioYCentro(It.IsAny<string>(), It.IsAny<int>())).Returns(workflows);
-            servRepositorioMock.Setup(s => s.ObtenerPuestosIdPorPC(It.IsAny<string>())).Returns(new List<int> {1});
+            servRepositorioMock.Setup(s => s.ObtenerPuestosIdPorRoles(It.IsAny<IEnumerable<string>>(), It.IsAny<int>())).Returns(new List<int> { 1 });
             var datosUsuario = new DatosUsuario();
             var result = target.Menu(datosUsuario) as PartialViewResult;
             IEnumerable<WorkflowInfoDto> results = target.ViewBag.Workflows;

@@ -28,7 +28,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             try
             {
-                Log.Debug($"Ejecutando comando RegistrarMarcaDeTiempo: Tipo={comando.Tipo}, CodigoDispositivo={comando.CodigoDispositivo}, PuestoDeTrabajoId={comando.PuestoDeTrabajoId}, NumeroDeTarjeta={comando.NumeroDeTarjeta}, Patente={comando.Patente}, Trigger={comando.Trigger}, InstanceId={comando.InstanceId}");
+                Log.Debug($"[RegistrarMarcaDeTiempo]: Tipo={comando.Tipo}, CodigoDispositivo={comando.CodigoDispositivo}, PuestoDeTrabajoId={comando.PuestoDeTrabajoId}, NumeroDeTarjeta={comando.NumeroDeTarjeta}, Patente={comando.Patente}, Trigger={comando.Trigger}, InstanceId={comando.InstanceId}");
                 if (!Validar(comando, resultado))
                     return resultado;
 

@@ -10796,6 +10796,120 @@
   <data name="DashboardCardless_Titulo" xml:space="preserve">
     <value>Dashboard Cardless</value>
   </data>
+  <data name="PanelAvanceCamionPorPuesto_Titulo" xml:space="preserve">
+    <value>PCIV · Panel de Control de Identificación Vehicular</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_Subtitulo" xml:space="preserve">
+    <value>Grilla de alerta por Contingencia — listado de puestos con alerta activa</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_SeccionCamionesEnEspera" xml:space="preserve">
+    <value>Camiones en espera</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColPatente" xml:space="preserve">
+    <value>Patente</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColWorkflow" xml:space="preserve">
+    <value>Workflow</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColTransportista" xml:space="preserve">
+    <value>Transportista</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColInicio" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColEnEspera" xml:space="preserve">
+    <value>En espera</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_BtnAvanzar" xml:space="preserve">
+    <value>Avanzar</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColPuesto" xml:space="preserve">
+    <value>Puesto</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColDispositivo" xml:space="preserve">
+    <value>Dispositivo</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColFechaAlerta" xml:space="preserve">
+    <value>Fecha y hora de Alerta</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColFechaAlertaOrden" xml:space="preserve">
+    <value>Ordenado de menor a mayor</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColEstado" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ColUsuarioEditando" xml:space="preserve">
+    <value>Usuario Editando</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_EstadoPendiente" xml:space="preserve">
+    <value>Pendiente</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_EstadoEditando" xml:space="preserve">
+    <value>Editando</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_BtnEditar" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_BtnEliminar" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalTitulo" xml:space="preserve">
+    <value>Editar registro</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalConfirmar" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLiberarAdvertencia" xml:space="preserve">
+    <value>Esta acción moverá el registro al estado Liberado. No se puede deshacer.</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLblPatente" xml:space="preserve">
+    <value>Patente</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLblWorkflow" xml:space="preserve">
+    <value>Workflow</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLblTransportista" xml:space="preserve">
+    <value>Transportista</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLblPuestoDestino" xml:space="preserve">
+    <value>Puesto destino</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalAdvertencia" xml:space="preserve">
+    <value>Esta acción ejecutará el workflow. Si las condiciones se cumplen, puede abrir la barrera físicamente.</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalCancelar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLiberarTitulo" xml:space="preserve">
+    <value>Liberar registro</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLiberarLblPuesto" xml:space="preserve">
+    <value>Puesto</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLiberarBtn" xml:space="preserve">
+    <value>Liberar</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLiberarLblMotivo" xml:space="preserve">
+    <value>Motivo</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLiberarMotivoRequerido" xml:space="preserve">
+    <value>El motivo es obligatorio para liberar el registro.</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_ModalLiberarMotivoPlaceholder" xml:space="preserve">
+    <value>Ingrese el motivo de la liberación...</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_PaginadorMostrando" xml:space="preserve">
+    <value>Mostrando</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_PaginadorDe" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_PaginadorSinRegistros" xml:space="preserve">
+    <value>Sin registros pendientes</value>
+  </data>
+  <data name="PanelAvanceCamionPorPuesto_PaginadorPorPagina" xml:space="preserve">
+    <value>Por página:</value>
+  </data>
   <data name="DashboardCardless_VerFotosFallidas" xml:space="preserve">
     <value>Ver fotos fallidas</value>
   </data>
@@ -10847,6 +10961,9 @@
   <data name="DashboardCardless_Intentos" xml:space="preserve">
     <value>intentos</value>
   </data>
+  <data name="DashboardCardless_PuestoDeTrabajo" xml:space="preserve">
+    <value>Puesto de Trabajo</value>
+  </data>
   <data name="DashboardCardless_GaleriaFallidas" xml:space="preserve">
     <value>Galería de Capturas Fallidas</value>
   </data>
@@ -10865,10 +10982,118 @@
   <data name="DashboardCardless_SinCapturasFallidas" xml:space="preserve">
     <value>Sin capturas fallidas para el período seleccionado.</value>
   </data>
+  <data name="DashboardCardless_SubtituloCamionesPorDia" xml:space="preserve">
+    <value>Cantidad de vehículos detectados al pasar por el puesto seleccionado.</value>
+  </data>
+  <data name="DashboardCardless_SubtituloPatentePorCamara" xml:space="preserve">
+    <value>Proporción de patentes leídas exitosamente por cada cámara conectada al puesto de trabajo según filtro del encabezado</value>
+  </data>
+  <data name="DashboardCardless_SubtituloReconocimientoPorDiaSemana" xml:space="preserve">
+    <value>Cantidad de patentes reconocidas (tiene un formato válido y está en circuito) o no</value>
+  </data>
+  <data name="DashboardCardless_SubtituloVehiculoPorDia" xml:space="preserve">
+    <value>Cantidad de vehículos detectados por el sensor de presencia</value>
+  </data>
+  <data name="DashboardCardless_SubtituloReconocimientoPorProveedor" xml:space="preserve">
+    <value>Proporción de reconocimientos exitosos de patentes por proveedor</value>
+  </data>
+  <data name="DashboardCardless_SubtituloPromedioIntentos" xml:space="preserve">
+    <value>Promedio de intentos de reconocimiento</value>
+  </data>
   <data name="PuestoDeTrabajo_SuscribirIdentificacionVehicular" xml:space="preserve">
     <value>Los datos se guardaron exitosamente, pero hubo un error al suscribir el codigo de identificacion vehicular: {0}</value>
   </data>
   <data name="ReporteMoaStop" xml:space="preserve">
     <value>Reporte Moa Stop</value>
+  </data>
+  <data name="ResolucionContingencia_Titulo" xml:space="preserve">
+    <value>Resolución de Contingencia</value>
+  </data>
+  <data name="ResolucionContingencia_HeaderPantalla" xml:space="preserve">
+    <value>Pantalla de</value>
+  </data>
+  <data name="ResolucionContingencia_Subtitulo" xml:space="preserve">
+    <value>Verificá la patente detectada y confirmá el ingreso del vehículo</value>
+  </data>
+  <data name="ResolucionContingencia_PatenteLeida" xml:space="preserve">
+    <value>Patente Leída</value>
+  </data>
+  <data name="ResolucionContingencia_PatenteReal" xml:space="preserve">
+    <value>Patente Real</value>
+  </data>
+  <data name="ResolucionContingencia_IngresarPatente" xml:space="preserve">
+    <value>Ingresar patente</value>
+  </data>
+  <data name="ResolucionContingencia_Salir" xml:space="preserve">
+    <value>SALIR</value>
+  </data>
+  <data name="ResolucionContingencia_Avanzar" xml:space="preserve">
+    <value>AVANZAR</value>
+  </data>
+  <data name="ResolucionContingencia_Intercomunicador" xml:space="preserve">
+    <value>Intercomunicador</value>
+  </data>
+  <data name="ResolucionContingencia_PatentesEtapaAnterior" xml:space="preserve">
+    <value>Patentes de la etapa anterior</value>
+  </data>
+  <data name="ResolucionContingencia_SinPatentesAnteriores" xml:space="preserve">
+    <value>Sin patentes anteriores</value>
+  </data>
+  <data name="ResolucionContingencia_ImagenZoom" xml:space="preserve">
+    <value>Imagen tomada (con zoom)</value>
+  </data>
+  <data name="ResolucionContingencia_SinImagen" xml:space="preserve">
+    <value>Sin imagen disponible</value>
+  </data>
+  <data name="ResolucionContingencia_EnVivo" xml:space="preserve">
+    <value>EN VIVO</value>
+  </data>
+  <data name="ResolucionContingencia_CamaraPuesto" xml:space="preserve">
+    <value>Cámara del puesto</value>
+  </data>
+  <data name="ResolucionContingencia_ErrorDatosLog" xml:space="preserve">
+    <value>Datos de log no disponibles.</value>
+  </data>
+  <data name="ResolucionContingencia_Avanzando" xml:space="preserve">
+    <value>Avanzando...</value>
+  </data>
+  <data name="ResolucionContingencia_CamionAvanzado" xml:space="preserve">
+    <value>El camión fue avanzado correctamente.</value>
+  </data>
+  <data name="ResolucionContingencia_ErrorAvanzar" xml:space="preserve">
+    <value>Ocurrió un error al avanzar el camión.</value>
+  </data>
+  <data name="ResolucionContingencia_ErrorComunicacion" xml:space="preserve">
+    <value>Error de comunicación con el servidor.</value>
+  </data>
+  <data name="ResolucionContingencia_ZoomHint" xml:space="preserve">
+    <value>Rueda del mouse · arrastrar para mover</value>
+  </data>
+  <data name="ResolucionContingencia_AcercarTitle" xml:space="preserve">
+    <value>Acercar (+)</value>
+  </data>
+  <data name="ResolucionContingencia_AlejarTitle" xml:space="preserve">
+    <value>Alejar (-)</value>
+  </data>
+  <data name="ResolucionContingencia_TamanioOriginalTitle" xml:space="preserve">
+    <value>Tamaño original</value>
+  </data>
+  <data name="ResolucionContingencia_AmpliaCamara" xml:space="preserve">
+    <value>Ampliar cámara</value>
+  </data>
+  <data name="ResolucionContingencia_Cerrar" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="ResolucionContingencia_FotoCapturadaAlt" xml:space="preserve">
+    <value>Foto capturada</value>
+  </data>
+  <data name="ResolucionContingencia_CamaraPrefix" xml:space="preserve">
+    <value>Cámara </value>
+  </data>
+  <data name="ResolucionContingencia_ErrorPatenteRequerida" xml:space="preserve">
+    <value>Debe ingresar la patente del camión antes de avanzar.</value>
+  </data>
+  <data name="ListaDeTareasAutomatizadaV2_NoSePudoCargarFoto" xml:space="preserve">
+    <value>No se pudo cargar la foto tomada</value>
   </data>
 </root>

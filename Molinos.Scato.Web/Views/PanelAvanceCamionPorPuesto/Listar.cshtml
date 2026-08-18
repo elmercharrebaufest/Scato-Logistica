@@ -1,0 +1,229 @@
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Web.Helpers
+@using System
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<LogAvanceManualCamionPendienteDto>)ViewBag.Items;
+    var totalPaginas = items.ItemsPorPagina > 0
+        ? (int)Math.Ceiling((double)items.ItemsTotales / items.ItemsPorPagina)
+        : 1;
+    totalPaginas = Math.Max(1, totalPaginas);
+    var desde = items.ItemsTotales == 0 ? 0 : (items.Pagina - 1) * items.ItemsPorPagina + 1;
+    var hasta  = Math.Min(items.Pagina * items.ItemsPorPagina, items.ItemsTotales);
+    // WebGrid sólo recibe la página actual para evitar que genere su propio paginador
+    var gridItems = new ListaPaginada<LogAvanceManualCamionPendienteDto>(
+        items.Items, 1, items.Items.Count, items.Items.Count);
+
+    var grid = new WebGrid();
+    var columnas = new System.Collections.Generic.List<WebGridColumn>();
+
+    // Botones Editar + Eliminar — primera columna
+    columnas.Add(grid.Column("Editar", "",
+        item => Html.Raw(string.Format(
+            "<button type=\"button\" class=\"pac-btn-editar\" title=\"" + Textos.PanelAvanceCamionPorPuesto_BtnEditar + "\" " +
+            "data-log-id=\"{0}\">" +
+            "<span class=\"material-icons-round\" style=\"font-size:18px;\">edit</span>" +
+            "</button>" +
+            "<button type=\"button\" class=\"pac-btn-eliminar\" title=\"" + Textos.PanelAvanceCamionPorPuesto_BtnEliminar + "\" " +
+            "data-log-id=\"{0}\" data-patente=\"{1}\" data-puesto=\"{2}\">" +
+            "<span class=\"material-icons-round\" style=\"font-size:18px;\">delete</span>" +
+            "</button>",
+            item.Id,
+            System.Web.HttpUtility.HtmlAttributeEncode(item.PatenteLeida ?? string.Empty),
+            System.Web.HttpUtility.HtmlAttributeEncode(item.NombrePuesto ?? string.Empty))),
+        style: "text-align:center;width:100px;",
+        canSort: false));
+
+    // Puesto
+    columnas.Add(grid.Column("NombrePuesto", Textos.PanelAvanceCamionPorPuesto_ColPuesto,
+        item => {
+            var dotColor = item.Atendido == 1 ? "#3b82f6" : "#22c55e";
+            return Html.Raw(string.Format(
+                "<span style=\"display:inline-block;width:9px;height:9px;border-radius:50%;background:{0};margin-right:6px;vertical-align:middle;\"></span>{1}",
+                dotColor, item.NombrePuesto ?? ""));
+        }));
+
+    // Dispositivo
+    //columnas.Add(grid.Columna("CodigoDispositivo", Textos.PanelAvanceCamionPorPuesto_ColDispositivo));
+
+    // Fecha y hora de Alerta (ordenado de menor a mayor)
+    columnas.Add(grid.Column("FechaEvento", Textos.PanelAvanceCamionPorPuesto_ColFechaAlerta,
+        item => FormattingHtmlHelper.FormattedTime(item.FechaEvento)));
+
+    // Estado
+    columnas.Add(grid.Column("Estado", Textos.PanelAvanceCamionPorPuesto_ColEstado,
+        item => {
+            var esEditando = item.Atendido == 1;
+            var estado = esEditando ? Textos.PanelAvanceCamionPorPuesto_EstadoEditando : Textos.PanelAvanceCamionPorPuesto_EstadoPendiente;
+            if (esEditando)
+            {
+                return Html.Raw(string.Format(
+                    "<span class=\"pac-estado-editando\">{0}</span>", estado));
+            }
+            return Html.Raw(string.Format("<strong>{0}</strong>", estado));
+        },
+        canSort: false));
+
+    // Usuario Editando
+    columnas.Add(grid.Columna("NombreUsuario", Textos.PanelAvanceCamionPorPuesto_ColUsuarioEditando));
+
+    Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
+}
+
+<style>
+    .pac-btn-editar {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        background: none;
+        border: 1px solid #e5e7eb;
+        border-radius: 50%;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        transition: background .15s, color .15s;
+    }
+    .pac-btn-editar:hover { background: #f1f5f9; color: #078425; border-color: #078425; }
+    .pac-btn-eliminar {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        background: none;
+        border: 1px solid #e5e7eb;
+        border-radius: 50%;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        transition: background .15s, color .15s;
+        margin-left: 4px;
+    }
+    .pac-btn-eliminar:hover { background: #fee2e2; color: #dc2626; border-color: #dc2626; }
+    .pac-estado-editando {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        font-weight: 600;
+        color: #3b82f6;
+    }
+    /* Centrado de encabezados y celdas */
+    .controls table th,
+    .controls table td {
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+    /* Columna Puesto alineada a la izquierda */
+    .controls table th:nth-child(2),
+    .controls table td:nth-child(2) {
+        text-align: left !important;
+    }
+    .pac-pagination-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 12px 4px 4px;
+        font-family: 'Inter', sans-serif;
+    }
+    .pac-pager-info {
+        font-size: 13px;
+        color: #64748b;
+        font-weight: 500;
+    }
+    .pac-pager-center {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #64748b;
+    }
+    .pac-page-size-select {
+        height: 34px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 0 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #0f172a;
+        background: #f8fafc;
+        cursor: pointer;
+    }
+    .pac-pager-nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .pac-btn-prev-page,
+    .pac-btn-next-page {
+        height: 34px;
+        padding: 0 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #f8fafc;
+        font-size: 16px;
+        font-weight: 700;
+        color: #374151;
+        cursor: pointer;
+        transition: background .15s, border-color .15s;
+        line-height: 1;
+    }
+    .pac-btn-prev-page:hover:not(:disabled),
+    .pac-btn-next-page:hover:not(:disabled) {
+        background: #e5e7eb;
+        border-color: #d1d5db;
+    }
+    .pac-btn-prev-page:disabled,
+    .pac-btn-next-page:disabled {
+        opacity: .4;
+        cursor: not-allowed;
+    }
+    .pac-pager-page-info {
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        min-width: 56px;
+        text-align: center;
+    }
+</style>
+
+<div class="controls">
+    @Html.Grilla(gridItems, columnasFunc)
+</div>
+
+<div class="pac-pagination-bar"
+     data-pagina="@items.Pagina"
+     data-total-paginas="@totalPaginas"
+     data-total-items="@items.ItemsTotales"
+     data-items-por-pagina="@items.ItemsPorPagina">
+    <span class="pac-pager-info">
+        @if (items.ItemsTotales > 0)
+        {
+            @:@Textos.PanelAvanceCamionPorPuesto_PaginadorMostrando @desde - @hasta @Textos.PanelAvanceCamionPorPuesto_PaginadorDe @items.ItemsTotales
+        }
+        else
+        {
+            @:@Textos.PanelAvanceCamionPorPuesto_PaginadorSinRegistros
+        }
+    </span>
+    <div class="pac-pager-center">
+        <label for="pac-page-size" class="pac-pager-info">@Textos.PanelAvanceCamionPorPuesto_PaginadorPorPagina</label>
+        <select id="pac-page-size" class="pac-page-size-select">
+            @foreach (var sz in new[] { 5, 10, 20 })
+            {
+                <option value="@sz" @(items.ItemsPorPagina == sz ? "selected='selected'" : "")>@sz</option>
+            }
+        </select>
+    </div>
+    <div class="pac-pager-nav">
+        <button type="button" class="pac-btn-prev-page" @(items.Pagina <= 1 ? "disabled='disabled'" : "")>&#8249;</button>
+        <span class="pac-pager-page-info">@items.Pagina / @totalPaginas</span>
+        <button type="button" class="pac-btn-next-page" @(items.Pagina >= totalPaginas ? "disabled='disabled'" : "")>&#8250;</button>
+    </div>
+</div>

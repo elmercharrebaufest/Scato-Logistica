@@ -40,6 +40,8 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Workflows = servicio.ListarWorkflowsPorUsuarioYCentro(datosUsuario.NombreUsuario, datosUsuario.CentroId);
             ViewBag.Grupos = ObtenerGrupos(datosUsuario);
 
+            ViewBag.SuscripcionPanelContigencia = ObtenerSuscripcionPanelContigencia(datosUsuario);
+
             #region VisualizacionBarreras
 
             var puestoTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId);
@@ -135,12 +137,30 @@ namespace Molinos.Scato.Web.Controllers
             {
                 grupos = grupos + "," + datosUsuario.GrupoUsuario;
             }
-            var puestos = servicio.ObtenerPuestosIdPorPC(datosUsuario.NombrePc);
+            var rolesUsuario = servicio.ObtenerRolesPorNombreUsuario(datosUsuario.NombreUsuario);
+            var puestos = servicio.ObtenerPuestosIdPorRoles(rolesUsuario, datosUsuario.CentroId);
             foreach (var puesto in puestos)
             {
                 grupos = grupos + "," + datosUsuario.CentroId + "|" + puesto;
             }
             return grupos;
+        }
+
+        /// <summary>
+        /// Devuelve el JSON array con los PuestoIds a los que el usuario tiene acceso según sus roles.
+        /// Se garantiza que no haya duplicados aunque dos roles distintos apunten al mismo puesto.
+        /// </summary>
+        private string ObtenerSuscripcionPanelContigencia(DatosUsuario datosUsuario)
+        {
+            var rolesUsuario = servicio.ObtenerRolesPorNombreUsuario(datosUsuario.NombreUsuario);
+            var puestosIds = servicio.ObtenerPuestosIdPorRoles(rolesUsuario, datosUsuario.CentroId)
+                .ToList();
+            if (datosUsuario.PuestoDeTrabajoId > 0
+                && !puestosIds.Contains(datosUsuario.PuestoDeTrabajoId))
+            {
+                puestosIds.Add(datosUsuario.PuestoDeTrabajoId);
+            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(puestosIds);
         }
 
         private bool ResourceManagerExist(ResourceManager rm, CultureInfo c)

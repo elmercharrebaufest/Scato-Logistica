@@ -1,6 +1,4 @@
-﻿using System.Dynamic;
-
-namespace Molinos.Scato.Dominio
+﻿namespace Molinos.Scato.Dominio
 {
     public static class Constantes
     {
@@ -38,6 +36,7 @@ namespace Molinos.Scato.Dominio
             public const string SensoresBarreraHidraulica = "SensoresBarreraHidraulica";
             public const string NotificacionAplicacion = "NotificacionAplicacion";
             public const string EstadoServicioExterno = "EstadoServicioExterno";
+            public const string Calado = "Calado";
         }
 
         public struct Entidad
@@ -507,6 +506,19 @@ namespace Molinos.Scato.Dominio
             {
                 public const string SistemaScato = "SistemaScato";
             }
+        }
+    
+        public struct ResultadoProcesoIdentificacionVehicular
+        {
+            public const string EjecucionExitosa = "Workflow ejecutado con éxito";
+            public const string LecturaNula = "La lectura es nula";
+            public const string LecturaEncolada = "La lectura ha sido encolada";
+            public const string PuestoConImpresion = "Puesto con Impresion de Tarjeta Ejecutado";
+            public const string LecturaBalanza = "Notificacion a balanza enviada ";
+            public const string LecturaSinCola = "La lectura no tiene elemento en cola";
+            public const string LecturaSinLogId = "La lectura no tiene LogIdentificacionVehicularId";
+            public const string EnviadoAContingencia = "Recorrido no encontrado, enviado a Panel Manual";
+            public const string RecorridoNoEncontrado = "No se encontro un recorrido para la lectura";
         }
     }
 }

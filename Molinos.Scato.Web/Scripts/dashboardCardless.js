@@ -4,6 +4,86 @@ var dashboardCardless = (function () {
     var charts = {};
     var galeriaPaginaActual = 1;
     var galeriaUrlDescarga = null;
+    var expandChart = null;
+
+    // ─── Plugin: etiquetas de % + cantidad dentro de barras verticales apiladas ────
+
+    var barLabelPlugin = {
+        afterDatasetsDraw: function (chart) {
+            if (!chart.config.options._barLabels) return;
+            var ctx = chart.ctx;
+            var datasets = chart.data.datasets;
+            var numDs = datasets.length;
+
+            var totales = [];
+            var len = (datasets[0] && datasets[0].data) ? datasets[0].data.length : 0;
+            for (var i = 0; i < len; i++) {
+                var total = 0;
+                for (var ds = 0; ds < numDs; ds++) {
+                    var m = chart.getDatasetMeta(ds);
+                    if (!m.hidden) total += (Number(datasets[ds].data[i]) || 0);
+                }
+                totales.push(total);
+            }
+
+            datasets.forEach(function (dataset, dsIdx) {
+                var meta = chart.getDatasetMeta(dsIdx);
+                if (meta.hidden) return;
+                meta.data.forEach(function (bar, idx) {
+                    var value = Number(dataset.data[idx]);
+                    if (!value) return;
+                    var barH = Math.abs(bar._model.base - bar._model.y);
+                    if (barH < 22) return;
+                    var total = totales[idx];
+                    var pct = total > 0 ? formatVal((value / total) * 100) + '%' : '';
+                    var x = bar._model.x;
+                    var midY = bar._model.y + barH / 2;
+
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.font = 'bold 10px Inter, sans-serif';
+                    ctx.fillStyle = '#000000';
+                    ctx.textBaseline = 'middle';
+                    if (barH >= 36) {
+                        ctx.fillText(pct, x, midY - 7);
+                        ctx.fillText('(' + formatVal(value) + ')', x, midY + 7);
+                    } else {
+                        ctx.fillText(pct + ' (' + formatVal(value) + ')', x, midY);
+                    }
+                    ctx.restore();
+                });
+            });
+        }
+    };
+    Chart.pluginService.register(barLabelPlugin);
+
+    // ─── Plugin: etiquetas de % dentro de barras horizontales apiladas ───────────────────
+
+    var hBarLabelPlugin = {
+        afterDatasetsDraw: function (chart) {
+            if (!chart.config.options._hBarLabels) return;
+            var ctx = chart.ctx;
+            chart.data.datasets.forEach(function (dataset, dsIdx) {
+                var meta = chart.getDatasetMeta(dsIdx);
+                if (meta.hidden) return;
+                meta.data.forEach(function (bar, idx) {
+                    var value = Number(dataset.data[idx]);
+                    if (!value) return;
+                    var barW = Math.abs(bar._model.x - bar._model.base);
+                    if (barW < 24) return;
+                    var midX = bar._model.base + barW / 2;
+                    ctx.save();
+                    ctx.font = 'bold 11px Inter, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = '#000000';
+                    ctx.fillText(formatVal(value) + '%', midX, bar._model.y);
+                    ctx.restore();
+                });
+            });
+        }
+    };
+    Chart.pluginService.register(hBarLabelPlugin);
 
     // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -17,6 +97,7 @@ var dashboardCardless = (function () {
 
     function getFiltroGaleria() {
         return {
+            PuestoDeTrabajoId: $('#galeria-puesto').val() || null,
             FechaDesde: $('#galeria-fecha-desde').val() || $('#filtro-fecha-desde').val(),
             FechaHasta: $('#galeria-fecha-hasta').val() || $('#filtro-fecha-hasta').val()
         };
@@ -35,6 +116,11 @@ var dashboardCardless = (function () {
         return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
     }
 
+    function formatVal(n) {
+        if (n === null || n === undefined || isNaN(n)) return '';
+        return parseFloat(n.toFixed(2)).toString();
+    }
+
     // ─── Indicador 1: Camiones por día ─────────────────────────────────────────
 
     function cargarCamionesPorDia() {
@@ -50,33 +136,30 @@ var dashboardCardless = (function () {
 
             var labels = data.map(function (d) { return formatDate(d.Fecha); });
             var cantidades = data.map(function (d) { return d.CantidadDiaria; });
-            var acumulados = data.map(function (d) { return d.Acumulado; });
 
             var ctx = document.getElementById('chart-camiones-por-dia').getContext('2d');
             charts['camiones'] = new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: labels,
                     datasets: [
                         {
                             label: 'Camiones por día',
                             data: cantidades,
-                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.15)',
                             borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Acumulado',
-                            data: acumulados,
-                            type: 'line',
-                            fill: false,
-                            borderColor: 'rgba(255, 99, 132, 1)',
                             borderWidth: 2,
-                            pointRadius: 3
+                            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                            pointRadius: 4,
+                            fill: true,
+                            tension: 0.3
                         }
                     ]
                 },
-                options: { responsive: true, scales: { yAxes: [{ ticks: { beginAtZero: true } }] } }
+                options: {
+                    responsive: true,
+                    scales: { yAxes: [{ ticks: { beginAtZero: true } }] }
+                }
             });
         });
     }
@@ -159,14 +242,15 @@ var dashboardCardless = (function () {
                 },
                 options: {
                     responsive: true,
+                    _barLabels: true,
                     tooltips: { mode: 'index', intersect: false },
-                    scales: { xAxes: [{ stacked: false }], yAxes: [{ ticks: { beginAtZero: true } }] }
+                    scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true, ticks: { beginAtZero: true } }] }
                 }
             });
         });
     }
 
-    // ─── Indicador 4: Vehículo presente vs no presente ─────────────────────────
+    // ─── Indicador 4: Vehículo presente vs no presente
 
     function cargarVehiculoPorDia() {
         $.post(links.vehiculo, getFiltroGlobal(), function (data) {
@@ -200,14 +284,15 @@ var dashboardCardless = (function () {
                 },
                 options: {
                     responsive: true,
+                    _barLabels: true,
                     tooltips: { mode: 'index', intersect: false },
-                    scales: { xAxes: [{ stacked: false }], yAxes: [{ ticks: { beginAtZero: true } }] }
+                    scales: { xAxes: [{ stacked: true }], yAxes: [{ stacked: true, ticks: { beginAtZero: true } }] }
                 }
             });
         });
     }
 
-    // ─── Indicador 5: Reconocimiento por proveedor ─────────────────────────────
+    // ─── Indicador 5: Reconocimiento por proveedor
 
     function cargarReconocimientoPorProveedor() {
         $.post(links.proveedor, getFiltroGlobal(), function (data) {
@@ -226,16 +311,27 @@ var dashboardCardless = (function () {
                 type: 'horizontalBar',
                 data: {
                     labels: labels,
-                    datasets: [{
-                        label: 'Tasa de Reconocimiento (%)',
-                        data: data.map(function (d) { return d.TasaReconocimiento; }),
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)'
-                    }]
+                    datasets: [
+                        {
+                            label: 'Reconocido (%)',
+                            data: data.map(function (d) { return d.TasaReconocimiento; }),
+                            backgroundColor: 'rgba(75, 192, 75, 0.75)'
+                        },
+                        {
+                            label: 'No Reconocido (%)',
+                            data: data.map(function (d) { return Math.max(0, 100 - d.TasaReconocimiento); }),
+                            backgroundColor: 'rgba(255, 99, 132, 0.65)'
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
-                    tooltips: { intersect: false },
-                    scales: { xAxes: [{ ticks: { beginAtZero: true, max: 100 } }] }
+                    _hBarLabels: true,
+                    tooltips: { mode: 'index', intersect: false },
+                    scales: {
+                        xAxes: [{ stacked: true, ticks: { beginAtZero: true, max: 100 } }],
+                        yAxes: [{ stacked: true }]
+                    }
                 }
             });
         });
@@ -274,9 +370,55 @@ var dashboardCardless = (function () {
                         backgroundColor: 'rgba(153, 102, 255, 0.7)'
                     }]
                 },
-                options: { responsive: true, scales: { yAxes: [{ ticks: { beginAtZero: true } }] } }
+                options: {
+                    responsive: true,
+                    tooltips: {
+                        callbacks: {
+                            label: function (item, data) {
+                                var label = data.datasets[item.datasetIndex].label || '';
+                                var val = item.yLabel;
+                                return label + ': ' + formatVal(val);
+                            }
+                        }
+                    },
+                    scales: { yAxes: [{ ticks: { beginAtZero: true, callback: function (v) { return formatVal(v); } } }] }
+                }
             });
         });
+    }
+
+    // ─── Ampliar gráfico ──────────────────────────────────────────────────────
+
+    function abrirExpandChart(chartKey, title) {
+        var srcChart = charts[chartKey];
+        if (!srcChart) return;
+
+        $('#dc-chart-expand-title-text').text(title);
+        $('#dc-chart-expand-overlay').addClass('dc-modal-open');
+
+        if (expandChart) { expandChart.destroy(); expandChart = null; }
+
+        var ctx = document.getElementById('chart-expand-canvas').getContext('2d');
+        var cfg = srcChart.config;
+        var srcOpts = cfg.options || {};
+        expandChart = new Chart(ctx, {
+            type: cfg.type,
+            data: cfg.data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                _barLabels: srcOpts._barLabels || false,
+                _hBarLabels: srcOpts._hBarLabels || false,
+                legend: srcOpts.legend,
+                scales: srcOpts.scales,
+                tooltips: srcOpts.tooltips
+            }
+        });
+    }
+
+    function cerrarExpandChart() {
+        $('#dc-chart-expand-overlay').removeClass('dc-modal-open');
+        if (expandChart) { expandChart.destroy(); expandChart = null; }
     }
 
     // ─── Galería de capturas fallidas ──────────────────────────────────────────
@@ -392,6 +534,18 @@ var dashboardCardless = (function () {
             cargarTodos();
         });
 
+        // Botones ampliar gráfico
+        $(document).on('click', '.dc-btn-expand', function () {
+            var key = $(this).data('chart-key');
+            var title = $(this).data('chart-title');
+            abrirExpandChart(key, title);
+        });
+
+        $('#btn-cerrar-expand').on('click', cerrarExpandChart);
+        $('#dc-chart-expand-overlay').on('click', function (e) {
+            if ($(e.target).is('#dc-chart-expand-overlay')) cerrarExpandChart();
+        });
+
         // Botón buscar galería
         $('#btn-buscar-galeria').on('click', function () {
             cargarGaleria(1);
@@ -403,6 +557,9 @@ var dashboardCardless = (function () {
             var form = $('<form method="POST" action="' + galeriaUrlDescarga + '"></form>');
             form.append($('<input type="hidden" name="FechaDesde">').val(filtro.FechaDesde));
             form.append($('<input type="hidden" name="FechaHasta">').val(filtro.FechaHasta));
+            if (filtro.PuestoDeTrabajoId) {
+                form.append($('<input type="hidden" name="PuestoDeTrabajoId">').val(filtro.PuestoDeTrabajoId));
+            }
             $('body').append(form);
             form.submit();
             form.remove();

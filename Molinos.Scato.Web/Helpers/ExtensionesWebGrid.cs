@@ -22,7 +22,7 @@ namespace Molinos.Scato.Web.Helpers
             ListaPaginada<TEntidad> items,
             Func<WebGrid, WebGridColumn[]> columnas)
         {
-            var grid = new WebGrid(rowsPerPage: items.ItemsPorPagina,
+            var grid = new WebGrid(rowsPerPage: Math.Max(1, items.ItemsPorPagina),
                  sortDirectionFieldName: "dirOrden",
                  pageFieldName: "pagina",
                  sortFieldName: "ordenarPor");

@@ -11,7 +11,7 @@ namespace Molinos.Scato.Web.App_Start
     {
         public void Configuration(IAppBuilder app)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["ScatoDb"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["SignalrDb"].ConnectionString;
             GlobalHost.DependencyResolver.UseSqlServer(connectionString);
             app.MapSignalR();
         }

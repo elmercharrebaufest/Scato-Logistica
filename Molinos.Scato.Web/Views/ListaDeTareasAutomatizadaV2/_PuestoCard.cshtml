@@ -1,0 +1,59 @@
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Models
+@model PuestoCaladoModel
+
+@{
+    Layout = null;
+
+    var tieneMensajeError = !string.IsNullOrEmpty(Model.MensajeError);
+    var tienePatente = !string.IsNullOrEmpty(Model.Patente);
+    var tieneColaId = Model.ColaIdentificacionVehicularId > 0;
+    var mensajeEstado = tieneColaId
+        ? (Model.ReconocimientoExitoso ? "Patente validada con éxito" : "Patente sin circuito activo")
+        : string.Empty;
+    var tipoMensajeEstado = tieneColaId ? (Model.ReconocimientoExitoso ? "success" : "error") : string.Empty;
+}
+
+<article class="lta-v2__card" data-puesto-id="@Model.Id" data-cola-id="@Model.ColaIdentificacionVehicularId" data-patente="@Model.Patente" data-reconocimiento-exitoso="@Model.ReconocimientoExitoso.ToString().ToLowerInvariant()" data-mensaje-error="@Model.MensajeError" data-imagen-base64="@Model.ImagenBase64">
+    <header class="lta-v2__card-header">
+        <h2 class="lta-v2__card-title" data-nombre-puesto>@Model.NombrePuesto</h2>
+        <span class="lta-v2__badge @(Model.EstadoConexion ? "lta-v2__badge--success" : "lta-v2__badge--error")" data-estado-conexion title="@Model.MensajeConexion">
+            @(Model.EstadoConexion ? Textos.Conectado : Textos.Desconectado)
+        </span>
+    </header>
+
+    <div class="lta-v2__alert" data-alert-mensaje-error style="@(tieneMensajeError ? "" : "display:none")">
+        <span class="lta-v2__alert-icon">!</span>
+        <span data-alert-texto>@Model.MensajeError</span>
+    </div>
+
+    <div class="lta-v2__form">
+        <label class="lta-v2__label">Patente</label>
+        <div class="lta-v2__field">
+            <input type="text"
+                   class="lta-v2__input @(tieneColaId && !Model.ReconocimientoExitoso ? "lta-v2__input--error" : "")"
+                   placeholder="Ej: ABC 123"
+                   value="@Model.Patente"
+                   maxlength="15"
+                   @(tieneColaId ? "" : "disabled")
+                   data-input-patente />
+            <button type="button" class="lta-v2__btn lta-v2__btn--primary" data-action="aceptar" @(tieneColaId && Model.ReconocimientoExitoso ? "" : "disabled")>
+                @Textos.Aceptar
+            </button>
+            <button type="button" class="lta-v2__btn lta-v2__btn--secondary" data-action="omitir" @(tieneColaId ? "" : "disabled")>
+                Omitir
+            </button>
+        </div>
+        <div class="lta-v2__message @(tipoMensajeEstado != string.Empty ? "lta-v2__message--" + tipoMensajeEstado : "")" data-mensaje-estado>
+            @mensajeEstado
+        </div>
+    </div>
+
+    <div class="lta-v2__image">
+        <img data-imagen style="@(string.IsNullOrEmpty(Model.ImagenBase64) ? "display:none" : "")" src="@(string.IsNullOrEmpty(Model.ImagenBase64) ? "" : "data:image/jpeg;base64," + Model.ImagenBase64)" alt="Foto del vehículo" />
+        <div class="lta-v2__image-placeholder" data-imagen-placeholder style="@(string.IsNullOrEmpty(Model.ImagenBase64) ? "" : "display:none")">
+            <span class="lta-v2__image-placeholder-icon">&#128247;</span>
+            <span>@Textos.ListaDeTareasAutomatizadaV2_NoSePudoCargarFoto</span>
+        </div>
+    </div>
+</article>

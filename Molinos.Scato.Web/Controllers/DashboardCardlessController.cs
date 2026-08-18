@@ -35,7 +35,8 @@ namespace Molinos.Scato.Web.Controllers
                 };
             }
 
-            var puestos = servicio.ListarPuestosDeTrabajoPorCentro(datosUsuario.CentroId);
+            var puestos = servicio.ListarPuestosDeTrabajoPorCentro(datosUsuario.CentroId)
+                .Where(p => !string.IsNullOrEmpty(p.CodigoConfigIdentificacionVehicular));
             ViewBag.Puestos = new SelectList(puestos, "Id", "NombrePuesto");
             ViewBag.Filtro = filtro;
 

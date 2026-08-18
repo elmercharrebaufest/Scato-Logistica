@@ -1,0 +1,127 @@
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    ViewBag.Title = Textos.PanelAvanceCamionPorPuesto_Titulo;
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script type="text/javascript" src="~/signalr/hubs"></script>
+    <script type="text/javascript" src="@Url.Script("~/Scripts/panelAvanceCamionPorPuesto.js")"></script>
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+<link href="~/Content/panelAvanceCamionPorPuesto.css" rel="stylesheet" />
+
+    @using (Ajax.BeginForm("Index", null,
+    new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" },
+    new { id = "pac-search-form", @class = "form-search" }))
+{
+    <div class="pac-monitor">
+
+        <div class="pac-header">
+            <div>
+                <h1 class="pac-title">@Textos.PanelAvanceCamionPorPuesto_Titulo</h1>
+                <p class="pac-subtitle">@Textos.PanelAvanceCamionPorPuesto_Subtitulo</p>
+            </div>
+        </div>
+
+        <div id="pac-alert" style="display:none;"></div>
+
+        <div class="pac-card">
+            <div class="pac-section-title">
+                <span class="material-icons-round">local_shipping</span>
+                @Textos.PanelAvanceCamionPorPuesto_SeccionCamionesEnEspera
+            </div>
+            <div id="gridContainer" class="pac-grid-container"
+                 data-grid-url="@Url.Action("Listar", "PanelAvanceCamionPorPuesto")"
+                 data-avanzar-url="@Url.Action("AvanzarManual", "PanelAvanceCamionPorPuesto")"
+                 data-resolucion-url="@Url.Action("ResolucionContingencia", "PanelAvanceCamionPorPuesto")"
+                 data-marcar-editando-url="@Url.Action("MarcarEditando", "PanelAvanceCamionPorPuesto")"
+                 data-liberar-url="@Url.Action("LiberarRegistro", "PanelAvanceCamionPorPuesto")"
+                 data-dispositivo="@ViewBag.NombrePc"
+                 data-puesto="@ViewBag.PuestoDeTrabajoId">
+            </div>
+        </div>
+
+    </div>
+}
+
+@* Modal de confirmación *@
+<div class="pac-modal-overlay" id="pac-modal">
+    <div class="pac-modal">
+        <div class="pac-modal-header">
+            <div class="pac-modal-icon">
+                <span class="material-icons-round">warning</span>
+            </div>
+            <h2 class="pac-modal-title">@Textos.PanelAvanceCamionPorPuesto_ModalTitulo</h2>
+        </div>
+        <div class="pac-modal-body">
+            <div class="pac-modal-detail">
+                <span class="lbl">@Textos.PanelAvanceCamionPorPuesto_ModalLblPatente</span>
+                <span class="val" id="modal-patente">—</span>
+                <span class="lbl">@Textos.PanelAvanceCamionPorPuesto_ModalLblWorkflow</span>
+                <span class="val" id="modal-workflow">—</span>
+                <span class="lbl">@Textos.PanelAvanceCamionPorPuesto_ModalLblTransportista</span>
+                <span class="val" id="modal-transportista">—</span>
+                <span class="lbl">@Textos.PanelAvanceCamionPorPuesto_ModalLblPuestoDestino</span>
+                <span class="val" id="modal-puesto-nombre">—</span>
+            </div>
+            <div class="pac-modal-warning">
+                <span class="material-icons-round">bolt</span>
+                @Textos.PanelAvanceCamionPorPuesto_ModalAdvertencia
+            </div>
+        </div>
+        <div class="pac-modal-footer">
+            <button class="pac-btn-cancelar" id="pac-btn-cancelar">@Textos.PanelAvanceCamionPorPuesto_ModalCancelar</button>
+            <button class="pac-btn-confirmar" id="pac-btn-confirmar">
+                <span class="material-icons-round" style="font-size:18px;">save</span>
+                @Textos.PanelAvanceCamionPorPuesto_ModalConfirmar
+            </button>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="pac-workflow-id" value="" />
+<input type="hidden" id="pac-puesto-id" value="" />
+
+@* Modal de confirmación — Liberar registro (sin subir barrera) *@
+<div class="pac-modal-overlay" id="pac-modal-liberar">
+    <div class="pac-modal">
+        <div class="pac-modal-header">
+            <div class="pac-modal-icon" style="background:#fee2e2;">
+                <span class="material-icons-round" style="color:#dc2626;">delete</span>
+            </div>
+            <h2 class="pac-modal-title">@Textos.PanelAvanceCamionPorPuesto_ModalLiberarTitulo</h2>
+        </div>
+        <div class="pac-modal-body">
+            <div class="pac-modal-detail">
+                <span class="lbl">@Textos.PanelAvanceCamionPorPuesto_ModalLblPatente</span>
+                <span class="val" id="liberar-modal-patente">—</span>
+                <span class="lbl">@Textos.PanelAvanceCamionPorPuesto_ModalLiberarLblPuesto</span>
+                <span class="val" id="liberar-modal-puesto">—</span>
+            </div>
+            <div class="pac-modal-warning" style="background:#fee2e2;color:#991b1b;">
+                <span class="material-icons-round">warning</span>
+                @Textos.PanelAvanceCamionPorPuesto_ModalLiberarAdvertencia
+            </div>
+            <div class="pac-field-group" style="margin-top:12px;">
+                <label for="liberar-motivo" style="display:block;font-size:13px;font-weight:600;margin-bottom:4px;">@Textos.PanelAvanceCamionPorPuesto_ModalLiberarLblMotivo <span style="color:#dc2626;">*</span></label>
+                <textarea id="liberar-motivo" rows="3" maxlength="500"
+                    style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;resize:vertical;"
+                    placeholder="@Textos.PanelAvanceCamionPorPuesto_ModalLiberarMotivoPlaceholder"></textarea>
+                <span id="liberar-motivo-error" style="display:none;color:#dc2626;font-size:12px;margin-top:4px;">@Textos.PanelAvanceCamionPorPuesto_ModalLiberarMotivoRequerido</span>
+            </div>
+        </div>
+        <div class="pac-modal-footer">
+            <button class="pac-btn-cancelar" id="pac-liberar-btn-cancelar">@Textos.PanelAvanceCamionPorPuesto_ModalCancelar</button>
+            <button class="pac-btn-confirmar" id="pac-liberar-btn-confirmar" style="background:#dc2626;">
+                <span class="material-icons-round" style="font-size:18px;">delete</span>
+                @Textos.PanelAvanceCamionPorPuesto_ModalLiberarBtn
+            </button>
+        </div>
+    </div>
+</div>

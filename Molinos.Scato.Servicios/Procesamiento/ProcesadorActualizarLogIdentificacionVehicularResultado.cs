@@ -3,6 +3,7 @@ using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -17,10 +18,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var resultado = new Resultado();
 
-            Validar(comando, resultado);
-
-            if (!resultado.HayErrores)
+            try
             {
+                Validar(comando, resultado);
+                if (resultado.HayErrores)
+                    return resultado;
+
                 var log = Repositorio.ObtenerPrimero<LogIdentificacionVehicular>(x => x.Id == comando.LogId);
                 if (log == null)
                     return resultado;
@@ -34,6 +37,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     log.PuestoDeTrabajo = Repositorio.Obtener<PuestoDeTrabajo>(comando.PuestoDeTrabajoId.Value);
 
                 Repositorio.GuardarCambios();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al actualizar el resultado del log de identificación vehicular");
+                resultado.Error(nameof(Exception), ex.Message);
             }
 
             return resultado;

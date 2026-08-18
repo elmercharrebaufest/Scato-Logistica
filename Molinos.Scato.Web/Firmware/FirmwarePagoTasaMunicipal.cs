@@ -7,9 +7,8 @@ using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Servicios.Orquestador;
-using Molinos.Scato.Web.ServicioHub;
+using Molinos.Scato.Web.ServicioHub.Client;
 using Ninject.Extensions.Logging;
 using System;
 using System.Linq;
@@ -17,29 +16,37 @@ namespace Molinos.Scato.Web.Firmware
 {
     public class FirmwarePagoTasaMunicipal : FirmwareBase
     {
-        public FirmwarePagoTasaMunicipal(ILogger log, IServicioRepositorio servicioRepositorio, IListaDeWorkflows workflows, IServicioComandos comandos, IServicioOrquestador servicioOrquestador, IServicioActividadFactory<IEjecutarService> factory, HubClientFactory hubClientFactory, IRecorridoWorkflow recorridoWorkflow) :
-            base(log, servicioRepositorio, workflows, comandos, servicioOrquestador, factory, hubClientFactory, recorridoWorkflow)
+        public FirmwarePagoTasaMunicipal(
+            ILogger log, 
+            IServicioRepositorio servicioRepositorio, 
+            IListaDeWorkflows workflows, 
+            IServicioComandos comandos, 
+            IServicioOrquestador servicioOrquestador, 
+            IServicioActividadFactory<IEjecutarService> factory, 
+            HubClients hubClients, 
+            IRecorridoWorkflow recorridoWorkflow) 
+            : base(
+                  log, 
+                  servicioRepositorio, 
+                  workflows, 
+                  comandos, 
+                  servicioOrquestador, 
+                  factory, 
+                  hubClients, 
+                  recorridoWorkflow)
         {
         }
 
-        public override void ProcesarEvento(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        public override string ProcesarEvento(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
         {
             log.Info($"Procesando evento de lectura de puesto de trabajo: {lecturaPuestoDeTrabajo.PuestoDeTrabajoId} con lectura: {lecturaPuestoDeTrabajo.NumeroDeTarjeta}");
             if (!lecturaPuestoDeTrabajo.TarjetaValida)
             {
                 NotificarMensajeErrorPorSignalR(lecturaPuestoDeTrabajo);
-                log.Info("Fin - La tarjeta: {0} no es valida: {1}",
-                         lecturaPuestoDeTrabajo.NumeroDeTarjeta,
-                         lecturaPuestoDeTrabajo.MensajeError);
-                return;
+                return lecturaPuestoDeTrabajo.MensajeError;
             }
 
             var recorrido = ObtenerRecorrido(lecturaPuestoDeTrabajo);
-            if (recorrido == null)
-            {
-                return;
-            }
-
             log.Info($"Recorrido encontrado para el puesto de trabajo: {lecturaPuestoDeTrabajo.PuestoDeTrabajoId}, InstanceId: {recorrido.InstanciaWorkflow}");
             if (recorrido.Rechazado)
             {
@@ -62,7 +69,6 @@ namespace Molinos.Scato.Web.Firmware
                         }
                     }
                 }
-
                 else if (pagos.Any())
                 {
                     foreach (var pago in pagos)
@@ -80,11 +86,10 @@ namespace Molinos.Scato.Web.Firmware
                 lecturaPuestoDeTrabajo.Rechazado = true;
                 var resultadoEjecutar = EjecutarWorkflow(lecturaPuestoDeTrabajo, recorrido);
                 if (resultadoEjecutar.HayErrores)
-                {
-                    log.Error($"Error al ejecutar el workflow: {string.Join(", ", resultadoEjecutar.Errores.Select(e => $"{e.Key}: {e.Value}"))}");
                     lecturaPuestoDeTrabajo.MensajeError = string.Join(", ", resultadoEjecutar.Errores.Select(e => $"{e.Key}: {e.Value}"));
-                }
+
                 NotificarMensajeErrorPorSignalR(lecturaPuestoDeTrabajo);
+                return resultadoEjecutar.HayErrores ? lecturaPuestoDeTrabajo.MensajeError : Constantes.ResultadoProcesoIdentificacionVehicular.EjecucionExitosa;
             }
             else
             {
@@ -109,7 +114,7 @@ namespace Molinos.Scato.Web.Firmware
                     log.Error(mensajeError);
                     lecturaPuestoDeTrabajo.MensajeError = "Error al verificar el pago de tasa municipal";
                     NotificarMensajeErrorPorSignalR(lecturaPuestoDeTrabajo);
-                    return;
+                    return lecturaPuestoDeTrabajo.MensajeError;
                 }
 
                 log.Info($"Pago de tasa municipal procesado exitosamente para el puesto de trabajo: {lecturaPuestoDeTrabajo.PuestoDeTrabajoId}");
@@ -130,10 +135,11 @@ namespace Molinos.Scato.Web.Firmware
                         log.Error($"Error al ejecutar el workflow: {string.Join(", ", resultadoEjecutar.Errores.Select(e => $"{e.Key}: {e.Value}"))}");
                         lecturaPuestoDeTrabajo.MensajeError = string.Join(", ", resultadoEjecutar.Errores.Select(e => $"{e.Key}: {e.Value}"));
                         NotificarMensajeErrorPorSignalR(lecturaPuestoDeTrabajo);
-                        return;
+                        return lecturaPuestoDeTrabajo.MensajeError;
                     }
                 }
                 NotificarLecturaPorSignalR(lecturaPuestoDeTrabajo);
+                return Constantes.ResultadoProcesoIdentificacionVehicular.EjecucionExitosa;
             }
         }
 
@@ -148,17 +154,15 @@ namespace Molinos.Scato.Web.Firmware
             Resultado resultado = new Resultado();
             try
             {
-                log.Debug("EjecutarWorkflow. Tarjeta: {0} Puesto: {1}",
-                lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
-
-                var proximaAccion = recorridoWorflow.ObtenerWorkflowProximaAccionConRecorrido(lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, recorrido);
+                log.Debug("EjecutarWorkflow. Tarjeta: {0} Puesto: {1}", recorrido.TarjetaDeAcceso, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
+                var proximaAccion = recorridoWorkflow.ObtenerWorkflowProximaAccionConRecorrido(recorrido.TarjetaDeAcceso, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, recorrido);
                 var workflowId = proximaAccion.WorkflowDefinicionId;
                 var instanceId = proximaAccion.InstanceId;
                 var proximaActividad = proximaAccion.ProximaActividad;
                 var puestoDeTrabajoId = proximaAccion.PuestoDeTrabajoId;
 
                 log.Info("Ejecutando workflow. Tarjeta: {0} Puesto: {1} WorkflowId: {2} InstanceId: {3} ProximaActividad: {4} PuestoDeTrabajoId: {5}",
-                    lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
+                    recorrido.TarjetaDeAcceso, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, workflowId, instanceId, proximaActividad, puestoDeTrabajoId);
 
                 var serviciowf = factory.CrearServicio(workflowId);
                 var resultadoActividad = serviciowf.Ejecutar(instanceId, new ControlRecorridoDto

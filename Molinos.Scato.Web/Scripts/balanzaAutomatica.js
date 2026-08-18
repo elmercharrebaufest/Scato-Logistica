@@ -7,6 +7,8 @@ $(document).ready(function () {
     var notificador = $.connection.notificarUsuario;
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
+    $.connection.hub.logging = true;
+
     notificador.client.actualizarNotificaciones = function (notificacion) {
 
         if (notificacion !== null && (notificacion.TipoAlerta == 7 || notificacion.TipoAlerta == 6)) {
@@ -57,13 +59,19 @@ $(document).ready(function () {
         }
     };
 
-    // Start the connection
-    window.hubReady.done(function () {
-        notificador.server.unirseAGrupo('Automaticas');
-
-        $.post($("#actualizarEstadoSensores").val());
-
+    $.connection.hub.reconnected(function () {
+        console.warn("SignalR reconectado. Volviendo a unirse al grupo 'Automaticas'...");
+        suscribirGrupoAutomaticas(notificador);
     });
+
+    $.connection.hub.disconnected(function () {
+        console.error("Conexión SignalR perdida. Intentando reconectar en 4 segundos...");
+        setTimeout(function () {
+            iniciarConexionSignalR(notificador);
+        }, 4000);
+    });
+
+    iniciarConexionSignalR(notificador);
 
     $(".btn-aceptar").click(function () {
         VerificarPatente(this);
@@ -212,6 +220,43 @@ $(document).ready(function () {
     $(document).on('click', ".btn-modal-finalizar", AbrirModalFinalizarPesaje);
 
 });
+
+function suscribirGrupoAutomaticas(notificador) {
+    notificador.server.unirseAGrupo('Automaticas')
+        .done(function () {
+            console.log("Unido exitosamente al grupo 'Automaticas'");
+            if ($("#actualizarEstadoSensores").val()) {
+                $.post($("#actualizarEstadoSensores").val());
+            }
+        })
+        .fail(function (err) {
+            console.error("Error al unirse al grupo 'Automaticas':", err);
+        });
+}
+
+function iniciarConexionSignalR(notificador) {
+    var estado = $.connection.hub.state;
+
+    if (estado === $.signalR.connectionState.connected) {
+        console.log("SignalR ya conectado. Connection ID:", $.connection.hub.id);
+        suscribirGrupoAutomaticas(notificador);
+        return;
+    }
+
+    if (estado === $.signalR.connectionState.connecting) {
+        console.log("SignalR ya está conectando, se espera a que finalice.");
+        return;
+    }
+
+    $.connection.hub.start({ transport: ['webSockets', 'longPolling'] })
+        .done(function () {
+            console.log("SignalR iniciado. Connection ID:", $.connection.hub.id);
+            suscribirGrupoAutomaticas(notificador);
+        })
+        .fail(function (err) {
+            console.error("Error al iniciar conexión SignalR:", err);
+        });
+}
 
 function ValidarMotivo() {
     $("#error-requerido").hide();

@@ -1,11 +1,9 @@
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dependencias;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Web.Firmware;
-using Molinos.Scato.Web.Impl;
 using Molinos.Scato.Web.ServicioHub;
+using Molinos.Scato.Web.ServicioHub.Client;
 using Ninject;
 using Ninject.Web.Common;
 using System;
@@ -59,11 +57,14 @@ namespace Molinos.Scato.Web.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Load(new WebNinjectModule());
+            kernel.Bind<IServicioSuscriptor>().To<ServicioSuscriptor>().InRequestScope();
             kernel.Bind<IRecorridoWorkflow>().To<RecorridoWorkflow>().InRequestScope();
             kernel.Bind<IFirmwareFactory, FirmwareFactory>().To<FirmwareFactory>().InSingletonScope();
-            kernel.Bind<HubClient>().ToSelf().InSingletonScope();
-            kernel.Bind<HubClientNotificar>().ToSelf().InSingletonScope();
-            kernel.Bind<HubClientFactory>().ToSelf().InSingletonScope();            
+            kernel.Bind<IServicioNotificarUsuario, ServicioNotificarUsuario>().To<ServicioNotificarUsuario>().InTransientScope();
+            kernel.Bind<IHubClient>().To<HubContextClient>().InSingletonScope().Named("notificaLectura").WithConstructorArgument("hubName", "notificaLectura");
+            kernel.Bind<IHubClient>().To<HubContextClient>().InSingletonScope().Named("notificarUsuario").WithConstructorArgument("hubName", "notificarUsuario");
+            kernel.Bind<HubClients>().ToSelf().InSingletonScope();    
+            
         }
     }
 }

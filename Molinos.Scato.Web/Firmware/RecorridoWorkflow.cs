@@ -1,6 +1,5 @@
 ﻿using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Servicios;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
@@ -17,43 +16,34 @@ namespace Molinos.Scato.Web.Firmware
 
         public RecorridoWorkflow(ILogger log, IServicioRepositorio servicio, IListaDeWorkflows workflows)
         {
-            this.log = log ?? throw new ArgumentNullException(nameof(log));
-            this.servicio = servicio ?? throw new ArgumentNullException(nameof(servicio));
-            this.workflows = workflows ?? throw new ArgumentNullException(nameof(workflows));
+            this.log = log;
+            this.servicio = servicio;
+            this.workflows = workflows;
         }
 
-        public DatosRecorridoDto ObtenerRecorrido(string numeroDeTarjeta, int puestoDeTrabajoId)
+        private DatosRecorridoDto ObtenerRecorrido(string numeroDeTarjeta, int puestoDeTrabajoId)
         {
-            if (string.IsNullOrEmpty(numeroDeTarjeta))
+            log.Info($"Obteniendo recorrido activo para la tarjeta: {numeroDeTarjeta}, Puesto de Trabajo: {puestoDeTrabajoId}");
+            var recorrido = servicio.ObtenerDatosRecorridoActivo(null, numeroDeTarjeta);
+            if (recorrido == null)
             {
-                throw new ArgumentException("El numero de tarjeta no puede ser nulo o vacio.", nameof(numeroDeTarjeta));
-            }
-
-            if (puestoDeTrabajoId <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(puestoDeTrabajoId), "El id del puesto de trabajo debe ser mayor que cero.");
-            }
-
-            log.Info($"Obteniendo recorrido activo para la tarjeta: {numeroDeTarjeta}");
-            var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { numeroDeTarjeta }) ?? new DatosRecorridoDto
-            {
-                CentroCodigoSap = numeroDeTarjeta,
-                SinRecorrido = true
-            };
-            log.Info("Recorrido obtenido: {0}", JsonConvert.SerializeObject(recorrido));
-            if (!recorrido.SinRecorrido)
-            {
-                log.Info("Recorrido activo encontrado. InstanciaWorkflow: {0}, Patente: {1}, ProximaAccion: {2}",
-                recorrido.InstanciaWorkflow, recorrido.Patente, recorrido.ProximaAccion);
-                var proximaActividad = workflows.ObtenerWorkflowProximaAccion(recorrido.InstanciaWorkflow);
-                if (proximaActividad == null || string.IsNullOrEmpty(proximaActividad.ProximaAccion))
+                var datosDeRecorrido = new DatosRecorridoDto
                 {
-                    throw new InvalidOperationException($"No se ha encontrado una proxima accion para el recorrido: {recorrido.InstanciaWorkflow}");
-                }
-                log.Info(JsonConvert.SerializeObject(proximaActividad));
-                recorrido.ProximaAccion = proximaActividad.ProximaAccion;
-                recorrido.ProximaAccionMensaje = proximaActividad.Mensaje;
+                    CentroCodigoSap = numeroDeTarjeta,
+                    SinRecorrido = true
+                };
+                return datosDeRecorrido;
             }
+
+            log.Info("Recorrido activo encontrado. InstanciaWorkflow: {0}, Patente: {1}, ProximaAccion: {2}", recorrido.InstanciaWorkflow, recorrido.Patente, recorrido.ProximaAccion);
+            var proximaActividad = workflows.ObtenerWorkflowProximaAccion(recorrido.InstanciaWorkflow);
+            if (proximaActividad == null || string.IsNullOrEmpty(proximaActividad.ProximaAccion))
+                throw new InvalidOperationException($"No se ha encontrado una proxima accion para el recorrido: {recorrido.InstanciaWorkflow}");
+            
+            log.Info(JsonConvert.SerializeObject(proximaActividad));
+            recorrido.ProximaAccion = proximaActividad.ProximaAccion;
+            recorrido.ProximaAccionMensaje = proximaActividad.Mensaje;
+
             return recorrido;
         }
 

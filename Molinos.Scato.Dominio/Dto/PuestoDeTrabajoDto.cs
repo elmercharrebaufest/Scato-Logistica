@@ -166,6 +166,6 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_CodigoConfigIdentificacionVehicular")]
         public string CodigoConfigIdentificacionVehicular { get; set; }
-
+        public bool AplicaContingenciaIdentificacionVehicularPorPanelAvanceManual { get; set; }
     }
 }

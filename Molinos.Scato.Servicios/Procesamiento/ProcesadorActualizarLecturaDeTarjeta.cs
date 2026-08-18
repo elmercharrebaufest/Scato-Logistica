@@ -4,6 +4,7 @@ using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
@@ -60,7 +61,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     VideoCamaras = !puestoDeTrabajo.PidePatente || puestoDeTrabajo.FotoAlMarcarTarjeta ? Conversor.ConvertirList<VideoCamara, VideoCamaraDto>(puestoDeTrabajo.VideoCamaras.ToList()) : new List<VideoCamaraDto>(),
                     Patente = Repositorio.ObtenerProyeccion<Recorrido, string>(r => r.TarjetaDeAcceso == comando.Dto.Lectura && !r.Terminado, x => x.Patente),
                     CodigoDispositivo = comando.Dto.CodigoDispositivo,
-                    Firmware = puestoDeTrabajo.Firmware
+                    Firmware = puestoDeTrabajo.Firmware,
+                    TipoIdentificacion = TipoIdentificacionPorPuesto.IngresoPorLectura,
                 };
 
                 var codigo = comando.Dto.Lectura.Substring(0, 5);

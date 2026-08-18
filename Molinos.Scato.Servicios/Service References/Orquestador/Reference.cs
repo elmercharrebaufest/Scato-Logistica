@@ -2449,6 +2449,12 @@ namespace Molinos.Scato.Servicios.Orquestador {
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerCamaras", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerCamarasResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.CamaraDto[]> ObtenerCamarasAsync(string[] codigo);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerCamarasPorCodigoIdentificacionVehicular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerCamarasPorCodigoIdentificacionVehicularResponse")]
+        Molinos.Scato.Servicios.Orquestador.CamaraDto[] ObtenerCamarasPorCodigoIdentificacionVehicular(string codigoIdentificacionVehicular);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerCamarasPorCodigoIdentificacionVehicular", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerCamarasPorCodigoIdentificacionVehicularResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.CamaraDto[]> ObtenerCamarasPorCodigoIdentificacionVehicularAsync(string codigoIdentificacionVehicular);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarIntercomunicadores", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarIntercomunicadoresRe" +
             "sponse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarIntercomunicadores();
@@ -2807,6 +2813,14 @@ namespace Molinos.Scato.Servicios.Orquestador {
         
         public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.CamaraDto[]> ObtenerCamarasAsync(string[] codigo) {
             return base.Channel.ObtenerCamarasAsync(codigo);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.CamaraDto[] ObtenerCamarasPorCodigoIdentificacionVehicular(string codigoIdentificacionVehicular) {
+            return base.Channel.ObtenerCamarasPorCodigoIdentificacionVehicular(codigoIdentificacionVehicular);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.CamaraDto[]> ObtenerCamarasPorCodigoIdentificacionVehicularAsync(string codigoIdentificacionVehicular) {
+            return base.Channel.ObtenerCamarasPorCodigoIdentificacionVehicularAsync(codigoIdentificacionVehicular);
         }
         
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarIntercomunicadores() {

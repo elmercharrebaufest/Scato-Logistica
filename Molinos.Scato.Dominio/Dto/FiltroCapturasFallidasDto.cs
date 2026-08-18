@@ -10,5 +10,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [DataType(DataType.Date)]
         public DateTime FechaHasta { get; set; }
+
+        public int? PuestoDeTrabajoId { get; set; }
     }
 }

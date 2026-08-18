@@ -46,5 +46,7 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoAlerta TipoAlerta { get; set; }
         public string MensajeAlerta { get; set; }
         public bool Rechazado { get; set; }
+        public TipoIdentificacionPorPuesto TipoIdentificacion { get; set; }
+        public int? LogIdentificacionVehicularId { get; set; }
     }
 }

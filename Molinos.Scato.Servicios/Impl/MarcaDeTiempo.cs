@@ -1,3 +1,4 @@
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio;
@@ -37,6 +38,15 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void RegistrarInicioEnPuesto(int puestoDeTrabajoId)
         {
+            var registroAbierto = repositorio.ObtenerMasReciente<MarcaTiempoPorPuestoDeTrabajo>(
+                x => x.PuestoDeTrabajoId == puestoDeTrabajoId
+                    && x.FechaInicio.HasValue
+                    && !x.FechaFin.HasValue,
+                x => x.FechaInicio.Value);
+
+            if (registroAbierto != null)
+                return;
+
             repositorio.Agregar(new MarcaTiempoPorPuestoDeTrabajo
             {
                 PuestoDeTrabajoId = puestoDeTrabajoId,
@@ -80,29 +90,29 @@ namespace Molinos.Scato.Servicios.Impl
         private Recorrido BuscarRecorrido(string numeroDeTarjeta = null, string patente = null, Guid? instanceId = null)
         {
             if (!string.IsNullOrEmpty(numeroDeTarjeta))
-                return repositorio.ObtenerMasReciente<Recorrido>(r => r.TarjetaDeAcceso == numeroDeTarjeta, r => r.FechaInicio);
+                return repositorio.ObtenerMasReciente<Recorrido>(r => r.TarjetaDeAcceso == numeroDeTarjeta && r.Centro.Id == Constantes.Centro.IdSanLorenzo, r => r.FechaInicio);
 
             if (!string.IsNullOrEmpty(patente))
-                return repositorio.ObtenerMasReciente<Recorrido>(r => r.Patente == patente, r => r.FechaInicio);
+                return repositorio.ObtenerMasReciente<Recorrido>(r => r.Patente == patente && r.Centro.Id == Constantes.Centro.IdSanLorenzo, r => r.FechaInicio);
 
             if (instanceId.HasValue)
-                return repositorio.ObtenerMasReciente<Recorrido>(r => r.InstanciaWorkflow == instanceId.Value, r => r.FechaInicio);
+                return repositorio.ObtenerMasReciente<Recorrido>(r => r.InstanciaWorkflow == instanceId.Value && r.Centro.Id == Constantes.Centro.IdSanLorenzo, r => r.FechaInicio);
 
             return null;
         }
 
         public void RegistrarFinPorInstanciaWorkflow(Guid instanceId, int? puestoDeTrabajoId = null)
         {
+            log.Debug($"[RegistrarFinPorInstanciaWorkflow]: Registrando fin de marca de tiempo por instancia workflow {instanceId} PuestoDeTrabajoId={puestoDeTrabajoId}");
             var recorrido = BuscarRecorrido(instanceId: instanceId);
-            log.Debug($"[RegistrarFinPorInstanciaWorkflow] Recorrido encontrado: {(recorrido != null ? recorrido.Id.ToString() : "null")}");
             if (recorrido == null)
                 return;
 
+            log.Debug($"[RegistrarFinPorInstanciaWorkflow]: Se encontró recorrido {recorrido.Id} para instancia workflow {instanceId}");
             var registro = repositorio.ObtenerMasReciente<MarcaTiempoPorPuestoDeTrabajo>(
                 x => x.RecorridoId == recorrido.Id
                     && x.FechaInicio.HasValue,
                 x => x.FechaInicio.Value);
-            log.Debug($"[RegistrarFinPorInstanciaWorkflow] MarcaTiempoPorPuestoDeTrabajo encontrada: {(registro != null ? registro.Id.ToString() : "null")}");
             if (registro == null || registro.FechaFin.HasValue)
                 return;
 
@@ -111,15 +121,16 @@ namespace Molinos.Scato.Servicios.Impl
 
             registro.FechaFin = DateTime.Now;
             repositorio.GuardarCambios();
-            log.Debug($"[RegistrarFinPorInstanciaWorkflow] FechaFin registrada en Id: {registro.Id}");
         }
 
         public void RegistrarInicioPorInstanciaWorkflow(Guid instanceId)
         {
+            log.Debug($"[RegistrarInicioPorInstanciaWorkflow]: Registrando inicio de marca de tiempo por instancia workflow {instanceId}");
             var recorrido = BuscarRecorrido(instanceId: instanceId);
             if (recorrido == null)
                 return;
 
+            log.Debug($"[RegistrarInicioPorInstanciaWorkflow]: Se encontró recorrido {recorrido.Id} para instancia workflow {instanceId}");
             repositorio.Agregar(new MarcaTiempoPorPuestoDeTrabajo
             {
                 FechaInicio = DateTime.Now,

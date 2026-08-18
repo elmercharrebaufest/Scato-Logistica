@@ -150,6 +150,7 @@ $(document).ready(function () {
 
 function conectarSignalR() {
     var notificador = $.connection.notificarUsuario;
+    var hubPanelContingencia = $.connection.panelAvanceCamion;
 
     notificador.client.actualizarNotificaciones = function (notificacion) {
         if (notificacion !== null) {
@@ -160,6 +161,22 @@ function conectarSignalR() {
         }
     };
 
+    hubPanelContingencia.client.nuevaContingencia = function () {
+        mostrarAlertaPorPantalla(2, "Patente no reconocida");
+    };
+
+    var puestosPanel = [];
+    try { puestosPanel = JSON.parse(suscripcionPanelContigencia || "[]"); } catch (e) { }
+
+    $.connection.hub.start()
+            .done(function () {
+                for (var i = 0; i < puestosPanel.length; i++) {
+                    hubPanelContingencia.server.suscribirseAlPuesto(puestosPanel[i]);
+                }
+            })
+            .fail(function (err) {
+                // Conexión SignalR fallida; la grilla seguirá funcionando sin push
+            });
     
     // Start the connection
     window.hubReady.done(function () {

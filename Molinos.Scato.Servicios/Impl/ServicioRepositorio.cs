@@ -14,6 +14,8 @@ using System.ServiceModel.Configuration;
 using Microsoft.Web.Administration;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Comandos.ResultadoServicio;
+using Molinos.Scato.Dominio.Comandos.Validaciones;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.HealthCheck;
@@ -49,10 +51,11 @@ namespace Molinos.Scato.Servicios.Impl
         private readonly IConfiguracionProvider configuracion;
         private readonly IServicioOrquestador servicioOrquestador;
         private readonly IAdministradorDeCalles administradorDeCalles;
+        private readonly IServicioComandos servicioComandos;
 
         public ServicioRepositorio(IRepositorio repositorio, IConversor conversor, ILogger log, IFirmaProvider firmaProvider,
             ICalculadoraDescuento calculadora, IConfiguracionProvider configuracion, IServicioOrquestador servicioOrquestador
-            , IAdministradorDeCalles administradorDeCalles)
+            , IAdministradorDeCalles administradorDeCalles, IServicioComandos servicioComandos)
         {
             this.repositorio = repositorio;
             this.conversor = conversor;
@@ -62,6 +65,7 @@ namespace Molinos.Scato.Servicios.Impl
             this.servicioOrquestador = servicioOrquestador;
             this.configuracion = configuracion;
             this.administradorDeCalles = administradorDeCalles;
+            this.servicioComandos = servicioComandos;
         }
 
         public TipoDocumentoIdentidadDto ObtenerTipoDocumentoIdentidad(int id)
@@ -4932,7 +4936,92 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var camaras = repositorio.Listar<VideoCamara, string>(x => x.Codigo, x => x.PuestoDeTrabajo.NombrePc == nombrePc && x.PuestoDeTrabajo.Centro.Id == centroId);
 
-            return camaras.Any() ? servicioOrquestador.ObtenerUrlPorCamara(camaras.ToArray()).ToList() : new List<string>();
+            return camaras.Any()? servicioOrquestador.ObtenerUrlPorCamara(camaras.ToArray()).ToList() : new List<string>();
+        }
+
+        public IList<string> ObtenerRolesPorNombreUsuario(string nombreUsuario)
+        {
+            var usuarios = repositorio.Listar<Usuario>(
+                new System.Linq.Expressions.Expression<Func<Usuario, object>>[] { u => u.RolesAsociados },
+                u => u.NombreUsuario == nombreUsuario);
+            var usuario = usuarios.FirstOrDefault();
+            if (usuario == null || usuario.RolesAsociados == null)
+                return new List<string>();
+            return usuario.RolesAsociados.Select(r => r.Id.ToString()).Distinct().ToList();
+        }
+
+        public IList<int> ObtenerPuestosIdPorRoles(IEnumerable<string> roles, int centroId)
+        {
+            var rolesLista = roles?.ToList() ?? new List<string>();
+            return repositorio.Listar<RolAvanceCamion, int>(
+                r => r.PuestoDeTrabajo.Id,
+                r => rolesLista.Contains(r.CodigoRol)
+                  && r.PuestoDeTrabajo != null
+                  && r.PuestoDeTrabajo.Centro.Id == centroId)
+                .Distinct().ToList();
+        }
+
+        public ListaPaginada<LogAvanceManualCamionPendienteDto> ListarLogAvanceManualCamionPendientesPorRolesPaginado(
+            IEnumerable<string> roles, int centroId, int pagina, int tamanioPagina, int? puestoFallbackId = null)
+        {
+            var puestoIds = ObtenerPuestosIdPorRoles(roles, centroId);
+            if (puestoFallbackId.HasValue && puestoFallbackId.Value > 0 && !puestoIds.Contains(puestoFallbackId.Value))
+                puestoIds = puestoIds.Concat(new[] { puestoFallbackId.Value }).ToList();
+
+            var paginacion = new Paginacion("FechaEvento", DirOrden.Asc, pagina, tamanioPagina);
+            var resultado = repositorio.Listar<LogAvanceManualCamion>(
+                l => puestoIds.Contains(l.PuestoDeTrabajo.Id) && (l.Atendido == 0 || l.Atendido == 1),
+                paginacion);
+
+            var items = resultado.Items.Select(l => new LogAvanceManualCamionPendienteDto
+            {
+                Id               = l.Id,
+                PatenteLeida     = l.PatenteLeida,
+                PatenteIngresada = l.PatenteIngresada,
+                Tarjeta          = l.Tarjeta,
+                NombrePuesto     = l.PuestoDeTrabajo != null ? l.PuestoDeTrabajo.NombrePuesto : null,
+                FechaEvento      = l.FechaEvento,
+                NombreUsuario    = l.NombreUsuario,
+                MotivoFallo      = l.MotivoFallo,
+                Atendido         = l.Atendido,
+            }).ToList();
+
+            return new ListaPaginada<LogAvanceManualCamionPendienteDto>(
+                items, resultado.Pagina, resultado.ItemsPorPagina, resultado.ItemsTotales);
+        }
+
+        public int? ObtenerUltimoLogIdentificacionVehicularIdPorPuesto(int puestoId)
+        {
+            var log = repositorio.ObtenerMayor<LogIdentificacionVehicular, int>(
+                x => x.PuestoDeTrabajo != null && x.PuestoDeTrabajo.Id == puestoId,
+                x => x.Id);
+            return log?.Id;
+        }
+
+        
+
+        public LogAvanceManualCamionDetalleDto ObtenerLogAvanceManualCamion(int logId)
+        {
+            var l = repositorio.Obtener<LogAvanceManualCamion>(logId);
+            if (l == null) return null;
+
+            return new LogAvanceManualCamionDetalleDto
+            {
+                Id                 = l.Id,
+                PatenteLeida       = l.PatenteLeida,
+                PatenteIngresada   = l.PatenteIngresada,
+                WorkflowNombre     = null,
+                Transportista      = null,
+                FechaEvento        = l.FechaEvento,
+                PuestoDeTrabajoId  = l.PuestoDeTrabajo != null ? (int?)l.PuestoDeTrabajo.Id : null,
+                NombrePuesto       = l.PuestoDeTrabajo != null ? l.PuestoDeTrabajo.NombrePuesto : null,
+                NombreUsuario      = l.NombreUsuario,
+                MotivoFallo        = l.MotivoFallo,
+                Atendido           = l.Atendido,
+                Tarjeta            = l.Tarjeta,
+                CodigoDispositivoOrigen  = l.LogIdentificacionVehicularOrigen != null ? l.LogIdentificacionVehicularOrigen.CodigoDispositivo : null,
+                LogIdentificacionVehicularOrigenId = l.LogIdentificacionVehicularOrigenId,
+            };
         }
 
         private int? ObtenerMaterialIdPorInstanceIds(List<Material> materiales)
@@ -5327,12 +5416,12 @@ namespace Molinos.Scato.Servicios.Impl
             return validarProximaAccion;
         }
 
-        public DatosRecorridoDto ObtenerDatosRecorridoActivo(string patente, IList<string> lecturasTarjetaDeAcceso)
+        public DatosRecorridoDto ObtenerDatosRecorridoActivo(string patente, string lecturaTarjetaDeAcceso)
         {
             var datosRecorrido = repositorio.ObtenerProyeccion<Recorrido, DatosRecorridoDto>(
                 x =>
                 (patente == null || patente == x.Patente) && x.TarjetaDeAcceso != null && !x.Terminado &&
-                lecturasTarjetaDeAcceso.Contains(x.TarjetaDeAcceso),
+                x.TarjetaDeAcceso == lecturaTarjetaDeAcceso,
                 x => new DatosRecorridoDto
                 {
                     InstanciaWorkflow = x.InstanciaWorkflow,
@@ -5373,7 +5462,7 @@ namespace Molinos.Scato.Servicios.Impl
                 || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenDeDescargaFason
                 || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.Remito))
                 datosRecorrido.PatenteAcoplado = ObtenerPatenteAcopladoOrdenesNoGranos(datosRecorrido.Id, datosRecorrido.TipoDocumento);
-            log.Debug("ObtenerDatosRecorridoActivo: {0}", JsonConvert.SerializeObject(datosRecorrido) ?? "null");
+            
             return datosRecorrido;
         }
 
@@ -5408,6 +5497,60 @@ namespace Molinos.Scato.Servicios.Impl
                     TipoComercial = x.TipoComercial.Descripcion,
                     TipoDocumento = x.TipoDocumentoIngreso,
                 });
+        }
+
+        public DatosRecorridoDto ObtenerDatosRecorridoActivoPorPatente(string patente)
+        {
+            var datosRecorrido = repositorio.ObtenerProyeccion<Recorrido, DatosRecorridoDto>(
+                x => x.Patente == patente && !x.Terminado,
+                x => new DatosRecorridoDto
+                {
+                    InstanciaWorkflow = x.InstanciaWorkflow,
+                    NumeroDocumentoIngreso = x.NumeroDocumentoIngreso,
+                    Patente = x.Patente,
+                    TarjetaDeAcceso = x.TarjetaDeAcceso,
+                    WorkflowDefinicionId = x.WorkflowDefinicion.Id,
+                    CentroCodigoSap = x.Centro.CodigoSAP,
+                    WorkflowId = x.Workflow.Id,
+                    AdvertirCaladoEnPlanta = x.CorrespondeCaladoEnPlanta && x.CaladoEnPlanta == null,
+                    Id = x.Id,
+                    TipoVehiculo = x.TipoVehiculo,
+                    CartaDePorte = x.NumeroDocumentoIngreso,
+                    Entregador = x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && x.Vehiculo.CartaPorte.Entregador != null && x.Vehiculo.CartaPorte.Entregador.RazonSocial.ToUpper() != "SIN ENTREGA",
+                    Material = x.Material.Descripcion,
+                    PesoBrutoOrigen = x.PesoBrutoOrigen,
+                    PesoTaraOrigen = x.PesoTaraOrigen,
+                    PesoNetoOrigen = x.PesoBrutoOrigen - x.PesoTaraOrigen,
+                    PesoBruto = x.PesoBruto,
+                    PesoTara = x.PesoTara,
+                    Calle = x.Calle.Nombre,
+                    TipoDocumento = x.TipoDocumentoIngreso,
+                    TipoComercial = x.TipoComercial.Descripcion,
+                    TipoDeWorkflow = x.Workflow.TipoDeWorkflow,
+                    MaterialId = x.Material.Id,
+                    CentroId = x.Centro.Id,
+                    PatenteAcoplado = x.Vehiculo.PatenteAcoplado,
+                    Rechazado = x.Rechazado,
+                    Ctg = x.Vehiculo.CartaPorte.Cpe == true ? x.Vehiculo.CartaPorte.NroCartaPorte : x.Vehiculo.CartaPorte.CTG,
+                });
+
+            var esNoGrano = datosRecorrido != null && (datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenCargaInterna
+                || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenCargaInternaFason
+                || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenCargaFas
+                || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.OrdenDeDescargaFason
+                || datosRecorrido.TipoDocumento == TipoDocumentoIngreso.Remito);
+
+            if (esNoGrano)
+                datosRecorrido.PatenteAcoplado = ObtenerPatenteAcopladoOrdenesNoGranos(datosRecorrido.Id, datosRecorrido.TipoDocumento);
+
+            return datosRecorrido;
+        }
+
+        public DatosRecorridoDto ObtenerDatosRecorridoActivoPorTarjetaOPatente(TipoIdentificacionPorPuesto tipoIngreso, string patente, string tarjeta)
+        {
+            return tipoIngreso == TipoIdentificacionPorPuesto.IngresoPorLectura ? ObtenerDatosRecorridoActivo(null, tarjeta)
+                : tipoIngreso == TipoIdentificacionPorPuesto.IngresoPorPatente ? ObtenerDatosRecorridoActivoPorPatente(patente)
+                : null;
         }
 
         public DatosRecorridoDto ObtenerDatosRecorridoActivoPorWorkflow(Guid workflow)
@@ -9197,6 +9340,24 @@ namespace Molinos.Scato.Servicios.Impl
             }).ToList();
         }
 
+        public IList<VideoCamaraDto> ObtenerCamarasPorLogAvanceManualCamionId(int logAvanceManualCamionId)
+        {
+            var log = repositorio.Obtener<LogAvanceManualCamion>(logAvanceManualCamionId);
+            if (log == null || log.LogIdentificacionVehicularOrigenId == null)
+                return new List<VideoCamaraDto>();
+
+            var origen = repositorio.Obtener<LogIdentificacionVehicular>(log.LogIdentificacionVehicularOrigenId);
+            if (origen == null || string.IsNullOrEmpty(origen.CodigoDispositivo))
+                return new List<VideoCamaraDto>();
+
+            var camaras = servicioOrquestador.ObtenerCamarasPorCodigoIdentificacionVehicular(origen.CodigoDispositivo);
+            return camaras.Select(c => new VideoCamaraDto
+            {
+                Codigo = c.Codigo,
+                Directorio = c.Url
+            }).ToList();
+        }
+
         public bool EsPuestoPausado(int puestoId)
         {
             return repositorio.Existe<PuestoDeTrabajo>(x => x.Id == puestoId && x.PausaAutoFull);
@@ -12010,6 +12171,24 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var detalle = repositorio.Obtener<Molinos.Scato.Dominio.Entidades.LogIdentificacionVehicularDetalle>(detalleId);
             return detalle?.RutaImagen;
+        }
+
+        public IList<VideoCamaraDto> ObtenerImagenesPorLogAvanceManualCamionId(int logAvanceManualCamionId)
+        {
+            var log = repositorio.Obtener<LogAvanceManualCamion>(logAvanceManualCamionId);
+            if (log?.LogIdentificacionVehicularOrigenId == null)
+                return new List<VideoCamaraDto>();
+
+            var detalles = repositorio.Listar<Molinos.Scato.Dominio.Entidades.LogIdentificacionVehicularDetalle>(
+                d => d.LogIdentificacionVehicular.Id == log.LogIdentificacionVehicularOrigenId.Value
+                  && d.RutaImagen != null && d.RutaImagen != string.Empty);
+
+            return detalles.Select(d => new VideoCamaraDto
+            {
+                Id       = d.Id,
+                Codigo   = d.CodigoCamara,
+                Directorio = null
+            }).ToList();
         }
     }
 }

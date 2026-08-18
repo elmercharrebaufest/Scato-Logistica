@@ -11,6 +11,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
     {
         private readonly DateTime fechaDesde;
         private readonly DateTime fechaHasta;
+        private readonly int? puestoDeTrabajoId;
         private readonly int pagina;
         private const int PageSize = 15;
 
@@ -18,6 +19,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
             fechaDesde = filtro.FechaDesde;
             fechaHasta = filtro.FechaHasta;
+            puestoDeTrabajoId = filtro.PuestoDeTrabajoId;
             this.pagina = pagina < 1 ? 1 : pagina;
         }
 
@@ -37,6 +39,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                   AND d.RutaImagen  <> ''
                   AND l.FechaEvento >= @FechaDesde
                   AND l.FechaEvento <  DATEADD(DAY, 1, @FechaHasta)
+                  AND (@PuestoId IS NULL OR l.PuestoDeTrabajo_Id = @PuestoId)
                 ORDER BY l.FechaEvento DESC
                 OFFSET (@Pagina - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY;";
 
@@ -44,6 +47,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 sql,
                 new SqlParameter("@FechaDesde", fechaDesde.Date),
                 new SqlParameter("@FechaHasta", fechaHasta.Date),
+                new SqlParameter("@PuestoId", (object)puestoDeTrabajoId ?? DBNull.Value),
                 new SqlParameter("@Pagina", pagina),
                 new SqlParameter("@PageSize", PageSize)
             ).ToList();

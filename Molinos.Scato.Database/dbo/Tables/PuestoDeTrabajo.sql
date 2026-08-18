@@ -42,6 +42,7 @@
 	[GrupoBarreraCodigo] 		NVARCHAR(50) NULL, 
 	[SensorVehicular] 			NVARCHAR(35) NULL,
 	[CodigoConfigIdentificacionVehicular] NVARCHAR(100) NULL,
+    [AplicaContingenciaIdentificacionVehicularPorPanelAvanceManual] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [PK_dbo.PuestoDeTrabajo] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.PuestoDeTrabajo_dbo.Centro_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id]),
 	CONSTRAINT [FK_dbo.PuestoDeTrabajo_dbo.Balanza_Balanza_Id] FOREIGN KEY ([Balanza_Id]) REFERENCES [dbo].[Balanza] ([Id]),

@@ -45,7 +45,7 @@ namespace Molinos.Scato.Test.Controllers
 
 
 
-            servicioRepo.Setup(r => r.ObtenerDatosRecorridoActivo(It.IsAny<string>(), It.IsAny<IList<string>>()))
+            servicioRepo.Setup(r => r.ObtenerDatosRecorridoActivo(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new DatosRecorridoDto { InstanciaWorkflow = Guid.NewGuid() });
 
             workflows.Setup(w => w.ObtenerWorkflowProximaAccion(It.IsAny<Guid>()))

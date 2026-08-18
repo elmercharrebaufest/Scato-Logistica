@@ -12,8 +12,8 @@
 	<setParameter name="ServiciosScatoBinding Security Configuration" value="Transport" />
 	<setParameter name="RollingLogFileAppenderFileValue log4net.config" value="L:/ScatoLogs/ScatoMobile.log" />
 
-	<setParameter name="ClientId Config" value="08b409d6-e101-4b65-8088-2bfd770baaa7" />
-	<setParameter name="ClientSecret Config" value="1BD8Q~_jn-ga6~ZcLn3b~XC~Olmj8OUfj19KBccj" />
+	<setParameter name="ClientId Config" value="9f2e299c-37ce-42ed-b0e9-e6eb8a287581" />
+	<setParameter name="ClientSecret Config" value="Jr78Q~co2AZrBT.eRSakng4Z6U_4pV4cTJxZdavH" />
 	<setParameter name="RedirectUri Config" value="https://gsloscatoapq01.molinosagro.ad/Scato.WebMobile/signin-oidc" />
 	<setParameter name="PostLogoutRedirectUri Config" value="https://gsloscatoapq01.molinosagro.ad/Scato.WebMobile/" />
 	<setParameter name ="Use Https Config Login" value="true" />	

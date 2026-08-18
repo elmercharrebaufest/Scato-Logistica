@@ -1399,6 +1399,21 @@ namespace Molinos.Scato.Servicios
         IList<PuestoDeTrabajoDto> ListarPuestosDeTrabajoPorNombrePc(string nombrePc, int centroId);
 
         [OperationContract]
+        IList<string> ObtenerRolesPorNombreUsuario(string nombreUsuario);
+
+        [OperationContract]
+        IList<int> ObtenerPuestosIdPorRoles(IEnumerable<string> roles, int centroId);
+
+        [OperationContract]
+        ListaPaginada<LogAvanceManualCamionPendienteDto> ListarLogAvanceManualCamionPendientesPorRolesPaginado(IEnumerable<string> roles, int centroId, int pagina, int tamanioPagina, int? puestoFallbackId = null);
+
+        [OperationContract]
+        int? ObtenerUltimoLogIdentificacionVehicularIdPorPuesto(int puestoId);
+
+        [OperationContract]
+        LogAvanceManualCamionDetalleDto ObtenerLogAvanceManualCamion(int logId);
+
+        [OperationContract]
         IList<string> ListarCamarasPorNombrePc(string nombrePc, int centroId);
 
         [OperationContract]
@@ -1459,13 +1474,19 @@ namespace Molinos.Scato.Servicios
         IList<ControlDeBalanzaPesadaDto> ListarControlDeBalanza(DateTime desde, DateTime hasta);
 
         [OperationContract]
-        DatosRecorridoDto ObtenerDatosRecorridoActivo(string patente, IList<string> lecturasTarjetaDeAcceso);
+        DatosRecorridoDto ObtenerDatosRecorridoActivo(string patente, string lecturaTarjetaDeAcceso);
 
         [OperationContract]
         DatosRecorridoDto ObtenerDatosRecorridoActivoSinTarjeta(string patente, string lecturasTarjetaDeAcceso);
 
         [OperationContract]
         DatosRecorridoDto ObtenerDatosRecorridoActivoPorWorkflow(Guid workflow);
+
+        [OperationContract]
+        DatosRecorridoDto ObtenerDatosRecorridoActivoPorPatente(string patente);
+
+        [OperationContract]
+        DatosRecorridoDto ObtenerDatosRecorridoActivoPorTarjetaOPatente(TipoIdentificacionPorPuesto tipoIngreso, string patente, string tarjeta);
 
         [OperationContract]
         ValidarProximaAccionPorPuestoDto ValidarProximaActividadPorPuesto(DatosRecorridoDto recorrido, string proximaActividad, IList<PuestoDeTrabajoDto> puestos, string nombreUsuario);
@@ -2480,6 +2501,9 @@ namespace Molinos.Scato.Servicios
         IList<VideoCamaraDto> ObtenerCamarasPorNombrePc(string nombrePc, int centroId);
 
         [OperationContract]
+        IList<VideoCamaraDto> ObtenerCamarasPorLogAvanceManualCamionId(int logAvanceManualCamionId);
+
+        [OperationContract]
         bool EsPuestoPausado(int puestoId);
 
         [OperationContract]
@@ -3242,5 +3266,8 @@ namespace Molinos.Scato.Servicios
 
 		[OperationContract]
 		string ObtenerRutaImagenCaptura(int detalleId);
-    }
+
+		[OperationContract]
+		IList<VideoCamaraDto> ObtenerImagenesPorLogAvanceManualCamionId(int logAvanceManualCamionId);
+	}
 }

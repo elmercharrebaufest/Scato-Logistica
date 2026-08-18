@@ -11,11 +11,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
     {
         private readonly DateTime fechaDesde;
         private readonly DateTime fechaHasta;
+        private readonly int? puestoDeTrabajoId;
 
         public CapturasFallidasDescargaConsulta(FiltroCapturasFallidasDto filtro)
         {
             fechaDesde = filtro.FechaDesde;
             fechaHasta = filtro.FechaHasta;
+            puestoDeTrabajoId = filtro.PuestoDeTrabajoId;
         }
 
         public List<CapturaFallidaDto> Ejecutar(DbContext contexto)
@@ -34,12 +36,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                   AND d.RutaImagen  <> ''
                   AND l.FechaEvento >= @FechaDesde
                   AND l.FechaEvento <  DATEADD(DAY, 1, @FechaHasta)
+                  AND (@PuestoId IS NULL OR l.PuestoDeTrabajo_Id = @PuestoId)
                 ORDER BY l.FechaEvento DESC;";
 
             return contexto.Database.SqlQuery<CapturaFallidaDto>(
                 sql,
                 new SqlParameter("@FechaDesde", fechaDesde.Date),
-                new SqlParameter("@FechaHasta", fechaHasta.Date)
+                new SqlParameter("@FechaHasta", fechaHasta.Date),
+                new SqlParameter("@PuestoId", (object)puestoDeTrabajoId ?? DBNull.Value)
             ).ToList();
         }
     }

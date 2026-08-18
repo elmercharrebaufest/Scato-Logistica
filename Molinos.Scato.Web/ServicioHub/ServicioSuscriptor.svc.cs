@@ -11,6 +11,8 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Helpers;
+using Molinos.Scato.Web.ServicioHub.Client;
+using Molinos.Scato.Web.ServicioHub.Server;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using System;
@@ -20,6 +22,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web.UI.WebControls;
 
 namespace Molinos.Scato.Web.ServicioHub
 {
@@ -34,8 +37,8 @@ namespace Molinos.Scato.Web.ServicioHub
         private readonly IServicioActividadFactory<IPesadaService> pesadaFactory;
         private readonly IFirmwareFactory firmwareFactory;
         private readonly IServicioEstadoPuesto estadoPuesto;
-        private readonly HubClient hubClientLectura;
-        private readonly HubClientNotificar hubClientNotificar;
+        private readonly IHubClient hubClientLectura;
+        private readonly IHubClient hubClientNotificar;
 
         public ServicioSuscriptor(ILogger log,
             IServicioComandos comandos,
@@ -43,7 +46,7 @@ namespace Molinos.Scato.Web.ServicioHub
             IServicioRepositorio servicio,
             IServicioOrquestador servicioOrquestador,
             IListaDeWorkflows workflows,
-            HubClientFactory hubClientFactory,
+            HubClients hubClients,
             IServicioActividadFactory<IPesadaService> pesadaFactory,
             IServicioEstadoPuesto estadoPuesto,
             IFirmwareFactory firmwareFactory)
@@ -57,8 +60,8 @@ namespace Molinos.Scato.Web.ServicioHub
             this.pesadaFactory = pesadaFactory;
             this.firmwareFactory = firmwareFactory;
             this.estadoPuesto = estadoPuesto;
-            hubClientLectura = hubClientFactory.GetClient("notificaLectura");
-            hubClientNotificar = hubClientFactory.GetClientNotificar("notificarUsuario");
+            this.hubClientLectura = hubClients.Lectura;
+            this.hubClientNotificar = hubClients.Notificar;
         }
 
         public void Recibir(NotificacionEvento notificacion)
@@ -245,87 +248,68 @@ namespace Molinos.Scato.Web.ServicioHub
             }
         }
 
-        private void ProcesarLecturaPuesto(NotificacionEvento notificacion, LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        private string ProcesarLecturaPuesto(NotificacionEvento notificacion, LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
         {
-            if (lecturaPuestoDeTrabajo == null) return;
+            if (lecturaPuestoDeTrabajo == null) return Constantes.ResultadoProcesoIdentificacionVehicular.LecturaNula;
+
+            if (lecturaPuestoDeTrabajo.EsTarjetaSupervisor)
+            {
+                ProcesarTarjetaSupervisor(notificacion, lecturaPuestoDeTrabajo);
+                return lecturaPuestoDeTrabajo.MensajeError;
+            }
 
             if (!string.IsNullOrEmpty(lecturaPuestoDeTrabajo.Firmware))
             {
                 var firmware = firmwareFactory.Firmware<IFirmware>(lecturaPuestoDeTrabajo.Firmware);
-                firmware.Ejecutar(lecturaPuestoDeTrabajo);
+                return firmware.Ejecutar(lecturaPuestoDeTrabajo);
             }
-            else if (lecturaPuestoDeTrabajo.EsTarjetaSupervisor)
-            {
-                NotificarPuestoConPatentePorSignalR(notificacion, lecturaPuestoDeTrabajo);
-                EjecutarPuestoTarjetaSupervisor(lecturaPuestoDeTrabajo);
-
-                if (lecturaPuestoDeTrabajo.PuestoDeTrabajoImprimeTarjetaDeAcceso)
-                {
-                    lecturaPuestoDeTrabajo.MensajeError = string.Format(Textos.Error_TarjetaSupervisor, lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, notificacion.CodigoDispositivo);
-                    NotificarUsuarioErrorPorSignalR(lecturaPuestoDeTrabajo);
-                }
-
-                comandos.Ejecutar(new CrearLogTarjetaSupervisor { PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId, NumeroTarjeta = lecturaPuestoDeTrabajo.NumeroDeTarjeta });
-            }
-            else if (!lecturaPuestoDeTrabajo.PuestoDeTrabajoPidePantente && lecturaPuestoDeTrabajo.PuestoDeTrabajoImprimeTarjetaDeAcceso)
-            {
-                if (!lecturaPuestoDeTrabajo.TarjetaValida)
-                {
-                    NotificarUsuarioErrorPorSignalR(lecturaPuestoDeTrabajo);
-                    return;
-                }
-                
-                var resultadoImpresion = comandos.Ejecutar(new ImprimirTarjetaDeAcceso
-                {
-                    Dto = new ImpTarjetaDeAccesoDto
-                    {
-                        Codigo = "ImpresionTarjetaDeAcceso",
-                        Numero = lecturaPuestoDeTrabajo.NumeroDeTarjeta,
-                        Fecha = DateTime.Now.Formatted(),
-                        CentroId = lecturaPuestoDeTrabajo.CentroId,
-                        PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId
-                    },
-                    OrigenImpresion = "ServicioSuscriptor"
-                        
-                 });
-                    
-                if (resultadoImpresion.HayErrores)
-                {
-                    lecturaPuestoDeTrabajo.MensajeError = Textos.ErrorImpresionTarjetaDeAcceso;
-                    NotificarUsuarioErrorPorSignalR(lecturaPuestoDeTrabajo);
-                    return;
-                }
-
-                comandos.Ejecutar(new CrearCargaDeCupo
-                {
-                    Dto = new CargaDeCupoDto
-                    {
-                        CentroId = lecturaPuestoDeTrabajo.CentroId,
-                        PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId,
-                        Fecha = DateTime.Now,
-                        Numero = lecturaPuestoDeTrabajo.NumeroDeTarjeta,
-                        EstuvoPendiente = true
-                    }
-                });
-                EjecutarDispositivosDeEntrada(lecturaPuestoDeTrabajo);
-            }
-            else if (lecturaPuestoDeTrabajo.PuestoDeTrabajoPidePantente)
+            
+            if (lecturaPuestoDeTrabajo.PuestoDeTrabajoPidePantente)
             {
                 if (lecturaPuestoDeTrabajo.TarjetaValida && lecturaPuestoDeTrabajo.VideoCamaras.Any())
                     EjecutarDispositivosConPatente(lecturaPuestoDeTrabajo);
                 
                 if (!lecturaPuestoDeTrabajo.TarjetaValida || (lecturaPuestoDeTrabajo.PrimerNumeroDeTarjeta == lecturaPuestoDeTrabajo.NumeroDeTarjeta))
                     NotificarPuestoConPatentePorSignalR(notificacion, lecturaPuestoDeTrabajo);
+
+                return !lecturaPuestoDeTrabajo.TarjetaValida ? lecturaPuestoDeTrabajo.MensajeError : Constantes.ResultadoProcesoIdentificacionVehicular.LecturaEncolada;
             }
-            else
-            {
-                if (!lecturaPuestoDeTrabajo.TarjetaValida)
+
+            Resultado resultadoWorkflow = null;
+            if (!lecturaPuestoDeTrabajo.TarjetaValida)
                     NotificarUsuarioErrorPorSignalR(lecturaPuestoDeTrabajo);
-                else
-                    EjecutarPuestoSinPatente(lecturaPuestoDeTrabajo);
-                
-                NotificarPuestoConPatentePorSignalR(notificacion, lecturaPuestoDeTrabajo);
+            else
+                resultadoWorkflow = EjecutarWorkflowPuestoDesatendido(lecturaPuestoDeTrabajo);
+            
+            NotificarPuestoConPatentePorSignalR(notificacion, lecturaPuestoDeTrabajo);
+
+            var mensajeResultadoWorkflow = !lecturaPuestoDeTrabajo.TarjetaValida ? lecturaPuestoDeTrabajo.MensajeError 
+                : resultadoWorkflow != null && resultadoWorkflow.HayErrores ? resultadoWorkflow.Errores.FirstOrDefault().Value
+                : Constantes.ResultadoProcesoIdentificacionVehicular.EjecucionExitosa;
+            return mensajeResultadoWorkflow;
+        }
+
+        private void ProcesarTarjetaSupervisor(NotificacionEvento notificacion, LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        {
+            NotificarPuestoConPatentePorSignalR(notificacion, lecturaPuestoDeTrabajo);
+            EjecutarPuestoTarjetaSupervisor(lecturaPuestoDeTrabajo);
+
+            if (lecturaPuestoDeTrabajo.PuestoDeTrabajoImprimeTarjetaDeAcceso)
+            {
+                lecturaPuestoDeTrabajo.MensajeError = string.Format(Textos.Error_TarjetaSupervisor, lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId, notificacion.CodigoDispositivo);
+                NotificarUsuarioErrorPorSignalR(lecturaPuestoDeTrabajo);
             }
+
+            comandos.Ejecutar(new CrearLogTarjetaSupervisor { PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId, NumeroTarjeta = lecturaPuestoDeTrabajo.NumeroDeTarjeta });
+        }
+
+        private void ActualizarLogAuditoria(int logId, string resultadoWorkflow)
+        {
+            comandos.Ejecutar(new ActualizarLogIdentificacionVehicularResultado
+            {
+                LogId = logId,
+                ResultadoWorkflow = resultadoWorkflow,
+            });
         }
 
         private void NotificarUsuarioErrorPorSignalR(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, TipoAlerta tipo = TipoAlerta.Error)
@@ -508,7 +492,7 @@ namespace Molinos.Scato.Web.ServicioHub
             try
             {
                 log.Debug("Validando puesto con patente. Tarjeta: {0} Puesto: {1}", lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
-                var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { lecturaPuestoDeTrabajo.NumeroDeTarjeta });
+                var recorrido = servicio.ObtenerDatosRecorridoActivoPorTarjetaOPatente(lecturaPuestoDeTrabajo.TipoIdentificacion, lecturaPuestoDeTrabajo.Patente, lecturaPuestoDeTrabajo.NumeroDeTarjeta);
                 var proximaActividad = new ProximaAccionDto();
                 if (recorrido == null)
                 {
@@ -534,10 +518,8 @@ namespace Molinos.Scato.Web.ServicioHub
         {
             try
             {
-                log.Debug("Validando puesto sin patente. Tarjeta: {0} Puesto: {1}",
-                    lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
-                var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { lecturaPuestoDeTrabajo.NumeroDeTarjeta });
-
+                log.Debug("Validando puesto sin patente. Tarjeta: {0} Puesto: {1}", lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
+                var recorrido = servicio.ObtenerDatosRecorridoActivo(null, lecturaPuestoDeTrabajo.NumeroDeTarjeta);
                 var proximaActividad = new ProximaAccionDto();
                 if (recorrido != null)
                 {
@@ -571,9 +553,13 @@ namespace Molinos.Scato.Web.ServicioHub
                 //}
 
                 var puestos = new List<PuestoDeTrabajoDto>
+                {
+                    new PuestoDeTrabajoDto 
                     {
-                        new PuestoDeTrabajoDto {Lectura = lecturaPuestoDeTrabajo.NumeroDeTarjeta, Id = lecturaPuestoDeTrabajo.PuestoDeTrabajoId }
-                    };
+                        Lectura = lecturaPuestoDeTrabajo.NumeroDeTarjeta, 
+                        Id = lecturaPuestoDeTrabajo.PuestoDeTrabajoId 
+                    }
+                };
                 var resultado = servicio.ValidarProximaActividadPorPuesto(recorrido, proximaActividad.ProximaAccion, puestos, ConfigurationManager.AppSettings["Reportes.Username"]);
                 lecturaPuestoDeTrabajo.MensajeError = null;
 
@@ -647,29 +633,32 @@ namespace Molinos.Scato.Web.ServicioHub
             }
         }
 
-        private void EjecutarPuestoSinPatente(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        private Resultado EjecutarPuestoSinPatente(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
         {
+            var resultadoWorkflow = new Resultado();
             try
             {
-                log.Debug("Validando puesto sin patente. Tarjeta: {0} Puesto: {1}",
-                    lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
-
-                var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { lecturaPuestoDeTrabajo.NumeroDeTarjeta });
+                log.Debug("Validando puesto sin patente. Tarjeta: {0} Puesto: {1}", lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
+                var recorrido = servicio.ObtenerDatosRecorridoActivoPorTarjetaOPatente(lecturaPuestoDeTrabajo.TipoIdentificacion, lecturaPuestoDeTrabajo.Patente, lecturaPuestoDeTrabajo.NumeroDeTarjeta);
                 var proximaActividad = new ProximaAccionDto();
                 if (recorrido != null)
-                {
                     proximaActividad = workflows.ObtenerWorkflowProximaAccion(recorrido.InstanciaWorkflow);
-                }
+                
                 if (!String.IsNullOrEmpty(proximaActividad.Mensaje))
                 {
                     log.Warn("Error al obtener la proxima accion: " + proximaActividad.Mensaje);
-                    return;
+                    resultadoWorkflow.Error(string.Empty, proximaActividad.Mensaje);
+                    return resultadoWorkflow;
                 }
 
                 var puestos = new List<PuestoDeTrabajoDto>
+                {
+                    new PuestoDeTrabajoDto 
                     {
-                        new PuestoDeTrabajoDto {Lectura = lecturaPuestoDeTrabajo.NumeroDeTarjeta, Id = lecturaPuestoDeTrabajo.PuestoDeTrabajoId }
-                    };
+                        Lectura = lecturaPuestoDeTrabajo.NumeroDeTarjeta, 
+                        Id = lecturaPuestoDeTrabajo.PuestoDeTrabajoId 
+                    }
+                };
                 var resultado = servicio.ValidarProximaActividadPorPuestoSinPatente(recorrido, proximaActividad.ProximaAccion, puestos);
 
                 if (recorrido != null && recorrido.AdvertirCaladoEnPlanta)
@@ -687,7 +676,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 if (resultado.Valida)
                 {
                     var serviciowf = factory.CrearServicio(resultado.WorkflowDefinicionId);
-                    var resultadoActividad = serviciowf.Ejecutar(resultado.InstanceId, new ControlRecorridoDto
+                    resultadoWorkflow = serviciowf.Ejecutar(resultado.InstanceId, new ControlRecorridoDto
                     {
                         WorkflowInstanceId = resultado.InstanceId,
                         NombreUsuario = String.Empty,
@@ -696,10 +685,9 @@ namespace Molinos.Scato.Web.ServicioHub
                         Decision = true,
                         PuestoDeTrabajoId = resultado.PuestoDeTrabajoId
                     });
-                    if (resultadoActividad != null && resultadoActividad.HayErrores)
+                    if (resultadoWorkflow != null && resultadoWorkflow.HayErrores)
                     {
-                        log.Error("La ejecución de la actividad {0} terminó con errores: {1}",
-                                resultado.ProximaActividad, resultadoActividad.Errores.First().Value);
+                        log.Error("La ejecución de la actividad {0} terminó con errores: {1}", resultado.ProximaActividad, resultadoWorkflow.Errores.First().Value);
                     }
                 }
                 else
@@ -713,7 +701,83 @@ namespace Molinos.Scato.Web.ServicioHub
             catch (Exception e)
             {
                 log.Error(e, "Fallo la ejecucion del workflow relacionado con la tarjeta: {0}", lecturaPuestoDeTrabajo.NumeroDeTarjeta);
+                resultadoWorkflow.Error(string.Empty, e.Message);
             }
+            return resultadoWorkflow;
+        }
+
+        private Resultado EjecutarWorkflowPuestoDesatendido(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
+        {
+            var resultadoWorkflow = new Resultado();
+            try
+            {
+                var recorrido = servicio.ObtenerDatosRecorridoActivoPorTarjetaOPatente(lecturaPuestoDeTrabajo.TipoIdentificacion, lecturaPuestoDeTrabajo.Patente, lecturaPuestoDeTrabajo.NumeroDeTarjeta);
+                if (recorrido == null)
+                {
+                    resultadoWorkflow.Error(string.Empty, Constantes.ResultadoProcesoIdentificacionVehicular.RecorridoNoEncontrado);
+                    return resultadoWorkflow;
+                }
+
+                var proximaActividad = workflows.ObtenerWorkflowProximaAccion(recorrido.InstanciaWorkflow);
+                if (!string.IsNullOrEmpty(proximaActividad.Mensaje))
+                {
+                    resultadoWorkflow.Error(string.Empty, proximaActividad.Mensaje);
+                    return resultadoWorkflow;
+                }
+                
+                if (recorrido.AdvertirCaladoEnPlanta)
+                {
+                    lecturaPuestoDeTrabajo.MensajeError = string.Format(Textos.CaladoEnPlanta_Advertencia, recorrido.Patente);
+                    NotificarUsuarioErrorPorSignalR(lecturaPuestoDeTrabajo, TipoAlerta.Advertencia);
+                }
+
+                var puestos = new List<PuestoDeTrabajoDto>
+                {
+                    new PuestoDeTrabajoDto
+                    {
+                        Lectura = recorrido.TarjetaDeAcceso,
+                        Id = lecturaPuestoDeTrabajo.PuestoDeTrabajoId
+                    }
+                };
+                var resultado = servicio.ValidarProximaActividadPorPuestoSinPatente(recorrido, proximaActividad.ProximaAccion, puestos);
+                if(!resultado.Valida)
+                {
+                    lecturaPuestoDeTrabajo.TarjetaValida = false;
+                    lecturaPuestoDeTrabajo.MensajeError = resultado.MensajeError;
+                    return resultadoWorkflow;
+                }
+
+                var serviciowf = factory.CrearServicio(resultado.WorkflowDefinicionId);
+                resultadoWorkflow = serviciowf.Ejecutar(resultado.InstanceId, new ControlRecorridoDto
+                {
+                    WorkflowInstanceId = resultado.InstanceId,
+                    NombreUsuario = String.Empty,
+                    Actividad = Textos.ResourceManager.GetString("Act" + resultado.ProximaActividad) ?? resultado.ProximaActividad,
+                    ActividadXaml = resultado.ProximaActividad,
+                    Decision = true,
+                    PuestoDeTrabajoId = resultado.PuestoDeTrabajoId
+                });
+
+                if (resultadoWorkflow != null && !resultadoWorkflow.HayErrores)
+                {
+                    comandos.Ejecutar(new GuardarFotoIdentificacionVehicular
+                    {
+                        LogIdentificacionVehicularId = lecturaPuestoDeTrabajo.LogIdentificacionVehicularId.Value,
+                        CentroCodigoSap = recorrido.CentroCodigoSap,
+                        NumeroDocumentoIngreso = recorrido.NumeroDocumentoIngreso,
+                        Patente = recorrido.Patente,
+                        ProximaActividad = resultado.ProximaActividad,
+                        TipoVehiculo = recorrido.TipoVehiculo,
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "Fallo la ejecucion del workflow relacionado con la tarjeta: {0} o Patente: {1}", lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.Patente);
+                resultadoWorkflow.Error(string.Empty, e.Message);
+            }
+
+            return resultadoWorkflow;
         }
 
         private void NotificarBalanzadaPorSignalR(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, DatosRecorridoDto recorrido, string proximaActividad)
@@ -961,8 +1025,28 @@ namespace Molinos.Scato.Web.ServicioHub
                 Trigger = trigger,
             }) as ResultadoProcesarIdentificacionVehicular;
 
-            if (resultado != null && !resultado.HayErrores)
-                ProcesarLecturaPuesto(notificacion, resultado.LecturaPuestoDeTrabajo);
+            if (resultado != null && !resultado.HayErrores && resultado.LecturaPuestoDeTrabajo.LogIdentificacionVehicularId.HasValue)
+            {
+                var resultadoProceso = ProcesarLecturaPuesto(notificacion, resultado.LecturaPuestoDeTrabajo);
+                ActualizarLogAuditoria(resultado.LecturaPuestoDeTrabajo.LogIdentificacionVehicularId.Value, resultadoProceso);
+            }
+
+            if (resultado != null && resultado.EnviadoAContingencia
+                && resultado.PuestosDeTrabajoId != null
+                && resultado.PuestosDeTrabajoId.Count > 0)
+            {
+                foreach (var puestoId in resultado.PuestosDeTrabajoId)
+                {
+                    try
+                    {
+                        PanelAvanceCamionHub.NotificarNuevaContingencia(puestoId, new { });
+                    }
+                    catch (Exception exHub)
+                    {
+                        log.Warn(exHub, "No se pudo notificar SignalR nueva contingencia para puestoId {0}", puestoId);
+                    }
+                }
+            }
         }
 
         private bool DebeGuardarFotoLogALPR()

@@ -799,5 +799,8 @@ namespace Molinos.Scato.Dominio.Seguridad
 
         [Display(ResourceType = typeof(Textos), Name = "DashboardCardless_Titulo")]
         DashboardCardless = 715,
+
+        [Display(ResourceType = typeof(Textos), Name = "PanelAvanceCamionPorPuesto_Titulo")]
+        PanelAvanceCamionPorPuesto = 716,
     }
 }
