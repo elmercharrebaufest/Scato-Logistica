@@ -48,7 +48,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("Error", errorMessage);
             }
 
-            Repositorio.GuardarCambios();
             return resultado;
         }
 
@@ -94,39 +93,48 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             foreach (var item in data.Datos)
             {
-                var pagoTasaMunicipal = Repositorio.Obtener<PagosTasaMunicipal>(x => x.IdMOAPay == item.Id);
-                if (pagoTasaMunicipal != null)
+                try
                 {
-                    pagoTasaMunicipal.NumeroDocumento = item.NumeroDocumento;
-                    pagoTasaMunicipal.CuitInterviniente = item.CuitInterviniente;
-                    pagoTasaMunicipal.Dominio = item.Dominio;
-                }
-                else
-                {
-                    var tipoDocumento = (!string.IsNullOrEmpty(item.NumeroDocumento) 
-                        && (item.NumeroDocumento.EndsWith("R") || item.NumeroDocumento.EndsWith("I") || item.NumeroDocumento.EndsWith("F") || item.NumeroDocumento.EndsWith("S")))
-                     ? Constantes.MOAPay.TipoDocumento.REMITO
-                     : Constantes.MOAPay.TipoDocumento.CTG;
+                    var pagoTasaMunicipal = Repositorio.Obtener<PagosTasaMunicipal>(x => x.IdMOAPay == item.Id);
 
-                    var pago = new PagosTasaMunicipal
+                    if (pagoTasaMunicipal != null)
                     {
-                        IdMOAPay = item.Id,
-                        NumeroDocumento = item.NumeroDocumento,
-                        CuitInterviniente = item.CuitInterviniente,
-                        Dominio = item.Dominio,
-                        TipoVehiculo = item.TipoVehiculo,
-                        FechaPago = ParseFecha(item.FechaPago),
-                        FechaEmision = (DateTime)ParseFecha(item.FechaEmision),
-                        Importe = decimal.Parse(item.Importe, CultureInfo.InvariantCulture),
-                        FechaAcceso = ParseFecha(item.FechaAcceso),
-                        TipoDocumento = tipoDocumento,
-                        Disponible = true
-                    };
+                        pagoTasaMunicipal.NumeroDocumento = item.NumeroDocumento;
+                        pagoTasaMunicipal.CuitInterviniente = item.CuitInterviniente;
+                        pagoTasaMunicipal.Dominio = item.Dominio;
+                    }
+                    else
+                    {
+                        var tipoDocumento = (!string.IsNullOrEmpty(item.NumeroDocumento)
+                            && (item.NumeroDocumento.EndsWith("R") || item.NumeroDocumento.EndsWith("I") || item.NumeroDocumento.EndsWith("F") || item.NumeroDocumento.EndsWith("S")))
+                         ? Constantes.MOAPay.TipoDocumento.REMITO
+                         : Constantes.MOAPay.TipoDocumento.CTG;
 
-                    Repositorio.Agregar(pago);
+                        var pago = new PagosTasaMunicipal
+                        {
+                            IdMOAPay = item.Id,
+                            NumeroDocumento = item.NumeroDocumento,
+                            CuitInterviniente = item.CuitInterviniente,
+                            Dominio = item.Dominio,
+                            TipoVehiculo = item.TipoVehiculo,
+                            FechaPago = ParseFecha(item.FechaPago),
+                            FechaEmision = (DateTime)ParseFecha(item.FechaEmision),
+                            Importe = decimal.Parse(item.Importe, CultureInfo.InvariantCulture),
+                            FechaAcceso = ParseFecha(item.FechaAcceso),
+                            TipoDocumento = tipoDocumento,
+                            Disponible = true
+                        };
+
+                        Repositorio.Agregar(pago);
+                    }
+
+                    Repositorio.GuardarCambios();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error al intentar insertar o actualizar en PagosTasaMunicipal.");
                 }
             }
-            Repositorio.GuardarCambios();
         }
 
         private DateTime? ParseFecha(string fecha)

@@ -15,4 +15,5 @@
     [NroRecibo] NVARCHAR(20) NULL, 
     CONSTRAINT [PK_dbo.PagosTasaMunicipal] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [CHK_TipoDocumento_ValoresValidos] CHECK ([TipoDocumento] IN ('CTG', 'Remito')), 
+    CONSTRAINT [UQ_PagosTasaMunicipal_MOAPay_Id] UNIQUE NONCLUSTERED ([MOAPay_Id] ASC)
 );
