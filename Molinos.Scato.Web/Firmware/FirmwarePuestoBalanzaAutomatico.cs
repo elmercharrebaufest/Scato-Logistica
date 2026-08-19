@@ -92,7 +92,15 @@ namespace Molinos.Scato.Web.Firmware
         {
             try
             {
-                EjecutarDispositivosConCardless(lecturaPuestoDeTrabajo, recorrido);
+                if (lecturaPuestoDeTrabajo.TipoIdentificacion == TipoIdentificacionPorPuesto.IngresoPorPatente)
+                {
+                    EjecutarDispositivosConCardless(lecturaPuestoDeTrabajo, recorrido);
+                }
+
+                else
+                {
+                    EjecutarDispositivos(lecturaPuestoDeTrabajo, recorrido);
+                }
                 
                 var resultado = ValidarProximaActividad(lecturaPuestoDeTrabajo, recorrido);
                 lecturaPuestoDeTrabajo.MensajeError = null;
