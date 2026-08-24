@@ -10766,6 +10766,9 @@
   <data name="PanelDeControlExcepcionPagoMunicipal" xml:space="preserve">
     <value>Panel de control pago municipal</value>
   </data>
+  <data name="ReprocesarPagosMunicipal" xml:space="preserve">
+    <value>Reprocesar pagos de ticket municipal</value>
+  </data>
   <data name="PuestoDeTrabajo_SensorVehicular" xml:space="preserve">
     <value>Sensor Vehicular</value>
   </data>

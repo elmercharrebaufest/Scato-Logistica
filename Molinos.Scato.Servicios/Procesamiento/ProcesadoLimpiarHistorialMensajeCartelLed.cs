@@ -21,6 +21,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var resultadoMensajeCartelLed = new ResultadoMensajeCartelLedReordenado();
             var listaMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo).OrderBy(x => x.Orden).ToList();
+            Log.Debug("LimpiarHistorialMensajeCartelLed: codigo={0}, calleId={1}, limpiarCamion={2}, slotsCargados={3}.",
+                comando.Codigo, comando.CalleId, comando.LimpiarCamion, listaMensajes.Count);
+
             if(comando.LimpiarCamion)
                 LimpiarCamionEnCartel(listaMensajes, comando);
             else
@@ -36,6 +39,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (mensajeCartelLedEntity != null && mensajeCartelLedEntity.HistorialMensajeCartelLed != null)
             {
+                Log.Info("LimpiarCalleEnCartel: limpiando slot. Codigo={0}, CalleId={1}, MensajeCartelLedId={2}, Orden={3}.",
+                    codigo, calleId, mensajeCartelLedEntity.Id, mensajeCartelLedEntity.Orden);
+
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = null;
@@ -44,6 +50,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     ReordenarMensajes(listaMensajes, mensajeCalleCircular?.Orden);
 
                 Repositorio.GuardarCambios();
+            }
+            else
+            {
+                Log.Warn("LimpiarCalleEnCartel: no se encontró slot para limpiar. Codigo={0}, CalleId={1}.", codigo, calleId);
             }
         }
 

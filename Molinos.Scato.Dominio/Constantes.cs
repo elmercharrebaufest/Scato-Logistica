@@ -107,6 +107,7 @@
                 public const string Cardless = "Cardless";
                 public const string DiferenciaPesoTaraWFE = "DiferenciaPesoTaraWFE";
                 public const string GuardarFotosALPR = "GuardarFotosALPR";
+                public const string BandaHorariaStop = "BandaHorariaStop";
                 
             }
 
@@ -216,6 +217,12 @@
                 public const string Activo = "Activo";
                 public const string DummyActivo = "DummyActivo";
                 public const string DummyDatosCupoSapRespose = "DummyDatosCupoSapRespose";
+            }
+
+            public struct BandaHorariaStop
+            {
+                public const string ListaDeDistribucion = "ListaDeDistribucion";
+                public const string Umbral = "Umbral";
             }
 
             public struct MarcaSustentable

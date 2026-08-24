@@ -45,7 +45,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
             var query = new StringBuilder(@"
                     SELECT
-                    CTG = cp.CTG,
+                    CTG = CASE when r.TipoDocumentoIngreso = 1 THEN SUBSTRING(r.NumeroDocumentoIngreso, 0,5)  + '-' + SUBSTRING(r.NumeroDocumentoIngreso,5, 9) ELSE r.NumeroDocumentoIngreso END,
                     BrutoOrigen = r.PesoBrutoOrigen,
                     TaraOrigen = r.PesoTaraOrigen,
                     NetoOrigen = CASE

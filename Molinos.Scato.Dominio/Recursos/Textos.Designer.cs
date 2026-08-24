@@ -25160,6 +25160,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reprocesar pagos de ticket municipal.
+        /// </summary>
+        public static string ReprocesarPagosMunicipal {
+            get {
+                return ResourceManager.GetString("ReprocesarPagosMunicipal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Panel de Control Transacciones Cupos.
         /// </summary>
         public static string PanelDeControlTransaccionesSapCupo {

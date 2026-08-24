@@ -1113,4 +1113,7 @@
   <data name="FechaInvalida" xml:space="preserve">
     <value>The date is invalid</value>
   </data>
+  <data name="ReprocesarPagosMunicipal" xml:space="preserve">
+    <value>Reprocess municipal ticket payments</value>
+  </data>
 </root>

@@ -1,123 +1,130 @@
 ---
 name: user-story
-description: >
-  Estructura y plantillas para escribir y refinar historias de usuario, criterios de aceptación,
-  reglas de negocio y análisis de gaps. Usar cuando el PO necesita formalizar un requerimiento,
-  definir una historia, especificar acceptance criteria o priorizar el backlog.
+description: Plantillas para historias de usuario, criterios de aceptacion, reglas de negocio y analisis de gaps. Usar cuando necesites definir o refinar requerimientos funcionales de negocio.
 ---
 
-# User Story — Estructura y Plantillas
+# User Story Toolkit — Scato Logistica
 
-## Historia de Usuario
+## Historia de usuario
 
-**Formato estándar:**
-```
-Como [rol del usuario],
-quiero [objetivo o acción],
-para [beneficio o valor de negocio].
-```
-
-**Reglas:**
-- El **rol** es un usuario real del sistema (operador de planta, supervisor, administrador, sistema SAP, etc.) — no un actor técnico
-- El **objetivo** describe qué quiere hacer, no cómo se implementa
-- El **beneficio** justifica por qué es valioso — si no hay beneficio claro, la historia no debería existir
-
-**Ejemplo:**
-```
-Como operador de planta,
-quiero visualizar el estado actual de todas las barreras de un sector,
-para poder reaccionar rápidamente ante una barrera bloqueada sin tener que ir físicamente.
+```text
+Como [rol],
+quiero [objetivo],
+para [beneficio].
 ```
 
----
+**Roles reales del dominio** — usar estos, no roles técnicos:
 
-## Criterios de Aceptación
+| Rol | Descripción |
+|---|---|
+| Coordinador de planta | Opera el workflow de recepción/egreso en el centro logístico |
+| Operador de balanza | Registra pesadas brutas y tara de camiones |
+| Analista de calidad | Ejecuta y registra el calado (muestreo de granos) |
+| Despachante | Gestiona la carta de porte y el CTG/CPE ante AFIP |
+| Administrador de transporte | Gestiona choferes, vehículos y transportistas |
+| Supervisor de operaciones | Monitorea recorridos activos y resuelve bloqueos |
+| Operador de puerto | Registra operaciones de descarga/carga en muelle |
+| Administrador del sistema | Configura centros, calles, parámetros y permisos |
 
-**Formato Given/When/Then:**
+**Objetivo**: acción observable, no implementación técnica.
+**Beneficio**: valor de negocio explícito y medible.
+
+### Ejemplo correcto
+```text
+Como coordinador de planta,
+quiero registrar el arribo de un camión y confirmar el CTG ante AFIP automáticamente,
+para reducir el tiempo de espera en balanza y evitar errores manuales de confirmación.
 ```
-Dado que [contexto o precondición],
-cuando [acción del usuario o evento del sistema],
-entonces [resultado observable y verificable].
-```
 
-**Reglas:**
-- Cada criterio debe ser **verificable** — si no se puede probar, no es un criterio
-- Un criterio por escenario; no mezclar múltiples condiciones en uno
-- Cubrir: camino feliz, errores esperados, casos borde
-
-**Ejemplo:**
-```
-Dado que la barrera BARRERA-01 está en estado "Cerrada",
-cuando el operador ejecuta la acción "Abrir",
-entonces la barrera cambia a estado "Abierta" en menos de 5 segundos
-  y el evento queda registrado en el historial con usuario, fecha y hora.
-
-Dado que la barrera BARRERA-01 no responde (sin conexión),
-cuando el operador ejecuta la acción "Abrir",
-entonces se muestra el mensaje "El dispositivo no responde. Verificar conexión."
-  y el estado de la barrera permanece sin cambios.
+### Ejemplo incorrecto
+```text
+Como usuario,
+quiero que el sistema llame al endpoint confirmarArriboCPE,
+para que funcione el botón.
 ```
 
 ---
 
-## Reglas de Negocio
+## Criterios de aceptación
 
-Para invariantes y restricciones del sistema que aplican siempre (no solo en un escenario):
+Usar Dado/Cuando/Entonces. Un escenario por criterio. Siempre cubrir:
+- Camino feliz
+- Validación / error esperado
+- Caso borde relevante
 
+```text
+Dado que [contexto / precondición],
+cuando [acción del usuario],
+entonces [resultado verificable y observable].
 ```
-RN-01: Un dispositivo solo puede pertenecer a un sector a la vez.
-RN-02: Solo usuarios con permiso "ConfigBarrera" pueden crear o modificar configuraciones de barrera.
-RN-03: Un código de dispositivo es único en todo el sistema y se almacena en mayúsculas.
-RN-04: No se pueden eliminar dispositivos que tengan suscripciones activas.
-```
 
-**Formato:** `RN-[número]: [restricción en lenguaje de negocio, sin tecnicismos]`
+### Ejemplo — recepción de camión
+```text
+Dado que un camión con carta de porte activa llega al ingreso del centro,
+cuando el coordinador registra la patente y confirma el ingreso,
+entonces el sistema crea el Recorrido en estado "EnEspera" y notifica al operador de balanza.
 
----
+Dado que el camión ya tiene un Recorrido activo en el mismo centro,
+cuando el coordinador intenta registrar un nuevo ingreso con la misma patente,
+entonces el sistema muestra un error indicando que el vehículo ya tiene un recorrido abierto.
 
-## Análisis de Gaps
-
-Cuando una historia o especificación existente tiene inconsistencias o vacíos:
-
-**Formato:**
-```
-## Gaps identificados
-
-### Ambigüedades
-- [Elemento]: [Qué no está claro y por qué importa aclararlo]
-
-### Escenarios faltantes
-- [Escenario que no está cubierto y debería estarlo]
-
-### Conflictos
-- [Regla A] contradice [Regla B] en [situación específica]
-
-### Preguntas abiertas
-- ¿[Pregunta] → Decisión necesaria para poder implementar?
+Dado que la integración AFIP no está disponible,
+cuando el coordinador confirma el ingreso,
+entonces el sistema registra el Recorrido localmente y encola la confirmación CTG para reintento automático.
 ```
 
 ---
 
-## Plantilla completa de historia
+## Reglas de negocio
 
-```markdown
-## [Título corto de la historia]
-
-**Como** [rol],
-**quiero** [objetivo],
-**para** [beneficio].
-
-### Contexto
-[Descripción breve del problema o necesidad de negocio que motiva esta historia]
-
-### Criterios de aceptación
-1. Dado [contexto], cuando [acción], entonces [resultado].
-2. Dado [contexto de error], cuando [acción], entonces [mensaje/comportamiento esperado].
-3. [...]
-
-### Reglas de negocio aplicables
-- RN-XX: [...]
-
-### Notas
-- [Decisiones tomadas, referencias, dependencias con otras historias]
+```text
+RN-01: [restricción expresada como afirmación]
+RN-02: [restricción]
 ```
+
+### Ejemplo — carta de porte y CTG
+```text
+RN-01: Una carta de porte no puede tener más de un CTG activo simultáneamente.
+RN-02: El CTG debe confirmarse ante AFIP dentro de las 24hs de emitido.
+RN-03: Solo un chofer con licencia vigente puede ser asignado a un recorrido.
+RN-04: El peso neto no puede ser negativo ni superar el peso bruto declarado.
+RN-05: Un recorrido no puede pasar a estado "Cerrado" sin pesada de tara registrada.
+```
+
+---
+
+## Análisis de gaps
+
+Siempre revisar antes de cerrar los requerimientos:
+
+### Checklist de gaps
+
+- **Ambigüedades**: ¿hay términos con doble interpretación? (ej: "activo" — ¿activo en AFIP o en el sistema?)
+- **Escenarios faltantes**: ¿qué pasa si AFIP no responde? ¿si el chofer no existe en el sistema? ¿si se corta la conexión durante el proceso?
+- **Conflictos entre reglas**: ¿alguna RN contradice otra? ¿hay prioridades entre reglas?
+- **Condiciones de borde**: ¿qué pasa con peso = 0? ¿con fecha = hoy vs ayer? ¿con centros que no tienen determinado servicio?
+- **Preguntas abiertas**: listar explícitamente las preguntas que bloquean la implementación.
+- **Integraciones**: ¿la historia depende de AFIP, SAP, o un servicio externo? ¿cómo se comporta si ese servicio falla?
+
+### Template de gap
+
+```text
+❓ [Pregunta que bloquea la implementación]
+   Contexto: [por qué es importante]
+   Opciones: A) ... | B) ...
+   Impacto si no se resuelve: [alto / medio / bajo]
+```
+
+---
+
+## Priorización — criterios de negocio
+
+Para recomendar prioridad, evaluar:
+
+| Criterio | Peso |
+|---|---|
+| Impacto regulatorio (AFIP/SENASA/ONCCA) | Crítico — bloquea operación legal |
+| Impacto en flujo de camiones (throughput) | Alto — afecta capacidad diaria |
+| Frecuencia de uso | Alto si es flujo principal (balanza, carta de porte) |
+| Workaround disponible | Reduce urgencia si existe alternativa manual |
+| Deuda técnica asociada | Aumenta urgencia si el cambio se encarece con el tiempo |

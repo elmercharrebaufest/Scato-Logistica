@@ -1,0 +1,179 @@
+﻿# Configuración de modelos para agentes de GitHub Copilot CLI
+# Generada a partir del benchmark bench-2026-08-07-190306
+# Resultados: 17/18 tareas exitosas | 0 USD costo AI
+#
+# Validar coherencia con .agent.md:  .\AiEnablement\Validate-CopilotConfig.ps1
+# Corregir divergencias automáticamente: .\AiEnablement\Validate-CopilotConfig.ps1 -Fix
+# Fuente de verdad para modelos: cada .github/agents/*.agent.md
+
+# ─────────────────────────────────────────────
+# SUBAGENTES BUILT-IN (task tool)
+# ─────────────────────────────────────────────
+agents:
+
+  # Búsqueda en codebase — velocidad > razonamiento
+  # Benchmark T1: < 1s, costo mínimo
+  - name: explore
+    default_model: gpt-5.4-mini
+    context_tier: default
+    alternatives:
+      - gemini-3.6-flash
+      - claude-haiku-4.5
+
+  # Ejecución de comandos (builds, tests, lints)
+  # Benchmark T1: < 2s, no requiere razonamiento complejo
+  - name: task
+    default_model: claude-haiku-4.5
+    context_tier: default
+    alternatives:
+      - gpt-5.4-mini
+
+  # Revisión de código estático
+  # Benchmark T2: ganador claude-sonnet-5 (51s, 100% success)
+  # Variante seguridad: claude-opus-5 | variante .NET profundo: claude-opus-4.8
+  - name: code-review
+    default_model: claude-sonnet-5
+    context_tier: long_context
+    alternatives:
+      - gpt-5.5
+      - claude-opus-4.8
+    variants:
+      security_critical: claude-opus-5
+      dotnet_specific: claude-opus-4.8
+
+  # Tareas complejas multi-paso
+  # Benchmark T3: claude-opus-4.8 con alta tasa de éxito, gpt-5.6-terra más rápido
+  - name: general-purpose
+    default_model: claude-opus-4.8
+    context_tier: long_context
+    alternatives:
+      - gpt-5.6-terra
+      - claude-opus-5
+
+  # Investigación web + síntesis
+  # claude-sonnet-5: costo/calidad óptimo para búsquedas con síntesis
+  - name: research
+    default_model: claude-sonnet-5
+    context_tier: long_context
+    alternatives:
+      - gpt-5.5
+
+  # Auditoría de seguridad — forzado a modelo premium
+  # Benchmark T3 Seguridad: claude-opus-5 detecta vulnerabilidades AFIP que otros pierden
+  - name: security-review
+    default_model: claude-opus-5
+    context_tier: long_context
+    alternatives:
+      - gpt-5.6-sol
+
+  # Feedback de planes e implementaciones
+  # Sonnet-5 suficiente para análisis crítico de diseño
+  - name: rubber-duck
+    default_model: claude-sonnet-5
+    context_tier: default
+    alternatives:
+      - claude-opus-4.8
+
+# ─────────────────────────────────────────────
+# AGENTES PERSONALIZADOS
+# (referencia — el modelo se configura en cada .agent.md)
+# ─────────────────────────────────────────────
+custom_agents:
+
+  # Complejidad regulatoria CPE/CTG/AFIP
+  - name: afip-integration
+    model: claude-opus-4.8
+    context_tier: long_context
+    effort: high
+
+  # Arquitectura, ADRs, deuda técnica
+  # Benchmark Design: gpt-5.6-terra ganó (63s vs 124s de opus-4.8)
+  - name: architect
+    model: gpt-5.6-terra
+    context_tier: long_context
+    effort: xhigh
+
+  # Cambios de esquema con Molinos.Scato.Database (Publish) + EF5
+  # Benchmark Database: claude-sonnet-5 ganó (32s, 100% success)
+  - name: database-migration
+    model: claude-sonnet-5
+    context_tier: default
+    effort: medium
+
+  # Azure DevOps pipelines
+  - name: devops
+    model: claude-sonnet-5
+    context_tier: default
+    effort: medium
+
+  # Validaciones de dominio desde reglas de negocio
+  - name: domain-validation-engineer
+    model: claude-sonnet-5
+    context_tier: default
+    effort: medium
+
+  # Revisión profunda .NET 4.5.2: SOLID, seguridad, performance
+  # claude-opus-5: mejor para detección de bugs críticos
+  - name: dotnet-code-reviewer
+    model: claude-opus-5
+    context_tier: long_context
+    effort: high
+
+  # Historias de usuario y criterios de aceptación
+  - name: product-owner
+    model: gemini-3.6-flash
+    context_tier: default
+    effort: medium
+
+  # Tests NUnit, Moq, fixtures
+  - name: test-engineer
+    model: claude-sonnet-5
+    context_tier: default
+    effort: medium
+
+  # Refactor de CodeActivity > 150 líneas — OBLIGATORIO opus-4.8
+  # WF4.5 expertise + razonamiento multi-paso complejo
+  - name: wf-activity-refactor
+    model: claude-opus-4.8
+    context_tier: long_context
+    effort: high
+
+  # Diseño de XAMLX state machines
+  - name: workflow-designer
+    model: claude-opus-4.8
+    context_tier: long_context
+    effort: high
+
+  # Documentación de workflows XAMLX
+  # No requiere razonamiento premium — sonnet-5 más rápido y económico
+  - name: xamlx-documenter
+    model: claude-sonnet-5
+    context_tier: default
+    effort: medium
+
+  # Release notes, CHANGELOG y coordinación de releases
+  # Síntesis de commits/PRs + redacción PO-friendly — sonnet-5 suficiente
+  - name: release-manager
+    model: claude-sonnet-5
+    context_tier: default
+    effort: medium
+
+  # Frontend jQuery/KO/SignalR — dos portales con stacks distintos
+  # Sonnet-5 suficiente para JS legacy + patrones bien documentados en skill
+  - name: frontend-engineer
+    model: claude-sonnet-5
+    context_tier: default
+    effort: medium
+
+# ─────────────────────────────────────────────
+# ESTRATEGIA DE COSTOS
+# Benchmark: $0 costo en 18 tareas AI
+# ─────────────────────────────────────────────
+cost_optimization:
+  # T1 Búsqueda/Build:  gpt-5.4-mini, gemini-3.6-flash, haiku  → ~$0.01/tarea
+  # T2 Code Review:     claude-sonnet-5, gpt-5.5              → ~$0.05/tarea
+  # T3 Design/Seguridad: claude-opus-4.8/5, gpt-5.6-terra     → ~$0.20/tarea
+  tiers:
+    quick:    [gpt-5.4-mini, gemini-3.6-flash, claude-haiku-4.5]
+    medium:   [claude-sonnet-5, gpt-5.5]
+    premium:  [claude-opus-4.8, gpt-5.6-terra, claude-opus-5, gpt-5.6-sol]

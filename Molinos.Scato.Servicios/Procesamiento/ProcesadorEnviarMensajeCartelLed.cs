@@ -30,7 +30,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 comando.Codigo = Repositorio.ObtenerProyeccion<PuestoDeTrabajo, string>(x => x.Id == comando.PuestoDeTrabajoId, x => x.CartelLed);
             }
-            if (!string.IsNullOrEmpty(comando.Codigo))
+            if (string.IsNullOrEmpty(comando.Codigo))
+            {
+                Log.Warn("EnviarMensajeCartelLed: no se enviará mensaje porque Codigo es vacío. Mensaje={0}, PuestoDeTrabajoId={1}.",
+                    comando.Mensaje, comando.PuestoDeTrabajoId);
+            }
+            else
             {
                 ResultadoEjecutar resultado;
                 if (!comando.EsMensajeConIntervalo)

@@ -1695,6 +1695,16 @@ BEGIN
 INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('GuardarFotosALPR', 'HabilitarGuardadoALPR', '0', NULL, GETDATE(), 'SCATO')   
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'BandaHorariaStop' AND  Nombre = 'ListaDeDistribucion' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('BandaHorariaStop', 'ListaDeDistribucion', 'scato-soporte@baufest.com', NULL, GETDATE(), 'SCATO')   
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'BandaHorariaStop' AND  Nombre = 'Umbral' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral (Pantalla , Nombre , Valor , Centro_Id , FechaCreacion , UsuarioCreacion) VALUES ('BandaHorariaStop', 'Umbral', '30', NULL, GETDATE(), 'SCATO')   
+END
+
 --Equivalencias de Característica de Calidad
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
 BEGIN 

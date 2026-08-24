@@ -1,23 +1,57 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+﻿# Molinos Scato Logistica
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+Plataforma de logistica agroindustrial para gestionar recorridos, balanza, calidad y cumplimiento AFIP (CPE/CTG) en operaciones de planta, puerto y almacenamiento.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Getting Started
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+### Requisitos
+- Visual Studio 2017+ o MSBuild compatible con .NET Framework 4.5.2
+- SQL Server accesible para `ScatoDb`
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+### Solucion principal
+- `Molinos.Scato.sln`
+
+### Proyectos clave
+- `Molinos.Scato.Web`: portal principal MVC4
+- `Molinos.Scato.Servicios`: servicios WCF e integraciones
+- `Molinos.Scato.Repositorio`: acceso a datos EF5
+- `Molinos.Scato.Dominio`: entidades y reglas de negocio
+- `Molinos.Scato.Actividades` + `Molinos.Scato.Workflow`: motor WF4.5
+
+## Build and Test
+
+```powershell
+msbuild Molinos.Scato.sln /p:Configuration=Debug
+```
+
+Para build estilo CI (desde `Molinos.Scato.Build`):
+
+```powershell
+msbuild build.proj /t:Build
+msbuild build.proj /t:Testing
+```
+
+## Azure DevOps CLI compartido
+
+La configuracion base del equipo queda en `AiEnablement\azure-devops.defaults.psd1` y el bootstrap en `AiEnablement\Setup-AzureDevOpsCli.ps1`.
+
+```powershell
+.\AiEnablement\Setup-AzureDevOpsCli.ps1
+```
+
+Si queres que tambien inicie sesion en Azure CLI en ese mismo paso:
+
+```powershell
+.\AiEnablement\Setup-AzureDevOpsCli.ps1 -Login
+```
+
+
+## Contribute
+
+- Respetar arquitectura por capas: Web -> Servicios -> Repositorio -> Dominio.
+- No acceder a `ScatoDbContext` fuera de Repositorio.
+- Mantener patron comando/procesador y consultas EF existentes.
+- Para cambios de reglas de negocio, actualizar documentacion asociada en el mismo PR.
 
 ## Servicios
 

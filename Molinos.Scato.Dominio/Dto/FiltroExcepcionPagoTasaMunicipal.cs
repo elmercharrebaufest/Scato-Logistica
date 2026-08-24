@@ -7,8 +7,8 @@ namespace Molinos.Scato.Dominio.Dto
     {
         [Required(ErrorMessage = "La patente es obligatoria.")]
         [RegularExpression(
-            @"(^[A-Z]{3}[0-9]{3}$)|(^[A-Z]{2}[0-9]{3}[A-Z]{2}$)",
-            ErrorMessage = "La patente debe tener el formato AAA123 o AA123AA")]
+            @"(^[A-Z]{3}[0-9]{3}$)|(^[A-Z]{3}[0-9]{4}$)|(^[A-Z]{2}[0-9]{3}[A-Z]{2}$)",
+            ErrorMessage = "La patente debe tener el formato AAA123, AAA1234 o AA123AA")]
         [StringLength(10, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         [Display(Name = "Patente")]
         public string Patente { get; set; }

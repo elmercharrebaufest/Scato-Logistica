@@ -18,11 +18,11 @@
 <script type="text/javascript" src="@Url.Script("~/scripts/panelDePagoMunicipal.index.js")"></script>
 
 <div class="container-fluid">
-    <div class="titSecciones">Gestión de Reprocesos por Contingencia</div>
+    <div class="titSecciones">@Textos.ReprocesarPagosMunicipal</div>
 </div>
 
 <div class="container-fluid content grillaPad">
-    @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "transmisiones-form", @class = "form-search", data_mensaje_espera = Textos.PanelDeControlTransSAP }))
+    @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "transmisiones-form", @class = "form-search", data_mensaje_espera = Textos.PanelDeControlExcepcionPagoMunicipal }))
     {
         @Html.HiddenFor(model => model.TipoDeServicio)
         <div class="accordion row-fluid">

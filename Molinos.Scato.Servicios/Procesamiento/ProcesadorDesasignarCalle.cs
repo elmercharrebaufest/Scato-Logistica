@@ -26,6 +26,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(DesasignarCalle comando)
         {
+            Log.Info("DesasignarCalle: inicio. WorkflowInstanceId={0}, UltimaAsignacionId={1}.",
+                comando.InstanciaWorkflow, comando.UltimaAsignacionId);
+
             var asignaciones = Repositorio.Listar<CallePorRecorrido>(
                 x => x.FechaEgreso == null &&
                 x.Id != comando.UltimaAsignacionId &&
@@ -45,6 +48,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
                 Repositorio.GuardarCambios();
             }
+            else
+            {
+                Log.Warn("DesasignarCalle: no se encontraron asignaciones activas para WorkflowInstanceId={0}.",
+                    comando.InstanciaWorkflow);
+            }
 
             return new Resultado();
         }
@@ -52,6 +60,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private void LiberarFilaSiQuedaVacia(CallePorRecorrido asignacion)
         {
             var camionesEnFila = Repositorio.Contar<CallePorRecorrido>(x => x.FechaEgreso == null && x.Calle.Id == asignacion.Calle.Id);
+            Log.Info("LiberarFilaSiQuedaVacia: CalleId={0}, TipoCalle={1}, CamionesEnFila(incluye actual)={2}.",
+                asignacion.Calle.Id, asignacion.Calle.TipoCalle, camionesEnFila);
+
             if (camionesEnFila == 1)
             {
                 asignacion.Calle.Bloqueada = false;
@@ -61,6 +72,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     asignacion.Calle.TipoCalle == TipoCalle.Circular)
                 {
                     var calleCaladoId = asignacion.Calle.CalleCalado?.Id;
+                    if (!calleCaladoId.HasValue)
+                    {
+                        Log.Warn("LiberarFilaSiQuedaVacia: CalleId={0}. CalleCaladoId nulo; la limpieza de cartel depende de MensajeCartelLedCalador.",
+                            asignacion.Calle.Id);
+                    }
+
                     var mensajeCartelLedCaladorEntity = Repositorio.ObtenerPrimero<MensajeCartelLedCalador>(x => x.Calle.Id == calleCaladoId);
                     if (mensajeCartelLedCaladorEntity != null)
                     {
@@ -74,6 +91,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                         var cartel = servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.CartelLedCalador);
                         LimpiarHistorialMensajeCartelLed(cartel?.Valor, resultado.ListaDeMensajes);
+                    }
+                    else
+                    {
+                        Log.Warn("LiberarFilaSiQuedaVacia: CalleId={0}, CalleCaladoId={1}. No se encontró MensajeCartelLedCalador.",
+                            asignacion.Calle.Id, calleCaladoId);
                     }
                 }
 
@@ -92,10 +114,30 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Log.Debug("se realizo la desasignacion de calle postcalado, recorridoId:" + asignacion?.Recorrido?.Id + ", calleId: " + asignacion?.Calle?.Id);
                 }
             }
+            else
+            {
+                Log.Debug("LiberarFilaSiQuedaVacia: CalleId={0}. No se limpia cartel porque camiones en fila es {1}.",
+                    asignacion.Calle.Id, camionesEnFila);
+            }
         }
 
         private void LimpiarHistorialMensajeCartelLed(string codigoCartel, List<MensajeCartelLedDto> listaDeMensajes)
         {
+            if (string.IsNullOrWhiteSpace(codigoCartel))
+            {
+                Log.Warn("LimpiarHistorialMensajeCartelLed: codigo de cartel vacío.");
+            }
+
+            if (listaDeMensajes != null && !listaDeMensajes.Any())
+            {
+                Log.Warn("LimpiarHistorialMensajeCartelLed: lista de mensajes vacía para codigoCartel={0}.", codigoCartel);
+            }
+
+            if (listaDeMensajes != null)
+            {
+                Log.Info("LimpiarHistorialMensajeCartelLed: enviando {0} slots al cartel {1}.", listaDeMensajes.Count, codigoCartel);
+            }
+
             foreach (var mensajeCartelLed in listaDeMensajes)
             {
                 servicioComandos.Ejecutar(new EnviarMensajeCartelLed
