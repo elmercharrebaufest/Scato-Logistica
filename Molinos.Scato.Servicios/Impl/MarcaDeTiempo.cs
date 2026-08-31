@@ -87,6 +87,24 @@ namespace Molinos.Scato.Servicios.Impl
             repositorio.GuardarCambios();
         }
 
+        public void RegistrarInicioConIdentificacion(int puestoDeTrabajoId, string numeroDeTarjeta, string patente, TipoIdentificacionPorPuesto tipoIdentificacion)
+        {
+            var recorrido = BuscarRecorrido(numeroDeTarjeta, patente);
+            if (recorrido == null)
+                return;
+
+            var fechaActual = DateTime.Now;
+            repositorio.Agregar(new MarcaTiempoPorPuestoDeTrabajo
+            {
+                PuestoDeTrabajoId = puestoDeTrabajoId,
+                RecorridoId = recorrido.Id,
+                FechaInicio = fechaActual,
+                FechaIdentificacion = fechaActual,
+                TipoIdentificacion = tipoIdentificacion
+            });
+            repositorio.GuardarCambios();
+        }
+
         private Recorrido BuscarRecorrido(string numeroDeTarjeta = null, string patente = null, Guid? instanceId = null)
         {
             if (!string.IsNullOrEmpty(numeroDeTarjeta))

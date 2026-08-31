@@ -100,7 +100,7 @@ namespace Molinos.Scato.Actividades
                         {
                             servicio.Ejecutar(new RegistrarMarcaDeTiempo
                             {
-                                Tipo = TipoRegistroMarcaDeTiempo.Fin,
+                                Tipo = TipoSensorMarcaTiempo.Fin,
                                 InstanceId = context.WorkflowInstanceId
                             });
                         }

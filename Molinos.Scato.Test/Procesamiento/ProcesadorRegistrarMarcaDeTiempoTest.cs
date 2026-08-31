@@ -41,7 +41,7 @@ namespace Molinos.Scato.Test.Procesamiento
             var instanceId = Guid.NewGuid();
             var comando = new RegistrarMarcaDeTiempo
             {
-                Tipo = TipoRegistroMarcaDeTiempo.Inicio,
+                Tipo = TipoSensorMarcaTiempo.Inicio,
                 InstanceId = instanceId
             };
 
@@ -56,7 +56,7 @@ namespace Molinos.Scato.Test.Procesamiento
         {
             var comando = new RegistrarMarcaDeTiempo
             {
-                Tipo              = TipoRegistroMarcaDeTiempo.Identificacion,
+                Tipo              = TipoSensorMarcaTiempo.Identificacion,
                 PuestoDeTrabajoId = 10,
                 NumeroDeTarjeta   = "T001",
                 Patente           = "ABC123",
@@ -74,7 +74,7 @@ namespace Molinos.Scato.Test.Procesamiento
         {
             var comando = new RegistrarMarcaDeTiempo
             {
-                Tipo              = TipoRegistroMarcaDeTiempo.Identificacion,
+                Tipo              = TipoSensorMarcaTiempo.Identificacion,
                 PuestoDeTrabajoId = 10,
                 NumeroDeTarjeta   = null,
                 Patente           = "ABC123",
@@ -93,7 +93,7 @@ namespace Molinos.Scato.Test.Procesamiento
             var instanceId = Guid.NewGuid();
             var comando = new RegistrarMarcaDeTiempo
             {
-                Tipo       = TipoRegistroMarcaDeTiempo.Fin,
+                Tipo       = TipoSensorMarcaTiempo.Fin,
                 InstanceId = instanceId
             };
 
@@ -108,7 +108,7 @@ namespace Molinos.Scato.Test.Procesamiento
         {
             var comando = new RegistrarMarcaDeTiempo
             {
-                Tipo = TipoRegistroMarcaDeTiempo.Fin
+                Tipo = TipoSensorMarcaTiempo.Fin
             };
 
             var resultado = target.Ejecutar(comando);
@@ -122,7 +122,7 @@ namespace Molinos.Scato.Test.Procesamiento
         {
             var comando = new RegistrarMarcaDeTiempo
             {
-                Tipo              = TipoRegistroMarcaDeTiempo.InicioOFinPorSensor,
+                Tipo              = TipoSensorMarcaTiempo.InicioOFinPorSensor,
                 CodigoDispositivo = "SENSOR-02"
             };
 
@@ -142,7 +142,7 @@ namespace Molinos.Scato.Test.Procesamiento
 
             var comando = new RegistrarMarcaDeTiempo
             {
-                Tipo = TipoRegistroMarcaDeTiempo.Inicio,
+                Tipo = TipoSensorMarcaTiempo.Inicio,
                 InstanceId = instanceId
             };
 

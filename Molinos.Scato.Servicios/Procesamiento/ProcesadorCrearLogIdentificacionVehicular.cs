@@ -43,15 +43,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
 
-                _servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
-                {
-                    Tipo = TipoRegistroMarcaDeTiempo.Identificacion,
-                    PuestoDeTrabajoId = _puesto.Id,
-                    NumeroDeTarjeta = comando.Tarjeta,
-                    Patente = comando.Patente,
-                    Trigger = comando.Trigger,
-                });
-
+                RegistrarTiempo(comando);
                 ActualizarLogAuditoria(logId, "Listo para avanzar workflow", _puesto.Id, _recorrido?.Id);
 
                 resultado.LecturaPuestoDeTrabajo = CrearLecturaPuestoDeTrabajo(comando, logId);
@@ -63,6 +55,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             return resultado;
+        }
+
+        private void RegistrarTiempo(CrearLogIdentificacionVehicular comando)
+        {
+            var tipoRegistro = DeterminarTipoRegistroMarcaDeTiempo(comando.CodigoDispositivo);
+
+            _servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
+            {
+                Tipo = tipoRegistro,
+                PuestoDeTrabajoId = _puesto.Id,
+                NumeroDeTarjeta = comando.Tarjeta,
+                Patente = comando.Patente,
+                Trigger = comando.Trigger
+            });
         }
 
         private int CrearLogAuditoria(CrearLogIdentificacionVehicular comando)
@@ -259,6 +265,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
             
             var primeraLectura = Repositorio.ObtenerMenor<LecturaDeTarjeta, int>(x => x.PuestoDeTrabajo.Id == puesto.Id, x => x.Id);
             lecturaPuestoDeTrabajo.PrimerNumeroDeTarjeta = primeraLectura == null ? "" : primeraLectura.Lectura;
+        }
+
+        private TipoSensorMarcaTiempo DeterminarTipoRegistroMarcaDeTiempo(string codigoDispositivo)
+        {
+            var esSensorInicioConIdentificacion = Repositorio.Existe<SensorMarcaTiempoPorPuestoDeTrabajo>(
+                s => s.CodigoSensor == codigoDispositivo
+                && s.PuestoDeTrabajoId == _puesto.Id 
+                && s.TipoSensor == TipoSensorMarcaTiempo.InicioConIdentificacion);
+
+            return esSensorInicioConIdentificacion ? TipoSensorMarcaTiempo.InicioConIdentificacion : TipoSensorMarcaTiempo.Identificacion;
         }
     }
 }

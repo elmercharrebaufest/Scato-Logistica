@@ -4,6 +4,7 @@ using System.Threading;
 using Molinos.Scato.Actividades.Behaviour;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 
@@ -29,7 +30,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
                 {
-                    Tipo = TipoRegistroMarcaDeTiempo.Fin,
+                    Tipo = TipoSensorMarcaTiempo.Fin,
                     InstanceId = logActividad.WorkflowInstanceId
                 });
             }
@@ -38,7 +39,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
                 {
-                    Tipo = TipoRegistroMarcaDeTiempo.Inicio,
+                    Tipo = TipoSensorMarcaTiempo.Inicio,
                     InstanceId = logActividad.WorkflowInstanceId
                 });
             }

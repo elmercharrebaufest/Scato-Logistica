@@ -40,7 +40,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
                 {
-                    Tipo = TipoRegistroMarcaDeTiempo.Fin,
+                    Tipo = TipoSensorMarcaTiempo.Fin,
                     InstanceId = controlRecorrido.WorkflowInstanceId,
                     PuestoDeTrabajoId = controlRecorrido.PuestoDeTrabajoId,
                 });

@@ -140,7 +140,7 @@ namespace Molinos.Scato.Servicios.Impl
                             {
                                 servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
                                 {
-                                    Tipo = TipoRegistroMarcaDeTiempo.InicioOFinPorSensor,
+                                    Tipo = TipoSensorMarcaTiempo.InicioOFinPorSensor,
                                     CodigoDispositivo = notificacion.CodigoDispositivo
                                 });
                             }
@@ -204,7 +204,7 @@ namespace Molinos.Scato.Servicios.Impl
                                 case TipoAccionSensor.HidraulicaBajo:
                                     servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
                                     {
-                                        Tipo = TipoRegistroMarcaDeTiempo.InicioOFinPorSensor,
+                                        Tipo = TipoSensorMarcaTiempo.InicioOFinPorSensor,
                                         CodigoDispositivo = notificacion.CodigoDispositivo
                                     });
 
