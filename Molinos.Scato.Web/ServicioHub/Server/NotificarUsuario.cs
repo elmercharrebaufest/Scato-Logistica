@@ -17,7 +17,7 @@ namespace Molinos.Scato.Web.ServicioHub.Server
 
         public void Notificar(NotificacionDto notificacion)
         {
-            if (Clients != null) NotificarUsuarioBroadcaster.Notificar(Clients, notificacion);
+            if (Clients != null) Clients.OthersInGroup(notificacion.Grupo.ToLower()).actualizarNotificaciones(notificacion);
         }
 
 
