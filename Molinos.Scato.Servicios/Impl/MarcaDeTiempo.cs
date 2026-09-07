@@ -108,10 +108,10 @@ namespace Molinos.Scato.Servicios.Impl
         private Recorrido BuscarRecorrido(string numeroDeTarjeta = null, string patente = null, Guid? instanceId = null)
         {
             if (!string.IsNullOrEmpty(numeroDeTarjeta))
-                return repositorio.ObtenerMasReciente<Recorrido>(r => r.TarjetaDeAcceso == numeroDeTarjeta && r.Centro.Id == Constantes.Centro.IdSanLorenzo, r => r.FechaInicio);
+                return repositorio.ObtenerMasReciente<Recorrido>(r => r.TarjetaDeAcceso == numeroDeTarjeta && r.Centro.Id == Constantes.Centro.IdSanLorenzo && r.Terminado == false, r => r.FechaInicio);
 
             if (!string.IsNullOrEmpty(patente))
-                return repositorio.ObtenerMasReciente<Recorrido>(r => r.Patente == patente && r.Centro.Id == Constantes.Centro.IdSanLorenzo, r => r.FechaInicio);
+                return repositorio.ObtenerMasReciente<Recorrido>(r => r.Patente == patente && r.Centro.Id == Constantes.Centro.IdSanLorenzo && r.Terminado == false, r => r.FechaInicio);
 
             if (instanceId.HasValue)
                 return repositorio.ObtenerMasReciente<Recorrido>(r => r.InstanciaWorkflow == instanceId.Value && r.Centro.Id == Constantes.Centro.IdSanLorenzo, r => r.FechaInicio);
@@ -158,17 +158,19 @@ namespace Molinos.Scato.Servicios.Impl
             repositorio.GuardarCambios();
         }
 
-        public void RegistrarInicioPorPuestoDeTrabajo(int puestoDeTrabajoId)
+        public void RegistrarInicioPorGaritaIngreso(int puestoDeTrabajoId)
         {
+            var date = DateTime.Now;
             repositorio.Agregar(new MarcaTiempoPorPuestoDeTrabajo
             {
-                FechaInicio = DateTime.Now,
-                PuestoDeTrabajoId = puestoDeTrabajoId
+                FechaInicio = date,
+                PuestoDeTrabajoId = puestoDeTrabajoId,
+                FechaIdentificacion = date,
             });
             repositorio.GuardarCambios();
         }
 
-        public void RegistrarFinPorPuestoDeTrabajo(int puestoDeTrabajoId)
+        public void RegistrarFinPorGaritaIngreso(int puestoDeTrabajoId, TipoIdentificacionPorPuesto tipoIngreso)
         {
             var registro = repositorio.ObtenerMasReciente<MarcaTiempoPorPuestoDeTrabajo>(
                 x => x.PuestoDeTrabajoId == puestoDeTrabajoId
@@ -179,6 +181,7 @@ namespace Molinos.Scato.Servicios.Impl
                 return;
 
             registro.FechaFin = DateTime.Now;
+            registro.TipoIdentificacion = tipoIngreso;
             repositorio.GuardarCambios();
         }
     }

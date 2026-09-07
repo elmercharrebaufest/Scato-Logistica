@@ -15,8 +15,8 @@ namespace Molinos.Scato.Servicios.Interfaces
 
         void RegistrarInicioPorInstanciaWorkflow(Guid instanceId);
 
-        void RegistrarInicioPorPuestoDeTrabajo(int puestoDeTrabajoId);
+        void RegistrarInicioPorGaritaIngreso(int puestoDeTrabajoId);
 
-        void RegistrarFinPorPuestoDeTrabajo(int puestoDeTrabajoId);
+        void RegistrarFinPorGaritaIngreso(int puestoDeTrabajoId, TipoIdentificacionPorPuesto tipoIdentificacion);
     }
 }

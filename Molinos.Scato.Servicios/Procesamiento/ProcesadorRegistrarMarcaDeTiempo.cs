@@ -36,14 +36,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 switch (comando.Tipo)
                 {
                     case TipoSensorMarcaTiempo.Inicio:
-                        if (comando.InstanceId.HasValue)
-                        {
-                            marcaDeTiempo.RegistrarInicioPorInstanciaWorkflow(comando.InstanceId.Value);
-                        }
-                        else if (comando.PuestoDeTrabajoId.HasValue)
-                        {
-                            marcaDeTiempo.RegistrarInicioPorPuestoDeTrabajo(comando.PuestoDeTrabajoId.Value);
-                        }
+                        marcaDeTiempo.RegistrarInicioPorInstanciaWorkflow(comando.InstanceId.Value);
                         break;
 
                     case TipoSensorMarcaTiempo.Identificacion:
@@ -55,18 +48,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         break;
 
                     case TipoSensorMarcaTiempo.Fin:
-                        if (comando.InstanceId.HasValue)
-                        {
-                            marcaDeTiempo.RegistrarFinPorInstanciaWorkflow(comando.InstanceId.Value, comando.PuestoDeTrabajoId);
-                        }
-                        else if (comando.PuestoDeTrabajoId.HasValue)
-                        {
-                            marcaDeTiempo.RegistrarFinPorPuestoDeTrabajo(comando.PuestoDeTrabajoId.Value);
-                        }
+                        marcaDeTiempo.RegistrarFinPorInstanciaWorkflow(comando.InstanceId.Value, comando.PuestoDeTrabajoId);
                         break;
 
                     case TipoSensorMarcaTiempo.InicioOFinPorSensor:
                         marcaDeTiempo.RegistrarPorSensor(comando.CodigoDispositivo);
+                        break;
+
+                    case TipoSensorMarcaTiempo.InicioPorGaritaIngreso:
+                        marcaDeTiempo.RegistrarInicioPorGaritaIngreso(comando.PuestoDeTrabajoId.Value);
+                        break;
+
+                    case TipoSensorMarcaTiempo.FinPorGaritaIngreso:
+                        var tipoIngreso = string.IsNullOrEmpty(comando.NumeroDeTarjeta) ? TipoIdentificacionPorPuesto.IngresoPorPatente : TipoIdentificacionPorPuesto.IngresoPorLectura;
+                        marcaDeTiempo.RegistrarFinPorGaritaIngreso(comando.PuestoDeTrabajoId.Value, tipoIngreso);
                         break;
 
                     default:
@@ -85,11 +80,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private bool Validar(RegistrarMarcaDeTiempo comando, Resultado resultado)
         {
-            if (comando.Tipo == TipoSensorMarcaTiempo.Inicio && !comando.InstanceId.HasValue && !comando.PuestoDeTrabajoId.HasValue)
+            if (comando.Tipo == TipoSensorMarcaTiempo.Inicio && !comando.InstanceId.HasValue)
                 resultado.Error(nameof(comando.CodigoDispositivo), "El instanceId o puesto de trabajo es requerido para fecha inicio");
-
-            if (comando.Tipo == TipoSensorMarcaTiempo.InicioOFinPorSensor && string.IsNullOrEmpty(comando.CodigoDispositivo))
-                resultado.Error(nameof(comando.CodigoDispositivo), "El codigo dispositivo es requerido para inicio/fin por sensor");
 
             if (comando.Tipo == TipoSensorMarcaTiempo.Identificacion && !comando.PuestoDeTrabajoId.HasValue)
                 resultado.Error(nameof(comando.PuestoDeTrabajoId), "El puesto de trabajo es requerido para fecha de identificación");
@@ -109,8 +101,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (comando.Tipo == TipoSensorMarcaTiempo.InicioConIdentificacion && !comando.Trigger.HasValue)
                 resultado.Error(nameof(comando.Trigger), "El trigger es requerido para inicio con identificación");
 
-            if (comando.Tipo == TipoSensorMarcaTiempo.Fin && !comando.InstanceId.HasValue && !comando.PuestoDeTrabajoId.HasValue)
+            if (comando.Tipo == TipoSensorMarcaTiempo.Fin && !comando.InstanceId.HasValue)
                 resultado.Error(nameof(comando.InstanceId), "El instanceId o puesto de trabajo es requerido para fecha de fin");
+            
+            if (comando.Tipo == TipoSensorMarcaTiempo.InicioOFinPorSensor && string.IsNullOrEmpty(comando.CodigoDispositivo))
+                resultado.Error(nameof(comando.CodigoDispositivo), "El codigo dispositivo es requerido para inicio/fin por sensor");
+
+            if (comando.Tipo == TipoSensorMarcaTiempo.InicioPorGaritaIngreso && !comando.PuestoDeTrabajoId.HasValue)
+                resultado.Error(nameof(comando.PuestoDeTrabajoId), "El puesto de trabajo es requerido para fecha de inicio");
+
+            if (comando.Tipo == TipoSensorMarcaTiempo.FinPorGaritaIngreso && !comando.PuestoDeTrabajoId.HasValue)
+                resultado.Error(nameof(comando.PuestoDeTrabajoId), "El puesto de trabajo es requerido para fecha de fin");
 
             return !resultado.HayErrores;
         }

@@ -36,16 +36,6 @@ namespace Molinos.Scato.Actividades.Internas
             var workflowInstanceId = instanceId ?? controlRecorrido.WorkflowInstanceId;
             var resultado = new Resultado();
 
-            if (controlRecorrido.ActividadXaml == "EnTransito" || controlRecorrido.ActividadXaml == "SalidaDeCentro")
-            {
-                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
-                {
-                    Tipo = TipoSensorMarcaTiempo.Fin,
-                    InstanceId = controlRecorrido.WorkflowInstanceId,
-                    PuestoDeTrabajoId = controlRecorrido.PuestoDeTrabajoId,
-                });
-            }
-
             try
             {
                 resultado = servicioComandos.Ejecutar(new Dominio.Comandos.FinDeActividad { InstanceId = workflowInstanceId, Actividad = controlRecorrido.ActividadXaml, PuestoDeTrabajoId = controlRecorrido.PuestoDeTrabajoId });
@@ -54,6 +44,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 resultado.Errores.Add("", Textos.FinDeActividad_ErrorEnLaCarga);
             }
+
             try
             {
                 if (resultado.HayErrores)
@@ -75,6 +66,17 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 resultado.Errores.Add("ErrorNotificar", Textos.FinDeActividad_ErrorEnLaCarga);
             }
+
+            if (controlRecorrido.ActividadXaml == "EnTransito" || controlRecorrido.ActividadXaml == "SalidaDeCentro")
+            {
+                servicioComandos.Ejecutar(new RegistrarMarcaDeTiempo
+                {
+                    Tipo = TipoSensorMarcaTiempo.Fin,
+                    InstanceId = controlRecorrido.WorkflowInstanceId,
+                    PuestoDeTrabajoId = controlRecorrido.PuestoDeTrabajoId,
+                });
+            }
+
             return resultado;
         }
     }

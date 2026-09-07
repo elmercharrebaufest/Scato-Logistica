@@ -7,5 +7,7 @@ namespace Molinos.Scato.Dominio.Enums
         InicioConIdentificacion = 3,
         Identificacion = 4,
         InicioOFinPorSensor = 5,
+        InicioPorGaritaIngreso = 6,
+        FinPorGaritaIngreso = 7,
     }
 }
